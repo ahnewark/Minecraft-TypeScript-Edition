@@ -29,7 +29,7 @@ export default class GuiMainMenu extends GuiScreen {
         this.buttonList.push(new GuiButton("Multiplayer", this.width / 2 - 100, y + 24, 200, 20, () => {
             this.minecraft.displayScreen(new GuiDirectConnect(this));
         }));
-        this.buttonList.push(new GuiButton("Minecraft Realms", this.width / 2 - 100, y + 24 * 2, 200, 20, () => {
+        this.buttonList.push(new GuiButton("Mods and Texture Packs", this.width / 2 - 100, y + 24 * 2, 200, 20, () => {
 
         }).setEnabled(false));
         this.buttonList.push(new GuiButton("Options...", this.width / 2 - 100, y + 72 + 12, 98, 20, () => {
@@ -73,7 +73,7 @@ export default class GuiMainMenu extends GuiScreen {
 
         // Draw copyright
         let mouseOver = mouseX > this.width / 2 + 70 && mouseY > this.height - 20;
-        this.drawRightString(stack, "GitHub @LabyStudio/js-minecraft", this.width - 2, this.height - 10, mouseOver ? 0xFF00FFFF : 0xFFFFFFff);
+        this.drawRightString(stack, "@craftycodie", this.width - 2, this.height - 10, mouseOver ? 0xFF00FFFF : 0xFFFFFFff);
 
         // Draw buttons
         super.drawScreen(stack, mouseX, mouseY, partialTicks);

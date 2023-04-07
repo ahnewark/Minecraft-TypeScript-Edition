@@ -78,8 +78,8 @@ export default class GameWindow {
             let currentScreen = this.minecraft.currentScreen;
             if (currentScreen !== null) {
                 currentScreen.mouseClicked(
-                    event.x / this.scaleFactor,
-                    event.y / this.scaleFactor,
+                    (event.x - this.canvas.getBoundingClientRect().left) / this.scaleFactor,
+                    (event.y - this.canvas.getBoundingClientRect().top) / this.scaleFactor,
                     event.code
                 );
             }
@@ -95,8 +95,8 @@ export default class GameWindow {
             this.initialSoundEngine();
         });
         this.registerListener(document, 'mousemove', event => {
-            this.mouseX = event.clientX / this.scaleFactor;
-            this.mouseY = event.clientY / this.scaleFactor;
+            this.mouseX = (event.clientX - this.canvas.getBoundingClientRect().left) / this.scaleFactor;
+            this.mouseY = (event.clientY -  this.canvas.getBoundingClientRect().top) / this.scaleFactor;
 
             this.mouseMotionX = event.movementX;
             this.mouseMotionY = -event.movementY;
@@ -221,8 +221,8 @@ export default class GameWindow {
         this.registerListener(document, 'touchstart', event => {
             for (let i = 0; i < event.touches.length; i++) {
                 let touch = event.touches[i];
-                let x = touch.pageX;
-                let y = touch.pageY;
+                let x = touch.pageX - this.canvas.getBoundingClientRect().left;
+                let y = touch.pageY - this.canvas.getBoundingClientRect().top;
 
                 // Handle mouse click on screen
                 let currentScreen = this.minecraft.currentScreen;

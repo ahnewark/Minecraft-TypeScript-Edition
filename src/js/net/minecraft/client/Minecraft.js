@@ -27,7 +27,7 @@ import PlayerControllerMultiplayer from "./network/controller/PlayerControllerMu
 export default class Minecraft {
 
     static VERSION = "Minecraft Beta 1.2_02"
-    static URL_GITHUB = "https://github.com/labystudio/js-minecraft";
+    static URL_GITHUB = "https://github.com/craftycodie/js-minecraft";
     static PROTOCOL_VERSION = 47; //758;
 
     // TODO Add to settings
