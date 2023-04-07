@@ -10,9 +10,9 @@ export default class BlockLeave extends Block {
     }
 
     // TODO fix transparency of leaves
-    /*isTranslucent() {
+    isTranslucent() {
         return true;
-    }*/
+    }
 
     getColor(world, x, y, z, face) {
         // Inventory items have a default color

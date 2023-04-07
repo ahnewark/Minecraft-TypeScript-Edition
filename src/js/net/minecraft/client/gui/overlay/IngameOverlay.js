@@ -26,6 +26,9 @@ export default class IngameOverlay extends Gui {
     }
 
     render(stack, mouseX, mouseY, partialTicks) {
+        this.drawString(stack, Minecraft.VERSION, 2, 2);
+
+
         // Render crosshair
         if (this.minecraft.hasInGameFocus()) {
             this.renderCrosshair(stack, this.window.width / 2, this.window.height / 2)
@@ -181,7 +184,7 @@ export default class IngameOverlay extends Gui {
         let towards = "Towards " + (facing.isPositive() ? "positive" : "negative") + " " + (facing.isXAxis() ? "X" : "Z");
 
         let lines = [
-            "js-minecraft " + Minecraft.VERSION,
+            Minecraft.VERSION,
             fps + " fps (" + chunkUpdates + " chunk updates) T: " + this.minecraft.maxFps,
             "C: " + visibleChunks + "/" + loadedChunks + " D: " + viewDistance + ", L: " + lightUpdates,
             "E: " + visibleEntities + "/" + entities + ", P: " + particles,

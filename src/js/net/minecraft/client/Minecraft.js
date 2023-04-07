@@ -17,7 +17,7 @@ import * as THREE from "three";
 import ParticleRenderer from "./render/particle/ParticleRenderer.js";
 import GuiChat from "./gui/screens/GuiChat.js";
 import CommandHandler from "./command/CommandHandler.js";
-import GuiContainerPlayer from "./gui/screens/GuiContainer";
+import GuiContainerPlayer from "./gui/screens/container/GuiContainerCreative";
 import GameProfile from "../util/GameProfile.js";
 import UUID from "../util/UUID.js";
 import FocusStateType from "../util/FocusStateType.js";
@@ -26,7 +26,7 @@ import PlayerControllerMultiplayer from "./network/controller/PlayerControllerMu
 
 export default class Minecraft {
 
-    static VERSION = "1.1.8"
+    static VERSION = "Minecraft Beta 1.2_02"
     static URL_GITHUB = "https://github.com/labystudio/js-minecraft";
     static PROTOCOL_VERSION = 47; //758;
 

@@ -16,7 +16,7 @@ export default class FontRenderer {
         this.charWidths = [];
 
         this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        this.texture = minecraft.resources["gui/font.png"];
+        this.texture = minecraft.resources["font/default.png"];
 
         let bitMap = this.createBitMap(this.texture);
 

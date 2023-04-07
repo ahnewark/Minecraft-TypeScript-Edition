@@ -14,7 +14,7 @@ export default class GuiContainerCreative extends GuiContainer {
     }
 
     init() {
-        this.textureInventory = this.getTexture("gui/container/creative.png");
+        this.textureInventory = this.getTexture("gui/container.png");
 
         super.init();
     }

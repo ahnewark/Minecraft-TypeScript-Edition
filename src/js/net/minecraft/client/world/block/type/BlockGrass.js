@@ -35,9 +35,9 @@ export default class BlockGrass extends Block {
             case EnumBlockFace.TOP:
                 return this.textureSlotId;
             case EnumBlockFace.BOTTOM:
-                return this.textureSlotId + 1;
-            default:
                 return this.textureSlotId + 2;
+            default:
+                return this.textureSlotId + 3;
         }
     }
 

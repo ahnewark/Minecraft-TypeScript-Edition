@@ -28,18 +28,18 @@ export class BlockRegistry {
         Block.sounds.glass = new SoundGlass("stone", 1.0);
 
         // Blocks
-        BlockRegistry.STONE = new BlockStone(1, 0);
-        BlockRegistry.GRASS = new BlockGrass(2, 1);
+        BlockRegistry.STONE = new BlockStone(1, 1);
+        BlockRegistry.GRASS = new BlockGrass(2, 0);
         BlockRegistry.DIRT = new BlockDirt(3, 2);
-        BlockRegistry.COBBLE_STONE = new BlockCobblestone(4, 14);
-        BlockRegistry.WOOD = new BlockWood(5, 10);
-        BlockRegistry.BEDROCK = new BlockBedrock(7, 11);
-        BlockRegistry.GRAVEL = new BlockGravel(13, 13);
-        BlockRegistry.LOG = new BlockLog(17, 4);
-        BlockRegistry.LEAVE = new BlockLeave(18, 6);
-        BlockRegistry.GLASS = new BlockGlass(20, 12);
-        BlockRegistry.WATER = new BlockWater(9, 7);
-        BlockRegistry.SAND = new BlockSand(12, 8)
-        BlockRegistry.TORCH = new BlockTorch(50, 9)
+        BlockRegistry.COBBLE_STONE = new BlockCobblestone(4, 16);
+        BlockRegistry.WOOD = new BlockWood(5, 4);
+        BlockRegistry.BEDROCK = new BlockBedrock(7, 17);
+        BlockRegistry.GRAVEL = new BlockGravel(13, 19);
+        BlockRegistry.LOG = new BlockLog(17, 20);
+        BlockRegistry.LEAVE = new BlockLeave(18, 52);
+        BlockRegistry.GLASS = new BlockGlass(20, 49);
+        BlockRegistry.WATER = new BlockWater(9, 207);
+        BlockRegistry.SAND = new BlockSand(12, 18)
+        BlockRegistry.TORCH = new BlockTorch(50, 80)
     }
 }

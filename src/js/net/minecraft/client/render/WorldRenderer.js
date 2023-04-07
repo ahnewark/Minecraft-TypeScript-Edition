@@ -20,7 +20,7 @@ export default class WorldRenderer {
         this.tessellator = new Tessellator();
 
         // Load terrain texture
-        this.textureTerrain = minecraft.getThreeTexture('terrain/terrain.png');
+        this.textureTerrain = minecraft.getThreeTexture('terrain.png');
         this.textureTerrain.magFilter = THREE.NearestFilter;
         this.textureTerrain.minFilter = THREE.NearestFilter;
 
