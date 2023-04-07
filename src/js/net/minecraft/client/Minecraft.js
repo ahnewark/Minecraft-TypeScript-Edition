@@ -13,11 +13,11 @@ import FontRenderer from "./render/gui/FontRenderer.js";
 import GrassColorizer from "./render/GrassColorizer.js";
 import GuiMainMenu from "./gui/screens/GuiMainMenu.js";
 import GuiLoadingScreen from "./gui/screens/GuiLoadingScreen.js";
-import * as THREE from "../../../../../libraries/three.module.js";
+import * as THREE from "three";
 import ParticleRenderer from "./render/particle/ParticleRenderer.js";
 import GuiChat from "./gui/screens/GuiChat.js";
 import CommandHandler from "./command/CommandHandler.js";
-import GuiContainerCreative from "./gui/screens/container/GuiContainerCreative.js";
+import GuiContainerPlayer from "./gui/screens/GuiContainer";
 import GameProfile from "../util/GameProfile.js";
 import UUID from "../util/UUID.js";
 import FocusStateType from "../util/FocusStateType.js";
@@ -361,7 +361,7 @@ export default class Minecraft {
 
         // Open inventory
         if (button === this.settings.keyOpenInventory) {
-            this.displayScreen(new GuiContainerCreative(this.player));
+            this.displayScreen(new GuiContainerPlayer(this.player));
         }
     }
 

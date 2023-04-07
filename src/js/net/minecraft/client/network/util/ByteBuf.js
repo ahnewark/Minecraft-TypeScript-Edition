@@ -1,7 +1,7 @@
-import Long from "../../../../../../../libraries/long.js";
+import Long from "long";
 import BlockPosition from "../../../util/BlockPosition.js";
 import UUID from "../../../util/UUID.js";
-import {format} from "../../../../../../../libraries/chat.js";
+// import {format} from "mc-chat-format";
 import Vector3 from "../../../util/Vector3.js";
 import NBTIO from "../../../nbt/NBTIO.js";
 
@@ -225,6 +225,33 @@ export default class ByteBuf {
         this.writeLong(uuid.getMostSignificantBits());
         this.writeLong(uuid.getLeastSignificantBits());
     }
+
+    // TODO: fix mc-chat-format
+/**
+ * Converts a Minecraft chat component to a formatted string.
+ * */
+ format(component, options = {}) {
+    const text = formatString(convert(component, options), options.useAnsiCodes);
+    if (options.maxLineLength) {
+        let t = "", e = false, l = 0;
+        for (let c of text) {
+            if (c == "\x1b")
+                e = true;
+            else if (c == "m")
+                e = false;
+            else if (c == "\n")
+                l = 0;
+            t += c;
+            if (l == options.maxLineLength)
+                t += "\n", l = 0;
+            if (!e)
+                l += 1;
+        }
+        return t;
+    }
+    else
+        return text;
+}
 
     readTextComponent() {
         return format(JSON.parse(this.readString(32767)));

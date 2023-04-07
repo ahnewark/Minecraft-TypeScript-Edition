@@ -248,8 +248,8 @@ export default class NetworkManager {
 
     enableEncryption(secretKey) {
         this.isEncrypted = true;
-        this.decryption = new (require("aesjs").ModeOfOperation).cfb(secretKey, secretKey, 1);
-        this.encryption = new (require("aesjs").ModeOfOperation).cfb(secretKey, secretKey, 1);
+        this.decryption = new (require("aes-js").ModeOfOperation).cfb(secretKey, secretKey, 1);
+        this.encryption = new (require("aes-js").ModeOfOperation).cfb(secretKey, secretKey, 1);
     }
 
     setState(packetState) {
