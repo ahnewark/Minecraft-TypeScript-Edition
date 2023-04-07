@@ -32,7 +32,7 @@ export default class SoundManager {
         // Load all sounds into pool
         let path = name.replace(".", "/");
         for (let i = 0; i < amount; i++) {
-            let sound = this.loadSound('src/resources/sound/' + path + (i + 1) + '.ogg');
+            let sound = this.loadSound('src/resources/newsound/' + path + (i + 1) + '.ogg');
             pool.push(sound);
         }
 
