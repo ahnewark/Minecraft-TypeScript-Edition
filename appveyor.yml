@@ -6,7 +6,7 @@ install:
   - npm install
 
 cache:
- - C:\projects\alphabot\node_modules
+ - C:\projects\js-minecraft\node_modules
 
 # Post-install test scripts.
 test_script:
