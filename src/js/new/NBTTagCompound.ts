@@ -120,11 +120,11 @@ export  class NBTTagCompound extends NBTBase {
 		return !this.tagMap.has(string1) ? new  Int8Array(0) : (this.tagMap.get(string1) as NBTTagByteArray).byteArray;
 	}
 
-	public getCompoundTag(string1: string):  NBTTagCompound | null {
+	public getCompoundTag(string1: string):  NBTTagCompound {
 		return !this.tagMap.has(string1) ? new  NBTTagCompound() : this.tagMap.get(string1) as NBTTagCompound;
 	}
 
-	public getTagList(string1: string):  NBTTagList | null {
+	public getTagList(string1: string):  NBTTagList {
 		return !this.tagMap.has(string1) ? new  NBTTagList() : this.tagMap.get(string1) as NBTTagList;
 	}
 

@@ -7,9 +7,9 @@ export abstract class DataInput {
     public abstract readDouble(): double;
     public abstract readFloat(): float;
     public abstract readFully(dst: Int8Array): void;
-    public abstract readFully(dst: Int8Array, offset: int[], byteCount: int): void;
+    public abstract readFully(dst: Int8Array, offset: int, byteCount: int): void;
     public abstract readInt(): int;
-    public abstract readLine(): string;
+    public abstract readLine(): string | null;
     public abstract readLong(): long;
     public abstract readShort(): short;
     public abstract readUnsignedByte(): int;
