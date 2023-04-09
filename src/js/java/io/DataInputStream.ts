@@ -1,6 +1,6 @@
-import { byte, char, double, float, int, java, long, short } from "jree/lib";
-import { InputStream } from "jree/lib/java/io";
-import { IndexOutOfBoundsException } from "jree/lib/java/lang";
+import { byte, char, double, float, int, java, long, short } from "../../jree/index"
+import { InputStream } from "../../jree/java/io/InputStream";
+import { IndexOutOfBoundsException } from "../../jree/java/lang/IndexOutOfBoundsException";
 import System from "../lang/System";
 import { DataInput } from "./DataInput";
 import { FilterInputStream } from "./FilterInputStream";

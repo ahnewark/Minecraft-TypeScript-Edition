@@ -1,5 +1,5 @@
 
-import { java, S } from "jree";
+import { java, S } from "../jree/index";
 
 export  class NibbleArray {
 	public readonly data:  Int8Array;
@@ -10,15 +10,15 @@ export  class NibbleArray {
     public constructor(...args: unknown[]) {
 		switch (args.length) {
 			case 1: {
-				const [i1] = args as [number];
-				this.data = new Int8Array(i1 >> 1);
-				break;
-			}
-
-			case 1: {
-				const [b1] = args as [Int8Array];
-				this.data = b1;
-				break;
+				if (typeof args[0] === 'number') {
+					const [i1] = args as [number];
+					this.data = new Int8Array(i1 >> 1);
+					break;
+				} else {
+					const [b1] = args as [Int8Array];
+					this.data = b1;
+					break;
+				}
 			}
 
 			default: {

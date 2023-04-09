@@ -1,4 +1,4 @@
-import { byte, char, double, float, int, long, short } from "jree/lib";
+import { byte, char, double, float, int, long, short } from "../jree/lib";
 
 export abstract class DataInput {
     public abstract readBoolean(): boolean;

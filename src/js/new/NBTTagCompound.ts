@@ -1,7 +1,7 @@
 
 
 
-import { java, byte, short, int, long, float, double } from "jree";
+import { java, byte, short, int, long, float, double } from "../jree/index";
 import { NBTTagString } from "./NBTTagString";
 import { NBTTagShort } from "./NBTTagShort";
 import { NBTTagLong } from "./NBTTagLong";

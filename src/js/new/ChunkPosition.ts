@@ -1,5 +1,5 @@
 
-import { JavaObject, java } from "jree";
+import { JavaObject, java } from "../jree/index";
 
 export  class ChunkPosition extends JavaObject {
 	public readonly x:  number;

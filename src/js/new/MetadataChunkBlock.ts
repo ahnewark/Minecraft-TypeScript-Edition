@@ -1,5 +1,5 @@
 
-import { JavaObject, int, java, byte } from "jree";
+import { JavaObject, int, java, byte } from "../jree/index";
 import { World } from "./World";
 import { Chunk } from "./Chunk";
 import { Block } from "./Block";
@@ -34,7 +34,7 @@ export  class MetadataChunkBlock extends JavaObject {
 		let  i4: int = this.field_1300_g - this.field_1303_d + 1;
 		let  i5: int = i2 * i3 * i4;
 		if(i5 > 32768) {
-			java.lang.System.out.println("Light too large, skipping!");
+			console.log("Light too large, skipping!");
 		} else {
 			let  i6: int = 0;
 			let  i7: int = 0;

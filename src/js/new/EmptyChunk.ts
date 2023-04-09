@@ -1,7 +1,7 @@
 
 
 
-import { int, java, long, S } from "jree";
+import { int, java, long, S } from "../jree/index";
 import { World } from "./World";
 // import { TileEntity } from "./TileEntity";
 import { EnumSkyBlock } from "./EnumSkyBlock";

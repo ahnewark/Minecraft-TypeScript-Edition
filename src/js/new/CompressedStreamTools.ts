@@ -1,7 +1,7 @@
 
 
 
-import { JavaObject, java } from "jree";
+import { JavaObject, java } from "../jree/index";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { NBTBase } from "./NBTBase";
 import { DataOutput } from "../java/io/DataOutput";

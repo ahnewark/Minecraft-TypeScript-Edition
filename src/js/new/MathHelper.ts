@@ -1,5 +1,5 @@
 
-import { java } from "jree";
+import { java } from "../jree/index";
 
 export  class MathHelper {
 	private static SIN_TABLE:  Float64Array = new Float64Array(65536);

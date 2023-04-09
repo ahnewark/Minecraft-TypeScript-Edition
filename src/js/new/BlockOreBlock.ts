@@ -1,9 +1,10 @@
 import { Material } from "./Material";
 import { Block } from "./Block";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export  class BlockOreBlock extends Block {
 	public constructor(i1: number, i2: number) {
-		super(i1, Material.iron);
+		super(i1, MaterialRegistry.iron);
 		this.blockIndexInTexture = i2;
 	}
 

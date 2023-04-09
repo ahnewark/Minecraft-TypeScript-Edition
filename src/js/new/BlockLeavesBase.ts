@@ -15,8 +15,8 @@ export  class BlockLeavesBase extends Block {
 		return false;
 	}
 
-	public shouldSideBeRendered(iBlockAccess1: IBlockAccess, i2: number, i3: number, i4: number, i5: number):  boolean {
-		let  i6: number = iBlockAccess1.getBlockId(i2, i3, i4);
+	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
+		let  i6: number = await iBlockAccess1.getBlockId(i2, i3, i4);
 		return !this.graphicsLevel && i6 === this.blockID ? false : super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5);
 	}
 }

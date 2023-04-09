@@ -1,8 +1,6 @@
-
-
-
 import { DataInput } from "../java/io/DataInput";
 import { DataOutput } from "../java/io/DataOutput";
+import { NBTRegistry } from "./moved/NBTRegistry";
 import { NBTBase } from "./NBTBase";
 
 export  class NBTTagList extends NBTBase {
@@ -31,7 +29,7 @@ export  class NBTTagList extends NBTBase {
 		this.tagList = [];
 
 		for(let  i3: number = 0; i3 < i2; ++i3) {
-			let  nBTBase4: NBTBase = NBTBase.createTagOfType(this.tagType);
+			let  nBTBase4: NBTBase = NBTRegistry.createTagOfType(this.tagType);
 			nBTBase4.readTagContents(dataInput1);
 			this.tagList.push(nBTBase4);
 		}
@@ -43,7 +41,7 @@ export  class NBTTagList extends NBTBase {
 	}
 
 	public toString():  string {
-		return "" + this.tagList.length + " entries of type " + NBTBase.getTagName(this.tagType);
+		return "" + this.tagList.length + " entries of type " + NBTRegistry.getTagName(this.tagType);
 	}
 
 	public setTag(nBTBase1: NBTBase):  void {

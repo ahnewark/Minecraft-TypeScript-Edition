@@ -23,6 +23,12 @@ import UUID from "../util/UUID.js";
 import FocusStateType from "../util/FocusStateType.js";
 import Session from "../util/Session.js";
 import PlayerControllerMultiplayer from "./network/controller/PlayerControllerMultiplayer.js";
+import { World as NewWorld } from '../../../new/World';
+import {JavaFile} from "../../../jree/java/io/File";
+import * as Foobert from '../../../new/index';
+import { JavaString } from "../../../jree/index.js";
+
+console.log({Foobert})
 
 export default class Minecraft {
 
@@ -41,6 +47,8 @@ export default class Minecraft {
      */
     constructor(canvasWrapperId, resources) {
         this.resources = resources;
+
+        this.newWorld = NewWorld.Construct(new JavaFile(new JavaString('/minecraft/')), 'World1')
 
         this.currentScreen = null;
         this.loadingScreen = null;
@@ -330,6 +338,7 @@ export default class Minecraft {
             if (progress >= 0.99) {
                 this.loadingScreen = null;
                 this.displayScreen(null);
+                this.soundManager.playMusic('hal', 1);
             }
         }
     }

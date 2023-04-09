@@ -1,7 +1,7 @@
 
 
 
-import { java, int, double, S } from "jree";
+import { java, int, double, S } from "../jree/index";
 import { World } from "./World";
 import { NoiseGeneratorOctaves2 } from "./NoiseGeneratorOctaves2";
 // TODO: ENTITIES
@@ -13,8 +13,8 @@ export class WorldChunkManager {
 	private field_4194_e:  NoiseGeneratorOctaves2;
 	private field_4193_f:  NoiseGeneratorOctaves2;
 	private field_4192_g:  NoiseGeneratorOctaves2;
-	public temperature:  Float64Array;
-	public humidity:  Float64Array;
+	public temperature:  Float64Array = new Float64Array(16*16);
+	public humidity:  Float64Array = new Float64Array(16*16);
 	public field_4196_c:  Float64Array;
 	
     // TODO: ENTITIES

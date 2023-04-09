@@ -1,5 +1,5 @@
 
-import { JavaObject, int, S, java } from "jree";
+import { JavaObject, int, S, java } from "../jree/index";
 import { Vec3D } from "./Vec3D";
 import { EnumMovingObjectType } from "./EnumMovingObjectType";
 // TODO: Entities

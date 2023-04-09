@@ -1,6 +1,6 @@
-import { int, long } from "jree/lib";
-import { InputStream, IOException } from "jree/lib/java/io";
-import { IllegalArgumentException, IndexOutOfBoundsException, Integer, NullPointerException } from "jree/lib/java/lang";
+import { int, long } from "../../jree/index";
+import { InputStream, IOException } from "../../jree/java/io/index";
+import { IllegalArgumentException, IndexOutOfBoundsException, Integer, NullPointerException } from "../../jree/java/lang/index";
 import System from "../lang/System";
 import { FilterInputStream } from "./FilterInputStream";
 

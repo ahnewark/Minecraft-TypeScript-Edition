@@ -1,7 +1,7 @@
 
 
 
-import {  java, S } from "jree";
+import {  java, S } from "../jree/index";
 import { Random } from "../java/util/Random";
 import { NoiseGenerator } from "./NoiseGenerator";
 

@@ -1,4 +1,4 @@
-import { byte, double, float, int, long } from "jree/lib";
+import { byte, double, float, int, long } from "../jree/lib";
 
 export abstract class DataOutput {
 

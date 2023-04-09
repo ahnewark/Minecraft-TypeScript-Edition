@@ -1,10 +1,11 @@
 
 import { Material } from "./Material";
 import { Block } from "./Block";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export  class BlockCloth extends Block {
 	public constructor() {
-		super(35, 64, Material.cloth);
+		super(35, 64, MaterialRegistry.cloth);
 	}
 
 	public getBlockTextureFromSideAndMetadata(i1: number, i2: number):  number {

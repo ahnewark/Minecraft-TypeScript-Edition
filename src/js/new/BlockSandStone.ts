@@ -2,10 +2,11 @@
 import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Block } from "./Block";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export  class BlockSandStone extends Block {
 	public constructor(i1: number) {
-		super(i1, 192, Material.rock);
+		super(i1, 192, MaterialRegistry.rock);
 	}
 
 	public getBlockTextureFromSide(i1: number):  number {

@@ -1,5 +1,5 @@
 
-import { java, S } from "jree";
+import { java, S } from "../jree/index";
 
 
 export class  EnumMovingObjectType extends java.lang.Enum<EnumMovingObjectType> {

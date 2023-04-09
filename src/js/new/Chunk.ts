@@ -1,7 +1,7 @@
 
 
 
-import { java, long, S } from "jree";
+import { java, long, S } from "../jree/index";
 import System from '../java/lang/System';
 import { World } from "./World";
 import { Block } from "./Block";
@@ -228,8 +228,8 @@ export class Chunk {
 		this.func_1020_f(i4, i5 + 1, i3);
 	}
 
-	private func_1020_f(i1: number, i2: number, i3: number):  void {
-		let  i4: number = this.worldObj.getHeightValue(i1, i2);
+	private async func_1020_f(i1: number, i2: number, i3: number):  Promise<void> {
+		let  i4: number = await this.worldObj.getHeightValue(i1, i2);
 		if(i4 > i3) {
 			this.worldObj.func_616_a(EnumSkyBlock.Sky, i1, i3, i2, i1, i4, i2);
 			this.isModified = true;
@@ -676,7 +676,7 @@ export class Chunk {
 	}
 
 	public func_997_a(j1: long):  Random {
-		return new  Random(this.worldObj.randomSeed + BigInt(this.xPosition * this.xPosition * 4987142) + BigInt(this.xPosition * 5947611) + BigInt(this.zPosition * this.zPosition) * 4392871n + (this.zPosition * 389711) as long ^ j1);
+		return new  Random(this.worldObj.randomSeed + BigInt(this.xPosition * this.xPosition * 4987142) + BigInt(this.xPosition * 5947611) + BigInt(this.zPosition * this.zPosition) * 4392871n + BigInt(this.zPosition * 389711) ^ j1);
 	}
 
 	public func_21167_h():  boolean {

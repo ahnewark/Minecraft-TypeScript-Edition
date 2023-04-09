@@ -1,7 +1,7 @@
 
 
 
-import { int, java, byte, S } from "jree";
+import { int, java, byte, S } from "../jree/index";
 import { DataInput } from "../java/io/DataInput";
 import { DataOutput } from "../java/io/DataOutput";
 import { NBTBase } from "./NBTBase";

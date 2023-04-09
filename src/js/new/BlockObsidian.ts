@@ -1,6 +1,7 @@
 import { BlockStone } from "./BlockStone";
 import { Random } from "../java/util/Random";
 import { Block } from "./Block";
+import { BlockRegistry } from "./index";
 
 export  class BlockObsidian extends BlockStone {
 	public constructor(i1: number, i2: number) {
@@ -12,6 +13,6 @@ export  class BlockObsidian extends BlockStone {
 	}
 
 	public idDropped(i1: number, random2: Random):  number {
-		return Block.obsidian.blockID;
+		return BlockRegistry.obsidian.blockID;
 	}
 }

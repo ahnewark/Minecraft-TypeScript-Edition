@@ -1,4 +1,4 @@
-import { int, java, long } from "jree/lib";
+import { int, java, long } from "../../jree/index";
 
 export class FilterInputStream extends java.io.InputStream {
     protected in: java.io.InputStream;

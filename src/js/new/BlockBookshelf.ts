@@ -4,10 +4,11 @@
 import { Material } from "./Material";
 import { Block } from "./Block";
 import { Random } from "../java/util/Random";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export  class BlockBookshelf extends Block {
 	public constructor(i1: number, i2: number) {
-		super(i1, i2, Material.wood);
+		super(i1, i2, MaterialRegistry.wood);
 	}
 
 	public getBlockTextureFromSide(i1: number):  number {

@@ -1,7 +1,7 @@
 
 
 
-import { java } from "jree";
+import { java } from "../jree/index";
 import { World } from "./World";
 // TODO: Tile Entities
 // import { TileEntity } from "./TileEntity";
@@ -14,67 +14,63 @@ import { IChunkLoader } from "./IChunkLoader";
 // import { Entity } from "./Entity";
 import { CompressedStreamTools } from "./CompressedStreamTools";
 import { Chunk } from "./Chunk";
-import SaveFile from "../application/SaveFile";
-import { SaveFileInputStream } from "../application/SaveFileInputStream";
-import { SaveFileOutputStream } from "../application/SaveFileOutputStream";
-
-
-
+import { File, FileInputStream, FileOutputStream } from "../jree/java/io/index";
+import { JavaString } from "../jree/index";
 
 export  class ChunkLoader implements IChunkLoader {
-	private saveDir:  SaveFile;
+	private saveDir:  File;
 	private createIfNecessary:  boolean;
 
-	public constructor(file1: SaveFile, z2: boolean) {
+	public constructor(file1: File, z2: boolean) {
 		this.saveDir = file1;
 		this.createIfNecessary = z2;
 	}
 
-	private chunkFileForXZ(i1: number, i2: number):  SaveFile | null {
+	private async chunkFileForXZ(i1: number, i2: number):  Promise<File | null> {
 		let  string3: string = "c." + java.lang.Integer.toString(i1, 36) + "." + java.lang.Integer.toString(i2, 36) + ".dat";
 		let  string4: string= '' + java.lang.Integer.toString(i1 & 63, 36);
 		let  string5: string= '' + java.lang.Integer.toString(i2 & 63, 36);
-		let  file6: SaveFile = new SaveFile(this.saveDir, string4);
-		if(!file6.exists()) {
+		let  file6: File = new File(this.saveDir, new JavaString(string4));
+		if(!await file6.exists()) {
 			if(!this.createIfNecessary) {
 				return null;
 			}
 
-			file6.mkdir();
+			await file6.mkdir();
 		}
 
-		file6 = new SaveFile(file6, string5);
-		if(!file6.exists()) {
+		file6 = new File(file6, new JavaString(string5));
+		if(!await file6.exists()) {
 			if(!this.createIfNecessary) {
 				return null;
 			}
 
-			file6.mkdir();
+			await file6.mkdir();
 		}
 
-		file6 = new  SaveFile(file6, string3);
-		return !file6.exists() && !this.createIfNecessary ? null : file6;
+		file6 = new  File(file6, new JavaString(string3));
+		return !await file6.exists() && !this.createIfNecessary ? null : file6;
 	}
 
-	public loadChunk(world1: World, i2: number, i3: number):  Chunk | null {
-		let  file4: SaveFile | null = this.chunkFileForXZ(i2, i3);
-		if(file4 !== null && file4.exists()) {
+	public async loadChunk(world1: World, i2: number, i3: number):  Promise<Chunk | null> {
+		let  file4: File | null = await this.chunkFileForXZ(i2, i3);
+		if(file4 !== null && await file4.exists()) {
 			try {
-				let  fileInputStream5: java.io.FileInputStream = new SaveFileInputStream(file4);
+				let  fileInputStream5: java.io.FileInputStream = await FileInputStream.Construct(file4);
 				let  nBTTagCompound6: NBTTagCompound = CompressedStreamTools.func_1138_a(fileInputStream5);
 				if(!nBTTagCompound6.hasKey("Level")) {
-					java.lang.System.out.println("Chunk file at " + i2 + "," + i3 + " is missing level data, skipping");
+					(await java.lang.System.out).println("Chunk file at " + i2 + "," + i3 + " is missing level data, skipping");
 					return null;
 				}
 
 				if(!nBTTagCompound6.getCompoundTag("Level").hasKey("Blocks")) {
-					java.lang.System.out.println("Chunk file at " + i2 + "," + i3 + " is missing block data, skipping");
+					(await java.lang.System.out).println("Chunk file at " + i2 + "," + i3 + " is missing block data, skipping");
 					return null;
 				}
 
 				let  chunk7: Chunk = ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
 				if(!chunk7.isAtLocation(i2, i3)) {
-					java.lang.System.out.println("Chunk file at " + i2 + "," + i3 + " is in the wrong location; relocating. (Expected " + i2 + ", " + i3 + ", got " + chunk7.xPosition + ", " + chunk7.zPosition + ")");
+					(await java.lang.System.out).println("Chunk file at " + i2 + "," + i3 + " is in the wrong location; relocating. (Expected " + i2 + ", " + i3 + ", got " + chunk7.xPosition + ", " + chunk7.zPosition + ")");
 					nBTTagCompound6.setInteger("xPos", i2);
 					nBTTagCompound6.setInteger("zPos", i3);
 					chunk7 = ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
@@ -94,28 +90,28 @@ export  class ChunkLoader implements IChunkLoader {
 		return null;
 	}
 
-	public saveChunk(world1: World, chunk2: Chunk):  void {
+	public async saveChunk(world1: World, chunk2: Chunk):  Promise<void> {
 		world1.checkSessionLock();
-		let file3: SaveFile | null = this.chunkFileForXZ(chunk2.xPosition, chunk2.zPosition);
-		if(file3 != null && file3.exists()) {
-			world1.sizeOnDisk -= file3.length();
+		let file3: File | null = await this.chunkFileForXZ(chunk2.xPosition, chunk2.zPosition);
+		if(file3 != null && await file3.exists()) {
+			world1.sizeOnDisk -= await file3.length();
 		}
 
 		try {
-			let  file4: SaveFile= new SaveFile(this.saveDir, "tmp_chunk.dat");
-			let  fileOutputStream5: java.io.FileOutputStream = new SaveFileOutputStream(file4);
+			let  file4: File= new File(this.saveDir, new JavaString("tmp_chunk.dat"));
+			let  fileOutputStream5: java.io.FileOutputStream = await FileOutputStream.Construct(file4);
 			let  nBTTagCompound6: NBTTagCompound = new  NBTTagCompound();
 			let  nBTTagCompound7: NBTTagCompound = new  NBTTagCompound();
 			nBTTagCompound6.setTag("Level", nBTTagCompound7);
 			this.storeChunkInCompound(chunk2, world1, nBTTagCompound7);
 			CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound6, fileOutputStream5);
 			fileOutputStream5.close();
-			if(file3 && file3.exists()) {
-				file3.delete();
+			if(file3 && await file3.exists()) {
+				await file3.delete();
 			}
 
 			if (file3) {
-				file4.renameTo(file3);
+				await file4.renameTo(file3);
 				world1.sizeOnDisk += file3.length();
 			}
 		} catch (exception8) {
@@ -227,9 +223,9 @@ export  class ChunkLoader implements IChunkLoader {
 	public func_814_a():  void {
 	}
 
-	public saveExtraData():  void {
+	public async saveExtraData():  Promise<void> {
 	}
 
-	public saveExtraChunkData(world1: World| null, chunk2: Chunk| null):  void {
+	public async saveExtraChunkData(world1: World| null, chunk2: Chunk| null):  Promise<void> {
 	}
 }

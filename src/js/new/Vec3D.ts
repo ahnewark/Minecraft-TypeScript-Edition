@@ -1,7 +1,7 @@
 
 
 
-import { java, S } from "jree";
+import { java, S } from "../jree/index";
 import { MathHelper } from "./MathHelper";
 
 export class Vec3D {

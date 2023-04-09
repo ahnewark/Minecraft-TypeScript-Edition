@@ -1,7 +1,7 @@
 
 
 
-import { java } from "jree";
+import { java } from "../jree/index";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { MapGenBase } from "./MapGenBase";

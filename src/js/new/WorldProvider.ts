@@ -1,7 +1,7 @@
 
 
 
-import { JavaObject, int, float, java, long, double } from "jree";
+import { JavaObject, int, float, java, long, double } from "../jree/index";
 // import { WorldProviderHell } from "./WorldProviderHell";
 import { WorldChunkManager } from "./WorldChunkManager";
 import { World } from "./World";
@@ -12,8 +12,9 @@ import { IChunkLoader } from "./IChunkLoader";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { ChunkProviderGenerate } from "./ChunkProviderGenerate";
 import { ChunkLoader } from "./ChunkLoader";
-import SaveFile from "../application/SaveFile";
 import { Block } from "./Block";
+import { File } from "../jree/java/io/index";
+import { BlockRegistry } from "./index";
 
 
 
@@ -52,15 +53,16 @@ export  class WorldProvider extends JavaObject {
 		return new  ChunkProviderGenerate(this.worldObj, this.worldObj.randomSeed);
 	}
 
-	public getChunkLoader(file1: SaveFile):  IChunkLoader {
+	public getChunkLoader(file1: File):  IChunkLoader {
 		return new  ChunkLoader(file1, true);
 	}
 
-	public canCoordinateBeSpawn(i1: int, i2: int):  boolean {
-		let  i3: int = this.worldObj.getFirstUncoveredBlock(i1, i2);
-		// TODO: Fix
-		// return i3 === Block.sand.blockID;
-		return i3 === Block.stone.blockID;
+	public async canCoordinateBeSpawn(i1: int, i2: int):  Promise<boolean> {
+		// return true;
+		let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
+		// // TODO: Fix
+		// // return i3 === Block.sand.blockID;
+		return i3 === BlockRegistry.stone.blockID;
 
 	}
 

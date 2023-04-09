@@ -1,5 +1,5 @@
 
-import { JavaObject, int, java } from "jree";
+import { JavaObject, int, java } from "../jree/index";
 
 export  class ChunkCoordIntPair extends JavaObject {
 	public chunkXPos:  int;

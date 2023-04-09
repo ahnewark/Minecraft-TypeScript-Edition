@@ -1,5 +1,5 @@
 
-import { JavaObject, java, long, int } from "jree";
+import { JavaObject, java, long, int } from "../jree/index";
 
 export  class NextTickListEntry extends JavaObject implements java.lang.Comparable<NextTickListEntry> {
 	private static nextTickEntryID:  long = 0n;

@@ -1,6 +1,6 @@
-import { double, float, int, long } from "jree/lib";
-import { FilterOutputStream, OutputStream } from "jree/lib/java/io";
-import { Integer } from "jree/lib/java/lang";
+import { double, float, int, long } from "../../jree/index";
+import { FilterOutputStream, OutputStream } from "../../jree/java/io/index";
+import { Integer } from "../../jree/java/lang/Integer";
 import { DataOutput } from "./DataOutput";
 
 export class DataOutputStream extends FilterOutputStream implements DataOutput {

@@ -33,7 +33,7 @@ export  class NoiseGeneratorOctaves extends NoiseGenerator {
 	}
 
 	public generateNoiseOctaves(d1: Float64Array, d2: number, d4: number, d6: number, i8: number, i9: number, i10: number, d11: number, d13: number, d15: number):  Float64Array {
-		if(d1 === null) {
+		if(d1 === undefined) {
 			d1 = new  Float64Array(i8 * i9 * i10);
 		} else {
 			for(let  i17: number = 0; i17 < d1.length; ++i17) {

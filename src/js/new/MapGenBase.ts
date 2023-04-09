@@ -1,7 +1,7 @@
 
 
 
-import { java, long } from "jree";
+import { java, long } from "../jree/index";
 import { World } from "./World";
 import { IChunkProvider } from "./IChunkProvider";
 import { Random } from "../java/util/Random";

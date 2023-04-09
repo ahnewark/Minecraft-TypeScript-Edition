@@ -1,5 +1,5 @@
 
-import { int, java, double, float } from "jree";
+import { int, java, double, float } from "../jree/index";
 // import { TileEntity } from "./TileEntity";
 // import { Entity } from "./Entity";
 

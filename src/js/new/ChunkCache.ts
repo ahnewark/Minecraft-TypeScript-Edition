@@ -1,5 +1,5 @@
 
-import { JavaObject, int, float } from "jree";
+import { JavaObject, int, float } from "../jree/index";
 import { WorldChunkManager } from "./WorldChunkManager";
 import { World } from "./World";
 // import { TileEntity } from "./TileEntity";
@@ -7,6 +7,7 @@ import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { Chunk } from "./Chunk";
 import { Block } from "./Block";
+import { MaterialRegistry } from "./index";
 
 export  class ChunkCache implements IBlockAccess {
 	private chunkX:  int;
@@ -14,23 +15,25 @@ export  class ChunkCache implements IBlockAccess {
 	private chunkArray:  Chunk[][];
 	private worldObj:  World | null;
 
-	public constructor(world1: World| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int) {
-		this.worldObj = world1;
-		this.chunkX = i2 >> 4;
-		this.chunkZ = i4 >> 4;
+	public static async Construct(world1: World| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int) {
+		const _this = new ChunkCache();
+
+		_this.worldObj = world1;
+		_this.chunkX = i2 >> 4;
+		_this.chunkZ = i4 >> 4;
 		let  i8: int = i5 >> 4;
 		let  i9: int = i7 >> 4;
-		this.chunkArray = [];
+		_this.chunkArray = [];
 
-		for(let  i10: int = this.chunkX; i10 <= i8; ++i10) {
-			for(let  i11: int = this.chunkZ; i11 <= i9; ++i11) {
-				this.chunkArray[i10 - this.chunkX][i11 - this.chunkZ] = world1.getChunkFromChunkCoords(i10, i11);
+		for(let  i10: int = _this.chunkX; i10 <= i8; ++i10) {
+			for(let  i11: int = _this.chunkZ; i11 <= i9; ++i11) {
+				_this.chunkArray[i10 - _this.chunkX][i11 - _this.chunkZ] = await world1.getChunkFromChunkCoords(i10, i11);
 			}
 		}
 
 	}
 
-	public getBlockId(i1: int, i2: int, i3: int):  int {
+	public async getBlockId(i1: int, i2: int, i3: int):  Promise<int> {
 		if(i2 < 0) {
 			return 0;
 		} else if(i2 >= 128) {
@@ -50,20 +53,20 @@ export  class ChunkCache implements IBlockAccess {
 	// 	return this.chunkArray[i4][i5].getChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
 	// }
 
-	public getLightBrightness(i1: int, i2: int, i3: int):  float {
-		return this.worldObj.worldProvider.lightBrightnessTable[this.func_4086_d(i1, i2, i3)];
+	public async getLightBrightness(i1: int, i2: int, i3: int):  Promise<float> {
+		return this.worldObj.worldProvider.lightBrightnessTable[await this.func_4086_d(i1, i2, i3)];
 	}
 
-	public func_4086_d(i1: int, i2: int, i3: int):  int {
+	public async func_4086_d(i1: int, i2: int, i3: int):  Promise<int> {
 		return this.func_716_a(i1, i2, i3, true);
 	}
 
-	public func_716_a(i1: int, i2: int, i3: int, z4: boolean):  int {
+	public async func_716_a(i1: int, i2: int, i3: int, z4: boolean):  Promise<int> {
 		if(i1 >= -32000000 && i3 >= -32000000 && i1 < 32000000 && i3 <= 32000000) {
 			let  i5: int;
 			let  i6: int;
 			if(z4) {
-				i5 = this.getBlockId(i1, i2, i3);
+				i5 = await this.getBlockId(i1, i2, i3);
 				// if(i5 === EnumSkyBlock.Block.stairSingle.blockID || i5 === EnumSkyBlock.Block.tilledField.blockID) {
 				// 	i6 = this.func_716_a(i1, i2 + 1, i3, false);
 				// 	let  i7: int = this.func_716_a(i1 + 1, i2, i3, false);
@@ -109,7 +112,7 @@ export  class ChunkCache implements IBlockAccess {
 		}
 	}
 
-	public getBlockMetadata(i1: int, i2: int, i3: int):  int {
+	public async getBlockMetadata(i1: int, i2: int, i3: int): Promise<int> {
 		if(i2 < 0) {
 			return 0;
 		} else if(i2 >= 128) {
@@ -121,13 +124,13 @@ export  class ChunkCache implements IBlockAccess {
 		}
 	}
 
-	public getBlockMaterial(i1: int, i2: int, i3: int):  Material {
-		let  i4: int = this.getBlockId(i1, i2, i3);
-		return i4 === 0 ? Material.air : Block.blocksList[i4].blockMaterial;
+	public async getBlockMaterial(i1: int, i2: int, i3: int):  Promise<Material> {
+		let  i4: int = await this.getBlockId(i1, i2, i3);
+		return i4 === 0 ? MaterialRegistry.air : Block.blocksList[i4].blockMaterial;
 	}
 
-	public isBlockOpaqueCube(i1: int, i2: int, i3: int):  boolean {
-		let  block4: Block = Block.blocksList[this.getBlockId(i1, i2, i3)];
+	public async isBlockOpaqueCube(i1: int, i2: int, i3: int):  Promise<boolean> {
+		let  block4: Block = Block.blocksList[await this.getBlockId(i1, i2, i3)];
 		return block4 === null ? false : block4.isOpaqueCube();
 	}
 

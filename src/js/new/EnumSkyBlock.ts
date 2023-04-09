@@ -1,5 +1,5 @@
 
-import { java, S } from "jree";
+import { java, S } from "../jree/index";
 
 export class EnumSkyBlock extends java.lang.Enum<EnumSkyBlock> {
     public static readonly Sky: EnumSkyBlock = new class extends EnumSkyBlock {}(15,S`Sky`, 0);

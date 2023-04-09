@@ -1,8 +1,8 @@
-
-
-
-import { java, S } from "jree";
 import { Random } from "../java/util/Random";
+import { IllegalArgumentException } from "../jree/java/lang/IllegalArgumentException";
+import { JavaMath } from "../jree/java/lang/Math";
+import { S } from "../jree/templates";
+
 
 export class NoiseGenerator2 {
 	private static field_4296_d:  number[][] = ([[1, 1, 0], [-1, 1, 0], [1, -1, 0], [-1, -1, 0], [1, 0, 1], [-1, 0, 1], [1, 0, -1], [-1, 0, -1], [0, 1, 1], [0, -1, 1], [0, 1, -1], [0, -1, -1]]);
@@ -10,8 +10,8 @@ export class NoiseGenerator2 {
 	public field_4292_a:  number;
 	public field_4291_b:  number;
 	public field_4297_c:  number;
-	private static readonly field_4294_f:  number = 0.5 * (java.lang.Math.sqrt(3.0) - 1.0);
-	private static readonly field_4293_g:  number = (3.0 - java.lang.Math.sqrt(3.0)) / 6.0;
+	private static readonly field_4294_f:  number = 0.5 * (JavaMath.sqrt(3.0) - 1.0);
+	private static readonly field_4293_g:  number = (3.0 - JavaMath.sqrt(3.0)) / 6.0;
 
 	public constructor();
 
@@ -45,7 +45,7 @@ export class NoiseGenerator2 {
 			}
 
 			default: {
-				throw new java.lang.IllegalArgumentException(S`Invalid number of arguments`);
+				throw new IllegalArgumentException(S`Invalid number of arguments`);
 			}
 		}
 	}

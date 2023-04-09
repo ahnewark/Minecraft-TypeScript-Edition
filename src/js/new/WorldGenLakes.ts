@@ -4,6 +4,7 @@ import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Random } from "../java/util/Random";
 import { Block } from "./Block";
+import { BlockRegistry, MaterialRegistry } from "./index";
 
 export  class WorldGenLakes extends WorldGenerator {
 	private field_15235_a:  number;
@@ -13,7 +14,7 @@ export  class WorldGenLakes extends WorldGenerator {
 		this.field_15235_a = i1;
 	}
 
-	public generate(world1: World, random2: Random, i3: number, i4: number, i5: number):  boolean {
+	public async generate(world1: World, random2: Random, i3: number, i4: number, i5: number):  Promise<boolean> {
 		i3 -= 8;
 
 		for(i5 -= 8; i4 > 0 && world1.isAirBlock(i3, i4, i5); --i4) {
@@ -55,12 +56,12 @@ export  class WorldGenLakes extends WorldGenerator {
 				for(i10 = 0; i10 < 8; ++i10) {
 					z33 = !z6[(i8 * 16 + i32) * 8 + i10] && (i8 < 15 && z6[((i8 + 1) * 16 + i32) * 8 + i10] || i8 > 0 && z6[((i8 - 1) * 16 + i32) * 8 + i10] || i32 < 15 && z6[(i8 * 16 + i32 + 1) * 8 + i10] || i32 > 0 && z6[(i8 * 16 + (i32 - 1)) * 8 + i10] || i10 < 7 && z6[(i8 * 16 + i32) * 8 + i10 + 1] || i10 > 0 && z6[(i8 * 16 + i32) * 8 + (i10 - 1)]);
 					if(z33) {
-						let  material12: Material = world1.getBlockMaterial(i3 + i8, i4 + i10, i5 + i32);
+						let  material12: Material = await world1.getBlockMaterial(i3 + i8, i4 + i10, i5 + i32);
 						if(i10 >= 4 && material12.getIsLiquid()) {
 							return false;
 						}
 
-						if(i10 < 4 && !material12.isSolid() && world1.getBlockId(i3 + i8, i4 + i10, i5 + i32) !== this.field_15235_a) {
+						if(i10 < 4 && !material12.isSolid() && await world1.getBlockId(i3 + i8, i4 + i10, i5 + i32) !== this.field_15235_a) {
 							return false;
 						}
 					}
@@ -83,19 +84,19 @@ export  class WorldGenLakes extends WorldGenerator {
 				for(i10 = 4; i10 < 8; ++i10) {
 					if(z6[(i8 * 16 + i32) * 8 + i10] && world1.getBlockId(i3 + i8, i4 + i10 - 1, i5 + i32) === Block.dirt.blockID && world1.getSavedLightValue(EnumSkyBlock.Sky, i3 + i8, i4 + i10, i5 + i32) > 0) {
 						// TODO: This should be grass
-						world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, Block.dirt.blockID);
+						await world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, BlockRegistry.dirt.blockID);
 					}
 				}
 			}
 		}
 
-		if(Block.blocksList[this.field_15235_a].blockMaterial === Material.lava) {
+		if(Block.blocksList[this.field_15235_a].blockMaterial === MaterialRegistry.lava) {
 			for(i8 = 0; i8 < 16; ++i8) {
 				for(i32 = 0; i32 < 16; ++i32) {
 					for(i10 = 0; i10 < 8; ++i10) {
 						z33 = !z6[(i8 * 16 + i32) * 8 + i10] && (i8 < 15 && z6[((i8 + 1) * 16 + i32) * 8 + i10] || i8 > 0 && z6[((i8 - 1) * 16 + i32) * 8 + i10] || i32 < 15 && z6[(i8 * 16 + i32 + 1) * 8 + i10] || i32 > 0 && z6[(i8 * 16 + (i32 - 1)) * 8 + i10] || i10 < 7 && z6[(i8 * 16 + i32) * 8 + i10 + 1] || i10 > 0 && z6[(i8 * 16 + i32) * 8 + (i10 - 1)]);
 						if(z33 && (i10 < 4 || random2.nextInt(2) !== 0) && world1.getBlockMaterial(i3 + i8, i4 + i10, i5 + i32).isSolid()) {
-							world1.setBlock(i3 + i8, i4 + i10, i5 + i32, Block.stone.blockID);
+							await world1.setBlock(i3 + i8, i4 + i10, i5 + i32, BlockRegistry.stone.blockID);
 						}
 					}
 				}

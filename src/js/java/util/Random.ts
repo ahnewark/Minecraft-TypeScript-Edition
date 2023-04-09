@@ -1,9 +1,9 @@
-import { double, long } from "jree/lib";
-import { IllegalArgumentException } from "jree/lib/java/lang";
+import { double, long } from "../../jree/index";
+import { IllegalArgumentException } from "../../jree/java/lang/IllegalArgumentException";
 
 export class Random {
     
-    private static multiplier: long = BigInt(0x5deece66d);
+    private static multiplier: long = 0x5deece66dn;
 
     private haveNextNextGaussian: boolean;
  
@@ -33,7 +33,7 @@ export class Random {
                 break;
             }
             default: {
-                throw new IllegalArgumentException();
+                throw new Error('Illegal Argument');
             }
         }
     }
@@ -131,7 +131,7 @@ export class Random {
     }
 
     private internalSetSeed(seed: long): void {
-        this.seed = (this.seed ^ Random.multiplier) & BigInt(((1 << 48) - 1));
+        this.seed = (seed ^ Random.multiplier) & BigInt(((1 << 48) - 1));
         this.haveNextNextGaussian = false;
     }
 }
