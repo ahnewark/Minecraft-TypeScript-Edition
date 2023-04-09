@@ -1,7 +1,7 @@
 
 
 
-import { JavaObject, java, long, int, float, double, byte, S } from "jree";
+import { java, long, int, float, double, byte, S } from "jree";
 // import { WorldProviderHell } from "./WorldProviderHell";
 import { WorldProvider } from "./WorldProvider";
 import { WorldChunkManager } from "./WorldChunkManager";
@@ -43,12 +43,12 @@ import { DataInputStream } from "../java/io/DataInputStream";
 
 
 
-export  class World extends JavaObject implements IBlockAccess {
+export  class World implements IBlockAccess {
 	public scheduledUpdatesAreImmediate:  boolean;
 	private field_1051_z:  MetadataChunkBlock[];
 	public loadedEntityList:  [];
 	private unloadedEntityList:  [];
-	private scheduledTickTreeSet:  [];
+	private scheduledTickTreeSet:  Set<NextTickListEntry>;
 	private scheduledTickSet:  Set<any>;
 	public loadedTileEntityList:  [];
 	public playerEntities:  [];
@@ -136,144 +136,119 @@ export  class World extends JavaObject implements IBlockAccess {
 	}
 
 	public constructor(file1: SaveFile, string2: string);
-
-	public constructor(world1: World| null, worldProvider2: WorldProvider);
-
+	public constructor(world1: World, worldProvider2: WorldProvider);
 	public constructor(string1: string, worldProvider2: WorldProvider, j3: long);
-
 	public constructor(file1: SaveFile, string2: string, j3: long);
-
-	public constructor(file1: SaveFile, string2: string, j3: long, worldProvider5: WorldProvider| null);
+	public constructor(file1: SaveFile, string2: string, j3: long, worldProvider5: WorldProvider | null);
     public constructor(...args: unknown[]) {
 		switch (args.length) {
 			case 2: {
-				const [file1, string2] = args as [java.io.File, java.lang.String];
-
-
-		this(file1, string2, (new  Random()).nextLong());
-	
-
-				break;
-			}
-
-			case 2: {
-				const [world1, worldProvider2] = args as [World, WorldProvider];
-
-
-		super();
-		this.scheduledUpdatesAreImmediate = false;
-		this.field_1051_z = [];
-		this.loadedEntityList = [];
-		this.unloadedEntityList = [];
-		this.scheduledTickTreeSet = new  java.util.TreeSet();
-		this.scheduledTickSet = new Set();
-		this.loadedTileEntityList = [];
-		this.playerEntities = [];
-		this.worldTime = 0n;
-		this.field_1019_F = 16777215n;
-		this.skylightSubtracted = 0;
-		this.field_9437_g = (new Random()).nextInt();
-		this.field_9436_h = 1013904223;
-		this.field_1043_h = false;
-		this.lockTimestamp = java.lang.System.currentTimeMillis();
-		this.autosavePeriod = 40;
-		this.rand = new  Random();
-		this.field_1033_r = false;
-		this.worldAccesses = [];
-		this.randomSeed = 0n;
-		this.sizeOnDisk = 0n;
-		this.field_9428_I = [];
-		this.field_4204_J = 0;
-		this.field_21121_K = true;
-		this.field_21120_L = true;
-		this.field_9427_K = new  Set();
-		this.field_9426_L = this.rand.nextInt(12000);
-		this.field_1012_M = [];
-		this.multiplayerWorld = false;
-		this.lockTimestamp = world1.lockTimestamp;
-		this.worldFile = world1.worldFile;
-		this.savePath = world1.savePath;
-		this.field_9431_w = world1.field_9431_w;
-		this.randomSeed = world1.randomSeed;
-		this.worldTime = world1.worldTime;
-		this.spawnX = world1.spawnX;
-		this.spawnY = world1.spawnY;
-		this.spawnZ = world1.spawnZ;
-		this.sizeOnDisk = world1.sizeOnDisk;
-		this.worldProvider = worldProvider2;
-		worldProvider2.registerWorld(this);
-		this.chunkProvider = this.getChunkProvider(this.savePath);
-		this.calculateInitialSkylight();
-	
-
-				break;
+				if (args[0] instanceof SaveFile) {
+					const [file1, string2] = args as [SaveFile, java.lang.String];
+					// Set to 3 args and fall through to case 3.
+					args = [file1, string2, (new  Random()).nextLong()]
+				} else {
+					const [world1, worldProvider2] = args as [World, WorldProvider];
+					this.scheduledUpdatesAreImmediate = false;
+					this.field_1051_z = [];
+					this.loadedEntityList = [];
+					this.unloadedEntityList = [];
+					this.scheduledTickTreeSet = new Set();
+					this.scheduledTickSet = new Set();
+					this.loadedTileEntityList = [];
+					this.playerEntities = [];
+					this.worldTime = 0n;
+					this.field_1019_F = 16777215n;
+					this.skylightSubtracted = 0;
+					this.field_9437_g = (new Random()).nextInt();
+					this.field_9436_h = 1013904223;
+					this.field_1043_h = false;
+					this.lockTimestamp = java.lang.System.currentTimeMillis();
+					this.autosavePeriod = 40;
+					this.rand = new  Random();
+					this.field_1033_r = false;
+					this.worldAccesses = [];
+					this.randomSeed = 0n;
+					this.sizeOnDisk = 0n;
+					this.field_9428_I = [];
+					this.field_4204_J = 0;
+					this.field_21121_K = true;
+					this.field_21120_L = true;
+					this.field_9427_K = new  Set();
+					this.field_9426_L = this.rand.nextInt(12000);
+					this.field_1012_M = [];
+					this.multiplayerWorld = false;
+					this.lockTimestamp = world1.lockTimestamp;
+					this.worldFile = world1.worldFile;
+					this.savePath = world1.savePath;
+					this.field_9431_w = world1.field_9431_w;
+					this.randomSeed = world1.randomSeed;
+					this.worldTime = world1.worldTime;
+					this.spawnX = world1.spawnX;
+					this.spawnY = world1.spawnY;
+					this.spawnZ = world1.spawnZ;
+					this.sizeOnDisk = world1.sizeOnDisk;
+					this.worldProvider = worldProvider2;
+					worldProvider2.registerWorld(this);
+					this.chunkProvider = this.getChunkProvider(this.savePath);
+					this.calculateInitialSkylight();
+					break;
+				}
 			}
 
 			case 3: {
-				const [string1, worldProvider2, j3] = args as [string, WorldProvider, long];
-
-
-		super();
-this.scheduledUpdatesAreImmediate = false;
-		this.field_1051_z = [];
-		this.loadedEntityList = [];
-		this.unloadedEntityList = [];
-		this.scheduledTickTreeSet = new  java.util.TreeSet();
-		this.scheduledTickSet = new Set();
-		this.loadedTileEntityList = [];
-		this.playerEntities = [];
-		this.worldTime = 0n;
-		this.field_1019_F = 16777215n;
-		this.skylightSubtracted = 0;
-		this.field_9437_g = (new Random()).nextInt();
-		this.field_9436_h = 1013904223;
-		this.field_1043_h = false;
-		this.lockTimestamp = java.lang.System.currentTimeMillis();
-		this.autosavePeriod = 40;
-		this.rand = new Random();
-		this.field_1033_r = false;
-		this.worldAccesses = [];
-		this.randomSeed = 0n;
-		this.sizeOnDisk = 0n;
-		this.field_9428_I = [];
-		this.field_4204_J = 0;
-		this.field_21121_K = true;
-		this.field_21120_L = true;
-		this.field_9427_K = new Set();
-		this.field_9426_L = this.rand.nextInt(12000);
-		this.field_1012_M = [];
-		this.multiplayerWorld = false;
-		this.field_9431_w = string1;
-		this.randomSeed = j3;
-		this.worldProvider = worldProvider2;
-		worldProvider2.registerWorld(this);
-		this.chunkProvider = this.getChunkProvider(this.savePath);
-		this.calculateInitialSkylight();
-	
-
-				break;
-			}
-
-			case 3: {
-				const [file1, string2, j3] = args as [java.io.File, java.lang.String, long];
-
-
-				this(file1, string2, j3, null as WorldProvider);
-	
-
-				break;
+				if (args[0] instanceof SaveFile) {
+					const [file1, string2, j3] = args as [SaveFile, string, long];
+					// set to 4 args and fall though to case 4.
+					args = [file1, string2, j3, null]
+				} else  {
+					const [string1, worldProvider2, j3] = args as [string, WorldProvider, long];
+					this.scheduledUpdatesAreImmediate = false;
+					this.field_1051_z = [];
+					this.loadedEntityList = [];
+					this.unloadedEntityList = [];
+					this.scheduledTickTreeSet = new Set();
+					this.scheduledTickSet = new Set();
+					this.loadedTileEntityList = [];
+					this.playerEntities = [];
+					this.worldTime = 0n;
+					this.field_1019_F = 16777215n;
+					this.skylightSubtracted = 0;
+					this.field_9437_g = (new Random()).nextInt();
+					this.field_9436_h = 1013904223;
+					this.field_1043_h = false;
+					this.lockTimestamp = java.lang.System.currentTimeMillis();
+					this.autosavePeriod = 40;
+					this.rand = new Random();
+					this.field_1033_r = false;
+					this.worldAccesses = [];
+					this.randomSeed = 0n;
+					this.sizeOnDisk = 0n;
+					this.field_9428_I = [];
+					this.field_4204_J = 0;
+					this.field_21121_K = true;
+					this.field_21120_L = true;
+					this.field_9427_K = new Set();
+					this.field_9426_L = this.rand.nextInt(12000);
+					this.field_1012_M = [];
+					this.multiplayerWorld = false;
+					this.field_9431_w = string1;
+					this.randomSeed = j3;
+					this.worldProvider = worldProvider2;
+					worldProvider2.registerWorld(this);
+					this.chunkProvider = this.getChunkProvider(this.savePath);
+					this.calculateInitialSkylight();
+					break;
+				}
 			}
 
 			case 4: {
-				const [file1, string2, j3, worldProvider5] = args as [SaveFile, string, long, WorldProvider];
-
-
-				super();
+				const [file1, string2, j3, worldProvider5] = args as [SaveFile, string, long, WorldProvider | null];
 				this.scheduledUpdatesAreImmediate = false;
 				this.field_1051_z = [];
 				this.loadedEntityList = [];
 				this.unloadedEntityList = [];
-				this.scheduledTickTreeSet = new  java.util.TreeSet();
+				this.scheduledTickTreeSet = new Set();
 				this.scheduledTickSet = new Set();
 				this.loadedTileEntityList = [];
 				this.playerEntities = [];
@@ -1791,27 +1766,25 @@ this.scheduledUpdatesAreImmediate = false;
 		let  i4: int;
 		let  i6: int;
 		let  i7: int;
-		for(let  i1: int = 0; i1 < this.playerEntities.size(); ++i1) {
-			let  entityPlayer2: EntityPlayer = this.playerEntities.get(i1) as EntityPlayer;
-			i3 = MathHelper.floor_double(entityPlayer2.posX / 16.0);
-			i4 = MathHelper.floor_double(entityPlayer2.posZ / 16.0);
-			let  b5: byte = 9;
+		// for(let  i1: int = 0; i1 < this.playerEntities.size(); ++i1) {
+		// 	let  entityPlayer2: EntityPlayer = this.playerEntities.get(i1) as EntityPlayer;
+		// 	i3 = MathHelper.floor_double(entityPlayer2.posX / 16.0);
+		// 	i4 = MathHelper.floor_double(entityPlayer2.posZ / 16.0);
+		// 	let  b5: byte = 9;
 
-			for(i6 = -b5; i6 <= b5; ++i6) {
-				for(i7 = -b5; i7 <= b5; ++i7) {
-					this.field_9427_K.add(new  ChunkCoordIntPair(i6 + i3, i7 + i4));
-				}
-			}
-		}
+		// 	for(i6 = -b5; i6 <= b5; ++i6) {
+		// 		for(i7 = -b5; i7 <= b5; ++i7) {
+		// 			this.field_9427_K.add(new  ChunkCoordIntPair(i6 + i3, i7 + i4));
+		// 		}
+		// 	}
+		// }
 
 		if(this.field_9426_L > 0) {
 			--this.field_9426_L;
 		}
 
-		let  iterator12: java.util.Iterator = this.field_9427_K.iterator();
-
-		while(iterator12.hasNext()) {
-			let  chunkCoordIntPair13: ChunkCoordIntPair = iterator12.next() as ChunkCoordIntPair;
+		this.field_9427_K.forEach(chunkCoordIntPair => {
+			let  chunkCoordIntPair13: ChunkCoordIntPair = chunkCoordIntPair;
 			i3 = chunkCoordIntPair13.chunkXPos * 16;
 			i4 = chunkCoordIntPair13.chunkZPos * 16;
 			let  chunk14: Chunk = this.getChunkFromChunkCoords(chunkCoordIntPair13.chunkXPos, chunkCoordIntPair13.chunkZPos);
@@ -1827,13 +1800,13 @@ this.scheduledUpdatesAreImmediate = false;
 				i10 = chunk14.getBlockID(i7, i9, i8);
 				i7 += i3;
 				i8 += i4;
-				if(i10 === 0 && this.getBlockLightValue(i7, i9, i8) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, i7, i9, i8) <= 0) {
-					let  entityPlayer11: EntityPlayer = this.getClosestPlayer(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, 8.0);
-					if(entityPlayer11 !== null && entityPlayer11.getDistanceSq(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5) > 4.0) {
-						this.playSoundEffect(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, "ambient.cave.cave", 0.7, 0.8 + this.rand.nextFloat() * 0.2);
-						this.field_9426_L = this.rand.nextInt(12000) + 6000;
-					}
-				}
+				// if(i10 === 0 && this.getBlockLightValue(i7, i9, i8) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, i7, i9, i8) <= 0) {
+				// 	let  entityPlayer11: EntityPlayer = this.getClosestPlayer(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, 8.0);
+				// 	if(entityPlayer11 !== null && entityPlayer11.getDistanceSq(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5) > 4.0) {
+				// 		this.playSoundEffect(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, "ambient.cave.cave", 0.7, 0.8 + this.rand.nextFloat() * 0.2);
+				// 		this.field_9426_L = this.rand.nextInt(12000) + 6000;
+				// 	}
+				// }
 			}
 
 			for(i6 = 0; i6 < 80; ++i6) {
@@ -1847,8 +1820,7 @@ this.scheduledUpdatesAreImmediate = false;
 					Block.blocksList[b15].updateTick(this, i8 + i3, i10, i9 + i4, this.rand);
 				}
 			}
-		}
-
+		})
 	}
 
 	public TickUpdates(z1: boolean):  boolean {
@@ -1861,13 +1833,13 @@ this.scheduledUpdatesAreImmediate = false;
 			}
 
 			for(let  i3: int = 0; i3 < i2; ++i3) {
-				let  nextTickListEntry4: NextTickListEntry = this.scheduledTickTreeSet.first() as NextTickListEntry;
+				let  nextTickListEntry4: NextTickListEntry = this.scheduledTickTreeSet.entries[0] as NextTickListEntry;
 				if(!z1 && nextTickListEntry4.scheduledTime > this.worldTime) {
 					break;
 				}
 
-				this.scheduledTickTreeSet.remove(nextTickListEntry4);
-				this.scheduledTickSet.remove(nextTickListEntry4);
+				this.scheduledTickTreeSet.delete(nextTickListEntry4);
+				this.scheduledTickSet.delete(nextTickListEntry4);
 				let  b5: byte = 8;
 				if(this.checkChunksExist(nextTickListEntry4.xCoord - b5, nextTickListEntry4.yCoord - b5, nextTickListEntry4.zCoord - b5, nextTickListEntry4.xCoord + b5, nextTickListEntry4.yCoord + b5, nextTickListEntry4.zCoord + b5)) {
 					let  i6: int = this.getBlockId(nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord);
@@ -1877,7 +1849,7 @@ this.scheduledUpdatesAreImmediate = false;
 				}
 			}
 
-			return this.scheduledTickTreeSet.length !== 0;
+			return this.scheduledTickTreeSet.size !== 0;
 		}
 	}
 
