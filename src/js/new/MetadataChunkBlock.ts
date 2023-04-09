@@ -28,7 +28,7 @@ export  class MetadataChunkBlock extends JavaObject {
 		this.field_1300_g = i7;
 	}
 
-	public func_4127_a(world1: World| null):  void {
+	public async func_4127_a(world1: World| null):  Promise<void> {
 		let  i2: int = this.field_1302_e - this.field_1298_b + 1;
 		let  i3: int = this.field_1301_f - this.field_1304_c + 1;
 		let  i4: int = this.field_1300_g - this.field_1303_d + 1;
@@ -51,7 +51,7 @@ export  class MetadataChunkBlock extends JavaObject {
 					} else {
 						z14 = world1.doChunksNearChunkExist(i10, 0, i11, 1);
 						if(z14) {
-							let  chunk15: Chunk = world1.getChunkFromChunkCoords(i10 >> 4, i11 >> 4);
+							let  chunk15: Chunk = await world1.getChunkFromChunkCoords(i10 >> 4, i11 >> 4);
 							if(chunk15.func_21167_h()) {
 								z14 = false;
 							}
@@ -72,9 +72,9 @@ export  class MetadataChunkBlock extends JavaObject {
 						}
 
 						for(let  i27: int = this.field_1304_c; i27 <= this.field_1301_f; ++i27) {
-							let  i16: int = world1.getSavedLightValue(this.field_1299_a, i10, i27, i11);
+							let  i16: int = await world1.getSavedLightValue(this.field_1299_a, i10, i27, i11);
 							let  z17: boolean = false;
-							let  i18: int = world1.getBlockId(i10, i27, i11);
+							let  i18: int = await world1.getBlockId(i10, i27, i11);
 							let  i19: int = Block.lightOpacity[i18];
 							if(i19 === 0) {
 								i19 = 1;
@@ -94,12 +94,12 @@ export  class MetadataChunkBlock extends JavaObject {
 							if(i19 >= 15 && i20 === 0) {
 								i28 = 0;
 							} else {
-								i21 = world1.getSavedLightValue(this.field_1299_a, i10 - 1, i27, i11);
-								let  i22: int = world1.getSavedLightValue(this.field_1299_a, i10 + 1, i27, i11);
-								let  i23: int = world1.getSavedLightValue(this.field_1299_a, i10, i27 - 1, i11);
-								let  i24: int = world1.getSavedLightValue(this.field_1299_a, i10, i27 + 1, i11);
-								let  i25: int = world1.getSavedLightValue(this.field_1299_a, i10, i27, i11 - 1);
-								let  i26: int = world1.getSavedLightValue(this.field_1299_a, i10, i27, i11 + 1);
+								i21 = await world1.getSavedLightValue(this.field_1299_a, i10 - 1, i27, i11);
+								let  i22: int = await world1.getSavedLightValue(this.field_1299_a, i10 + 1, i27, i11);
+								let  i23: int = await world1.getSavedLightValue(this.field_1299_a, i10, i27 - 1, i11);
+								let  i24: int = await world1.getSavedLightValue(this.field_1299_a, i10, i27 + 1, i11);
+								let  i25: int = await world1.getSavedLightValue(this.field_1299_a, i10, i27, i11 - 1);
+								let  i26: int = await world1.getSavedLightValue(this.field_1299_a, i10, i27, i11 + 1);
 								i28 = i21;
 								if(i22 > i21) {
 									i28 = i22;

@@ -11,8 +11,8 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         super(_in);
     }
 
-    private bytearr = new Int8Array[80];
-    private chararr = new Int16Array[80];
+    private bytearr = new Int8Array(80);
+    private chararr = new Int16Array(80);
 
     public read(): int;
     public read(b: Int8Array): int;

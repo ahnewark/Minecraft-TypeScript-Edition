@@ -15,7 +15,7 @@ export interface SeekableByteChannel extends ByteChannel {
     position(newPosition: bigint): SeekableByteChannel;
 
     /** Reads a sequence of bytes from this channel into the given buffer. */
-    read(dst: ByteBuffer): number;
+    read(dst: ByteBuffer): Promise<number>;
 
     /** Returns the current size of entity to which this channel is connected. */
     size(): bigint;

@@ -35,7 +35,7 @@ import { NonWritableChannelException } from "./NonWritableChannelException";
 import { NonReadableChannelException } from "./NonReadableChannelException";
 import { IOException } from "../../io/IOException";
 import { Throwable } from "../../lang/Throwable";
-import { openAsync } from "../../../../node/fs";
+import { openAsync, readAsync } from "../../../../node/fs";
 
 /** A channel for reading, writing, mapping, and manipulating a file. */
 export abstract class FileChannel extends AbstractInterruptibleChannel implements SeekableByteChannel,
@@ -274,10 +274,10 @@ export class FileChannelImpl extends FileChannel {
         }
     }
 
-    public override read(dst: ByteBuffer): int;
-    public override read(dst: ByteBuffer[]): long;
-    public override read(dst: ByteBuffer[], offset: int, length: int): long;
-    public override read(...args: unknown[]): long | int {
+    public override async read(dst: ByteBuffer): Promise<int>;
+    public override async read(dst: ByteBuffer[]): Promise<long>;
+    public override async read(dst: ByteBuffer[], offset: int, length: int): Promise<long>;
+    public override async read(...args: unknown[]): Promise<long | int> {
         let currentBuffer = 0;
         let end: int;
         let targets: ByteBuffer[];
@@ -320,7 +320,7 @@ export class FileChannelImpl extends FileChannel {
                 continue;
             }
 
-            const bytesRead = this.readBytes(target, remaining);
+            const bytesRead = await this.readBytes(target, remaining);
             if (bytesRead === 0n) {
                 break;
             }
@@ -479,7 +479,7 @@ export class FileChannelImpl extends FileChannel {
     }
 
     protected implCloseChannel(): void {
-        console.error('FileChannel.implCloseChannel is not yet implemented.')
+        //console.error('FileChannel.implCloseChannel is not yet implemented.')
 
         // closeSync(this.#fileHandle);
         this.#fileHandle = -1;
@@ -500,7 +500,7 @@ export class FileChannelImpl extends FileChannel {
      */
     private async open(path: string, flags: any, mode: any): Promise<void> {
         try {
-            this.#fileHandle = openAsync(path, flags, mode);
+            this.#fileHandle = await openAsync(path, flags, mode);
         } catch (reason) {
             throw new IOException(new JavaString("Cannot open file"), Throwable.fromError(reason));
         }
@@ -514,17 +514,14 @@ export class FileChannelImpl extends FileChannel {
      *
      * @returns The int of bytes read.
      */
-    private readBytes(target: ByteBuffer, remaining: int): long {
-        console.error('FileChannel.readBytes is not yet implemented.')
-        return BigInt(0);
+    private async readBytes(target: ByteBuffer, remaining: int): Promise<long> {
+        const buffer = target.array();
+        const bytesRead = await readAsync(this.#fileHandle, buffer, 0, Math.min(buffer.length, remaining),
+            this.#currentPosition);
+        this.#currentPosition += BigInt(bytesRead);
+        target.position(target.position() + bytesRead);
 
-        // const buffer = target.array();
-        // const bytesRead = readSync(this.#fileHandle, buffer, 0, Math.min(buffer.length, remaining),
-        //     this.#currentPosition);
-        // this.#currentPosition += BigInt(bytesRead);
-        // target.position(target.position() + bytesRead);
-
-        // return BigInt(bytesRead);
+        return BigInt(bytesRead);
     }
 
     /**

@@ -82,7 +82,7 @@ export  class WorldGenLakes extends WorldGenerator {
 		for(i8 = 0; i8 < 16; ++i8) {
 			for(i32 = 0; i32 < 16; ++i32) {
 				for(i10 = 4; i10 < 8; ++i10) {
-					if(z6[(i8 * 16 + i32) * 8 + i10] && world1.getBlockId(i3 + i8, i4 + i10 - 1, i5 + i32) === Block.dirt.blockID && world1.getSavedLightValue(EnumSkyBlock.Sky, i3 + i8, i4 + i10, i5 + i32) > 0) {
+					if(z6[(i8 * 16 + i32) * 8 + i10] && await world1.getBlockId(i3 + i8, i4 + i10 - 1, i5 + i32) === BlockRegistry.dirt.blockID && await world1.getSavedLightValue(EnumSkyBlock.Sky, i3 + i8, i4 + i10, i5 + i32) > 0) {
 						// TODO: This should be grass
 						await world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, BlockRegistry.dirt.blockID);
 					}
@@ -95,7 +95,7 @@ export  class WorldGenLakes extends WorldGenerator {
 				for(i32 = 0; i32 < 16; ++i32) {
 					for(i10 = 0; i10 < 8; ++i10) {
 						z33 = !z6[(i8 * 16 + i32) * 8 + i10] && (i8 < 15 && z6[((i8 + 1) * 16 + i32) * 8 + i10] || i8 > 0 && z6[((i8 - 1) * 16 + i32) * 8 + i10] || i32 < 15 && z6[(i8 * 16 + i32 + 1) * 8 + i10] || i32 > 0 && z6[(i8 * 16 + (i32 - 1)) * 8 + i10] || i10 < 7 && z6[(i8 * 16 + i32) * 8 + i10 + 1] || i10 > 0 && z6[(i8 * 16 + i32) * 8 + (i10 - 1)]);
-						if(z33 && (i10 < 4 || random2.nextInt(2) !== 0) && world1.getBlockMaterial(i3 + i8, i4 + i10, i5 + i32).isSolid()) {
+						if(z33 && (i10 < 4 || random2.nextInt(2) !== 0) && (await world1.getBlockMaterial(i3 + i8, i4 + i10, i5 + i32)).isSolid()) {
 							await world1.setBlock(i3 + i8, i4 + i10, i5 + i32, BlockRegistry.stone.blockID);
 						}
 					}

@@ -421,12 +421,12 @@ export  class World implements IBlockAccess {
 
 	public saveWorld(z1: boolean, iProgressUpdate2: IProgressUpdate | null):  void {
 		if(this.chunkProvider.func_536_b()) {
-			if(iProgressUpdate2 !== null) {
+			if(iProgressUpdate2) {
 				iProgressUpdate2.func_594_b("Saving level");
 			}
 
 			this.saveLevel();
-			if(iProgressUpdate2 !== null) {
+			if(iProgressUpdate2) {
 				iProgressUpdate2.displayLoadingString("Saving chunks");
 			}
 

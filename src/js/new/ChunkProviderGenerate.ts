@@ -350,7 +350,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = this.rand.nextInt(128);
 			i15 = i5 + this.rand.nextInt(16) + 8;
             // TODO, change to water
-			(new  WorldGenLakes(BlockRegistry.cloth.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
+			await (new  WorldGenLakes(BlockRegistry.cloth.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
 		}
 
 		if(this.rand.nextInt(8) === 0) {
@@ -359,7 +359,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i15 = i5 + this.rand.nextInt(16) + 8;
 			if(i14 < 64 || this.rand.nextInt(10) === 0) {
                 // TODO, change to lava
-				(new  WorldGenLakes(BlockRegistry.blockGold.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
+				await (new  WorldGenLakes(BlockRegistry.blockGold.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
 			}
 		}
 
@@ -382,14 +382,14 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(128);
 			i16 = i5 + this.rand.nextInt(16);
-			(new  WorldGenMinable(BlockRegistry.dirt.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(BlockRegistry.dirt.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 10; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(128);
 			i16 = i5 + this.rand.nextInt(16);
-			(new  WorldGenMinable(BlockRegistry.cobblestone.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(BlockRegistry.cobblestone.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 20; ++i13) {
@@ -404,14 +404,14 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(64);
 			i16 = i5 + this.rand.nextInt(16);
-			(new  WorldGenMinable(BlockRegistry.blockSteel.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(BlockRegistry.blockSteel.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 2; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(32);
 			i16 = i5 + this.rand.nextInt(16);
-			(new  WorldGenMinable(BlockRegistry.blockGold.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(BlockRegistry.blockGold.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 8; ++i13) {
@@ -432,7 +432,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(16) + this.rand.nextInt(16);
 			i16 = i5 + this.rand.nextInt(16);
-			(new  WorldGenMinable(BlockRegistry.blockLapis.blockID, 6)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(BlockRegistry.blockLapis.blockID, 6)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		d11 = 0.5;

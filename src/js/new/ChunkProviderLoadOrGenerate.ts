@@ -176,7 +176,7 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 		let  i4: int = 0;
 		let  i5: int;
 
-		if(iProgressUpdate2 !== null) {
+		if(iProgressUpdate2) {
 			for(i5 = 0; i5 < this.chunks.length; ++i5) {
 				if(this.chunks[i5] && this.chunks[i5]!.needsSaving(z1)) {
 					++i4;
@@ -200,7 +200,7 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 						return false;
 					}
 
-					if(iProgressUpdate2 !== null) {
+					if(iProgressUpdate2) {
 						++i5;
 						if(i5 % 10 === 0) {
 							iProgressUpdate2.setLoadingProgress(i5 * 100 / i4);

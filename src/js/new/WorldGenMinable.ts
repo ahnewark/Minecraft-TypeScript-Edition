@@ -19,7 +19,7 @@ export  class WorldGenMinable extends WorldGenerator {
 		this.numberOfBlocks = i2;
 	}
 
-	public generate(world1: World, random2: Random, i3: number, i4: number, i5: number):  boolean {
+	public async generate(world1: World, random2: Random, i3: number, i4: number, i5: number):  Promise<boolean> {
 		let  f6: number = random2.nextFloat() * java.lang.Math.PI as number;
 		let  d7: number = ((i3 + 8) as number + MathHelper.sin(f6) * this.numberOfBlocks as number / 8.0) as number;
 		let  d9: number = ((i3 + 8) as number - MathHelper.sin(f6) * this.numberOfBlocks as number / 8.0) as number;
@@ -50,7 +50,7 @@ export  class WorldGenMinable extends WorldGenerator {
 						if(d39 * d39 + d42 * d42 < 1.0) {
 							for(let  i44: number = i34; i44 <= i37; ++i44) {
 								let  d45: number = (i44 as number + 0.5 - d24) / (d28 / 2.0);
-								if(d39 * d39 + d42 * d42 + d45 * d45 < 1.0 && world1.getBlockId(i38, i41, i44) === BlockRegistry.stone.blockID) {
+								if(d39 * d39 + d42 * d42 + d45 * d45 < 1.0 && (await world1.getBlockId(i38, i41, i44)) === BlockRegistry.stone.blockID) {
 									world1.setBlock(i38, i41, i44, this.minableBlockId);
 								}
 							}

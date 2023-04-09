@@ -1,3 +1,5 @@
+import { ByteBuffer } from '../jree/java/nio/ByteBuffer';
+import { int } from '../jree/types';
 import posixPath from './path';
 
 export type FileSystemWritableFileStream = any;
@@ -95,7 +97,7 @@ const mkdirSync = (
     return res;
 }
 
-type OpenModes = 'as' | 'w';
+type OpenModes = 'as' | 'w' | 'r';
 
 const openAsync = async (path: string, openMode: OpenModes, unk1: number) => {
     console.log('Opening file ', path, openMode);
@@ -110,6 +112,8 @@ const openAsync = async (path: string, openMode: OpenModes, unk1: number) => {
             const writable = await (handle as any).createWritable();
             console.log('writable for ', path, writable);
             return writable;
+        case 'r':
+            return handle;
     }
 }
 
@@ -159,9 +163,27 @@ const writeAsync = async (fileHandle: FileSystemWritableFileStream, buffer: Int8
     // return res;
 }
 
+const readAsync = async (fileHandle: FileSystemFileHandle, buffer: Int8Array, offset: number, length: number, position: bigint): Promise<number> => {
+    console.error('readAsync is not yet implemented.');
+    console.log('Reading file', {fileHandle, buffer, position, length})
+    const file = await fileHandle.getFile();
+    //buffer(new Int8Array((await file.arrayBuffer()).slice(0, length)));
+    // let settled = false;
+    // let res;
+    // openAsync(path, openMode, unk1)
+    //     .then(data => res = data);
+
+    // while (!settled) {
+    //     // wait
+    // }
+
+    // return res;
+}
+
 export {
     mkdirAsync,
     openAsync,
     writeAsync,
     existsAsync,
+    readAsync,
 }

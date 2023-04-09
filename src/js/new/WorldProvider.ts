@@ -58,11 +58,11 @@ export  class WorldProvider extends JavaObject {
 	}
 
 	public async canCoordinateBeSpawn(i1: int, i2: int):  Promise<boolean> {
-		// return true;
-		let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
-		// // TODO: Fix
-		// // return i3 === Block.sand.blockID;
-		return i3 === BlockRegistry.stone.blockID;
+		return true;
+		// let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
+		// // // TODO: Fix
+		// // // return i3 === Block.sand.blockID;
+		// return i3 === BlockRegistry.stone.blockID;
 
 	}
 

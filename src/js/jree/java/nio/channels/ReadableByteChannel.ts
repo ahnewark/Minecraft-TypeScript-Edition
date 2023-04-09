@@ -8,5 +8,5 @@ import { Channel } from "./Channel";
 
 export interface ReadableByteChannel extends Channel {
     /** Reads a sequence of bytes from this channel into the given buffer. */
-    read(dst: ByteBuffer): number;
+    read(dst: ByteBuffer): Promise<number>;
 }
