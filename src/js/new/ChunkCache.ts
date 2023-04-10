@@ -1,8 +1,8 @@
 
-import { JavaObject, int, float } from "../jree/index";
+import { int, float } from "../jree/index";
 import { WorldChunkManager } from "./WorldChunkManager";
 import { World } from "./World";
-// import { TileEntity } from "./TileEntity";
+import { TileEntity } from "./TileEntity";
 import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { Chunk } from "./Chunk";
@@ -46,12 +46,11 @@ export  class ChunkCache implements IBlockAccess {
 		}
 	}
 
-	// TODO: Tile Entities
-	// public getBlockTileEntity(i1: int, i2: int, i3: int):  TileEntity | null {
-	// 	let  i4: int = (i1 >> 4) - this.chunkX;
-	// 	let  i5: int = (i3 >> 4) - this.chunkZ;
-	// 	return this.chunkArray[i4][i5].getChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
-	// }
+	public async getBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity> {
+		let  i4: int = (i1 >> 4) - this.chunkX;
+		let  i5: int = (i3 >> 4) - this.chunkZ;
+		return this.chunkArray[i4][i5].getChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
+	}
 
 	public async getLightBrightness(i1: int, i2: int, i3: int):  Promise<float> {
 		return this.worldObj.worldProvider.lightBrightnessTable[await this.func_4086_d(i1, i2, i3)];
@@ -65,33 +64,33 @@ export  class ChunkCache implements IBlockAccess {
 		if(i1 >= -32000000 && i3 >= -32000000 && i1 < 32000000 && i3 <= 32000000) {
 			let  i5: int;
 			let  i6: int;
-			if(z4) {
-				i5 = await this.getBlockId(i1, i2, i3);
-				// if(i5 === EnumSkyBlock.Block.stairSingle.blockID || i5 === EnumSkyBlock.Block.tilledField.blockID) {
-				// 	i6 = this.func_716_a(i1, i2 + 1, i3, false);
-				// 	let  i7: int = this.func_716_a(i1 + 1, i2, i3, false);
-				// 	let  i8: int = this.func_716_a(i1 - 1, i2, i3, false);
-				// 	let  i9: int = this.func_716_a(i1, i2, i3 + 1, false);
-				// 	let  i10: int = this.func_716_a(i1, i2, i3 - 1, false);
-				// 	if(i7 > i6) {
-				// 		i6 = i7;
-				// 	}
+			// if(z4) {
+			// 	i5 = await this.getBlockId(i1, i2, i3);
+			// 	if(i5 === Block.stairSingle.blockID || i5 === Block.tilledField.blockID) {
+			// 		i6 = this.func_716_a(i1, i2 + 1, i3, false);
+			// 		let  i7: int = this.func_716_a(i1 + 1, i2, i3, false);
+			// 		let  i8: int = this.func_716_a(i1 - 1, i2, i3, false);
+			// 		let  i9: int = this.func_716_a(i1, i2, i3 + 1, false);
+			// 		let  i10: int = this.func_716_a(i1, i2, i3 - 1, false);
+			// 		if(i7 > i6) {
+			// 			i6 = i7;
+			// 		}
 
-				// 	if(i8 > i6) {
-				// 		i6 = i8;
-				// 	}
+			// 		if(i8 > i6) {
+			// 			i6 = i8;
+			// 		}
 
-				// 	if(i9 > i6) {
-				// 		i6 = i9;
-				// 	}
+			// 		if(i9 > i6) {
+			// 			i6 = i9;
+			// 		}
 
-				// 	if(i10 > i6) {
-				// 		i6 = i10;
-				// 	}
+			// 		if(i10 > i6) {
+			// 			i6 = i10;
+			// 		}
 
-				// 	return i6;
-				// }
-			}
+			// 		return i6;
+			// 	}
+			// }
 
 			if(i2 < 0) {
 				return 0;

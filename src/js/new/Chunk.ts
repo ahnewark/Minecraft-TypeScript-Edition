@@ -5,16 +5,13 @@ import { java, long, S } from "../jree/index";
 import System from '../java/lang/System';
 import { World } from "./World";
 import { Block } from "./Block";
-// TODO: Tile Entities
-// import { TileEntity } from "./TileEntity";
+import { TileEntity } from "./TileEntity";
 import { NibbleArray } from "./NibbleArray";
 import { MathHelper } from "./MathHelper";
 import { EnumSkyBlock } from "./EnumSkyBlock";
-// TODO: Entities
-// import { Entity } from "./Entity";
+import { Entity } from "./Entity";
 import { ChunkPosition } from "./ChunkPosition";
-// TODO: Tile Entities
-// import { BlockContainer } from "./BlockContainer";
+import { BlockContainer } from "./BlockContainer";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
 
@@ -30,10 +27,8 @@ export class Chunk {
 	public field_1532_i:  number;
 	public readonly xPosition:  number;
 	public readonly zPosition:  number;
-    // TODO: Tile Entities
-	// public chunkTileEntityMap:  java.util.Map | null;
-    // TODO: Entities
-	// public entities:  java.util.List[] | null;
+	public chunkTileEntityMap: Map<ChunkPosition, TileEntity>;
+	public entities: Entity[][];
 	public isTerrainPopulated:  boolean;
 	public isModified:  boolean;
 	public neverSave:  boolean;
@@ -48,10 +43,8 @@ export class Chunk {
 			case 3: {
 				const [world1, i2, i3] = args as [World, number, number];
 
-                // TODO: Tile Entities
-                // this.chunkTileEntityMap = new  java.util.HashMap();
-                // TODO: Entities
-                // this.entities = new   Array<java.util.List>(8);
+                this.chunkTileEntityMap = new Map();
+                this.entities = new Array(8);
                 this.isTerrainPopulated = false;
                 this.isModified = false;
                 this.hasEntities = false;
@@ -61,18 +54,17 @@ export class Chunk {
                 this.zPosition = i3;
                 this.heightMap = new Int8Array(256);
 
-                // TODO: Entities
-                // for(let  i4: number = 0; i4 < this.entities.length; ++i4) {
-                //     this.entities[i4] = new  java.util.ArrayList();
-                // }
-
-	
+                for(let  i4: number = 0; i4 < this.entities.length; ++i4) {
+                    this.entities[i4] = [];
+                }
 
 				break;
 			}
 
 			case 4: {
 				const [world1, b2, i3, i4] = args as [World, Int8Array, number, number];
+
+                this.chunkTileEntityMap = new Map();
 
                 this.isTerrainPopulated = false;
                 this.isModified = false;
@@ -434,111 +426,111 @@ export class Chunk {
 		return i5;
 	}
 
-    // TODO: ENtities
-	// public addEntity(entity1: Entity| null):  void {
-	// 	this.hasEntities = true;
-	// 	let  i2: number = MathHelper.floor_double(entity1.posX / 16.0);
-	// 	let  i3: number = MathHelper.floor_double(entity1.posZ / 16.0);
-	// 	if(i2 !== this.xPosition || i3 !== this.zPosition) {
-	// 		java.lang.System.out.println("Wrong location! " + entity1);
-	// 		java.lang.Thread.dumpStack();
-	// 	}
+	public addEntity(entity1: Entity| null):  void {
+		this.hasEntities = true;
+		let  i2: number = MathHelper.floor_double(entity1.posX / 16.0);
+		let  i3: number = MathHelper.floor_double(entity1.posZ / 16.0);
+		if(i2 !== this.xPosition || i3 !== this.zPosition) {
+			console.log("Wrong location! " + entity1);
+			console.trace();
+		}
 
-	// 	let  i4: number = MathHelper.floor_double(entity1.posY / 16.0);
-	// 	if(i4 < 0) {
-	// 		i4 = 0;
-	// 	}
+		let  i4: number = MathHelper.floor_double(entity1.posY / 16.0);
+		if(i4 < 0) {
+			i4 = 0;
+		}
 
-	// 	if(i4 >= this.entities.length) {
-	// 		i4 = this.entities.length - 1;
-	// 	}
+		if(i4 >= this.entities.length) {
+			i4 = this.entities.length - 1;
+		}
 
-	// 	entity1.addedToChunk = true;
-	// 	entity1.chunkCoordX = this.xPosition;
-	// 	entity1.chunkCoordY = i4;
-	// 	entity1.chunkCoordZ = this.zPosition;
-	// 	this.entities[i4].add(entity1);
-	// }
+		entity1.addedToChunk = true;
+		entity1.chunkCoordX = this.xPosition;
+		entity1.chunkCoordY = i4;
+		entity1.chunkCoordZ = this.zPosition;
+		this.entities[i4].push(entity1);
+	}
 
-	// public func_1015_b(entity1: Entity| null):  void {
-	// 	this.func_1016_a(entity1, entity1.chunkCoordY);
-	// }
+	public func_1015_b(entity1: Entity| null):  void {
+		this.func_1016_a(entity1, entity1.chunkCoordY);
+	}
 
-	// public func_1016_a(entity1: Entity| null, i2: number):  void {
-	// 	if(i2 < 0) {
-	// 		i2 = 0;
-	// 	}
+	public func_1016_a(entity1: Entity| null, i2: number):  void {
+		if(i2 < 0) {
+			i2 = 0;
+		}
 
-	// 	if(i2 >= this.entities.length) {
-	// 		i2 = this.entities.length - 1;
-	// 	}
+		if(i2 >= this.entities.length) {
+			i2 = this.entities.length - 1;
+		}
 
-	// 	this.entities[i2].remove(entity1);
-	// }
+		this.entities[i2] = this.entities[i2].filter(entity => entity != entity1);
+	}
 
 	public canBlockSeeTheSky(i1: number, i2: number, i3: number):  boolean {
 		return i2 >= (this.heightMap[i3 << 4 | i1] & 255);
 	}
 
-    // TODO: Tile Entities
-	// public getChunkBlockTileEntity(i1: number, i2: number, i3: number):  TileEntity | null {
-	// 	let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
-	// 	let  tileEntity5: TileEntity = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
-	// 	if(tileEntity5 === null) {
-	// 		let  i6: number = this.getBlockID(i1, i2, i3);
-	// 		if(!EnumSkyBlock.Block.isBlockContainer[i6]) {
-	// 			return null;
-	// 		}
+	public getChunkBlockTileEntity(i1: number, i2: number, i3: number):  TileEntity | null {
+		let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
+		let  tileEntity5: TileEntity = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
+		if(tileEntity5 === null) {
+			let  i6: number = this.getBlockID(i1, i2, i3);
+			if(!Block.isBlockContainer[i6]) {
+				return null;
+			}
 
-	// 		let  blockContainer7: BlockContainer = EnumSkyBlock.Block.blocksList[i6] as BlockContainer;
-	// 		blockContainer7.onBlockAdded(this.worldObj, this.xPosition * 16 + i1, i2, this.zPosition * 16 + i3);
-	// 		tileEntity5 = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
-	// 	}
+			let  blockContainer7: BlockContainer = Block.blocksList[i6] as BlockContainer;
+			blockContainer7.onBlockAdded(this.worldObj, this.xPosition * 16 + i1, i2, this.zPosition * 16 + i3);
+			tileEntity5 = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
+		}
 
-	// 	return tileEntity5;
-	// }
+		return tileEntity5;
+	}
 
-	// public func_1001_a(tileEntity1: TileEntity| null):  void {
-	// 	let  i2: number = tileEntity1.xCoord - this.xPosition * 16;
-	// 	let  i3: number = tileEntity1.yCoord;
-	// 	let  i4: number = tileEntity1.zCoord - this.zPosition * 16;
-	// 	this.setChunkBlockTileEntity(i2, i3, i4, tileEntity1);
-	// }
+	public func_1001_a(tileEntity1: TileEntity| null):  void {
+		let  i2: number = tileEntity1.xCoord - this.xPosition * 16;
+		let  i3: number = tileEntity1.yCoord;
+		let  i4: number = tileEntity1.zCoord - this.zPosition * 16;
+		this.setChunkBlockTileEntity(i2, i3, i4, tileEntity1);
+	}
 
-	// public setChunkBlockTileEntity(i1: number, i2: number, i3: number, tileEntity4: TileEntity| null):  void {
-	// 	let  chunkPosition5: ChunkPosition = new  ChunkPosition(i1, i2, i3);
-	// 	tileEntity4.worldObj = this.worldObj;
-	// 	tileEntity4.xCoord = this.xPosition * 16 + i1;
-	// 	tileEntity4.yCoord = i2;
-	// 	tileEntity4.zCoord = this.zPosition * 16 + i3;
-	// 	if(this.getBlockID(i1, i2, i3) !== 0 && EnumSkyBlock.Block.blocksList[this.getBlockID(i1, i2, i3)] instanceof BlockContainer) {
-	// 		if(this.isChunkLoaded) {
-	// 			if(this.chunkTileEntityMap.get(chunkPosition5) !== null) {
-	// 				this.worldObj.loadedTileEntityList.remove(this.chunkTileEntityMap.get(chunkPosition5));
-	// 			}
+	public setChunkBlockTileEntity(i1: number, i2: number, i3: number, tileEntity4: TileEntity| null):  void {
+		let  chunkPosition5: ChunkPosition = new  ChunkPosition(i1, i2, i3);
+		tileEntity4.worldObj = this.worldObj;
+		tileEntity4.xCoord = this.xPosition * 16 + i1;
+		tileEntity4.yCoord = i2;
+		tileEntity4.zCoord = this.zPosition * 16 + i3;
+		if(this.getBlockID(i1, i2, i3) !== 0 && Block.blocksList[this.getBlockID(i1, i2, i3)] instanceof BlockContainer) {
+			if(this.isChunkLoaded) {
+				if(this.chunkTileEntityMap.get(chunkPosition5) !== null) {
+					const tileEntity = this.chunkTileEntityMap.get(chunkPosition5);
+					this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(loadedTileEntity => loadedTileEntity !== tileEntity);
+				}
 
-	// 			this.worldObj.loadedTileEntityList.add(tileEntity4);
-	// 		}
+				this.worldObj.loadedTileEntityList.push(tileEntity4);
+			}
 
-	// 		this.chunkTileEntityMap.put(chunkPosition5, tileEntity4);
-	// 	} else {
-	// 		java.lang.System.out.println("Attempted to place a tile entity where there was no entity tile!");
-	// 	}
-	// }
+			this.chunkTileEntityMap.set(chunkPosition5, tileEntity4);
+		} else {
+			console.log("Attempted to place a tile entity where there was no entity tile!");
+		}
+	}
 
-	// public removeChunkBlockTileEntity(i1: number, i2: number, i3: number):  void {
-	// 	let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
-	// 	if(this.isChunkLoaded) {
-	// 		this.worldObj.loadedTileEntityList.remove(this.chunkTileEntityMap.remove(chunkPosition4));
-	// 	}
+	public removeChunkBlockTileEntity(i1: number, i2: number, i3: number):  void {
+		let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
+		if(this.isChunkLoaded) {
+			const tileEntity = this.chunkTileEntityMap.get(chunkPosition4);
+			this.chunkTileEntityMap.delete(chunkPosition4)
+			this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(loadedTileEntity => loadedTileEntity !== tileEntity);
+		}
 
-	// }
+	}
 
 	public onChunkLoad():  void {
 		this.isChunkLoaded = true;
 
-        // TODO: Tile Entities
-		// this.worldObj.loadedTileEntityList.addAll(this.chunkTileEntityMap.values());
+		this.worldObj.loadedTileEntityList = [...this.worldObj.loadedTileEntityList, ...this.chunkTileEntityMap.values()];
 
         // TODO: Entities
 		// for(let  i1: number = 0; i1 < this.entities.length; ++i1) {
@@ -550,8 +542,8 @@ export class Chunk {
 	public onChunkUnload():  void {
 		this.isChunkLoaded = false;
 
-        // TODO: Tile Entities
-		// this.worldObj.loadedTileEntityList.removeAll(this.chunkTileEntityMap.values());
+		const tileEntitiesArray = Array.from(this.chunkTileEntityMap.values())
+		this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(tileEntity => !tileEntitiesArray.includes(tileEntity));
 
         // TODO: Entities
 		// for(let  i1: number = 0; i1 < this.entities.length; ++i1) {
@@ -565,53 +557,52 @@ export class Chunk {
 	}
 
     // TODO: Entities
-	// public getEntitiesWithinAABBForEntity(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null, list3: java.util.List| null):  void {
-	// 	let  i4: number = MathHelper.floor_double((axisAlignedBB2.minY - 2.0) / 16.0);
-	// 	let  i5: number = MathHelper.floor_double((axisAlignedBB2.maxY + 2.0) / 16.0);
-	// 	if(i4 < 0) {
-	// 		i4 = 0;
-	// 	}
+	public getEntitiesWithinAABBForEntity(entity1: Entity | null, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+		let  i4: number = MathHelper.floor_double((axisAlignedBB2.minY - 2.0) / 16.0);
+		let  i5: number = MathHelper.floor_double((axisAlignedBB2.maxY + 2.0) / 16.0);
+		if(i4 < 0) {
+			i4 = 0;
+		}
 
-	// 	if(i5 >= this.entities.length) {
-	// 		i5 = this.entities.length - 1;
-	// 	}
+		if(i5 >= this.entities.length) {
+			i5 = this.entities.length - 1;
+		}
 
-	// 	for(let  i6: number = i4; i6 <= i5; ++i6) {
-	// 		let  list7: java.util.List = this.entities[i6];
+		for(let  i6: number = i4; i6 <= i5; ++i6) {
+			let  list7 = this.entities[i6];
 
-	// 		for(let  i8: number = 0; i8 < list7.size(); ++i8) {
-	// 			let  entity9: Entity = list7.get(i8) as Entity;
-	// 			if(entity9 !== entity1 && entity9.boundingBox.intersectsWith(axisAlignedBB2)) {
-	// 				list3.add(entity9);
-	// 			}
-	// 		}
-	// 	}
+			for(let  i8: number = 0; i8 < list7.length; ++i8) {
+				let  entity9: Entity = list7[i8] as Entity;
+				if(entity9 !== entity1 && entity9.boundingBox.intersectsWith(axisAlignedBB2)) {
+					list3.push(entity9);
+				}
+			}
+		}
 
-	// }
+	}
 
-	// public getEntitiesOfTypeWithinAAAB(class1: java.lang.Class| null, axisAlignedBB2: AxisAlignedBB| null, list3: java.util.List| null):  void {
-	// 	let  i4: number = MathHelper.floor_double((axisAlignedBB2.minY - 2.0) / 16.0);
-	// 	let  i5: number = MathHelper.floor_double((axisAlignedBB2.maxY + 2.0) / 16.0);
-	// 	if(i4 < 0) {
-	// 		i4 = 0;
-	// 	}
+	public getEntitiesOfTypeWithinAAAB(type: string, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+		let  i4: number = MathHelper.floor_double((axisAlignedBB2.minY - 2.0) / 16.0);
+		let  i5: number = MathHelper.floor_double((axisAlignedBB2.maxY + 2.0) / 16.0);
+		if(i4 < 0) {
+			i4 = 0;
+		}
 
-	// 	if(i5 >= this.entities.length) {
-	// 		i5 = this.entities.length - 1;
-	// 	}
+		if(i5 >= this.entities.length) {
+			i5 = this.entities.length - 1;
+		}
 
-	// 	for(let  i6: number = i4; i6 <= i5; ++i6) {
-	// 		let  list7: java.util.List = this.entities[i6];
+		for(let  i6: number = i4; i6 <= i5; ++i6) {
+			let  list7 = this.entities[i6];
 
-	// 		for(let  i8: number = 0; i8 < list7.size(); ++i8) {
-	// 			let  entity9: Entity = list7.get(i8) as Entity;
-	// 			if(class1.isAssignableFrom(entity9.getClass()) && entity9.boundingBox.intersectsWith(axisAlignedBB2)) {
-	// 				list3.add(entity9);
-	// 			}
-	// 		}
-	// 	}
+			for(let  i8: number = 0; i8 < list7.length; ++i8) {
+				let  entity9: Entity = list7[i8] as Entity;
+				if (entity9.type === type)
+					list3.push(entity9);
+			}
+		}
 
-	// }
+	}
 
 	public needsSaving(z1: boolean):  boolean {
 		if(this.neverSave) {

@@ -3,6 +3,7 @@ import { BlockBloodStone } from "../BlockBloodStone";
 import { BlockBookshelf } from "../BlockBookshelf";
 import { BlockCloth } from "../BlockCloth";
 import { BlockDirt } from "../BlockDirt";
+import { BlockFurnace } from "../BlockFurnace";
 import { BlockGlass } from "../BlockGlass";
 import { BlockObsidian } from "../BlockObsidian";
 import { BlockOreBlock } from "../BlockOreBlock";
@@ -71,8 +72,8 @@ export class BlockRegistry {
 	// public static readonly workbench:  Block = (new  BlockWorkbench(58)).setHardness(2.5).setStepSound(Block.soundWoodFootstep).setBlockName("workbench");
 	// public static readonly crops:  Block = (new  BlockCrops(59, 88)).setHardness(0.0).setStepSound(Block.soundGrassFootstep).setBlockName("crops");
 	// public static readonly tilledField:  Block = (new  BlockSoil(60)).setHardness(0.6).setStepSound(Block.soundGravelFootstep).setBlockName("farmland");
-	// public static readonly stoneOvenIdle:  Block = (new  BlockFurnace(61, false)).setHardness(3.5).setStepSound(Block.soundStoneFootstep).setBlockName("furnace");
-	// public static readonly stoneOvenActive:  Block = (new  BlockFurnace(62, true)).setHardness(3.5).setStepSound(Block.soundStoneFootstep).setLightValue(0.875).setBlockName("furnace");
+	public static readonly stoneOvenIdle:  Block = (new  BlockFurnace(61, false)).setHardness(3.5).setStepSound(Block.soundStoneFootstep).setBlockName("furnace");
+	public static readonly stoneOvenActive:  Block = (new  BlockFurnace(62, true)).setHardness(3.5).setStepSound(Block.soundStoneFootstep).setLightValue(0.875).setBlockName("furnace");
 	// public static readonly signPost:  Block = (new  BlockSign(63, TileEntitySign.class, true)).setHardness(1.0).setStepSound(Block.soundWoodFootstep).setBlockName("sign");
 	// public static readonly doorWood:  Block = (new  BlockDoor(64, Material.wood)).setHardness(3.0).setStepSound(Block.soundWoodFootstep).setBlockName("doorWood");
 	// public static readonly ladder:  Block = (new  BlockLadder(65, 83)).setHardness(0.4).setStepSound(Block.soundWoodFootstep).setBlockName("ladder");

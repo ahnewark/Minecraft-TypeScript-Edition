@@ -3,15 +3,12 @@
 
 import { int, java, long, S } from "../jree/index";
 import { World } from "./World";
-// import { TileEntity } from "./TileEntity";
+import { TileEntity } from "./TileEntity";
 import { EnumSkyBlock } from "./EnumSkyBlock";
-// import { Entity } from "./Entity";
+import { Entity } from "./Entity";
 import { Chunk } from "./Chunk";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
-
-
-
 
 export  class EmptyChunk extends Chunk {
 	public constructor(world1: World| null, i2: int, i3: int);
@@ -90,28 +87,28 @@ export  class EmptyChunk extends Chunk {
 		return 0;
 	}
 
-	// public addEntity(entity1: Entity| null):  void {
-	// }
+	public addEntity(entity1: Entity| null):  void {
+	}
 
-	// public func_1015_b(entity1: Entity| null):  void {
-	// }
+	public func_1015_b(entity1: Entity| null):  void {
+	}
 
-	// public func_1016_a(entity1: Entity| null, i2: int):  void {
-	// }
+	public func_1016_a(entity1: Entity| null, i2: int):  void {
+	}
 
 	public canBlockSeeTheSky(i1: int, i2: int, i3: int):  boolean {
 		return false;
 	}
 
-	// public getChunkBlockTileEntity(i1: int, i2: int, i3: int):  TileEntity | null {
-	// 	return null;
-	// }
+	public getChunkBlockTileEntity(i1: int, i2: int, i3: int):  TileEntity | null {
+		return null;
+	}
 
-	// public func_1001_a(tileEntity1: TileEntity| null):  void {
-	// }
+	public func_1001_a(tileEntity1: TileEntity| null):  void {
+	}
 
-	// public setChunkBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  void {
-	// }
+	public setChunkBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  void {
+	}
 
 	public removeChunkBlockTileEntity(i1: int, i2: int, i3: int):  void {
 	}
@@ -125,11 +122,11 @@ export  class EmptyChunk extends Chunk {
 	public setChunkModified():  void {
 	}
 
-	// public getEntitiesWithinAABBForEntity(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null, list3: java.util.List| null):  void {
-	// }
+	public getEntitiesWithinAABBForEntity(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+	}
 
-	// public getEntitiesOfTypeWithinAAAB(class1: java.lang.Class| null, axisAlignedBB2: AxisAlignedBB| null, list3: java.util.List| null):  void {
-	// }
+	public getEntitiesOfTypeWithinAAAB(type: string, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+	}
 
 	public needsSaving(z1: boolean):  boolean {
 		return false;

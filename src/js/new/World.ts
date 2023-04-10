@@ -41,6 +41,9 @@ import { FileOutputStream } from "../jree/java/io/FileOutputStream";
 import { File } from "../jree/java/io/index";
 import { JavaString } from "../jree/index";
 import { MaterialRegistry } from "./index";
+import { TileEntity } from "./TileEntity";
+import { Entity } from "./Entity";
+import { EntityPlayer } from "./EntityPlayer";
 
 
 
@@ -48,12 +51,12 @@ import { MaterialRegistry } from "./index";
 export  class World implements IBlockAccess {
 	public scheduledUpdatesAreImmediate:  boolean;
 	private field_1051_z:  MetadataChunkBlock[];
-	public loadedEntityList:  [];
-	private unloadedEntityList:  [];
+	public loadedEntityList:  Entity[];
+	private unloadedEntityList:  Entity[];
 	private scheduledTickTreeSet:  Set<NextTickListEntry>;
 	private scheduledTickSet:  Set<any>;
-	public loadedTileEntityList:  [];
-	public playerEntities:  [];
+	public loadedTileEntityList:  TileEntity[];
+	public playerEntities:  EntityPlayer[];
 	public worldTime:  long;
 	private field_1019_F:  long;
 	public skylightSubtracted:  int;
@@ -85,7 +88,7 @@ export  class World implements IBlockAccess {
 	protected static field_9429_y:  int = 0;
 	private field_9427_K:  Set<any>;
 	private field_9426_L:  int;
-	private field_1012_M:  [];
+	private field_1012_M:  Entity[];
 	public multiplayerWorld:  boolean;
 
 	public static async func_629_a(minecraftFolder: File, worldName: string):  Promise<NBTTagCompound | null> {
@@ -996,88 +999,86 @@ export  class World implements IBlockAccess {
 		}
 	}
 
-	// TODO: Entities
-	// public playSoundAtEntity(entity1: Entity| null, string2: java.lang.String| null, f3: float, f4: float):  void {
-	// 	for(let  i5: int = 0; i5 < this.worldAccesses.size(); ++i5) {
-	// 		(this.worldAccesses.get(i5) as IWorldAccess).playSound(string2, entity1.posX, entity1.posY - entity1.yOffset as double, entity1.posZ, f3, f4);
-	// 	}
+	public playSoundAtEntity(entity1: Entity| null, string2: string, f3: float, f4: float):  void {
+		for(let  i5: int = 0; i5 < this.worldAccesses.length; ++i5) {
+			this.worldAccesses[i5].playSound(string2, entity1.posX, entity1.posY - entity1.yOffset as double, entity1.posZ, f3, f4);
+		}
 
-	// }
+	}
 
-	// public playSoundEffect(d1: double, d3: double, d5: double, string7: java.lang.String| null, f8: float, f9: float):  void {
-	// 	for(let  i10: int = 0; i10 < this.worldAccesses.size(); ++i10) {
-	// 		(this.worldAccesses.get(i10) as IWorldAccess).playSound(string7, d1, d3, d5, f8, f9);
-	// 	}
+	public playSoundEffect(d1: double, d3: double, d5: double, string7: string, f8: float, f9: float):  void {
+		for(let  i10: int = 0; i10 < this.worldAccesses.length; ++i10) {
+			this.worldAccesses[i10].playSound(string7, d1, d3, d5, f8, f9);
+		}
 
-	// }
+	}
 
-	// public playRecord(string1: java.lang.String| null, i2: int, i3: int, i4: int):  void {
-	// 	for(let  i5: int = 0; i5 < this.worldAccesses.size(); ++i5) {
-	// 		(this.worldAccesses.get(i5) as IWorldAccess).playRecord(string1, i2, i3, i4);
-	// 	}
+	public playRecord(string1: string, i2: int, i3: int, i4: int):  void {
+		for(let  i5: int = 0; i5 < this.worldAccesses.length; ++i5) {
+			this.worldAccesses[i5].playRecord(string1, i2, i3, i4);
+		}
 
-	// }
+	}
 
-	// public spawnParticle(string1: java.lang.String| null, d2: double, d4: double, d6: double, d8: double, d10: double, d12: double):  void {
-	// 	for(let  i14: int = 0; i14 < this.worldAccesses.size(); ++i14) {
-	// 		(this.worldAccesses.get(i14) as IWorldAccess).spawnParticle(string1, d2, d4, d6, d8, d10, d12);
-	// 	}
+	public spawnParticle(string1: string, d2: double, d4: double, d6: double, d8: double, d10: double, d12: double):  void {
+		for(let  i14: int = 0; i14 < this.worldAccesses.length; ++i14) {
+			(this.worldAccesses[i14] as IWorldAccess).spawnParticle(string1, d2, d4, d6, d8, d10, d12);
+		}
+	}
 
-	// }
+	public async entityJoinedWorld(entity1: Entity| null): Promise<boolean> {
+		let  i2: int = MathHelper.floor_double(entity1.posX / 16.0);
+		let  i3: int = MathHelper.floor_double(entity1.posZ / 16.0);
+		let  z4: boolean = false;
+		if(entity1 instanceof EntityPlayer) {
+			z4 = true;
+		}
 
-	// public entityJoinedWorld(entity1: Entity| null):  boolean {
-	// 	let  i2: int = MathHelper.floor_double(entity1.posX / 16.0);
-	// 	let  i3: int = MathHelper.floor_double(entity1.posZ / 16.0);
-	// 	let  z4: boolean = false;
-	// 	if(entity1 instanceof EntityPlayer) {
-	// 		z4 = true;
-	// 	}
+		if(!z4 && !this.chunkExists(i2, i3)) {
+			return false;
+		} else {
+			if(entity1 instanceof EntityPlayer) {
+				let  entityPlayer5: EntityPlayer = entity1 as EntityPlayer;
+				this.playerEntities.push(entityPlayer5);
+				console.log("Player count: " + this.playerEntities.length);
+			}
 
-	// 	if(!z4 && !this.chunkExists(i2, i3)) {
-	// 		return false;
-	// 	} else {
-	// 		if(entity1 instanceof EntityPlayer) {
-	// 			let  entityPlayer5: EntityPlayer = entity1 as EntityPlayer;
-	// 			this.playerEntities.add(entityPlayer5);
-	// 			java.lang.System.out.println("Player count: " + this.playerEntities.size());
-	// 		}
+			(await this.getChunkFromChunkCoords(i2, i3)).addEntity(entity1);
+			this.loadedEntityList.push(entity1);
+			this.obtainEntitySkin(entity1);
+			return true;
+		}
+	}
 
-	// 		this.getChunkFromChunkCoords(i2, i3).addEntity(entity1);
-	// 		this.loadedEntityList.add(entity1);
-	// 		this.obtainEntitySkin(entity1);
-	// 		return true;
-	// 	}
-	// }
+	protected obtainEntitySkin(entity1: Entity| null):  void {
+		for(let  i2: int = 0; i2 < this.worldAccesses.length; ++i2) {
+			this.worldAccesses[i2].obtainEntitySkin(entity1);
+		}
 
-	// protected obtainEntitySkin(entity1: Entity| null):  void {
-	// 	for(let  i2: int = 0; i2 < this.worldAccesses.size(); ++i2) {
-	// 		(this.worldAccesses.get(i2) as IWorldAccess).obtainEntitySkin(entity1);
-	// 	}
+	}
 
-	// }
+	protected releaseEntitySkin(entity1: Entity| null):  void {
+		for(let  i2: int = 0; i2 < this.worldAccesses.length; ++i2) {
+			this.worldAccesses[i2].releaseEntitySkin(entity1);
+		}
 
-	// protected releaseEntitySkin(entity1: Entity| null):  void {
-	// 	for(let  i2: int = 0; i2 < this.worldAccesses.size(); ++i2) {
-	// 		(this.worldAccesses.get(i2) as IWorldAccess).releaseEntitySkin(entity1);
-	// 	}
+	}
 
-	// }
+	public setEntityDead(entity1: Entity| null):  void {
+		if(entity1.riddenByEntity !== null) {
+			entity1.riddenByEntity.mountEntity(null as Entity);
+		}
 
-	// public setEntityDead(entity1: Entity| null):  void {
-	// 	if(entity1.riddenByEntity !== null) {
-	// 		entity1.riddenByEntity.mountEntity(null as Entity);
-	// 	}
+		if(entity1.ridingEntity !== null) {
+			entity1.mountEntity(null as Entity);
+		}
 
-	// 	if(entity1.ridingEntity !== null) {
-	// 		entity1.mountEntity(null as Entity);
-	// 	}
+		entity1.setEntityDead();
+		if(entity1 instanceof EntityPlayer) {
+			this.playerEntities = this.playerEntities.filter(entity => entity != entity1);
+		}
 
-	// 	entity1.setEntityDead();
-	// 	if(entity1 instanceof EntityPlayer) {
-	// 		this.playerEntities.remove(entity1 as EntityPlayer);
-	// 	}
-
-	// }
+	}
 
 	public addWorldAccess(iWorldAccess1: IWorldAccess):  void {
 		this.worldAccesses.push(iWorldAccess1);
@@ -1087,45 +1088,45 @@ export  class World implements IBlockAccess {
 		this.worldAccesses = this.worldAccesses.filter(access => access != iWorldAccess1);
 	}
 
-	// public getCollidingBoundingBoxes(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null):  java.util.List | null {
-	// 	this.field_9428_I.clear();
-	// 	let  i3: int = MathHelper.floor_double(axisAlignedBB2.minX);
-	// 	let  i4: int = MathHelper.floor_double(axisAlignedBB2.maxX + 1.0);
-	// 	let  i5: int = MathHelper.floor_double(axisAlignedBB2.minY);
-	// 	let  i6: int = MathHelper.floor_double(axisAlignedBB2.maxY + 1.0);
-	// 	let  i7: int = MathHelper.floor_double(axisAlignedBB2.minZ);
-	// 	let  i8: int = MathHelper.floor_double(axisAlignedBB2.maxZ + 1.0);
+	public async getCollidingBoundingBoxes(entity1: Entity | null, axisAlignedBB2: AxisAlignedBB| null):  Promise<AxisAlignedBB[]> {
+		this.field_9428_I = [];
+		let  i3: int = MathHelper.floor_double(axisAlignedBB2.minX);
+		let  i4: int = MathHelper.floor_double(axisAlignedBB2.maxX + 1.0);
+		let  i5: int = MathHelper.floor_double(axisAlignedBB2.minY);
+		let  i6: int = MathHelper.floor_double(axisAlignedBB2.maxY + 1.0);
+		let  i7: int = MathHelper.floor_double(axisAlignedBB2.minZ);
+		let  i8: int = MathHelper.floor_double(axisAlignedBB2.maxZ + 1.0);
 
-	// 	for(let  i9: int = i3; i9 < i4; ++i9) {
-	// 		for(let  i10: int = i7; i10 < i8; ++i10) {
-	// 			if(this.blockExists(i9, 64, i10)) {
-	// 				for(let  i11: int = i5 - 1; i11 < i6; ++i11) {
-	// 					let  block12: EnumSkyBlock.Block = EnumSkyBlock.Block.blocksList[this.getBlockId(i9, i11, i10)];
-	// 					if(block12 !== null) {
-	// 						block12.getCollidingBoundingBoxes(this, i9, i11, i10, axisAlignedBB2, this.field_9428_I);
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
+		for(let  i9: int = i3; i9 < i4; ++i9) {
+			for(let  i10: int = i7; i10 < i8; ++i10) {
+				if(this.blockExists(i9, 64, i10)) {
+					for(let  i11: int = i5 - 1; i11 < i6; ++i11) {
+						let  block12: Block = Block.blocksList[await this.getBlockId(i9, i11, i10)];
+						if(block12 !== null) {
+							block12.getCollidingBoundingBoxes(this, i9, i11, i10, axisAlignedBB2, this.field_9428_I);
+						}
+					}
+				}
+			}
+		}
 
-	// 	let  d14: double = 0.25;
-	// 	let  list15: java.util.List = this.getEntitiesWithinAABBExcludingEntity(entity1, axisAlignedBB2.expand(d14, d14, d14));
+		let  d14: double = 0.25;
+		let  list15 = await this.getEntitiesWithinAABBExcludingEntity(entity1, axisAlignedBB2.expand(d14, d14, d14));
 
-	// 	for(let  i16: int = 0; i16 < list15.size(); ++i16) {
-	// 		let  axisAlignedBB13: AxisAlignedBB = (list15.get(i16) as Entity).getBoundingBox();
-	// 		if(axisAlignedBB13 !== null && axisAlignedBB13.intersectsWith(axisAlignedBB2)) {
-	// 			this.field_9428_I.add(axisAlignedBB13);
-	// 		}
+		for(let  i16: int = 0; i16 < list15.length; ++i16) {
+			let  axisAlignedBB13: AxisAlignedBB = (list15[i16] as Entity).getBoundingBox();
+			if(axisAlignedBB13 !== null && axisAlignedBB13.intersectsWith(axisAlignedBB2)) {
+				this.field_9428_I.push(axisAlignedBB13);
+			}
 
-	// 		axisAlignedBB13 = entity1.func_383_b_(list15.get(i16) as Entity);
-	// 		if(axisAlignedBB13 !== null && axisAlignedBB13.intersectsWith(axisAlignedBB2)) {
-	// 			this.field_9428_I.add(axisAlignedBB13);
-	// 		}
-	// 	}
+			axisAlignedBB13 = entity1.func_383_b_(list15[i16] as Entity);
+			if(axisAlignedBB13 !== null && axisAlignedBB13.intersectsWith(axisAlignedBB2)) {
+				this.field_9428_I.push(axisAlignedBB13);
+			}
+		}
 
-	// 	return this.field_9428_I;
-	// }
+		return this.field_9428_I;
+	}
 
 	public calculateSkylightSubtracted(f1: float):  int {
 		let  f2: float = this.getCelestialAngle(f1);
@@ -1625,26 +1626,25 @@ export  class World implements IBlockAccess {
 		return this.chunkProvider.toString();
 	}
 
-	// public getBlockTileEntity(i1: int, i2: int, i3: int):  TileEntity | null {
-	// 	let  chunk4: Chunk = this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
-	// 	return chunk4 !== null ? chunk4.getChunkBlockTileEntity(i1 & 15, i2, i3 & 15) : null;
-	// }
+	public async getBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity | null> {
+		let  chunk4: Chunk = await this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
+		return chunk4 !== null ? chunk4.getChunkBlockTileEntity(i1 & 15, i2, i3 & 15) : null;
+	}
 
-	// public setBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  void {
-	// 	let  chunk5: Chunk = this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
-	// 	if(chunk5 !== null) {
-	// 		chunk5.setChunkBlockTileEntity(i1 & 15, i2, i3 & 15, tileEntity4);
-	// 	}
+	public async setBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  Promise<void> {
+		let  chunk5: Chunk = await this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
+		if(chunk5 !== null) {
+			chunk5.setChunkBlockTileEntity(i1 & 15, i2, i3 & 15, tileEntity4);
+		}
 
-	// }
+	}
 
-	// public removeBlockTileEntity(i1: int, i2: int, i3: int):  void {
-	// 	let  chunk4: Chunk = this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
-	// 	if(chunk4 !== null) {
-	// 		chunk4.removeChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
-	// 	}
-
-	// }
+	public async removeBlockTileEntity(i1: int, i2: int, i3: int): Promise<void> {
+		let  chunk4: Chunk = await this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
+		if(chunk4 !== null) {
+			chunk4.removeChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
+		}
+	}
 
 	public async isBlockOpaqueCube(i1: int, i2: int, i3: int):  Promise<boolean> {
 		let  block4: Block = Block.blocksList[await this.getBlockId(i1, i2, i3)];
@@ -1873,24 +1873,23 @@ export  class World implements IBlockAccess {
 
 	}
 
-	// TODO: Entities
-	// public getEntitiesWithinAABBExcludingEntity(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null):  java.util.List | null {
-	// 	this.field_1012_M.clear();
-	// 	let  i3: int = MathHelper.floor_double((axisAlignedBB2.minX - 2.0) / 16.0);
-	// 	let  i4: int = MathHelper.floor_double((axisAlignedBB2.maxX + 2.0) / 16.0);
-	// 	let  i5: int = MathHelper.floor_double((axisAlignedBB2.minZ - 2.0) / 16.0);
-	// 	let  i6: int = MathHelper.floor_double((axisAlignedBB2.maxZ + 2.0) / 16.0);
+	public async getEntitiesWithinAABBExcludingEntity(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null):  Promise<Entity[]> {
+		this.field_1012_M = [];
+		let  i3: int = MathHelper.floor_double((axisAlignedBB2.minX - 2.0) / 16.0);
+		let  i4: int = MathHelper.floor_double((axisAlignedBB2.maxX + 2.0) / 16.0);
+		let  i5: int = MathHelper.floor_double((axisAlignedBB2.minZ - 2.0) / 16.0);
+		let  i6: int = MathHelper.floor_double((axisAlignedBB2.maxZ + 2.0) / 16.0);
 
-	// 	for(let  i7: int = i3; i7 <= i4; ++i7) {
-	// 		for(let  i8: int = i5; i8 <= i6; ++i8) {
-	// 			if(this.chunkExists(i7, i8)) {
-	// 				this.getChunkFromChunkCoords(i7, i8).getEntitiesWithinAABBForEntity(entity1, axisAlignedBB2, this.field_1012_M);
-	// 			}
-	// 		}
-	// 	}
+		for(let  i7: int = i3; i7 <= i4; ++i7) {
+			for(let  i8: int = i5; i8 <= i6; ++i8) {
+				if(this.chunkExists(i7, i8)) {
+					(await this.getChunkFromChunkCoords(i7, i8)).getEntitiesWithinAABBForEntity(entity1, axisAlignedBB2, this.field_1012_M);
+				}
+			}
+		}
 
-	// 	return this.field_1012_M;
-	// }
+		return this.field_1012_M;
+	}
 
 	// public getEntitiesWithinAABB(class1: java.lang.Class| null, axisAlignedBB2: AxisAlignedBB| null):  java.util.List | null {
 	// 	let  i3: int = MathHelper.floor_double((axisAlignedBB2.minX - 2.0) / 16.0);
@@ -1914,16 +1913,16 @@ export  class World implements IBlockAccess {
 	// 	return this.loadedEntityList;
 	// }
 
-	// public func_698_b(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  void {
-	// 	if(this.blockExists(i1, i2, i3)) {
-	// 		this.getChunkFromBlockCoords(i1, i3).setChunkModified();
-	// 	}
+	public async func_698_b(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  Promise<void> {
+		if(this.blockExists(i1, i2, i3)) {
+			(await this.getChunkFromBlockCoords(i1, i3)).setChunkModified();
+		}
 
-	// 	for(let  i5: int = 0; i5 < this.worldAccesses.size(); ++i5) {
-	// 		(this.worldAccesses.get(i5) as IWorldAccess).doNothingWithTileEntity(i1, i2, i3, tileEntity4);
-	// 	}
+		for(let  i5: int = 0; i5 < this.worldAccesses.length; ++i5) {
+			(this.worldAccesses[i5] as IWorldAccess).doNothingWithTileEntity(i1, i2, i3, tileEntity4);
+		}
 
-	// }
+	}
 
 	// public countEntities(class1: java.lang.Class| null):  int {
 	// 	let  i2: int = 0;

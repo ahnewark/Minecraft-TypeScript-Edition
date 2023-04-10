@@ -3,15 +3,13 @@
 
 import { java } from "../jree/index";
 import { World } from "./World";
-// TODO: Tile Entities
-// import { TileEntity } from "./TileEntity";
+import { TileEntity } from "./TileEntity";
 import { NibbleArray } from "./NibbleArray";
 import { NBTTagList } from "./NBTTagList";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { IChunkLoader } from "./IChunkLoader";
-// TODO: Entities
-// import { EntityList } from "./EntityList";
-// import { Entity } from "./Entity";
+import { EntityList } from "./EntityList";
+import { Entity } from "./Entity";
 import { CompressedStreamTools } from "./CompressedStreamTools";
 import { Chunk } from "./Chunk";
 import { File, FileInputStream, FileOutputStream } from "../jree/java/io/index";
@@ -193,29 +191,28 @@ export  class ChunkLoader implements IChunkLoader {
 			chunk4.func_1014_a();
 		}
 
-		// TOOD: Entities
-		// let  nBTTagList5: NBTTagList = nBTTagCompound1.getTagList("Entities");
-		// if(nBTTagList5 !== null) {
-		// 	for(let  i6: number = 0; i6 < nBTTagList5.tagCount(); ++i6) {
-		// 		let  nBTTagCompound7: NBTTagCompound = nBTTagList5.tagAt(i6) as NBTTagCompound;
-		// 		let  entity8: Entity = EntityList.createEntityFromNBT(nBTTagCompound7, world0);
-		// 		chunk4.hasEntities = true;
-		// 		if(entity8 !== null) {
-		// 			chunk4.addEntity(entity8);
-		// 		}
-		// 	}
-		// }
+		let  nBTTagList5: NBTTagList = nBTTagCompound1.getTagList("Entities");
+		if(nBTTagList5 !== null) {
+			for(let  i6: number = 0; i6 < nBTTagList5.tagCount(); ++i6) {
+				let  nBTTagCompound7: NBTTagCompound = nBTTagList5.tagAt(i6) as NBTTagCompound;
+				let  entity8: Entity = EntityList.createEntityFromNBT(nBTTagCompound7, world0);
+				chunk4.hasEntities = true;
+				if(entity8 !== null) {
+					chunk4.addEntity(entity8);
+				}
+			}
+		}
 
-		// let  nBTTagList10: NBTTagList = nBTTagCompound1.getTagList("TileEntities");
-		// if(nBTTagList10 !== null) {
-		// 	for(let  i11: number = 0; i11 < nBTTagList10.tagCount(); ++i11) {
-		// 		let  nBTTagCompound12: NBTTagCompound = nBTTagList10.tagAt(i11) as NBTTagCompound;
-		// 		let  tileEntity9: TileEntity = TileEntity.createAndLoadEntity(nBTTagCompound12);
-		// 		if(tileEntity9 !== null) {
-		// 			chunk4.func_1001_a(tileEntity9);
-		// 		}
-		// 	}
-		// }
+		let  nBTTagList10: NBTTagList = nBTTagCompound1.getTagList("TileEntities");
+		if(nBTTagList10 !== null) {
+			for(let  i11: number = 0; i11 < nBTTagList10.tagCount(); ++i11) {
+				let  nBTTagCompound12: NBTTagCompound = nBTTagList10.tagAt(i11) as NBTTagCompound;
+				let  tileEntity9: TileEntity = TileEntity.createAndLoadEntity(nBTTagCompound12);
+				if(tileEntity9 !== null) {
+					chunk4.func_1001_a(tileEntity9);
+				}
+			}
+		}
 
 		return chunk4;
 	}
