@@ -290,7 +290,7 @@ const posix = {
     return path;
   },
 
-  dirname: function dirname(path) {
+  dirname: function dirname(path): string {
     assertPath(path);
     if (path.length === 0) return '.';
     var code = path.charCodeAt(0);

@@ -34,12 +34,12 @@ export  class NBTTagByte extends NBTBase {
 	}
 
 
-	public writeTagContents(dataOutput1: DataOutput): void {
-		dataOutput1.writeByte(this.byteValue);
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
+		await dataOutput1.writeByte(this.byteValue);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
-		this.byteValue = dataInput1.readByte();
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
+		this.byteValue = await dataInput1.readByte();
 	}
 
 	public getType(): number {

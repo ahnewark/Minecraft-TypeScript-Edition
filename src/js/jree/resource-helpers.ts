@@ -18,13 +18,13 @@ import { Throwable } from "./java/lang/Throwable";
  *
  * @returns A Throwable if an error occurred while closing the objects.
  */
-export const closeResources = (list: AutoCloseable[]): Throwable | undefined => {
+export const closeResources = async (list: AutoCloseable[]): Promise<Throwable | undefined> => {
     let error: Throwable | undefined;
 
     // Close in reverse order.
     for (const closeable of list.reverse()) {
         try {
-            closeable.close();
+            await closeable.close();
         } catch (x) {
             const t = Throwable.fromError(x);
             if (!error) {

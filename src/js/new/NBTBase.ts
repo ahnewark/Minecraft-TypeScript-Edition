@@ -4,9 +4,9 @@ import { DataInput } from "../java/io/DataInput";
 export abstract  class NBTBase {
 	public key: string | null = null;
 
-	public abstract writeTagContents(dataOutput1: DataOutput):  void;
+	public abstract writeTagContents(dataOutput1: DataOutput):  Promise<void>;
 
-	public abstract readTagContents(dataInput1: DataInput):  void;
+	public abstract readTagContents(dataInput1: DataInput):  Promise<void>;
 
 	public abstract getType(): number;
 

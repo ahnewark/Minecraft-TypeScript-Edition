@@ -53,7 +53,7 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
         ...attrs: Array<FileAttribute<unknown>>): Promise<FileChannel>;
     public static async open(...args: unknown[]): Promise<FileChannel> {
         if (args.length < 2) {
-            throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+            throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
         }
 
         if (args[1] instanceof JavaSet) {
@@ -76,12 +76,12 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
     }
 
     /** Reads a sequence of bytes from this channel into the given buffer. */
-    public /** abstract */ read(dst: ByteBuffer): int;
+    public /** abstract */ async read(dst: ByteBuffer): Promise<int>;
     /** Reads a sequence of bytes from this channel into the given buffers. */
-    public read(dst: ByteBuffer[]): long;
+    public async read(dst: ByteBuffer[]): Promise<long>;
     /** Reads a sequence of bytes from this channel into a subsequence of the given buffers. */
-    public /** abstract */ read(dst: ByteBuffer[], offset: int, length: int): long;
-    public read(...args: unknown[]): long | int {
+    public /** abstract */ async read(dst: ByteBuffer[], offset: int, length: int): Promise<long>;
+    public async read(...args: unknown[]): Promise<long | int> {
         switch (args.length) {
             case 1: {
                 if (args[0] instanceof ByteBuffer) {
@@ -99,7 +99,7 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
             }
 
             default: {
-                throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+                throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
             }
         }
     }
@@ -132,7 +132,7 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
             }
 
             default: {
-                throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+                throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
             }
         }
     }
@@ -156,11 +156,11 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
 
     /** Transfers bytes into this channel's file from the given readable byte channel. */
     public abstract transferFrom(src: ReadableByteChannel, position: long,
-        count: long): long;
+        count: long): Promise<long>;
 
     /** Transfers bytes from this channel's file to the given writable byte channel. */
     public abstract transferTo(position: long, count: long,
-        target: WritableByteChannel): long;
+        target: WritableByteChannel): Promise<long>;
 
     /** Truncates the file to the given size. */
     public abstract truncate(size: long): FileChannel;
@@ -279,48 +279,47 @@ export class FileChannelImpl extends FileChannel {
     public override async read(dst: ByteBuffer[], offset: int, length: int): Promise<long>;
     public override async read(...args: unknown[]): Promise<long | int> {
         let currentBuffer = 0;
-        let end: int;
-        let targets: ByteBuffer[];
+        let length: int;
+        let dsts: ByteBuffer[];
 
         let returnInt = false;
         switch (args.length) {
             case 1: {
                 if (args[0] instanceof ByteBuffer) {
-                    targets = [args[0]];
-                    end = 1;
+                    dsts = [args[0]];
+                    length = 1;
                     returnInt = true;
                 } else {
-                    targets = args[0] as ByteBuffer[];
-                    end = targets.length;
+                    dsts = args[0] as ByteBuffer[];
+                    length = 1;
                 }
 
                 break;
             }
 
             case 3: {
-                targets = args[0] as ByteBuffer[];
+                dsts = args[0] as ByteBuffer[];
                 currentBuffer = args[1] as int;
-                end = args[2] as int;
+                length = args[2] as int;
 
                 break;
             }
 
             default: {
-                throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+                throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
             }
         }
 
         let totalBytesRead = 0n;
-        while (currentBuffer < end) {
-            const target = targets[currentBuffer];
-            const remaining = target.remaining();
+        for (const bb of dsts) {
+            const remaining = bb.remaining();
             if (remaining === 0) {
                 currentBuffer++;
 
                 continue;
             }
 
-            const bytesRead = await this.readBytes(target, remaining);
+            const bytesRead = await this.readBytes(bb, remaining);
             if (bytesRead === 0n) {
                 break;
             }
@@ -340,7 +339,7 @@ export class FileChannelImpl extends FileChannel {
         // return stat.size;
     }
 
-    public transferFrom(src: ReadableByteChannel, position: long, count: long): long {
+    public async transferFrom(src: ReadableByteChannel, position: long, count: long): Promise<long> {
         if (position < 0n) {
             throw new IllegalArgumentException(new JavaString("Position must be >= 0"));
         }
@@ -359,13 +358,13 @@ export class FileChannelImpl extends FileChannel {
         const buffer = ByteBuffer.allocate(1024);
         let totalBytesRead = 0n;
         while (totalBytesRead < count) {
-            const bytesRead = BigInt(src.read(buffer));
+            const bytesRead = BigInt(await src.read(buffer));
             if (bytesRead === 0n) {
                 break;
             }
 
             buffer.flip();
-            this.write(buffer, position + totalBytesRead);
+            await this.write(buffer, position + totalBytesRead);
 
             totalBytesRead += bytesRead;
         }
@@ -373,7 +372,7 @@ export class FileChannelImpl extends FileChannel {
         return totalBytesRead;
     }
 
-    public transferTo(position: long, count: long, target: WritableByteChannel): long {
+    public async transferTo(position: long, count: long, target: WritableByteChannel): Promise<long> {
         if (!target.isOpen() || !this.isOpen()) {
             throw new ClosedChannelException();
         }
@@ -388,7 +387,7 @@ export class FileChannelImpl extends FileChannel {
         const buffer = ByteBuffer.allocate(1024);
         let totalBytesRead = 0n;
         while (totalBytesRead < count) {
-            const bytesRead = this.read([buffer], Number(position + totalBytesRead), 1024);
+            const bytesRead = await this.read([buffer], Number(position + totalBytesRead), 1024);
             if (bytesRead === 0n) {
                 break;
             }
@@ -453,7 +452,7 @@ export class FileChannelImpl extends FileChannel {
             }
 
             default: {
-                throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+                throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
             }
         }
 

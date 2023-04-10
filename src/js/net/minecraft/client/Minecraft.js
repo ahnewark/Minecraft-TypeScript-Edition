@@ -48,7 +48,10 @@ export default class Minecraft {
     constructor(canvasWrapperId, resources) {
         this.resources = resources;
 
-        this.newWorld = NewWorld.Construct(new JavaFile(new JavaString('/minecraft/')), 'World1')
+        this.newWorld = NewWorld.Construct(new JavaFile(new JavaString('/saves/')), 'World1').then(world => {
+            world.saveLevel();
+            world.saveWorld(true)
+        })
 
         this.currentScreen = null;
         this.loadingScreen = null;

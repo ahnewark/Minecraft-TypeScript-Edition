@@ -103,8 +103,8 @@ export class FileOutputStream extends OutputStream {
                 super();
             }
 
-            public close(): void {
-                this.fd.close();
+            public async close(): Promise<void> {
+                await this.fd.close();
             }
         }(this.fd));
     }
@@ -140,6 +140,7 @@ export class FileOutputStream extends OutputStream {
                 await writeAsync(this.fd.handle!, b, offset, length);
             }
         } catch (error) {
+            console.log({error});
             throw new IOException(new JavaString("`Cannot write data to file"), Throwable.fromError(error));
         }
     }

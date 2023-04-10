@@ -14,23 +14,24 @@ import { NBTTagByte } from "./NBTTagByte";
 import { NBTBase } from "./NBTBase";
 import { DataOutput } from "../java/io/DataOutput";
 import { DataInput } from "../java/io/DataInput";
+import { NBTRegistry } from "./index";
 
 export  class NBTTagCompound extends NBTBase {
 	private tagMap: Map<string, NBTBase> = new Map();
 
-	public writeTagContents(dataOutput1: DataOutput): void {
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
 		for (let [, value] of this.tagMap) {
-			NBTBase.writeTag(value, dataOutput1);
+			await NBTRegistry.writeTag(value, dataOutput1);
 		}
 
-		dataOutput1.writeByte(0);
+		await dataOutput1.writeByte(0);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
 		this.tagMap = new Map();
 
 		let  nBTBase2: NBTBase;
-		while((nBTBase2 = NBTBase.readTag(dataInput1)).getType() !== 0) {
+		while((nBTBase2 = (await NBTRegistry.readTag(dataInput1))).getType() !== 0) {
 			this.tagMap[nBTBase2.getKey()] = nBTBase2;
 		}
 

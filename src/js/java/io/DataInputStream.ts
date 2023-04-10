@@ -12,23 +12,23 @@ export class DataInputStream extends FilterInputStream implements DataInput {
     }
 
     private bytearr = new Int8Array(80);
-    private chararr = new Int16Array(80);
+    private chararr = new Int8Array(80);
 
-    public read(): int;
-    public read(b: Int8Array): int;
-    public read(b: Int8Array, off: int, len: int): int;
-    public read(...args): int {
+    public async read(): Promise<int>;
+    public async read(b: Int8Array): Promise<int>;
+    public async read(b: Int8Array, off: int, len: int): Promise<int>;
+    public async read(...args): Promise<int> {
         switch (args.length) {
             case 0: {
                 return super.read();
             }
             case 1: {
                 const b = args[0] as Int8Array;
-                return this.in.read(b, 0, b.length);
+                return await this.in.read(b, 0, b.length);
             }
             case 3: {
                 const [b, off, len] = args as [Int8Array, int, int];
-                return this.in.read(b, off, len);
+                return await this.in.read(b, off, len);
             }
             default: {
                 throw new Error('The Michael Rosen Rap!');
@@ -36,11 +36,11 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         }
     }
 
-    public readFully(b: Int8Array): void;
+    public async readFully(b: Int8Array): Promise<void>;
 
-    public readFully(b: Int8Array, off: int, len: int): void;
+    public async readFully(b: Int8Array, off: int, len: int): Promise<void>;
 
-    public readFully(...args) {
+    public async readFully(...args) {
         const b = args[0] as Int8Array;
         let off: int;
         let len: int;
@@ -64,7 +64,8 @@ export class DataInputStream extends FilterInputStream implements DataInput {
             throw new IndexOutOfBoundsException();
         let n = 0;
         while (n < len) {
-            let count = this.in.read(b, off + n, len - n);
+            console.log('DataInputStream', len);
+            let count = await this.in.read(b, off + n, len - n);
             if (count < 0)
                 throw new Error('EOF');
             n += count;
@@ -82,56 +83,56 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         return total;
     }
 
-    public readBoolean(): boolean {
-        let ch = this.in.read();
+    public async readBoolean(): Promise<boolean> {
+        let ch = await this.in.read();
         if (ch < 0)
             throw new Error('EOF');
         return (ch != 0);
     }
 
-    public readByte(): byte {
-        let ch = this.in.read();
+    public async readByte(): Promise<byte> {
+        let ch = await this.in.read();
         if (ch < 0)
             throw new Error('EOF');
         return ch & 0xff;
     }
 
-    public readUnsignedByte(): int {
-        let ch = this.in.read();
+    public async readUnsignedByte(): Promise<int> {
+        let ch = await this.in.read();
         if (ch < 0)
             throw new Error('EOF');
         return ch;
     }
 
-    public readShort(): short{
-        let ch1 = this.in.read();
-        let ch2 = this.in.read();
+    public async readShort(): Promise<short> {
+        let ch1 = await this.in.read();
+        let ch2 = await this.in.read();
         if ((ch1 | ch2) < 0)
             throw new Error('EOF');
         return ((ch1 << 8) + (ch2 << 0)) && 0xffff;
     }
 
-    public readUnsignedShort(): number {
-        let ch1 = this.in.read();
-        let ch2 = this.in.read();
+    public async readUnsignedShort(): Promise<number> {
+        let ch1 = await this.in.read();
+        let ch2 = await this.in.read();
         if ((ch1 | ch2) < 0)
             throw new Error('EOF');
         return (ch1 << 8) + (ch2 << 0) && 0xffff;
     }
 
-    public readChar(): char {
-        let ch1 = this.in.read();
-        let ch2 = this.in.read();
+    public async readChar(): Promise<char> {
+        let ch1 = await this.in.read();
+        let ch2 = await this.in.read();
         if ((ch1 | ch2) < 0)
             throw new Error('EOF');
         return ((ch1 << 8) + (ch2 << 0)) & 0xffff;
     }
 
-    public readInt(): int {
-        let ch1 = this.in.read();
-        let ch2 = this.in.read();
-        let ch3 = this.in.read();
-        let ch4 = this.in.read();
+    public async readInt(): Promise<int> {
+        let ch1 = await this.in.read();
+        let ch2 = await this.in.read();
+        let ch3 = await this.in.read();
+        let ch4 = await this.in.read();
         if ((ch1 | ch2 | ch3 | ch4) < 0)
             throw new Error('eof');
         return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0));
@@ -139,8 +140,8 @@ export class DataInputStream extends FilterInputStream implements DataInput {
 
     private readBuffer = new Int8Array(8);
 
-    public readLong(): long {
-        this.readFully(this.readBuffer, 0, 8);
+    public async readLong(): Promise<long> {
+        await this.readFully(this.readBuffer, 0, 8);
         return ((BigInt(this.readBuffer[0]) << BigInt(56)) +
                 (BigInt(this.readBuffer[1] & 255) << BigInt(48)) +
                 (BigInt(this.readBuffer[2] & 255) << BigInt(40)) +
@@ -151,15 +152,15 @@ export class DataInputStream extends FilterInputStream implements DataInput {
                 (BigInt(this.readBuffer[7] & 255) <<  BigInt(0)));
     }
 
-    public readFloat(): float {
-        let int =  this.readInt();
+    public async readFloat(): Promise<float> {
+        let int =  await this.readInt();
         var buffer = new ArrayBuffer(8);
         (new Uint32Array(buffer))[0] = int;
         return new Float32Array(buffer)[0];
     }
 
-    public readDouble(): double {
-        let int =  this.readLong();
+    public async readDouble(): Promise<double> {
+        let int = await this.readLong();
 
         var buffer = new ArrayBuffer(8);
         (new Uint32Array(buffer))[0] = int[0];
@@ -169,7 +170,7 @@ export class DataInputStream extends FilterInputStream implements DataInput {
 
     private lineBuffer: Int16Array;
 
-    public readLine(): string | null {
+    public async readLine(): Promise<string | null> {
         let buf = this.lineBuffer;
 
         if (buf == null) {
@@ -181,13 +182,13 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         let c;
 
 loop:   while (true) {
-            switch (c = this.in.read()) {
+            switch (c = await this.in.read()) {
               case -1:
               case 0xa:
                 break loop;
 
               case 0xd:
-                let c2 = this.in.read();
+                let c2 = await this.in.read();
                 if ((c2 != 0xa) && (c2 != -1)) {
                     if (!(this.in instanceof PushbackInputStream)) {
                         this.in = new PushbackInputStream(this.in);
@@ -216,32 +217,32 @@ loop:   while (true) {
         return new TextDecoder().decode(buf.slice(0, offset));
     }
 
-    public readUTF(): string {
-        return DataInputStream.readUTF(this);
+    public async readUTF(): Promise<string> {
+        return await DataInputStream.readUTF(this);
     }
 
-    public static readUTF(_in: DataInput): string {
-        let utflen = _in.readUnsignedShort();
+    public static async readUTF(_in: DataInput): Promise<string> {
+        let utflen = await _in.readUnsignedShort();
         let bytearr: Int8Array;
         let chararr: Int8Array;
         if (_in instanceof DataInputStream) {
             let dis = _in as DataInputStream;
             if (dis.bytearr.length < utflen){
-                dis.bytearr = new Int8Array[utflen*2];
-                dis.chararr = new Int8Array[utflen*2];
+                dis.bytearr = new Int8Array(utflen*2);
+                dis.chararr = new Int8Array(utflen*2);
             }
             chararr = dis.chararr;
             bytearr = dis.bytearr;
         } else {
-            bytearr = new Int8Array[utflen];
-            chararr = new Int16Array[utflen];
+            bytearr = new Int8Array(utflen);
+            chararr = new Int8Array(utflen);
         }
 
         let c, char2, char3: char;
         let count = 0;
         let chararr_count=0;
 
-        _in.readFully(bytearr, 0, utflen);
+        await _in.readFully(bytearr, 0, utflen);
 
         while (count < utflen) {
             c = bytearr[count] & 0xff;

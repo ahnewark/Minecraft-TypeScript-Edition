@@ -148,10 +148,10 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
         if (out instanceof DataOutputStream) {
             let dos = out as DataOutputStream;
             if(dos.bytearr == null || (dos.bytearr.length < (utflen+2)))
-                dos.bytearr = new Int8Array[(utflen*2) + 2];
+                dos.bytearr = new Int8Array((utflen*2) + 2);
             bytearr = dos.bytearr;
         } else {
-            bytearr = new Int8Array[utflen+2];
+            bytearr = new Int8Array(utflen+2);
         }
 
         bytearr[count++] = ((utflen >>> 8) & 0xFF);

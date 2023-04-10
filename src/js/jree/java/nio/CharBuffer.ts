@@ -96,7 +96,7 @@ export class CharBuffer extends BufferImpl<Uint16Array> implements Appendable, C
             }
 
             default: {
-                throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+                throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
             }
         }
     }
@@ -163,7 +163,7 @@ export class CharBuffer extends BufferImpl<Uint16Array> implements Appendable, C
             }
 
             default: {
-                throw new IllegalArgumentException("Invalid int of arguments");
+                throw new IllegalArgumentException("Invalid number of arguments");
             }
         }
 
@@ -326,7 +326,7 @@ export class CharBuffer extends BufferImpl<Uint16Array> implements Appendable, C
             }
 
             default: {
-                throw new IllegalArgumentException("Invalid int of arguments");
+                throw new IllegalArgumentException("Invalid number of arguments");
             }
         }
 

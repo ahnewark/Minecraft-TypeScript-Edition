@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { java } from "../../../..";
+import { java } from "../../../../index";
 import { JavaObject } from "../../../lang/Object";
 
 export abstract class AbstractInterruptibleChannel extends JavaObject

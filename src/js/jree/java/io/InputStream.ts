@@ -22,7 +22,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
 
     public static nullInputStream(): InputStream {
         return new class extends InputStream {
-            public override read(): int {
+            public override async read(): Promise<int> {
                 return -1;
             }
         }();
@@ -60,12 +60,12 @@ export abstract class InputStream extends JavaObject implements Closeable {
     }
 
     /** Reads the next byte of data from the input stream. */
-    public /* abstract */ read(): int;
+    public /* abstract */ async read(): Promise<int>;
     /** Reads some number of bytes from the input stream and stores them into the buffer array b. */
-    public read(b: Int8Array): int;
+    public async read(b: Int8Array): Promise<int>;
     /** Reads up to len bytes of data from the input stream into an array of bytes. */
-    public read(b: Int8Array, off: int, len: int): int;
-    public read(...args: unknown[]): int {
+    public async read(b: Int8Array, off: int, len: int): Promise<int>;
+    public async read(...args: unknown[]): Promise<int> {
         if (args.length === 0) {
             throw new NotImplementedError("abstract");
         }
@@ -80,7 +80,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
         }
 
         for (let i = 0; i < length; ++i) {
-            const c = this.read();
+            const c = await this.read();
             if (c === -1) {
                 return i === 0 ? -1 : i;
             }
@@ -96,11 +96,11 @@ export abstract class InputStream extends JavaObject implements Closeable {
      *
      * @returns A byte array containing the bytes read from the stream.
      */
-    public readAllBytes(): Int8Array {
+    public async readAllBytes(): Promise<Int8Array> {
         let buffer = new Int8Array(10000);
         let total = 0;
         while (true) {
-            const read = this.read(buffer, total, buffer.length - total);
+            const read = await this.read(buffer, total, buffer.length - total);
             if (read === -1) {
                 break;
             }
@@ -117,16 +117,16 @@ export abstract class InputStream extends JavaObject implements Closeable {
     }
 
     /** Reads the requested number of bytes from the input stream into the given byte array. */
-    public readNBytes(b: Int8Array, off: int, len: int): int;
+    public async readNBytes(b: Int8Array, off: int, len: int): Promise<int>;
     /** Reads up to a specified number of bytes from the input stream. */
-    public readNBytes(len: int): Int8Array;
-    public readNBytes(...args: unknown[]): Int8Array | int {
+    public async readNBytes(len: int): Promise<Int8Array>;
+    public async readNBytes(...args: unknown[]): Promise<Int8Array | int> {
         if (args.length === 1) {
             const len = args[0] as int;
             const buffer = new Int8Array(len);
             let total = 0;
             while (total < len) {
-                const read = this.read(buffer, total, len - total);
+                const read = await this.read(buffer, total, len - total);
                 if (read === -1) {
                     break;
                 }
@@ -140,7 +140,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
 
             let total = 0;
             while (total < length) {
-                const read = this.read(b, offset + total, length - total);
+                const read = await this.read(b, offset + total, length - total);
                 if (read === -1) {
                     break;
                 }
@@ -164,7 +164,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
      *
      * @returns The actual number of bytes skipped.
      */
-    public skip(n: long): long {
+    public async skip(n: long): Promise<long> {
         let remaining = n;
 
         if (n <= 0n) {
@@ -174,7 +174,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
         const size = Math.min(10000, Number(remaining));
         const skipBuffer = new Int8Array(size);
         while (remaining > 0) {
-            const nr = this.read(skipBuffer, 0, Math.min(size, Number(remaining)));
+            const nr = await this.read(skipBuffer, 0, Math.min(size, Number(remaining)));
             if (nr < 0) {
                 break;
             }
@@ -196,7 +196,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
         let total = 0n;
         const buffer = new Int8Array(10000);
         while (true) {
-            const read = this.read(buffer);
+            const read = await this.read(buffer);
             if (read === -1) {
                 break;
             }

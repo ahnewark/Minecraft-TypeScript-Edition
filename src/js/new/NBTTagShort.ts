@@ -33,12 +33,12 @@ export  class NBTTagShort extends NBTBase {
 	}
 
 
-	public writeTagContents(dataOutput1: DataOutput): void {
-		dataOutput1.writeShort(this.shortValue);
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
+		await dataOutput1.writeShort(this.shortValue);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
-		this.shortValue = dataInput1.readShort();
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
+		this.shortValue = await dataInput1.readShort();
 	}
 
 	public getType(): number {

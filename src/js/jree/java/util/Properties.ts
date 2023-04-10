@@ -62,11 +62,11 @@ export class Properties extends HashMap<JavaString, JavaString> {
      *
      * @param input The source to read the properties from.
      */
-    public load(input: InputStream | Reader): void {
+    public async load(input: InputStream | Reader): Promise<void> {
         let text = "";
         if (input instanceof InputStream) {
             const buffer = new Int8Array(input.available());
-            input.read(buffer);
+            await input.read(buffer);
 
             // Convert all escape sequences to their code point.
             const builder = new StringBuilder();
@@ -98,7 +98,7 @@ export class Properties extends HashMap<JavaString, JavaString> {
             const builder = new StringBuilder();
 
             let count = 0;
-            while ((count = input.read(buffer)) > 0) {
+            while ((count = await input.read(buffer)) > 0) {
                 builder.append(buffer, 0, count);
             }
             text = `${builder.toString()}`;

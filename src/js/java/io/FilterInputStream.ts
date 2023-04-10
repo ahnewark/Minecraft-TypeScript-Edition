@@ -8,13 +8,13 @@ export class FilterInputStream extends java.io.InputStream {
         this.in = _in;
     }
 
-    public read(): int;
+    public async read(): Promise<int>;
 
-    public read(b: Int8Array): int;
+    public async read(b: Int8Array): Promise<int>;
 
-    public read(b: Int8Array, off: int, len: int): int;
+    public async read(b: Int8Array, off: int, len: int): Promise<int>;
 
-    public read(...args) {
+    public async read(...args) {
         switch (args.length) {
             case 0: {
                 return this.in.read();
@@ -30,8 +30,8 @@ export class FilterInputStream extends java.io.InputStream {
         }
     }
 
-    public skip(n: long): long{
-        return this.in.skip(n);
+    public async skip(n: long): Promise<long>{
+        return await this.in.skip(n);
     }
 
     public available(): int {

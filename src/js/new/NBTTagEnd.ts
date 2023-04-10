@@ -7,10 +7,10 @@ import { DataOutput } from "../java/io/DataOutput";
 import { NBTBase } from "./NBTBase";
 
 export  class NBTTagEnd extends NBTBase {
-	public readTagContents(dataInput1: DataInput): void {
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
 	}
 
-	public writeTagContents(dataOutput1: DataOutput): void {
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
 	}
 
 	public getType(): number {

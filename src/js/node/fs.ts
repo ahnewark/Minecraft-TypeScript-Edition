@@ -1,4 +1,5 @@
 import { ByteBuffer } from '../jree/java/nio/ByteBuffer';
+import { TypedArray } from '../jree/java/util/Arrays';
 import { int } from '../jree/types';
 import posixPath from './path';
 
@@ -33,19 +34,27 @@ const directoryExists = async (path: string, dirHandle: FileSystemDirectoryHandl
     }
 }
 
-const getNestedFolderHandle = async (path: string, dirHandle: FileSystemDirectoryHandle): Promise<FileSystemDirectoryHandle> => {
-    const opfsPath = getOpfsPath(path);
+const getNestedFolderHandle = async (path: string, dirHandle: FileSystemDirectoryHandle): Promise<FileSystemDirectoryHandle> => {    
+    let opfsPath = getOpfsPath(path);
+
     let nestedFolderName: string;
+    if (posixPath.basename(opfsPath).includes('.')) {
+        opfsPath = posixPath.dirname(opfsPath);
+    }
     if (opfsPath.indexOf('/') > -1) {
         nestedFolderName = opfsPath.substring(0, opfsPath.indexOf('/'))
-    } else if (opfsPath.indexOf('.') == 0) {
+    } else {
         nestedFolderName = opfsPath;
     }
 
-    if (nestedFolderName == undefined)
-        return dirHandle;
+    let remainingPath = opfsPath.substring(nestedFolderName.length);
 
-    return await dirHandle.getDirectoryHandle(nestedFolderName);
+    const thisDir = await dirHandle.getDirectoryHandle(nestedFolderName);
+
+    if (!remainingPath)
+        return thisDir;
+
+    return await getNestedFolderHandle(remainingPath, thisDir);
 }
 
 const mkdirsRecurse = async (path: string, dirHandle: FileSystemDirectoryHandle, recursiveCreate: boolean) => {
@@ -106,30 +115,41 @@ const openAsync = async (path: string, openMode: OpenModes, unk1: number) => {
     const fileName = posixPath.basename(path);
     const handle = await folder.getFileHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
 
-    switch (openMode) {
-        case 'as':
-        case 'w':
-            const writable = await (handle as any).createWritable();
-            console.log('writable for ', path, writable);
-            return writable;
-        case 'r':
-            return handle;
-    }
+    // console.log({path, fileName, folder, handle})
+
+    return handle;
 }
 
 const existsAsync = async (path: string) => {
     console.log('checking if file exists ', path);
     const root = await navigator.storage.getDirectory();
-    const folder = await getNestedFolderHandle(path, root);
+    
+    let folder: FileSystemDirectoryHandle;
+    try {
+        folder = await getNestedFolderHandle(path, root);
+    } catch(error) {
+        return false;
+    }
+    
     const fileName = posixPath.basename(path);
+
+    // console.log({folder, fileName});
+
     try {
         await folder.getFileHandle(fileName, { create: false});
         console.log('... it does');
         return true;
     } catch (error) {
-        console.log('... it does not');
-        return false;
+        try {
+            await folder.getDirectoryHandle(fileName, {create: false});
+            console.log('... it does');
+            return true
+        } catch (err) {
+
+        }
     }
+    console.log('... it does not');
+    return false;
 }
 
 const openSync = (path: string, openMode: OpenModes, unk1: number) => {
@@ -143,14 +163,24 @@ const openSync = (path: string, openMode: OpenModes, unk1: number) => {
         // wait
     }
 
-    console.log({res, settled})
+    // console.log({res, settled})
 
     return res;
 }
 
-const writeAsync = async (fileHandle: FileSystemWritableFileStream, buffer: Int8Array, offset: number = 0, length: number = 0, position: number = 0): Promise<void> => {
+const writeAsync = async (fileHandle: FileSystemFileHandle, buffer: ArrayBuffer | TypedArray | DataView | Blob | String | string, offset: number = 0, length: number = 0, position?: number): Promise<void> => {
     console.log('writing to file', {fileHandle, buffer, offset, length, position})
-    await fileHandle.write({type: 'write', position, data: buffer});
+    if (position == undefined) {
+        const file = await fileHandle.getFile();
+        // console.log(file);
+        position = (await fileHandle.getFile()).size;
+        
+    }
+    const writable = await (fileHandle as any).createWritable();
+    // console.log({type: 'write', position, data: buffer});
+    await writable.write({type: 'write', position, data: buffer});
+    await writable.close();
+    // console.log({fileHandle});
     // let settled = false;
     // let res;
     // openAsync(path, openMode, unk1)
@@ -164,20 +194,66 @@ const writeAsync = async (fileHandle: FileSystemWritableFileStream, buffer: Int8
 }
 
 const readAsync = async (fileHandle: FileSystemFileHandle, buffer: Int8Array, offset: number, length: number, position: bigint): Promise<number> => {
-    console.error('readAsync is not yet implemented.');
+    // console.error('readAsync is not yet implemented.');
     console.log('Reading file', {fileHandle, buffer, position, length})
     const file = await fileHandle.getFile();
-    //buffer(new Int8Array((await file.arrayBuffer()).slice(0, length)));
-    // let settled = false;
-    // let res;
-    // openAsync(path, openMode, unk1)
-    //     .then(data => res = data);
+    const arrayBuffer = new Int8Array(await file.slice(Number(position), Number(position) + length).arrayBuffer());
+    for (let i = 0; i < arrayBuffer.byteLength; i++) {
+        buffer[i] = arrayBuffer[i];
+    }
+    // console.log('test', file.size, await file.slice(Number(position), Number(position) + length).arrayBuffer())
+    // const reader = file.stream().getReader();
+    // console.log({file, reader})
+    // await reader.read(Number(position));
+    // const readBuffer = await reader.read(length);
+    // console.log({readBuffer});
 
-    // while (!settled) {
-    //     // wait
-    // }
+    // console.log({buffer, arrayBuffer});
 
-    // return res;
+    return arrayBuffer ? arrayBuffer.byteLength : 0;
+}
+
+export type StatOPtions = {
+    bigint?: boolean;
+    throwIfNoEntry?: boolean;
+}
+
+export type Stats = {
+    size: number | bigint;
+}
+
+const statAsync = async (path: string, options: StatOPtions): Promise<Stats> => {
+    const handle = await openSync(path, 'r', 0) as FileSystemFileHandle;
+    const size = (await handle.getFile()).size;
+    if (options.bigint)
+        return { size: BigInt(size) }
+    else
+        return {size};
+}
+
+type DeleteOptions = {
+    force?: boolean;
+    maxRetries?: number;
+    recursive?: boolean;
+    retryDelay?: number;
+}
+
+const deleteAsync = async (path, options?: DeleteOptions) => {
+    console.log('delete', path);
+    const dir = await getNestedFolderHandle(path, await navigator.storage.getDirectory());
+    const basename = posixPath.basename(path);
+    await dir.removeEntry(basename);
+}
+
+const renameAsync = async (oldPath: string, newPath: string) => {
+    console.log('renaming', oldPath, newPath);
+    if (!await existsAsync(oldPath))
+        throw new Error('Cant rename file as it does not exist.')
+    const oldFileHandle = await openAsync(oldPath, 'r', 0) as FileSystemFileHandle;
+    const oldFile = await oldFileHandle.getFile()
+    const newHandle = await openAsync(newPath, 'w', 0);
+    await writeAsync(newHandle, await oldFile.arrayBuffer());
+    await deleteAsync(oldPath);
 }
 
 export {
@@ -186,4 +262,7 @@ export {
     writeAsync,
     existsAsync,
     readAsync,
+    statAsync,
+    deleteAsync,
+    renameAsync,
 }

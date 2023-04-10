@@ -45,11 +45,12 @@ export class FileDescriptor extends JavaObject {
      * I/O connection; false otherwise.
      */
     public valid(): boolean {
-        return this.fileHandle !== undefined;
+        return !!this.fileHandle;
     }
 
-    public close(): void {
-        if (!this.closed && this.fileHandle !== undefined) {
+    public async close(): Promise<void> {
+        console.log('FileDescriptor.close', this.closed, this.fileHandle);
+        if (!this.closed && this.fileHandle) {
             console.error('FileDescriptor.close is not yet implemented.')
 
             // closeSync(this.fileHandle);

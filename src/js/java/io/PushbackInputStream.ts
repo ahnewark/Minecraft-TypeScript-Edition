@@ -39,13 +39,13 @@ export class PushbackInputStream extends FilterInputStream {
         if (size <= 0) {
             throw new IllegalArgumentException("size <= 0");
         }
-        this.buf = new Int8Array[size];
+        this.buf = new Int8Array(size);
         this.pos = size;
     }
 
-    public read(): int;
-    public read(b: Int8Array, off: int, size: int): int;
-    public read (...args): int {
+    public async read(): Promise<int>;
+    public async read(b: Int8Array, off: int, size: int): Promise<int>;
+    public async read (...args): Promise<int> {
         switch (args.length) {
             case 0: {
                 this.ensureOpen();
@@ -77,7 +77,7 @@ export class PushbackInputStream extends FilterInputStream {
                     len -= avail;
                 }
                 if (len > 0) {
-                    len = super.read(b, off, len);
+                    len = await super.read(b, off, len);
                     if (len == -1) {
                         return avail == 0 ? -1 : avail;
                     }
@@ -141,7 +141,7 @@ export class PushbackInputStream extends FilterInputStream {
                     : n + avail;
     }
 
-    public skip(n: long): long {
+    public async skip(n: long): Promise<long> {
         this.ensureOpen();
         if (n <= 0) {
             return BigInt(0);
@@ -156,7 +156,7 @@ export class PushbackInputStream extends FilterInputStream {
             n -= pskip;
         }
         if (n > 0) {
-            pskip += super.skip(n);
+            pskip += await super.skip(n);
         }
         return pskip;
     }

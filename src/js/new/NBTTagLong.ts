@@ -34,12 +34,12 @@ export  class NBTTagLong extends NBTBase {
 	}
 
 
-	public writeTagContents(dataOutput1: DataOutput): void {
-		dataOutput1.writeLong(this.longValue);
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
+		await dataOutput1.writeLong(this.longValue);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
-		this.longValue = dataInput1.readLong();
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
+		this.longValue = await dataInput1.readLong();
 	}
 
 	public getType(): number {

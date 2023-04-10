@@ -62,7 +62,7 @@ export class FileInputStream extends InputStream implements AutoCloseable {
     }
 
     /** Closes this file input stream and releases any system resources associated with the stream. */
-    public override close(): void {
+    public override async close(): Promise<void> {
         this.#channel.close();
     }
 
@@ -80,16 +80,16 @@ export class FileInputStream extends InputStream implements AutoCloseable {
     }
 
     /** Reads the next byte of data from the input stream. */
-    public override read(): int;
+    public override async read(): Promise<int>;
     /** Reads some number of bytes from the input stream and stores them into the buffer array b. */
-    public override read(b: Int8Array): int;
+    public override async read(b: Int8Array): Promise<int>;
     /** Reads up to len bytes of data from the input stream into an array of bytes. */
-    public override read(b: Int8Array, offset: int, length: int): int;
-    public override read(...args: unknown[]): int {
+    public override async read(b: Int8Array, offset: int, length: int): Promise<int>;
+    public override async read(...args: unknown[]): Promise<int> {
         switch (args.length) {
             case 0: {
                 const buffer = ByteBuffer.allocate(1);
-                const read = this.#channel.read(buffer);
+                const read = await this.#channel.read(buffer);
 
                 if (read === 0) {
                     return -1;
@@ -101,7 +101,7 @@ export class FileInputStream extends InputStream implements AutoCloseable {
             case 1: {
                 const b = args[0] as Int8Array;
                 const buffer = ByteBuffer.wrap(b);
-                const read = this.#channel.read(buffer);
+                const read = await this.#channel.read(buffer);
 
                 if (read === 0) {
                     return -1;
@@ -117,7 +117,8 @@ export class FileInputStream extends InputStream implements AutoCloseable {
                 }
 
                 const buffer = ByteBuffer.wrap(b);
-                const read = this.#channel.read([buffer], offset, length);
+                console.log('FileInputStream', length);
+                const read = await this.#channel.read([buffer], offset, length);
 
                 if (read === 0n) {
                     return -1;
@@ -139,7 +140,7 @@ export class FileInputStream extends InputStream implements AutoCloseable {
      *
      * @returns the actual number of bytes skipped.
      */
-    public override skip(n: long): long {
+    public override async skip(n: long): Promise<long> {
         const position = this.#channel.position();
         const remaining = this.#channel.size() - position;
 

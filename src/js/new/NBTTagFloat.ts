@@ -33,12 +33,12 @@ export  class NBTTagFloat extends NBTBase {
 		}
 	}
 
-	public writeTagContents(dataOutput1: DataOutput): void {
-		dataOutput1.writeFloat(this.floatValue);
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
+		await dataOutput1.writeFloat(this.floatValue);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
-		this.floatValue = dataInput1.readFloat();
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
+		this.floatValue = await dataInput1.readFloat();
 	}
 
 	public getType(): number {

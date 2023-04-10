@@ -57,7 +57,7 @@ export  class ChunkLoader implements IChunkLoader {
 		if(file4 !== null && await file4.exists()) {
 			try {
 				let  fileInputStream5: java.io.FileInputStream = await FileInputStream.Construct(file4);
-				let  nBTTagCompound6: NBTTagCompound = CompressedStreamTools.func_1138_a(fileInputStream5);
+				let  nBTTagCompound6: NBTTagCompound = await CompressedStreamTools.func_1138_a(fileInputStream5);
 				if(!nBTTagCompound6.hasKey("Level")) {
 					console.log("Chunk file at " + i2 + "," + i3 + " is missing level data, skipping");
 					return null;
@@ -104,7 +104,7 @@ export  class ChunkLoader implements IChunkLoader {
 			let  nBTTagCompound7: NBTTagCompound = new  NBTTagCompound();
 			nBTTagCompound6.setTag("Level", nBTTagCompound7);
 			await this.storeChunkInCompound(chunk2, world1, nBTTagCompound7);
-			CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound6, fileOutputStream5);
+			await CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound6, fileOutputStream5);
 			fileOutputStream5.close();
 			if(file3 && await file3.exists()) {
 				await file3.delete();

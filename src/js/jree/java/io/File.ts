@@ -19,7 +19,7 @@ import { NullPointerException } from "../lang/NullPointerException";
 import { IllegalArgumentException } from "../lang/IllegalArgumentException";
 // import { existsSync, mkdirSync, openSync, rmdirSync, statSync, unlinkSync } from "fs";
 import { Random } from '../../../java/util/Random';
-import { existsAsync, mkdirAsync } from '../../../node/fs';
+import { deleteAsync, existsAsync, mkdirAsync, renameAsync } from '../../../node/fs';
 
 const pendingFiles = new Set<JavaFile>();
 
@@ -199,21 +199,13 @@ export class JavaFile extends JavaObject implements Comparable<JavaFile>, Serial
      *
      * @returns true if and only if the file or directory is successfully deleted; false otherwise
      */
-    public delete(): boolean {
-        console.error('File.delete not yet implemented.')
-        return false;
-
-        // try {
-        //     if (this.isDirectory()) {
-        //         rmdirSync(`${this.#path}`);
-        //     } else {
-        //         unlinkSync(`${this.#path}`);
-        //     }
-
-        //     return true;
-        // } catch (e) {
-        //     return false;
-        // }
+    public async delete(): Promise<boolean> {
+        try {
+            await deleteAsync('' + this.#path.toString());
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
     /**
@@ -362,8 +354,13 @@ export class JavaFile extends JavaObject implements Comparable<JavaFile>, Serial
         return [];
     }
 
-    public renameTo(file: JavaFile): void {
-        console.error('File.renameTo not yet implemented.');
+    public async renameTo(file: JavaFile): Promise<boolean> {
+        try {
+            await renameAsync('' + this.#path.toString(), '' + file.#path.toString());
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
 }

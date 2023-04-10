@@ -126,7 +126,7 @@ export class PrintStream extends FilterOutputStream {
             }
 
             default: {
-                throw new IllegalArgumentException(new JavaString("Invalid int of arguments"));
+                throw new IllegalArgumentException(new JavaString("Invalid number of arguments"));
             }
         }
 

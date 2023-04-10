@@ -97,7 +97,7 @@ export  class World implements IBlockAccess {
 			let  levelDatFile: File = new  File(worldFolder, new JavaString("level.dat"));
 			if(await levelDatFile.exists()) {
 				try {
-					let  nBTTagCompound5: NBTTagCompound = CompressedStreamTools.func_1138_a(await FileInputStream.Construct(levelDatFile));
+					let  nBTTagCompound5: NBTTagCompound = await CompressedStreamTools.func_1138_a(await FileInputStream.Construct(levelDatFile));
 					let  nBTTagCompound6: NBTTagCompound = nBTTagCompound5.getCompoundTag("Data");
 					return nBTTagCompound6;
 				} catch (exception7) {
@@ -303,9 +303,9 @@ export  class World implements IBlockAccess {
 				let  object17: java.lang.Object = new  WorldProvider();
 				let  file18: File = new File(_this.savePath, new JavaString("level.dat"));
 				_this.field_1033_r = !await file18.exists();
-				if(await file18.exists()) {
+				if (await file18.exists()) {
 					try {
-						let  nBTTagCompound8: NBTTagCompound = CompressedStreamTools.func_1138_a(await FileInputStream.Construct(file18));
+						let  nBTTagCompound8: NBTTagCompound = await CompressedStreamTools.func_1138_a(await FileInputStream.Construct(file18));
 						let  nBTTagCompound9: NBTTagCompound = nBTTagCompound8.getCompoundTag("Data");
 						_this.randomSeed = nBTTagCompound9.getLong("RandomSeed");
 						_this.spawnX = nBTTagCompound9.getInteger("SpawnX");
@@ -463,7 +463,7 @@ export  class World implements IBlockAccess {
 			let  file4: File = new File(this.savePath, new JavaString("level.dat_new"));
 			let  file5: File = new File(this.savePath, new JavaString("level.dat_old"));
 			let  file6: File = new File(this.savePath, new JavaString("level.dat"));
-			CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound3, await FileOutputStream.Construct(file4));
+			await CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound3, await FileOutputStream.Construct(file4));
 			if(await file5.exists()) {
 				await file5.delete();
 			}
@@ -2092,12 +2092,13 @@ export  class World implements IBlockAccess {
 	}
 
 	public async checkSessionLock():  Promise<void> {
+		// console.error('World.checkSessionLock() is not yet implemented.')
 		try {
 			let  file1: File = new  File(this.savePath, new JavaString("session.lock"));
 			let  dataInputStream2: DataInputStream = new  DataInputStream(await FileInputStream.Construct(file1));
 
 			try {
-				if(dataInputStream2.readLong() !== this.lockTimestamp) {
+				if(await dataInputStream2.readLong() !== this.lockTimestamp) {
 					throw new  MinecraftException("The save is being accessed from another location, aborting");
 				}
 			} finally {

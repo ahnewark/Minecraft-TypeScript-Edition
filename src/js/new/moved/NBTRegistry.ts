@@ -31,28 +31,28 @@ export class NBTRegistry {
 		['TAG_Compound', () => new NBTTagCompound()]
 	]
 
-	public static readTag(dataInput0: DataInput):  NBTBase {
-		let  b1: number = dataInput0.readByte();
+	public static async readTag(dataInput0: DataInput):  Promise<NBTBase> {
+		let  b1: number = await dataInput0.readByte();
 		if(b1 === 0) {
 			return new  NBTTagEnd();
 		} else {
 			let  nBTBase2: NBTBase = NBTRegistry.createTagOfType(b1);
-			nBTBase2.key = dataInput0.readUTF();
-			nBTBase2.readTagContents(dataInput0);
+			nBTBase2.key = await dataInput0.readUTF();
+			await nBTBase2.readTagContents(dataInput0);
 			return nBTBase2;
 		}
 	}
 
-	public static writeTag(nBTBase0: NBTBase, dataOutput1: DataOutput):  void {
-		dataOutput1.writeByte(nBTBase0.getType());
+	public static async writeTag(nBTBase0: NBTBase, dataOutput1: DataOutput):  Promise<void> {
+		await dataOutput1.writeByte(nBTBase0.getType());
 		if(nBTBase0.getType() !== 0) {
-			dataOutput1.writeUTF(nBTBase0.getKey());
-			nBTBase0.writeTagContents(dataOutput1);
+			await dataOutput1.writeUTF(nBTBase0.getKey());
+			await nBTBase0.writeTagContents(dataOutput1);
 		}
 	}
 
 	public static createTagOfType(tagId: number):  NBTBase {
-		if (this.tagMap.length >= tagId) {
+		if (NBTRegistry.tagMap.length <= tagId) {
 			throw new Error(`Unrecognized NBT tag ID ${tagId}`)
 		}
 		return NBTRegistry.tagMap[tagId][1]();

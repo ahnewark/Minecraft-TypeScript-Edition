@@ -34,15 +34,15 @@ export  class NBTTagByteArray extends NBTBase {
 	}
 
 
-	public writeTagContents(dataOutput1: DataOutput): void {
-		dataOutput1.writeInt(this.byteArray.length);
-		dataOutput1.write(this.byteArray);
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
+		await dataOutput1.writeInt(this.byteArray.length);
+		await dataOutput1.write(this.byteArray);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
-		let  i2: int = dataInput1.readInt();
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
+		let  i2: int = await dataInput1.readInt();
 		this.byteArray = new Int8Array(i2);
-		dataInput1.readFully(this.byteArray);
+		await dataInput1.readFully(this.byteArray);
 	}
 
 	public getType(): number {

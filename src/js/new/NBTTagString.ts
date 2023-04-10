@@ -38,12 +38,12 @@ export  class NBTTagString extends NBTBase {
 		}
 	}
 
-	public writeTagContents(dataOutput1: DataOutput): void {
-		dataOutput1.writeUTF(this.stringValue);
+	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
+		await dataOutput1.writeUTF(this.stringValue);
 	}
 
-	public readTagContents(dataInput1: DataInput): void {
-		this.stringValue = dataInput1.readUTF();
+	public async readTagContents(dataInput1: DataInput): Promise<void> {
+		this.stringValue = await dataInput1.readUTF();
 	}
 
 	public getType(): number {

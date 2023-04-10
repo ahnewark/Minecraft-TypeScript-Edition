@@ -26,7 +26,7 @@ export class Channels extends JavaObject {
                     super();
                 }
 
-                public read(dst: ByteBuffer): number {
+                public async read(dst: ByteBuffer): Promise<number> {
                     if (!this.isOpen()) {
                         throw new ClosedChannelException();
                     }
@@ -35,7 +35,7 @@ export class Channels extends JavaObject {
                         throw new IllegalArgumentException();
                     }
 
-                    return arg.read(dst.array());
+                    return await arg.read(dst.array());
                 }
 
                 protected implCloseChannel(): void {
