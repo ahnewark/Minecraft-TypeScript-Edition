@@ -20,20 +20,20 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
         this.written = temp;
     }
 
-    public write(b: Int8Array): void;
+    public async write(b: Int8Array): Promise<void>;
 
-    public write(b: int): void;
+    public async write(b: int): Promise<void>;
 
-    public write(b: Int8Array[], off: int, len: int): void;
+    public async write(b: Int8Array[], off: int, len: int): Promise<void>;
 
-    public write(...args) {
+    public async write(...args) {
         switch (args.length) {
             case 1: {
-                this.out.write(args[0]);
+                await this.out.write(args[0]);
                 this.incCount(1);
             }
             case 3: {
-                this.out.write(args[0], args[1], args[2]);
+                await this.out.write(args[0], args[1], args[2]);
                 this.incCount(args[2]);
             }
         }
@@ -43,39 +43,39 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
         this.out.flush();
     }
 
-    public writeBoolean(v: boolean): void {
-        this.out.write(v ? 1 : 0);
+    public async writeBoolean(v: boolean): Promise<void> {
+        await this.out.write(v ? 1 : 0);
         this.incCount(1);
     }
 
-    public writeByte(v: int): void {
-        this.out.write(v);
+    public async writeByte(v: int): Promise<void> {
+        await this.out.write(v);
         this.incCount(1);
     }
 
-    public writeShort(v: int): void {
-        this.out.write((v >>> 8) & 0xFF);
-        this.out.write((v >>> 0) & 0xFF);
+    public async writeShort(v: int): Promise<void> {
+        await this.out.write((v >>> 8) & 0xFF);
+        await this.out.write((v >>> 0) & 0xFF);
         this.incCount(2);
     }
 
-    public writeChar(v: int): void {
-        this.out.write((v >>> 8) & 0xFF);
-        this.out.write((v >>> 0) & 0xFF);
+    public async writeChar(v: int): Promise<void> {
+        await this.out.write((v >>> 8) & 0xFF);
+        await this.out.write((v >>> 0) & 0xFF);
         this.incCount(2);
     }
 
-    public writeInt(v: int): void {
-        this.out.write((v >>> 24) & 0xFF);
-        this.out.write((v >>> 16) & 0xFF);
-        this.out.write((v >>>  8) & 0xFF);
-        this.out.write((v >>>  0) & 0xFF);
+    public async writeInt(v: int): Promise<void> {
+        await this.out.write((v >>> 24) & 0xFF);
+        await this.out.write((v >>> 16) & 0xFF);
+        await this.out.write((v >>>  8) & 0xFF);
+        await this.out.write((v >>>  0) & 0xFF);
         this.incCount(4);
     }
 
     private writeBuffer : Int8Array = new Int8Array(8);
 
-    public writeLong(v: long): void {
+    public async writeLong(v: long): Promise<void> {
         this.writeBuffer[0] = Number(v >> BigInt(56));
         this.writeBuffer[1] = Number(v >> BigInt(48));
         this.writeBuffer[2] = Number(v >> BigInt(40));
@@ -84,47 +84,47 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
         this.writeBuffer[5] = Number(v >> BigInt(16));
         this.writeBuffer[6] = Number(v >> BigInt(8));
         this.writeBuffer[7] = Number(v >> BigInt(0));
-        this.out.write(this.writeBuffer, 0, 8);
+        await this.out.write(this.writeBuffer, 0, 8);
         this.incCount(8);
     }
 
-    public writeFloat(v: float): void {
+    public async writeFloat(v: float): Promise<void> {
         let buf = new ArrayBuffer(4);
         (new Float32Array(buf))[0] = v;
         let intBytes = (new Uint32Array(buf))[0];
-        this.writeInt(intBytes);
+        await this.writeInt(intBytes);
     }
 
-    public writeDouble(v: double): void {
+    public async writeDouble(v: double): Promise<void> {
         var buf = new ArrayBuffer(8);
         (new Float64Array(buf))[0] = v;
         let bigInt = BigInt(BigInt((new Uint32Array(buf))[0]) << BigInt(32) + BigInt((new Uint32Array(buf))[1]));
-        this.writeLong(bigInt);
+        await this.writeLong(bigInt);
     }
 
-    public writeBytes(s: string): void {
+    public async writeBytes(s: string): Promise<void> {
         let len = s.length;
         for (let i = 0 ; i < len ; i++) {
-            this.out.write(s.charCodeAt(i));
+            await this.out.write(s.charCodeAt(i));
         }
         this.incCount(len);
     }
 
-    public writeChars(s: string): void {
+    public async writeChars(s: string): Promise<void> {
         let len = s.length;
         for (let i = 0 ; i < len ; i++) {
             let v = s.charCodeAt(i);
-            this.out.write((v >>> 8) & 0xFF);
-            this.out.write((v >>> 0) & 0xFF);
+            await this.out.write((v >>> 8) & 0xFF);
+            await this.out.write((v >>> 0) & 0xFF);
         }
         this.incCount(len * 2);
     }
 
-    public writeUTF(str: string): void {
-        DataOutputStream.writeUTF(str, this as DataOutput);
+    public async writeUTF(str: string): Promise<void> {
+        await DataOutputStream.writeUTF(str, this as DataOutput);
     }
 
-    static writeUTF(str: string, out: DataOutput): number {
+    static async writeUTF(str: string, out: DataOutput): Promise<number> {
         let strlen = str.length;
         let utflen = 0;
         let c, count = 0;
@@ -178,7 +178,7 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
                 bytearr[count++] = (0x80 | ((c >>  0) & 0x3F));
             }
         }
-        out.write(bytearr, 0, utflen+2);
+        await out.write(bytearr, 0, utflen+2);
         return utflen + 2;
     }
 

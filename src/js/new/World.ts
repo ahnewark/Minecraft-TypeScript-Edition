@@ -278,7 +278,7 @@ export  class World implements IBlockAccess {
 				_this.multiplayerWorld = false;
 				_this.worldFile = file1;
 				_this.field_9431_w = string2;
-				file1.mkdirs();
+				await file1.mkdirs();
 				_this.savePath = new  File(file1, new JavaString(string2));
 				await _this.savePath.mkdirs();
 
@@ -287,7 +287,7 @@ export  class World implements IBlockAccess {
 					let  dataOutputStream7: DataOutputStream = new DataOutputStream(await FileOutputStream.Construct(file6));
 
 					try {
-						dataOutputStream7.writeLong(_this.lockTimestamp);
+						await dataOutputStream7.writeLong(_this.lockTimestamp);
 					} finally {
 						dataOutputStream7.close();
 					}
@@ -419,18 +419,18 @@ export  class World implements IBlockAccess {
 	// 	}
 	// }
 
-	public saveWorld(z1: boolean, iProgressUpdate2: IProgressUpdate | null):  void {
+	public async saveWorld(z1: boolean, iProgressUpdate2: IProgressUpdate | null):  Promise<void> {
 		if(this.chunkProvider.func_536_b()) {
 			if(iProgressUpdate2) {
 				iProgressUpdate2.func_594_b("Saving level");
 			}
 
-			this.saveLevel();
+			await this.saveLevel();
 			if(iProgressUpdate2) {
 				iProgressUpdate2.displayLoadingString("Saving chunks");
 			}
 
-			this.chunkProvider.saveChunks(z1, iProgressUpdate2);
+			await this.chunkProvider.saveChunks(z1, iProgressUpdate2);
 		}
 	}
 
@@ -603,8 +603,8 @@ export  class World implements IBlockAccess {
 	}
 
 	public async setBlockMetadataWithNotify(i1: int, i2: int, i3: int, i4: int):  Promise<void> {
-		if(this.setBlockMetadata(i1, i2, i3, i4)) {
-			this.notifyBlockChange(i1, i2, i3, await this.getBlockId(i1, i2, i3));
+		if(await this.setBlockMetadata(i1, i2, i3, i4)) {
+			await this.notifyBlockChange(i1, i2, i3, await this.getBlockId(i1, i2, i3));
 		}
 
 	}
@@ -627,18 +627,18 @@ export  class World implements IBlockAccess {
 		}
 	}
 
-	public setBlockWithNotify(i1: int, i2: int, i3: int, i4: int):  boolean {
-		if(this.setBlock(i1, i2, i3, i4)) {
-			this.notifyBlockChange(i1, i2, i3, i4);
+	public async setBlockWithNotify(i1: int, i2: int, i3: int, i4: int):  Promise<boolean> {
+		if(await this.setBlock(i1, i2, i3, i4)) {
+			await this.notifyBlockChange(i1, i2, i3, i4);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public setBlockAndMetadataWithNotify(i1: int, i2: int, i3: int, i4: int, i5: int):  boolean {
+	public async setBlockAndMetadataWithNotify(i1: int, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		if(this.setBlockAndMetadata(i1, i2, i3, i4, i5)) {
-			this.notifyBlockChange(i1, i2, i3, i4);
+			await this.notifyBlockChange(i1, i2, i3, i4);
 			return true;
 		} else {
 			return false;
@@ -652,9 +652,9 @@ export  class World implements IBlockAccess {
 
 	}
 
-	protected notifyBlockChange(i1: int, i2: int, i3: int, i4: int):  void {
+	protected async notifyBlockChange(i1: int, i2: int, i3: int, i4: int): Promise<void> {
 		this.markBlockNeedsUpdate(i1, i2, i3);
-		this.notifyBlocksOfNeighborChange(i1, i2, i3, i4);
+		await this.notifyBlocksOfNeighborChange(i1, i2, i3, i4);
 	}
 
 	public markBlocksDirtyVertical(i1: int, i2: int, i3: int, i4: int):  void {
@@ -681,13 +681,13 @@ export  class World implements IBlockAccess {
 
 	}
 
-	public notifyBlocksOfNeighborChange(i1: int, i2: int, i3: int, i4: int):  void {
-		this.notifyBlockOfNeighborChange(i1 - 1, i2, i3, i4);
-		this.notifyBlockOfNeighborChange(i1 + 1, i2, i3, i4);
-		this.notifyBlockOfNeighborChange(i1, i2 - 1, i3, i4);
-		this.notifyBlockOfNeighborChange(i1, i2 + 1, i3, i4);
-		this.notifyBlockOfNeighborChange(i1, i2, i3 - 1, i4);
-		this.notifyBlockOfNeighborChange(i1, i2, i3 + 1, i4);
+	public async notifyBlocksOfNeighborChange(i1: int, i2: int, i3: int, i4: int):  Promise<void> {
+		await this.notifyBlockOfNeighborChange(i1 - 1, i2, i3, i4);
+		await this.notifyBlockOfNeighborChange(i1 + 1, i2, i3, i4);
+		await this.notifyBlockOfNeighborChange(i1, i2 - 1, i3, i4);
+		await this.notifyBlockOfNeighborChange(i1, i2 + 1, i3, i4);
+		await this.notifyBlockOfNeighborChange(i1, i2, i3 - 1, i4);
+		await this.notifyBlockOfNeighborChange(i1, i2, i3 + 1, i4);
 	}
 
 	private async notifyBlockOfNeighborChange(i1: int, i2: int, i3: int, i4: int):  Promise<void> {
@@ -806,7 +806,7 @@ export  class World implements IBlockAccess {
 				}
 
 				if(await this.getSavedLightValue(enumSkyBlock1, i2, i3, i4) !== i5) {
-					this.func_616_a(enumSkyBlock1, i2, i3, i4, i2, i3, i4);
+					await this.func_616_a(enumSkyBlock1, i2, i3, i4, i2, i3, i4);
 				}
 
 			}
@@ -1651,11 +1651,11 @@ export  class World implements IBlockAccess {
 		return block4 === null ? false : block4.isOpaqueCube();
 	}
 
-	public func_651_a(iProgressUpdate1: IProgressUpdate):  void {
-		this.saveWorld(true, iProgressUpdate1);
+	public async func_651_a(iProgressUpdate1: IProgressUpdate): Promise<void> {
+		await this.saveWorld(true, iProgressUpdate1);
 	}
 
-	public func_6465_g():  boolean {
+	public async func_6465_g(): Promise<boolean> {
 		if(this.field_4204_J >= 50) {
 			return false;
 		} else {
@@ -1672,7 +1672,7 @@ export  class World implements IBlockAccess {
 						return z2;
 					}
 
-					(this.field_1051_z.pop() as MetadataChunkBlock).func_4127_a(this);
+					await (this.field_1051_z.pop() as MetadataChunkBlock).func_4127_a(this);
 				}
 
 				z2 = false;
@@ -1684,8 +1684,8 @@ export  class World implements IBlockAccess {
 		}
 	}
 
-	public func_616_a(enumSkyBlock1: EnumSkyBlock| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  void {
-		this.func_627_a(enumSkyBlock1, i2, i3, i4, i5, i6, i7, true);
+	public async func_616_a(enumSkyBlock1: EnumSkyBlock| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  Promise<void> {
+		await this.func_627_a(enumSkyBlock1, i2, i3, i4, i5, i6, i7, true);
 	}
 
 	public async func_627_a(enumSkyBlock1: EnumSkyBlock| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int, z8: boolean):  Promise<void> {
@@ -1742,7 +1742,7 @@ export  class World implements IBlockAccess {
 		this.field_21120_L = z2;
 	}
 
-	public tick():  void {
+	public async tick():  Promise<void> {
 		// SpawnerAnimals.performSpawning(this, this.field_21121_K, this.field_21120_L);
 		this.chunkProvider.func_532_a();
 		let  i1: int = this.calculateSkylightSubtracted(1.0);
@@ -1756,11 +1756,11 @@ export  class World implements IBlockAccess {
 
 		++this.worldTime;
 		if(this.worldTime % BigInt(this.autosavePeriod) === 0n) {
-			this.saveWorld(false, null);
+			await this.saveWorld(false, null);
 		}
 
-		this.TickUpdates(false);
-		this.func_4080_j();
+		await this.TickUpdates(false);
+		await this.func_4080_j();
 	}
 
 	protected async func_4080_j():  Promise<void> {

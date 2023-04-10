@@ -59,11 +59,11 @@ export class PrintStream extends FilterOutputStream {
             case 1: {
                 const arg = args[0] as OutputStream | JavaFile | JavaString;
                 if (arg instanceof JavaFile) {
-                    output = new FileOutputStream(arg);
+                    output = await FileOutputStream.Construct(arg);
                 } else if (arg instanceof OutputStream) {
                     output = arg;
                 } else {
-                    output = new FileOutputStream(arg);
+                    output = await FileOutputStream.Construct(arg);
                 }
 
                 charset = Charset.defaultCharset();
@@ -88,7 +88,7 @@ export class PrintStream extends FilterOutputStream {
                         charset = cs;
                     }
 
-                    output = new FileOutputStream(file);
+                    output = await FileOutputStream.Construct(file);
                 } else {
                     const [fileName, arg2] = args as [JavaString, JavaString | Charset];
                     if (arg2 instanceof Charset) {
@@ -102,7 +102,7 @@ export class PrintStream extends FilterOutputStream {
                         charset = cs;
                     }
 
-                    output = new FileOutputStream(fileName);
+                    output = await FileOutputStream.Construct(fileName);
                 }
 
                 break;
@@ -143,20 +143,20 @@ export class PrintStream extends FilterOutputStream {
     }
 
     /** Appends the specified character to this output stream. */
-    public append(c: char): PrintStream;
+    public async append(c: char): Promise<PrintStream>;
     /** Appends the specified character sequence to this output stream. */
-    public append(csq: CharSequence | null): PrintStream;
+    public async append(csq: CharSequence | null): Promise<PrintStream>;
     /** Appends a subsequence of the specified character sequence to this output stream. */
-    public append(csq: CharSequence | null, start: int, end: int): PrintStream;
-    public append(...args: unknown[]): PrintStream {
+    public async append(csq: CharSequence | null, start: int, end: int): Promise<PrintStream>;
+    public async append(...args: unknown[]): Promise<PrintStream> {
         if (args.length === 1) {
             const arg = args[0] as char | CharSequence | null;
             if (typeof arg === "number") {
-                this.write(arg);
+                await this.write(arg);
             } else {
                 const s = arg ?? new JavaString("null");
                 const buffer = this.encode(s);
-                this.out.write(buffer);
+                await this.out.write(buffer);
             }
         } else {
             const [csq, start, end] = args as [CharSequence | null, int, int];
@@ -171,7 +171,7 @@ export class PrintStream extends FilterOutputStream {
             }
 
             const buffer = this.encode(s.subSequence(start, end));
-            this.write(buffer);
+            await this.write(buffer);
         }
 
         return this;
@@ -221,30 +221,30 @@ export class PrintStream extends FilterOutputStream {
     }
 
     /** Prints a boolean value. */
-    public print(b: boolean): void;
+    public async print(b: boolean): Promise<void>;
     /** Prints a character. */
-    public print(c: char): void;
+    public async print(c: char): Promise<void>;
     /** Prints an array of characters. */
-    public print(s: Uint16Array): void;
+    public async print(s: Uint16Array): Promise<void>;
     /** Prints a double-precision floating-point int. */
-    public print(d: double): void;
+    public async print(d: double): Promise<void>;
     /** Prints a floating-point int. */
-    public print(f: float): void;
+    public async print(f: float): Promise<void>;
     /** Prints an integer. */
-    public print(i: int): void;
+    public async print(i: int): Promise<void>;
     /** Prints a long integer. */
-    public print(l: long): void;
+    public async print(l: long): Promise<void>;
     /** Prints an object. */
-    public print(obj: JavaObject | null): void;
+    public async print(obj: JavaObject | null): Promise<void>;
     /** Prints a string. */
-    public print(str: JavaString | null): void;
-    public print(v: unknown): void {
+    public async print(str: JavaString | null): Promise<void>;
+    public async print(v: unknown): Promise<void> {
         if (v === null) {
-            this.append(new JavaString("null"));
+            await this.append(new JavaString("null"));
         } else if (v instanceof JavaString) {
-            this.append(v);
+            await this.append(v);
         } else {
-            this.append(new JavaString(`${v}`));
+            await this.append(new JavaString(`${v}`));
         }
     }
 
@@ -262,40 +262,40 @@ export class PrintStream extends FilterOutputStream {
     }
 
     /** Terminates the current line by writing the line separator string. */
-    public println(): void;
+    public async println(): Promise<void>;
     /** Prints a boolean and then terminate the line. */
-    public println(b: boolean): void;
+    public async println(b: boolean): Promise<void>;
     /** Prints a character and then terminate the line. */
-    public println(c: char): void;
+    public async println(c: char): Promise<void>;
     /** Prints an array of characters and then terminate the line. */
-    public println(s: Uint16Array): void;
+    public async println(s: Uint16Array): Promise<void>;
     /** Prints a double and then terminate the line. */
-    public println(d: double): void;
+    public async println(d: double): Promise<void>;
     /** Prints a float and then terminate the line. */
-    public println(f: float): void;
+    public async println(f: float): Promise<void>;
     /** Prints an integer and then terminate the line. */
-    public println(i: int): void;
+    public async println(i: int): Promise<void>;
     /** Prints a long and then terminate the line. */
-    public println(l: long): void;
+    public async println(l: long): Promise<void>;
     /** Prints an object and then terminate the line. */
-    public println(obj: JavaObject | null): void;
+    public async println(obj: JavaObject | null): Promise<void>;
     /** Prints a string and then terminate the line. */
-    public println(str: JavaString | string): void;
-    public println(v?: unknown): void {
+    public async println(str: JavaString | string): Promise<void>;
+    public async println(v?: unknown): Promise<void> {
         if (v !== undefined) {
             if (v === null) {
                 const buffer = this.encode(new JavaString("null"));
-                this.write(buffer);
+                await this.write(buffer);
             } else if (v instanceof JavaString) {
                 const buffer = this.encode(v);
-                this.write(buffer);
+                await this.write(buffer);
             } else {
                 const buffer = this.encode(new JavaString(`${v}`));
-                this.write(buffer);
+                await this.write(buffer);
             }
         }
 
-        this.print(PrintStream.#lineSeparator);
+        await this.print(PrintStream.#lineSeparator);
         if (this.#autoFlush) {
             this.flush();
         }
@@ -308,13 +308,13 @@ export class PrintStream extends FilterOutputStream {
         if (args.length === 1) {
             const b = args[0] as Int8Array | int;
             if (b instanceof Int8Array) {
-                this.out.write(b, 0, b.length);
+                await this.out.write(b, 0, b.length);
             } else {
-                this.out.write(b);
+                await this.out.write(b);
             }
         } else {
             const [b, off, len] = args as [Int8Array, int, int];
-            this.out.write(b.subarray(off, off + len));
+            await this.out.write(b.subarray(off, off + len));
         }
     }
 

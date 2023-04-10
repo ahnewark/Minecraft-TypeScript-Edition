@@ -130,7 +130,7 @@ export class Chunk {
 		this.isModified = true;
 	}
 
-	public func_1024_c():  void {
+	public async func_1024_c():  Promise<void> {
 		let  i1: number = 127;
 
 		let  i2: number;
@@ -168,14 +168,14 @@ export class Chunk {
 
 		for(i2 = 0; i2 < 16; ++i2) {
 			for(i3 = 0; i3 < 16; ++i3) {
-				this.func_996_c(i2, i3);
+				await this.func_996_c(i2, i3);
 			}
 		}
 
 		this.isModified = true;
 	}
 
-	public func_4143_d():  void {
+	public async func_4143_d(): Promise<void> {
 		let  b1: number = 32;
 
 		for(let  i2: number = 0; i2 < 16; ++i2) {
@@ -214,33 +214,33 @@ export class Chunk {
 			}
 		}
 
-		this.worldObj.func_616_a(EnumSkyBlock.Block, this.xPosition * 16, b1 - 1, this.zPosition * 16, this.xPosition * 16 + 16, b1 + 1, this.zPosition * 16 + 16);
+		await this.worldObj.func_616_a(EnumSkyBlock.Block, this.xPosition * 16, b1 - 1, this.zPosition * 16, this.xPosition * 16 + 16, b1 + 1, this.zPosition * 16 + 16);
 		this.isModified = true;
 	}
 
-	private func_996_c(i1: number, i2: number):  void {
+	private async func_996_c(i1: number, i2: number):  Promise<void> {
 		let  i3: number = this.getHeightValue(i1, i2);
 		let  i4: number = this.xPosition * 16 + i1;
 		let  i5: number = this.zPosition * 16 + i2;
-		this.func_1020_f(i4 - 1, i5, i3);
-		this.func_1020_f(i4 + 1, i5, i3);
-		this.func_1020_f(i4, i5 - 1, i3);
-		this.func_1020_f(i4, i5 + 1, i3);
+		await this.func_1020_f(i4 - 1, i5, i3);
+		await this.func_1020_f(i4 + 1, i5, i3);
+		await this.func_1020_f(i4, i5 - 1, i3);
+		await this.func_1020_f(i4, i5 + 1, i3);
 	}
 
 	private async func_1020_f(i1: number, i2: number, i3: number):  Promise<void> {
 		let  i4: number = await this.worldObj.getHeightValue(i1, i2);
 		if(i4 > i3) {
-			this.worldObj.func_616_a(EnumSkyBlock.Sky, i1, i3, i2, i1, i4, i2);
+			await this.worldObj.func_616_a(EnumSkyBlock.Sky, i1, i3, i2, i1, i4, i2);
 			this.isModified = true;
 		} else if(i4 < i3) {
-			this.worldObj.func_616_a(EnumSkyBlock.Sky, i1, i4, i2, i1, i3, i2);
+			await this.worldObj.func_616_a(EnumSkyBlock.Sky, i1, i4, i2, i1, i3, i2);
 			this.isModified = true;
 		}
 
 	}
 
-	private func_1003_g(i1: number, i2: number, i3: number):  void {
+	private async func_1003_g(i1: number, i2: number, i3: number): Promise<void> {
 		let  i4: number = this.heightMap[i3 << 4 | i1] & 255;
 		let  i5: number = i4;
 		if(i2 > i4) {
@@ -279,7 +279,7 @@ export class Chunk {
 					this.skylightMap.setNibble(i1, i9, i3, 15);
 				}
 			} else {
-				this.worldObj.func_616_a(EnumSkyBlock.Sky, i7, i4, i8, i7, i5, i8);
+				await this.worldObj.func_616_a(EnumSkyBlock.Sky, i7, i4, i8, i7, i5, i8);
 
 				for(i9 = i4; i9 < i5; ++i9) {
 					this.skylightMap.setNibble(i1, i9, i3, 0);
@@ -307,7 +307,7 @@ export class Chunk {
 			}
 
 			if(i5 !== i10) {
-				this.worldObj.func_616_a(EnumSkyBlock.Sky, i7 - 1, i5, i8 - 1, i7 + 1, i10, i8 + 1);
+				await this.worldObj.func_616_a(EnumSkyBlock.Sky, i7 - 1, i5, i8 - 1, i7 + 1, i10, i8 + 1);
 			}
 
 			this.isModified = true;
@@ -318,7 +318,7 @@ export class Chunk {
 		return this.blocks[i1 << 11 | i3 << 7 | i2];
 	}
 
-	public setBlockIDWithMetadata(i1: number, i2: number, i3: number, i4: number, i5: number):  boolean {
+	public async setBlockIDWithMetadata(i1: number, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
 		let  b6: number = i4 as number;
 		let  i7: number = this.heightMap[i3 << 4 | i1] & 255;
 		let  i8: number = this.blocks[i1 << 11 | i3 << 7 | i2] & 255;
@@ -336,17 +336,17 @@ export class Chunk {
 			if(!this.worldObj.worldProvider.field_6478_e) {
 				if(Block.lightOpacity[b6] !== 0) {
 					if(i2 >= i7) {
-						this.func_1003_g(i1, i2 + 1, i3);
+						await this.func_1003_g(i1, i2 + 1, i3);
 					}
 				} else if(i2 === i7 - 1) {
-					this.func_1003_g(i1, i2, i3);
+					await this.func_1003_g(i1, i2, i3);
 				}
 
-				this.worldObj.func_616_a(EnumSkyBlock.Sky, i9, i2, i10, i9, i2, i10);
+				await this.worldObj.func_616_a(EnumSkyBlock.Sky, i9, i2, i10, i9, i2, i10);
 			}
 
-			this.worldObj.func_616_a(EnumSkyBlock.Block, i9, i2, i10, i9, i2, i10);
-			this.func_996_c(i1, i3);
+			await this.worldObj.func_616_a(EnumSkyBlock.Block, i9, i2, i10, i9, i2, i10);
+			await this.func_996_c(i1, i3);
 			this.data.setNibble(i1, i2, i3, i5);
 			if(i4 !== 0) {
 			    Block.blocksList[i4].onBlockAdded(this.worldObj, i9, i2, i10);
@@ -357,7 +357,7 @@ export class Chunk {
 		}
 	}
 
-	public setBlockID(i1: number, i2: number, i3: number, i4: number):  boolean {
+	public async setBlockID(i1: number, i2: number, i3: number, i4: number):  Promise<boolean> {
 		let  b5: number = i4 as number;
 		let  i6: number = this.heightMap[i3 << 4 | i1] & 255;
 		let  i7: number = this.blocks[i1 << 11 | i3 << 7 | i2] & 255;
@@ -374,15 +374,15 @@ export class Chunk {
 			this.data.setNibble(i1, i2, i3, 0);
 			if(Block.lightOpacity[b5] !== 0) {
 				if(i2 >= i6) {
-					this.func_1003_g(i1, i2 + 1, i3);
+					await this.func_1003_g(i1, i2 + 1, i3);
 				}
 			} else if(i2 === i6 - 1) {
-				this.func_1003_g(i1, i2, i3);
+				await this.func_1003_g(i1, i2, i3);
 			}
 
-			this.worldObj.func_616_a(EnumSkyBlock.Sky, i8, i2, i9, i8, i2, i9);
-			this.worldObj.func_616_a(EnumSkyBlock.Block, i8, i2, i9, i8, i2, i9);
-			this.func_996_c(i1, i3);
+			await this.worldObj.func_616_a(EnumSkyBlock.Sky, i8, i2, i9, i8, i2, i9);
+			await this.worldObj.func_616_a(EnumSkyBlock.Block, i8, i2, i9, i8, i2, i9);
+			await this.func_996_c(i1, i3);
 			if(i4 !== 0 && !this.worldObj.multiplayerWorld) {
 				Block.blocksList[i4].onBlockAdded(this.worldObj, i8, i2, i9);
 			}

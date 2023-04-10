@@ -65,8 +65,8 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 			if(!this.chunkExists(i1, i2)) {
 				if(this.chunks[i5]) {
 					this.chunks[i5]!.onChunkUnload();
-					this.saveChunk(this.chunks[i5]!);
-					this.saveExtraChunkData(this.chunks[i5]!);
+					await this.saveChunk(this.chunks[i5]!);
+					await this.saveExtraChunkData(this.chunks[i5]!);
 				}
 
 				let  chunk6: Chunk | null = await this.func_542_c(i1, i2);
@@ -79,25 +79,25 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 				}
 
 				this.chunks[i5] = chunk6;
-				chunk6.func_4143_d();
+				await chunk6.func_4143_d();
 				if(this.chunks[i5]) {
 					this.chunks[i5]!.onChunkLoad();
 				}
 
 				if(this.chunks[i5] && !this.chunks[i5]!.isTerrainPopulated && this.chunkExists(i1 + 1, i2 + 1) && this.chunkExists(i1, i2 + 1) && this.chunkExists(i1 + 1, i2)) {
-					this.populate(this, i1, i2);
+					await this.populate(this, i1, i2);
 				}
 
 				if(await this.chunkExists(i1 - 1, i2) && !(await this.provideChunk(i1 - 1, i2)).isTerrainPopulated && this.chunkExists(i1 - 1, i2 + 1) && this.chunkExists(i1, i2 + 1) && this.chunkExists(i1 - 1, i2)) {
-					this.populate(this, i1 - 1, i2);
+					await this.populate(this, i1 - 1, i2);
 				}
 
 				if(await this.chunkExists(i1, i2 - 1) && !(await this.provideChunk(i1, i2 - 1)).isTerrainPopulated && this.chunkExists(i1 + 1, i2 - 1) && this.chunkExists(i1, i2 - 1) && this.chunkExists(i1 + 1, i2)) {
-					this.populate(this, i1, i2 - 1);
+					await this.populate(this, i1, i2 - 1);
 				}
 
 				if(await this.chunkExists(i1 - 1, i2 - 1) && !(await this.provideChunk(i1 - 1, i2 - 1)).isTerrainPopulated && this.chunkExists(i1 - 1, i2 - 1) && this.chunkExists(i1, i2 - 1) && this.chunkExists(i1 - 1, i2)) {
-					this.populate(this, i1 - 1, i2 - 1);
+					await this.populate(this, i1 - 1, i2 - 1);
 				}
 			}
 
@@ -130,10 +130,10 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 		}
 	}
 
-	private saveExtraChunkData(chunk1: Chunk):  void {
+	private async saveExtraChunkData(chunk1: Chunk):  Promise<void> {
 		if(this.chunkLoader !== null) {
 			try {
-				this.chunkLoader.saveExtraChunkData(this.worldObj, chunk1);
+				await this.chunkLoader.saveExtraChunkData(this.worldObj, chunk1);
 			} catch (exception3) {
 				if (exception3 instanceof java.lang.Exception) {
 					console.error(exception3);
@@ -144,11 +144,11 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 		}
 	}
 
-	private saveChunk(chunk1: Chunk):  void {
+	private async saveChunk(chunk1: Chunk):  Promise<void> {
 		if(this.chunkLoader !== null) {
 			try {
 				chunk1.lastSaveTime = this.worldObj.worldTime;
-				this.chunkLoader.saveChunk(this.worldObj, chunk1);
+				await this.chunkLoader.saveChunk(this.worldObj, chunk1);
 			} catch (iOException3) {
 				if (iOException3 instanceof java.io.IOException) {
 					console.error(iOException3);
@@ -164,7 +164,7 @@ export  class ChunkProviderLoadOrGenerate extends JavaObject implements IChunkPr
 		if(!chunk4.isTerrainPopulated) {
 			chunk4.isTerrainPopulated = true;
 			if(this.chunkProvider !== null) {
-				this.chunkProvider.populate(iChunkProvider1, i2, i3);
+				await this.chunkProvider.populate(iChunkProvider1, i2, i3);
 				chunk4.setChunkModified();
 			}
 		}

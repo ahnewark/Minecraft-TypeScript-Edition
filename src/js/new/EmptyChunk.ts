@@ -21,23 +21,15 @@ export  class EmptyChunk extends Chunk {
 		switch (args.length) {
 			case 3: {
 				const [world1, i2, i3] = args as [World, int, int];
-
-
-		super(world1, i2, i3);
-		this.neverSave = true;
-	
-
+				super(world1, i2, i3);
+				this.neverSave = true;
 				break;
 			}
 
 			case 4: {
 				const [world1, b2, i3, i4] = args as [World, Int8Array, int, int];
-
-
-		super(world1, b2, i3, i4);
-		this.neverSave = true;
-	
-
+				super(world1, b2, i3, i4);
+				this.neverSave = true;
 				break;
 			}
 
@@ -62,21 +54,21 @@ export  class EmptyChunk extends Chunk {
 	public generateHeightMap():  void {
 	}
 
-	public func_1024_c():  void {
+	public async func_1024_c():  Promise<void> {
 	}
 
-	public func_4143_d():  void {
+	public async func_4143_d(): Promise<void> {
 	}
 
 	public getBlockID(i1: int, i2: int, i3: int):  int {
 		return 0;
 	}
 
-	public setBlockIDWithMetadata(i1: int, i2: int, i3: int, i4: int, i5: int):  boolean {
+	public async setBlockIDWithMetadata(i1: int, i2: int, i3: int, i4: int, i5: int): Promise<boolean> {
 		return true;
 	}
 
-	public setBlockID(i1: int, i2: int, i3: int, i4: int):  boolean {
+	public async setBlockID(i1: int, i2: int, i3: int, i4: int): Promise<boolean> {
 		return true;
 	}
 
@@ -152,7 +144,7 @@ export  class EmptyChunk extends Chunk {
 	}
 
 	public func_997_a(j1: long): Random {
-		return new  Random(this.worldObj.randomSeed + BigInt(this.xPosition * this.xPosition * 4987142) + BigInt(this.xPosition * 5947611) + BigInt(this.zPosition * this.zPosition)* 4392871n + (this.zPosition * 389711) ^ j1);
+		return new  Random(this.worldObj.randomSeed + BigInt(this.xPosition * this.xPosition * 4987142) + BigInt(this.xPosition * 5947611) + BigInt(this.zPosition * this.zPosition)* 4392871n + BigInt(this.zPosition * 389711) ^ j1);
 	}
 
 	public func_21167_h():  boolean {

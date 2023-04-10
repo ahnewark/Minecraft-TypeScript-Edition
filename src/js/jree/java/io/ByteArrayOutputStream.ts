@@ -77,16 +77,16 @@ export class ByteArrayOutputStream extends OutputStream {
         return new JavaString(charset.decode(buffer).array());
     }
 
-    public override write(b: Int8Array): void;
+    public override async write(b: Int8Array): Promise<void>;
     /** Writes len bytes from the specified byte array starting at offset off to this ByteArrayOutputStream. */
-    public override write(b: Int8Array, off: int, len: int): void;
+    public override async write(b: Int8Array, off: int, len: int): Promise<void>;
     /** Writes the specified byte to this ByteArrayOutputStream. */
-    public override write(b: int): void;
-    public override write(...args: unknown[]): void {
+    public override async write(b: int): Promise<void>;
+    public override async write(...args: unknown[]): Promise<void> {
         if (args.length === 1) {
             const b = args[0] as int | Int8Array;
             if (b instanceof Int8Array) {
-                this.write(b, 0, b.length);
+                await this.write(b, 0, b.length);
 
                 return;
             }
@@ -106,8 +106,8 @@ export class ByteArrayOutputStream extends OutputStream {
      *
      * @param b The byte array to write.
      */
-    public writeBytes(b: Int8Array): void {
-        this.write(b, 0, b.length);
+    public async writeBytes(b: Int8Array): Promise<void> {
+        await this.write(b, 0, b.length);
     }
 
     /**
@@ -116,8 +116,8 @@ export class ByteArrayOutputStream extends OutputStream {
      *
      * @param out The output stream to write to.
      */
-    public writeTo(out: OutputStream): void {
-        out.write(this.buf, 0, this.count);
+    public async writeTo(out: OutputStream): Promise<void> {
+        await out.write(this.buf, 0, this.count);
     }
 
     /**

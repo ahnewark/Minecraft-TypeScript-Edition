@@ -59,21 +59,21 @@ export  class ChunkLoader implements IChunkLoader {
 				let  fileInputStream5: java.io.FileInputStream = await FileInputStream.Construct(file4);
 				let  nBTTagCompound6: NBTTagCompound = CompressedStreamTools.func_1138_a(fileInputStream5);
 				if(!nBTTagCompound6.hasKey("Level")) {
-					(await java.lang.System.out).println("Chunk file at " + i2 + "," + i3 + " is missing level data, skipping");
+					console.log("Chunk file at " + i2 + "," + i3 + " is missing level data, skipping");
 					return null;
 				}
 
 				if(!nBTTagCompound6.getCompoundTag("Level").hasKey("Blocks")) {
-					(await java.lang.System.out).println("Chunk file at " + i2 + "," + i3 + " is missing block data, skipping");
+					console.log("Chunk file at " + i2 + "," + i3 + " is missing block data, skipping");
 					return null;
 				}
 
-				let  chunk7: Chunk = ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
+				let  chunk7: Chunk = await ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
 				if(!chunk7.isAtLocation(i2, i3)) {
-					(await java.lang.System.out).println("Chunk file at " + i2 + "," + i3 + " is in the wrong location; relocating. (Expected " + i2 + ", " + i3 + ", got " + chunk7.xPosition + ", " + chunk7.zPosition + ")");
+					console.log("Chunk file at " + i2 + "," + i3 + " is in the wrong location; relocating. (Expected " + i2 + ", " + i3 + ", got " + chunk7.xPosition + ", " + chunk7.zPosition + ")");
 					nBTTagCompound6.setInteger("xPos", i2);
 					nBTTagCompound6.setInteger("zPos", i3);
-					chunk7 = ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
+					chunk7 = await ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
 				}
 
 				return chunk7;
@@ -91,7 +91,7 @@ export  class ChunkLoader implements IChunkLoader {
 	}
 
 	public async saveChunk(world1: World, chunk2: Chunk):  Promise<void> {
-		world1.checkSessionLock();
+		await world1.checkSessionLock();
 		let file3: File | null = await this.chunkFileForXZ(chunk2.xPosition, chunk2.zPosition);
 		if(file3 != null && await file3.exists()) {
 			world1.sizeOnDisk -= await file3.length();
@@ -103,7 +103,7 @@ export  class ChunkLoader implements IChunkLoader {
 			let  nBTTagCompound6: NBTTagCompound = new  NBTTagCompound();
 			let  nBTTagCompound7: NBTTagCompound = new  NBTTagCompound();
 			nBTTagCompound6.setTag("Level", nBTTagCompound7);
-			this.storeChunkInCompound(chunk2, world1, nBTTagCompound7);
+			await this.storeChunkInCompound(chunk2, world1, nBTTagCompound7);
 			CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound6, fileOutputStream5);
 			fileOutputStream5.close();
 			if(file3 && await file3.exists()) {
@@ -124,8 +124,8 @@ export  class ChunkLoader implements IChunkLoader {
 
 	}
 
-	public storeChunkInCompound(chunk1: Chunk, world2: World, nBTTagCompound3: NBTTagCompound):  void {
-		world2.checkSessionLock();
+	public async storeChunkInCompound(chunk1: Chunk, world2: World, nBTTagCompound3: NBTTagCompound): Promise<void> {
+		await world2.checkSessionLock();
 		nBTTagCompound3.setInteger("xPos", chunk1.xPosition);
 		nBTTagCompound3.setInteger("zPos", chunk1.zPosition);
 		nBTTagCompound3.setLong("LastUpdate", world2.worldTime);
@@ -168,7 +168,7 @@ export  class ChunkLoader implements IChunkLoader {
 		// nBTTagCompound3.setTag("TileEntities", nBTTagList9);
 	}
 
-	public static loadChunkIntoWorldFromCompound(world0: World| null, nBTTagCompound1: NBTTagCompound):  Chunk {
+	public static async loadChunkIntoWorldFromCompound(world0: World| null, nBTTagCompound1: NBTTagCompound): Promise<Chunk> {
 		let  i2: number = nBTTagCompound1.getInteger("xPos");
 		let  i3: number = nBTTagCompound1.getInteger("zPos");
 		let  chunk4: Chunk = new  Chunk(world0, i2, i3);
@@ -185,7 +185,7 @@ export  class ChunkLoader implements IChunkLoader {
 		if(chunk4.heightMap === null || !chunk4.skylightMap.isValid()) {
 			chunk4.heightMap = new Int8Array(256);
 			chunk4.skylightMap = new  NibbleArray(chunk4.blocks.length);
-			chunk4.func_1024_c();
+			await chunk4.func_1024_c();
 		}
 
 		if(!chunk4.blocklightMap.isValid()) {

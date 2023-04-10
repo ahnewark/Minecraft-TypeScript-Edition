@@ -224,7 +224,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		this.generateTerrain(i1, i2, b3, null, d5);
 		this.replaceBlocksForBiome(i1, i2, b3, null);
 		this.field_902_u.func_867_a(this, this.worldObj, i1, i2, b3);
-		chunk4.func_1024_c();
+		await chunk4.func_1024_c();
 		return chunk4;
 	}
 

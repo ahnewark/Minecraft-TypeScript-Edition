@@ -53,8 +53,8 @@ export class Properties extends HashMap<JavaString, JavaString> {
      *
      * @param out The stream to which to write the output.
      */
-    public list(out: PrintStream): void {
-        out.print(this.toString());
+    public async list(out: PrintStream): Promise<void> {
+        await out.print(this.toString());
     }
 
     /**
@@ -253,7 +253,7 @@ export class Properties extends HashMap<JavaString, JavaString> {
      * @param out The stream to write to.
      * @param comments Comments to write as first to the output stream.
      */
-    public store(out: OutputStream | Writer, comments?: JavaString): void {
+    public async store(out: OutputStream | Writer, comments?: JavaString): Promise<void> {
         const lineSeparator = System.lineSeparator().valueOf();
 
         if (comments) {
@@ -266,10 +266,10 @@ export class Properties extends HashMap<JavaString, JavaString> {
                 }
             }
 
-            this.writeString(out, S`# ${parts.join(lineSeparator)}${lineSeparator}`);
+            await this.writeString(out, S`# ${parts.join(lineSeparator)}${lineSeparator}`);
         }
 
-        this.writeString(out, S`# ${new Date().toISOString()}${lineSeparator}`);
+        await this.writeString(out, S`# ${new Date().toISOString()}${lineSeparator}`);
 
         for (const entry of this) {
             // Escape all space characters and some other special characters in the key string.
@@ -284,7 +284,7 @@ export class Properties extends HashMap<JavaString, JavaString> {
             }
             trimmed = trimmed.replaceAll(/[#!=]/g, "\\$&");
 
-            this.writeString(out, S`${key}=${trimmed}${lineSeparator}`);
+            await this.writeString(out, S`${key}=${trimmed}${lineSeparator}`);
         }
 
         out.flush();
@@ -334,7 +334,7 @@ export class Properties extends HashMap<JavaString, JavaString> {
      * @param out The target channel to write.
      * @param text The text to write.
      */
-    private writeString(out: OutputStream | Writer, text: JavaString) {
+    private async writeString(out: OutputStream | Writer, text: JavaString) {
         if (out instanceof OutputStream) {
             const buffer = new Int8Array(text.length() * 6); // Maximum possible target length.
             let offset = 0;
@@ -353,9 +353,9 @@ export class Properties extends HashMap<JavaString, JavaString> {
                     buffer.set([codePoint], offset++);
                 }
             }
-            out.write(buffer, 0, offset);
+            await out.write(buffer, 0, offset);
         } else {
-            out.write(text);
+            await out.write(text);
         }
 
     }

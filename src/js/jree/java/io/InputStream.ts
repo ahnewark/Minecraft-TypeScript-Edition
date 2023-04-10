@@ -192,7 +192,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
      *
      * @returns The number of bytes written.
      */
-    public transferTo(out: OutputStream): long {
+    public async transferTo(out: OutputStream): Promise<long> {
         let total = 0n;
         const buffer = new Int8Array(10000);
         while (true) {
@@ -201,7 +201,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
                 break;
             }
 
-            out.write(buffer, 0, read);
+            await out.write(buffer, 0, read);
             total += BigInt(read);
         }
 

@@ -51,7 +51,7 @@ export  class WorldGenMinable extends WorldGenerator {
 							for(let  i44: number = i34; i44 <= i37; ++i44) {
 								let  d45: number = (i44 as number + 0.5 - d24) / (d28 / 2.0);
 								if(d39 * d39 + d42 * d42 + d45 * d45 < 1.0 && (await world1.getBlockId(i38, i41, i44)) === BlockRegistry.stone.blockID) {
-									world1.setBlock(i38, i41, i44, this.minableBlockId);
+									await world1.setBlock(i38, i41, i44, this.minableBlockId);
 								}
 							}
 						}

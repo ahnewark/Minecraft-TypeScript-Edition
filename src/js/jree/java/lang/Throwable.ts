@@ -214,13 +214,13 @@ export class Throwable extends JavaObject {
      *
      * @param s The print stream.
      */
-    public printStackTrace(s: PrintStream): void;
+    public async printStackTrace(s: PrintStream): Promise<void>;
     //public printStackTrace(s: java.io.PrintWriter): void
-    public printStackTrace(s: PrintStream): void {
+    public async printStackTrace(s: PrintStream): Promise<void> {
         const headLine = this.toString();
 
-        s.println(headLine);
-        s.println(new JavaString(`${this.stack}`));
+        await s.println(headLine);
+        await s.println(new JavaString(`${this.stack}`));
     }
 
     /**

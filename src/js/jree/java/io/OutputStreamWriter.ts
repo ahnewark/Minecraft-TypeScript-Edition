@@ -67,12 +67,12 @@ export class OutputStreamWriter extends Writer {
         //return this.#encoder.charset().name();
     }
 
-    public override write(buffer: Uint16Array): void;
-    public override write(buffer: Uint16Array, offset: int, length: int): void;
-    public override write(c: int): void;
-    public override write(str: JavaString | string): void;
-    public override write(str: JavaString | string, offset: int, length: int): void;
-    public override write(...args: unknown[]): void {
+    public override async write(buffer: Uint16Array): Promise<void>;
+    public override async write(buffer: Uint16Array, offset: int, length: int): Promise<void>;
+    public override async write(c: int): Promise<void>;
+    public override async write(str: JavaString | string): Promise<void>;
+    public override async write(str: JavaString | string, offset: int, length: int): Promise<void>;
+    public override async write(...args: unknown[]): Promise<void> {
         switch (args.length) {
             case 1: {
                 let s;
@@ -83,7 +83,7 @@ export class OutputStreamWriter extends Writer {
                 }
 
                 const bytes = this.#encoder.encode(CharBuffer.wrap(s));
-                this.#out.write(bytes.array());
+                await this.#out.write(bytes.array());
 
                 break;
             }
@@ -99,13 +99,13 @@ export class OutputStreamWriter extends Writer {
                     if (typeof str === "string") {
                         const bytes = this.#encoder.encode(
                             CharBuffer.wrap(new JavaString(str), offset, offset + length));
-                        this.#out.write(bytes.array());
+                        await this.#out.write(bytes.array());
                     } else if (str instanceof JavaString) {
                         const bytes = this.#encoder.encode(CharBuffer.wrap(str, offset, offset + length));
-                        this.#out.write(bytes.array());
+                        await this.#out.write(bytes.array());
                     } else {
                         const bytes = this.#encoder.encode(CharBuffer.wrap(str, offset, length));
-                        this.#out.write(bytes.array());
+                        await this.#out.write(bytes.array());
                     }
                 }
 

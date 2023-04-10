@@ -73,7 +73,7 @@ export  class WorldGenLakes extends WorldGenerator {
 			for(i32 = 0; i32 < 16; ++i32) {
 				for(i10 = 0; i10 < 8; ++i10) {
 					if(z6[(i8 * 16 + i32) * 8 + i10]) {
-						world1.setBlock(i3 + i8, i4 + i10, i5 + i32, i10 >= 4 ? 0 : this.field_15235_a);
+						await world1.setBlock(i3 + i8, i4 + i10, i5 + i32, i10 >= 4 ? 0 : this.field_15235_a);
 					}
 				}
 			}

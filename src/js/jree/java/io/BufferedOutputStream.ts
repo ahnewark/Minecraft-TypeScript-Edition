@@ -23,14 +23,14 @@ export class BufferedOutputStream extends FilterOutputStream {
         this.buf = new Int8Array(size);
     }
 
-    public override write(b: Int8Array): void;
-    public override write(b: Int8Array, off: number, len: number): void;
-    public override write(b: number): void;
-    public override write(b: Int8Array | number, off?: number, len?: number): void {
+    public override async write(b: Int8Array): Promise<void>;
+    public override async write(b: Int8Array, off: number, len: number): Promise<void>;
+    public override async write(b: number): Promise<void>;
+    public override async write(b: Int8Array | number, off?: number, len?: number): Promise<void> {
         if (typeof b === "number") {
             this.buf[this.count++] = b & 0xFF;
             if (this.count === this.buf.length) {
-                this.flush();
+                await this.flush();
             }
         } else {
             const offset = off ?? 0;
@@ -44,9 +44,9 @@ export class BufferedOutputStream extends FilterOutputStream {
 
             // Write the new data directly if it exceeds the buffer size.
             if (this.count + data.length >= this.buf.length) {
-                this.flush();
+                await this.flush();
 
-                this.out.write(data);
+                await this.out.write(data);
             } else {
                 this.buf.set(data, this.count);
                 this.count += data.length;
@@ -54,9 +54,9 @@ export class BufferedOutputStream extends FilterOutputStream {
         }
     }
 
-    public override flush(): void {
+    public override async flush(): Promise<void> {
         if (this.count > 0) {
-            this.out.write(this.buf, 0, this.count);
+            await this.out.write(this.buf, 0, this.count);
             this.count = 0;
         }
     }

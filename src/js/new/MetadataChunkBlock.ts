@@ -132,25 +132,25 @@ export  class MetadataChunkBlock extends JavaObject {
 							}
 
 							if(i16 !== i28) {
-								world1.setLightValue(this.field_1299_a, i10, i27, i11, i28);
+								await world1.setLightValue(this.field_1299_a, i10, i27, i11, i28);
 								i21 = i28 - 1;
 								if(i21 < 0) {
 									i21 = 0;
 								}
 
-								world1.neighborLightPropagationChanged(this.field_1299_a, i10 - 1, i27, i11, i21);
-								world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27 - 1, i11, i21);
-								world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27, i11 - 1, i21);
+								await world1.neighborLightPropagationChanged(this.field_1299_a, i10 - 1, i27, i11, i21);
+								await world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27 - 1, i11, i21);
+								await world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27, i11 - 1, i21);
 								if(i10 + 1 >= this.field_1302_e) {
-									world1.neighborLightPropagationChanged(this.field_1299_a, i10 + 1, i27, i11, i21);
+									await world1.neighborLightPropagationChanged(this.field_1299_a, i10 + 1, i27, i11, i21);
 								}
 
 								if(i27 + 1 >= this.field_1301_f) {
-									world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27 + 1, i11, i21);
+									await world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27 + 1, i11, i21);
 								}
 
 								if(i11 + 1 >= this.field_1300_g) {
-									world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27, i11 + 1, i21);
+									await world1.neighborLightPropagationChanged(this.field_1299_a, i10, i27, i11 + 1, i21);
 								}
 							}
 						}

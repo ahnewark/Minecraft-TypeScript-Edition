@@ -38,7 +38,6 @@ export abstract class AbstractCollection<T> extends JavaObject implements Collec
     public abstract retainAll(c: Collection<T>): boolean;
     public abstract size(): number;
     public abstract spliterator(): Spliterator<T>;
-    // @ts-ignore
     public abstract toString(): JavaString;
     public abstract toArray(): T[];
     public abstract toArray<U>(a: U[]): U[];
