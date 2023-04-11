@@ -8,13 +8,14 @@ import { StepSound } from "./StepSound";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
 import { MathHelper } from "./MathHelper";
-import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
-import { EnumSkyBlock } from "./EnumSkyBlock";
+import { BlockRegistry } from "./moved/BlockRegistry";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { Block } from "./Block";
 
-export abstract  class EntityLiving extends Entity {
+export  class EntityLiving extends Entity {
 	public field_9366_o:  int = 20;
 	public field_9365_p:  float;
 	public field_9363_r:  float;
@@ -28,7 +29,7 @@ export abstract  class EntityLiving extends Entity {
 	protected texture:  string = "/mob/char.png";
 	protected unusedEntityLivingBoolean:  boolean = true;
 	protected field_9353_B:  float = 0.0;
-	protected field_9351_C:  java.lang.String | null = null;
+	protected field_9351_C:  string | null = null;
 	protected field_9349_D:  float = 1.0;
 	protected scoreValue:  int = 0;
 	protected field_9345_F:  float = 0.0;
@@ -69,6 +70,10 @@ export abstract  class EntityLiving extends Entity {
 	private field_4120_b:  Entity | null;
 	private field_4127_c:  int = 0;
 
+	public override get type(): string {
+		return 'Living';
+	}
+
 	public constructor(world1: World| null) {
 		super(world1);
 		this.preventEntitySpawning = true;
@@ -106,19 +111,19 @@ export abstract  class EntityLiving extends Entity {
 		return 80;
 	}
 
-	public onEntityUpdate():  void {
+	public async onEntityUpdate():  Promise<void> {
 		this.prevSwingProgress = this.swingProgress;
-		super.onEntityUpdate();
+		await super.onEntityUpdate();
 		if(this.rand.nextInt(1000) < this.field_4121_a++) {
 			this.field_4121_a = -this.func_421_b();
-			let  string1: java.lang.String = this.getLivingSound();
+			let  string1 = this.getLivingSound();
 			if(string1 !== null) {
 				this.worldObj.playSoundAtEntity(this, string1, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 			}
 		}
 
-		if(this.isEntityAlive() && this.func_345_I()) {
-			this.attackEntityFrom(null as Entity, 1);
+		if(this.isEntityAlive() && await this.func_345_I()) {
+			await this.attackEntityFrom(null as Entity, 1);
 		}
 
 		if(this.isImmuneToFire || this.worldObj.multiplayerWorld) {
@@ -126,7 +131,7 @@ export abstract  class EntityLiving extends Entity {
 		}
 
 		let  i8: int;
-		if(this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater()) {
+		if(this.isEntityAlive() && await this.isInsideOfMaterial(MaterialRegistry.water) && !this.canBreatheUnderwater()) {
 			--this.air;
 			if(this.air === -20) {
 				this.air = 0;
@@ -138,7 +143,7 @@ export abstract  class EntityLiving extends Entity {
 					this.worldObj.spawnParticle("bubble", this.posX + f2 as double, this.posY + f3 as double, this.posZ + f4 as double, this.motionX, this.motionY, this.motionZ);
 				}
 
-				this.attackEntityFrom(null as Entity, 2);
+				await this.attackEntityFrom(null as Entity, 2);
 			}
 
 			this.fire = 0;
@@ -207,9 +212,9 @@ export abstract  class EntityLiving extends Entity {
 		this.field_9324_Y = i9;
 	}
 
-	public onUpdate():  void {
-		super.onUpdate();
-		this.onLivingUpdate();
+	public async onUpdate():  Promise<void> {
+		await super.onUpdate();
+		await this.onLivingUpdate();
 		let  d1: double = this.posX - this.prevPosX;
 		let  d3: double = this.posZ - this.prevPosZ;
 		let  f5: float = MathHelper.sqrt_double(d1 * d1 + d3 * d3);
@@ -311,7 +316,7 @@ export abstract  class EntityLiving extends Entity {
 		}
 	}
 
-	public attackEntityFrom(entity1: Entity| null, i2: int):  boolean {
+	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
 		if(this.worldObj.multiplayerWorld) {
 			return false;
 		} else {
@@ -321,7 +326,7 @@ export abstract  class EntityLiving extends Entity {
 			} else {
 				this.field_704_R = 1.5;
 				let  z3: boolean = true;
-				if(this.field_9306_bj as float > this.field_9366_o as float / 2.0) {
+				if(this.field_9306_bj > this.field_9366_o / 2.0) {
 					if(i2 <= this.field_9346_af) {
 						return false;
 					}
@@ -440,20 +445,20 @@ export abstract  class EntityLiving extends Entity {
 		return 0;
 	}
 
-	protected fall(f1: float):  void {
+	protected async fall(f1: float):  Promise<void> {
 		let  i2: int = java.lang.Math.ceil((f1 - 3.0) as double) as int;
 		if(i2 > 0) {
-			this.attackEntityFrom(null as Entity, i2);
-			let  i3: int = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.2 as double - this.yOffset as double), MathHelper.floor_double(this.posZ));
+			await this.attackEntityFrom(null as Entity, i2);
+			let  i3: int = await this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.2 as double - this.yOffset as double), MathHelper.floor_double(this.posZ));
 			if(i3 > 0) {
-				let  stepSound4: StepSound = EnumSkyBlock.Block.blocksList[i3].stepSound;
+				let  stepSound4: StepSound = Block.blocksList[i3].stepSound;
 				this.worldObj.playSoundAtEntity(this, stepSound4.func_1145_d(), stepSound4.func_1147_b() * 0.5, stepSound4.func_1144_c() * 0.75);
 			}
 		}
 
 	}
 
-	public moveEntityWithHeading(f1: float, f2: float):  void {
+	public async moveEntityWithHeading(f1: float, f2: float):  Promise<void> {
 		let  d3: double;
 		if(this.handleWaterMovement()) {
 			d3 = this.posY;
@@ -481,9 +486,9 @@ export abstract  class EntityLiving extends Entity {
 			let  f8: float = 0.91;
 			if(this.onGround) {
 				f8 = 0.54600006;
-				let  i4: int = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+				let  i4: int = await this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 				if(i4 > 0) {
-					f8 = EnumSkyBlock.Block.blocksList[i4].slipperiness * 0.91;
+					f8 = Block.blocksList[i4].slipperiness * 0.91;
 				}
 			}
 
@@ -492,13 +497,13 @@ export abstract  class EntityLiving extends Entity {
 			f8 = 0.91;
 			if(this.onGround) {
 				f8 = 0.54600006;
-				let  i5: int = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+				let  i5: int = await this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 				if(i5 > 0) {
-					f8 = EnumSkyBlock.Block.blocksList[i5].slipperiness * 0.91;
+					f8 = Block.blocksList[i5].slipperiness * 0.91;
 				}
 			}
 
-			if(this.isOnLadder()) {
+			if(await this.isOnLadder()) {
 				this.fallDistance = 0.0;
 				if(this.motionY < -0.15) {
 					this.motionY = -0.15;
@@ -506,7 +511,7 @@ export abstract  class EntityLiving extends Entity {
 			}
 
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-			if(this.isCollidedHorizontally && this.isOnLadder()) {
+			if(this.isCollidedHorizontally && await this.isOnLadder()) {
 				this.motionY = 0.2;
 			}
 
@@ -528,11 +533,11 @@ export abstract  class EntityLiving extends Entity {
 		this.field_703_S += this.field_704_R;
 	}
 
-	public isOnLadder():  boolean {
+	public async isOnLadder(): Promise<boolean> {
 		let  i1: int = MathHelper.floor_double(this.posX);
 		let  i2: int = MathHelper.floor_double(this.boundingBox.minY);
 		let  i3: int = MathHelper.floor_double(this.posZ);
-		return this.worldObj.getBlockId(i1, i2, i3) === EnumSkyBlock.Block.ladder.blockID || this.worldObj.getBlockId(i1, i2 + 1, i3) === EnumSkyBlock.Block.ladder.blockID;
+		return await this.worldObj.getBlockId(i1, i2, i3) === BlockRegistry.ladder.blockID || await this.worldObj.getBlockId(i1, i2 + 1, i3) === BlockRegistry.ladder.blockID;
 	}
 
 	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
@@ -561,7 +566,7 @@ export abstract  class EntityLiving extends Entity {
 		return false;
 	}
 
-	public onLivingUpdate():  void {
+	public async onLivingUpdate():  Promise<void> {
 		if(this.field_9324_Y > 0) {
 			let  d1: double = this.posX + (this.field_9323_Z - this.posX) / this.field_9324_Y as double;
 			let  d3: double = this.posY + (this.field_9356_aa - this.posY) / this.field_9324_Y as double;
@@ -588,11 +593,11 @@ export abstract  class EntityLiving extends Entity {
 			this.moveForward = 0.0;
 			this.randomYawVelocity = 0.0;
 		} else if(!this.field_9343_G) {
-			this.updatePlayerActionState();
+			await this.updatePlayerActionState();
 		}
 
-		let  z9: boolean = this.handleWaterMovement();
-		let  z2: boolean = this.handleLavaMovement();
+		let  z9: boolean = await this.handleWaterMovement();
+		let  z2: boolean = await this.handleLavaMovement();
 		if(this.isJumping) {
 			if(z9) {
 				this.motionY += 0.04 as double;
@@ -606,11 +611,11 @@ export abstract  class EntityLiving extends Entity {
 		this.moveStrafing *= 0.98;
 		this.moveForward *= 0.98;
 		this.randomYawVelocity *= 0.9;
-		this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
-		let  list10: java.util.List = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
-		if(list10 !== null && list10.size() > 0) {
-			for(let  i4: int = 0; i4 < list10.size(); ++i4) {
-				let  entity11: Entity = list10.get(i4) as Entity;
+		await this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
+		let  list10 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
+		if(list10 !== null && list10.length > 0) {
+			for(let  i4: int = 0; i4 < list10.length; ++i4) {
+				let  entity11: Entity = list10[i4] as Entity;
 				if(entity11.canBePushed()) {
 					entity11.applyEntityCollision(this);
 				}
@@ -623,7 +628,7 @@ export abstract  class EntityLiving extends Entity {
 		this.motionY = 0.42 as double;
 	}
 
-	protected updatePlayerActionState():  void {
+	protected async updatePlayerActionState(): Promise<void> {
 		++this.field_9344_ag;
 		let  entityPlayer1: EntityPlayer = this.worldObj.getClosestPlayerToEntity(this, -1.0);
 		if(entityPlayer1 !== null) {
@@ -659,7 +664,7 @@ export abstract  class EntityLiving extends Entity {
 
 		if(this.field_4120_b !== null) {
 			this.faceEntity(this.field_4120_b, 10.0);
-			if(this.field_4127_c-- <= 0 || this.field_4120_b.isDead || this.field_4120_b.getDistanceSqToEntity(this) > (f10 * f10) as double) {
+			if(this.field_4127_c-- <= 0 || this.field_4120_b.isDead || this.field_4120_b.getDistanceSqToEntity(this) > (f10 * f10)) {
 				this.field_4120_b = null;
 			}
 		} else {
@@ -671,8 +676,8 @@ export abstract  class EntityLiving extends Entity {
 			this.rotationPitch = this.defaultPitch;
 		}
 
-		let  z3: boolean = this.handleWaterMovement();
-		let  z11: boolean = this.handleLavaMovement();
+		let  z3: boolean = await this.handleWaterMovement();
+		let  z11: boolean = await this.handleLavaMovement();
 		if(z3 || z11) {
 			this.isJumping = this.rand.nextFloat() < 0.8;
 		}
@@ -720,12 +725,12 @@ export abstract  class EntityLiving extends Entity {
 	public func_6392_F():  void {
 	}
 
-	public getCanSpawnHere():  boolean {
-		return this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() === 0 && !this.worldObj.getIsAnyLiquid(this.boundingBox);
+	public async getCanSpawnHere():  Promise<boolean> {
+		return this.worldObj.checkIfAABBIsClear(this.boundingBox) && (await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox)).length === 0 && !await this.worldObj.getIsAnyLiquid(this.boundingBox);
 	}
 
-	protected kill():  void {
-		this.attackEntityFrom(null as Entity, 4);
+	protected async kill():  Promise<void> {
+		await this.attackEntityFrom(null as Entity, 4);
 	}
 
 	public getSwingProgress(f1: float):  float {
@@ -774,11 +779,11 @@ export abstract  class EntityLiving extends Entity {
 		}
 	}
 
-	public rayTrace(d1: double, f3: float):  MovingObjectPosition | null {
+	public async rayTrace(d1: double, f3: float):  Promise<MovingObjectPosition | null> {
 		let  vec3D4: Vec3D = this.getPosition(f3);
 		let  vec3D5: Vec3D = this.getLook(f3);
 		let  vec3D6: Vec3D = vec3D4.addVector(vec3D5.xCoord * d1, vec3D5.yCoord * d1, vec3D5.zCoord * d1);
-		return this.worldObj.rayTraceBlocks(vec3D4, vec3D6);
+		return await this.worldObj.rayTraceBlocks(vec3D4, vec3D6);
 	}
 
 	public getMaxSpawnedInChunk():  int {
@@ -789,14 +794,14 @@ export abstract  class EntityLiving extends Entity {
 		return null;
 	}
 
-	public handleHealthUpdate(b1: byte):  void {
+	public async handleHealthUpdate(b1: byte):  Promise<void> {
 		if(b1 === 2) {
 			this.field_704_R = 1.5;
 			this.field_9306_bj = this.field_9366_o;
 			this.hurtTime = this.maxHurtTime = 10;
 			this.attackedAtYaw = 0.0;
 			this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
-			this.attackEntityFrom(null as Entity, 0);
+			await this.attackEntityFrom(null as Entity, 0);
 		} else if(b1 === 3) {
 			this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 			this.health = 0;

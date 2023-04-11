@@ -1,17 +1,18 @@
 
 
 
-import { java, int, byte, double } from "../jree/index";
+import { int, byte, double } from "../jree/index";
 import { TileEntity } from "./TileEntity";
 import { NBTTagList } from "./NBTTagList";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { ItemStack } from "./ItemStack";
 import { IInventory } from "./IInventory";
 import { EntityPlayer } from "./EntityPlayer";
+import { Random } from "../java/util/Random";
 
 export  class TileEntityDispenser extends TileEntity implements IInventory {
-	private dispenserContents:  ItemStack[] | null = new   Array<ItemStack>(9);
-	private dispenserRandom:  java.util.Random | null = new  java.util.Random();
+	private dispenserContents:  ItemStack[] = new   Array<ItemStack>(9);
+	private dispenserRandom:  Random | null = new  Random();
 
 	public get name(): string {
 		return 'Trap';
@@ -74,7 +75,7 @@ export  class TileEntityDispenser extends TileEntity implements IInventory {
 		this.onInventoryChanged();
 	}
 
-	public getInvName():  java.lang.String | null {
+	public getInvName(): string {
 		return "Trap";
 	}
 

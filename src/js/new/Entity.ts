@@ -1,9 +1,4 @@
-
-
-
 import { JavaObject, int, double, float, java, byte, short } from "../jree/index";
-import { WorldProviderHell } from "./WorldProviderHell";
-import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Vec3D } from "./Vec3D";
 import { StepSound } from "./StepSound";
@@ -14,7 +9,6 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { MathHelper } from "./MathHelper";
 import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
-import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityList } from "./EntityList";
 import { EntityItem } from "./EntityItem";
@@ -22,6 +16,9 @@ import { DataWatcher } from "./DataWatcher";
 import { BlockFluids } from "./BlockFluids";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
+import { Block } from './Block';
+import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export abstract  class Entity extends JavaObject {
 	private static nextEntityID:  int = 0;
@@ -77,8 +74,8 @@ export abstract  class Entity extends JavaObject {
 	public field_9306_bj:  int = 0;
 	public air:  int = 300;
 	private field_862_c:  boolean = true;
-	public skinUrl:  java.lang.String | null;
-	public cloakUrl:  java.lang.String | null;
+	public skinUrl: string | null;
+	public cloakUrl: string | null;
 	protected isImmuneToFire:  boolean = false;
 	protected dataWatcher:  DataWatcher | null = new  DataWatcher();
 	private entityRiderPitchDelta:  double;
@@ -93,11 +90,11 @@ export abstract  class Entity extends JavaObject {
 
 	public abstract get type(): string;
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World) {
 		super();
 		this.worldObj = world1;
 		this.setPosition(0.0, 0.0, 0.0);
-		this.dataWatcher.addObject(0, 0 as byte);
+		this.dataWatcher.addObject(0, 0, 'Byte');
 		this.entityInit();
 	}
 
@@ -115,11 +112,11 @@ export abstract  class Entity extends JavaObject {
 		return this.entityId;
 	}
 
-	protected preparePlayerToSpawn():  void {
+	protected async preparePlayerToSpawn(): Promise<void> {
 		if(this.worldObj !== null) {
 			while(this.posY > 0.0) {
 				this.setPosition(this.posX, this.posY, this.posZ);
-				if(this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() === 0) {
+				if (await (await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox)).length === 0) {
 					break;
 				}
 
@@ -171,11 +168,11 @@ export abstract  class Entity extends JavaObject {
 		this.prevRotationYaw += this.rotationYaw - f4;
 	}
 
-	public onUpdate():  void {
-		this.onEntityUpdate();
+	public async onUpdate():  Promise<void> {
+		await this.onEntityUpdate();
 	}
 
-	public onEntityUpdate():  void {
+	public async onEntityUpdate():  Promise<void> {
 		if(this.ridingEntity !== null && this.ridingEntity.isDead) {
 			this.ridingEntity = null;
 		}
@@ -187,7 +184,7 @@ export abstract  class Entity extends JavaObject {
 		this.prevPosZ = this.posZ;
 		this.prevRotationPitch = this.rotationPitch;
 		this.prevRotationYaw = this.rotationYaw;
-		if(this.handleWaterMovement()) {
+		if(await this.handleWaterMovement()) {
 			if(!this.inWater && !this.field_862_c) {
 				let  f1: float = MathHelper.sqrt_double(this.motionX * this.motionX * 0.2 as double + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.2 as double) * 0.2;
 				if(f1 > 1.0) {
@@ -265,13 +262,13 @@ export abstract  class Entity extends JavaObject {
 		this.setEntityDead();
 	}
 
-	public isOffsetPositionInLiquid(d1: double, d3: double, d5: double):  boolean {
+	public async isOffsetPositionInLiquid(d1: double, d3: double, d5: double):  Promise<boolean> {
 		let  axisAlignedBB7: AxisAlignedBB = this.boundingBox.getOffsetBoundingBox(d1, d3, d5);
-		let  list8: java.util.List = this.worldObj.getCollidingBoundingBoxes(this, axisAlignedBB7);
-		return list8.size() > 0 ? false : !this.worldObj.getIsAnyLiquid(axisAlignedBB7);
+		let  list8 = await this.worldObj.getCollidingBoundingBoxes(this, axisAlignedBB7);
+		return list8.length > 0 ? false : !await this.worldObj.getIsAnyLiquid(axisAlignedBB7);
 	}
 
-	public moveEntity(d1: double, d3: double, d5: double):  void {
+	public async moveEntity(d1: double, d3: double, d5: double): Promise<void> {
 		if(this.noClip) {
 			this.boundingBox.offset(d1, d3, d5);
 			this.posX = (this.boundingBox.minX + this.boundingBox.maxX) / 2.0;
@@ -287,7 +284,7 @@ export abstract  class Entity extends JavaObject {
 			let  z18: boolean = this.onGround && this.isSneaking();
 			if(z18) {
 				let  d19: double;
-				for(d19 = 0.05; d1 !== 0.0 && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(d1, -1.0, 0.0)).size() === 0; d11 = d1) {
+				for(d19 = 0.05; d1 !== 0.0 && (await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(d1, -1.0, 0.0))).length === 0; d11 = d1) {
 					if(d1 < d19 && d1 >= -d19) {
 						d1 = 0.0;
 					} else if(d1 > 0.0) {
@@ -297,7 +294,7 @@ export abstract  class Entity extends JavaObject {
 					}
 				}
 
-				for(; d5 !== 0.0 && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(0.0, -1.0, d5)).size() === 0; d15 = d5) {
+				for(; d5 !== 0.0 && (await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(0.0, -1.0, d5))).length === 0; d15 = d5) {
 					if(d5 < d19 && d5 >= -d19) {
 						d5 = 0.0;
 					} else if(d5 > 0.0) {
@@ -308,10 +305,10 @@ export abstract  class Entity extends JavaObject {
 				}
 			}
 
-			let  list35: java.util.List = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(d1, d3, d5));
+			let  list35 = await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(d1, d3, d5));
 
-			for(let  i20: int = 0; i20 < list35.size(); ++i20) {
-				d3 = (list35.get(i20) as AxisAlignedBB).calculateYOffset(this.boundingBox, d3);
+			for(let  i20: int = 0; i20 < list35.length; ++i20) {
+				d3 = (list35[i20] as AxisAlignedBB).calculateYOffset(this.boundingBox, d3);
 			}
 
 			this.boundingBox.offset(0.0, d3, 0.0);
@@ -324,8 +321,8 @@ export abstract  class Entity extends JavaObject {
 			let  z36: boolean = this.onGround || d13 !== d3 && d13 < 0.0;
 
 			let  i21: int;
-			for(i21 = 0; i21 < list35.size(); ++i21) {
-				d1 = (list35.get(i21) as AxisAlignedBB).calculateXOffset(this.boundingBox, d1);
+			for(i21 = 0; i21 < list35.length; ++i21) {
+				d1 = (list35[i21] as AxisAlignedBB).calculateXOffset(this.boundingBox, d1);
 			}
 
 			this.boundingBox.offset(d1, 0.0, 0.0);
@@ -335,8 +332,8 @@ export abstract  class Entity extends JavaObject {
 				d1 = 0.0;
 			}
 
-			for(i21 = 0; i21 < list35.size(); ++i21) {
-				d5 = (list35.get(i21) as AxisAlignedBB).calculateZOffset(this.boundingBox, d5);
+			for(i21 = 0; i21 < list35.length; ++i21) {
+				d5 = (list35[i21] as AxisAlignedBB).calculateZOffset(this.boundingBox, d5);
 			}
 
 			this.boundingBox.offset(0.0, 0.0, d5);
@@ -358,10 +355,10 @@ export abstract  class Entity extends JavaObject {
 				d5 = d15;
 				let  axisAlignedBB27: AxisAlignedBB = this.boundingBox.copy();
 				this.boundingBox.setBB(axisAlignedBB17);
-				list35 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(d11, d3, d15));
+				list35 = await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(d11, d3, d15));
 
-				for(i28 = 0; i28 < list35.size(); ++i28) {
-					d3 = (list35.get(i28) as AxisAlignedBB).calculateYOffset(this.boundingBox, d3);
+				for(i28 = 0; i28 < list35.length; ++i28) {
+					d3 = (list35[i28] as AxisAlignedBB).calculateYOffset(this.boundingBox, d3);
 				}
 
 				this.boundingBox.offset(0.0, d3, 0.0);
@@ -371,8 +368,8 @@ export abstract  class Entity extends JavaObject {
 					d1 = 0.0;
 				}
 
-				for(i28 = 0; i28 < list35.size(); ++i28) {
-					d1 = (list35.get(i28) as AxisAlignedBB).calculateXOffset(this.boundingBox, d1);
+				for(i28 = 0; i28 < list35.length; ++i28) {
+					d1 = (list35[i28] as AxisAlignedBB).calculateXOffset(this.boundingBox, d1);
 				}
 
 				this.boundingBox.offset(d1, 0.0, 0.0);
@@ -382,8 +379,8 @@ export abstract  class Entity extends JavaObject {
 					d1 = 0.0;
 				}
 
-				for(i28 = 0; i28 < list35.size(); ++i28) {
-					d5 = (list35.get(i28) as AxisAlignedBB).calculateZOffset(this.boundingBox, d5);
+				for(i28 = 0; i28 < list35.length; ++i28) {
+					d5 = (list35[i28] as AxisAlignedBB).calculateZOffset(this.boundingBox, d5);
 				}
 
 				this.boundingBox.offset(0.0, 0.0, d5);
@@ -433,18 +430,18 @@ export abstract  class Entity extends JavaObject {
 				i38 = MathHelper.floor_double(this.posX);
 				i26 = MathHelper.floor_double(this.posY - 0.2 as double - this.yOffset as double);
 				i40 = MathHelper.floor_double(this.posZ);
-				i28 = this.worldObj.getBlockId(i38, i26, i40);
-				if(this.distanceWalkedModified > this.nextStepDistance as float && i28 > 0) {
+				i28 = await this.worldObj.getBlockId(i38, i26, i40);
+				if(this.distanceWalkedModified > this.nextStepDistance && i28 > 0) {
 					++this.nextStepDistance;
-					let  stepSound29: StepSound = EnumSkyBlock.Block.blocksList[i28].stepSound;
-					if(this.worldObj.getBlockId(i38, i26 + 1, i40) === EnumSkyBlock.Block.snow.blockID) {
-						stepSound29 = EnumSkyBlock.Block.snow.stepSound;
+					let  stepSound29: StepSound = Block.blocksList[i28].stepSound;
+					if(await this.worldObj.getBlockId(i38, i26 + 1, i40) === BlockRegistry.snow.blockID) {
+						stepSound29 = BlockRegistry.snow.stepSound;
 						this.worldObj.playSoundAtEntity(this, stepSound29.func_1145_d(), stepSound29.func_1147_b() * 0.15, stepSound29.func_1144_c());
-					} else if(!EnumSkyBlock.Block.blocksList[i28].blockMaterial.getIsLiquid()) {
+					} else if(!Block.blocksList[i28].blockMaterial.getIsLiquid()) {
 						this.worldObj.playSoundAtEntity(this, stepSound29.func_1145_d(), stepSound29.func_1147_b() * 0.15, stepSound29.func_1144_c());
 					}
 
-					EnumSkyBlock.Block.blocksList[i28].onEntityWalking(this.worldObj, i38, i26, i40, this);
+					Block.blocksList[i28].onEntityWalking(this.worldObj, i38, i26, i40, this);
 				}
 			}
 
@@ -458,9 +455,9 @@ export abstract  class Entity extends JavaObject {
 				for(let  i31: int = i38; i31 <= i28; ++i31) {
 					for(let  i32: int = i26; i32 <= i41; ++i32) {
 						for(let  i33: int = i40; i33 <= i30; ++i33) {
-							let  i34: int = this.worldObj.getBlockId(i31, i32, i33);
+							let  i34: int = await this.worldObj.getBlockId(i31, i32, i33);
 							if(i34 > 0) {
-								EnumSkyBlock.Block.blocksList[i34].onEntityCollidedWithBlock(this.worldObj, i31, i32, i33, this);
+								Block.blocksList[i34].onEntityCollidedWithBlock(this.worldObj, i31, i32, i33, this);
 							}
 						}
 					}
@@ -468,8 +465,8 @@ export abstract  class Entity extends JavaObject {
 			}
 
 			this.ySize *= 0.4;
-			let  z39: boolean = this.handleWaterMovement();
-			if(this.worldObj.isBoundingBoxBurning(this.boundingBox)) {
+			let  z39: boolean = await this.handleWaterMovement();
+			if(await this.worldObj.isBoundingBoxBurning(this.boundingBox)) {
 				this.dealFireDamage(1);
 				if(!z39) {
 					++this.fire;
@@ -515,20 +512,20 @@ export abstract  class Entity extends JavaObject {
 	protected fall(f1: float):  void {
 	}
 
-	public handleWaterMovement():  boolean {
-		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0, -0.4000000059604645, 0.0), Material.water, this);
+	public async handleWaterMovement():  Promise<boolean> {
+		return await this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0, -0.4000000059604645, 0.0), MaterialRegistry.water, this);
 	}
 
-	public isInsideOfMaterial(material1: Material| null):  boolean {
+	public async isInsideOfMaterial(material1: Material| null):  Promise<boolean> {
 		let  d2: double = this.posY + this.getEyeHeight() as double;
 		let  i4: int = MathHelper.floor_double(this.posX);
 		let  i5: int = MathHelper.floor_float(MathHelper.floor_double(d2) as float);
 		let  i6: int = MathHelper.floor_double(this.posZ);
-		let  i7: int = this.worldObj.getBlockId(i4, i5, i6);
-		if(i7 !== 0 && EnumSkyBlock.Block.blocksList[i7].blockMaterial === material1) {
-			let  f8: float = BlockFluids.setFluidHeight(this.worldObj.getBlockMetadata(i4, i5, i6)) - 0.11111111;
+		let  i7: int = await this.worldObj.getBlockId(i4, i5, i6);
+		if(i7 !== 0 && Block.blocksList[i7].blockMaterial === material1) {
+			let  f8: float = BlockFluids.setFluidHeight(await this.worldObj.getBlockMetadata(i4, i5, i6)) - 0.11111111;
 			let  f9: float = (i5 + 1) as float - f8;
-			return d2 < f9 as double;
+			return d2 < f9;
 		} else {
 			return false;
 		}
@@ -538,8 +535,8 @@ export abstract  class Entity extends JavaObject {
 		return 0.0;
 	}
 
-	public handleLavaMovement():  boolean {
-		return this.worldObj.isMaterialInBB(this.boundingBox.expand(-0.10000000149011612, -0.4000000059604645, -0.10000000149011612), Material.lava);
+	public async handleLavaMovement():  Promise<boolean> {
+		return await this.worldObj.isMaterialInBB(this.boundingBox.expand(-0.10000000149011612, -0.4000000059604645, -0.10000000149011612), MaterialRegistry.lava);
 	}
 
 	public moveFlying(f1: float, f2: float, f3: float):  void {
@@ -559,12 +556,12 @@ export abstract  class Entity extends JavaObject {
 		}
 	}
 
-	public getEntityBrightness(f1: float):  float {
+	public async getEntityBrightness(f1: float): Promise<float> {
 		let  i2: int = MathHelper.floor_double(this.posX);
 		let  d3: double = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66;
 		let  i5: int = MathHelper.floor_double(this.posY - this.yOffset as double + d3);
 		let  i6: int = MathHelper.floor_double(this.posZ);
-		return this.worldObj.checkChunksExist(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ), MathHelper.floor_double(this.boundingBox.maxX), MathHelper.floor_double(this.boundingBox.maxY), MathHelper.floor_double(this.boundingBox.maxZ)) ? this.worldObj.getLightBrightness(i2, i5, i6) : 0.0;
+		return await this.worldObj.checkChunksExist(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ), MathHelper.floor_double(this.boundingBox.maxX), MathHelper.floor_double(this.boundingBox.maxY), MathHelper.floor_double(this.boundingBox.maxZ)) ? this.worldObj.getLightBrightness(i2, i5, i6) : 0.0;
 	}
 
 	public setWorld(world1: World| null):  void {
@@ -636,7 +633,7 @@ export abstract  class Entity extends JavaObject {
 			let  d2: double = entity1.posX - this.posX;
 			let  d4: double = entity1.posZ - this.posZ;
 			let  d6: double = MathHelper.abs_max(d2, d4);
-			if(d6 >= 0.01 as double) {
+			if(d6 >= 0.01) {
 				d6 = MathHelper.sqrt_double(d6) as double;
 				d2 /= d6;
 				d4 /= d6;
@@ -668,7 +665,7 @@ export abstract  class Entity extends JavaObject {
 		this.beenAttacked = true;
 	}
 
-	public attackEntityFrom(entity1: Entity| null, i2: int):  boolean {
+	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
 		this.setBeenAttacked();
 		return false;
 	}
@@ -703,7 +700,7 @@ export abstract  class Entity extends JavaObject {
 	}
 
 	public addEntityID(nBTTagCompound1: NBTTagCompound| null):  boolean {
-		let  string2: java.lang.String = this.getEntityString();
+		let  string2 = this.getEntityString();
 		if(!this.isDead && string2 !== null) {
 			nBTTagCompound1.setString("id", string2);
 			this.writeToNBT(nBTTagCompound1);
@@ -745,7 +742,7 @@ export abstract  class Entity extends JavaObject {
 		this.readEntityFromNBT(nBTTagCompound1);
 	}
 
-	protected readonly getEntityString():  java.lang.String | null {
+	protected getEntityString(): string {
 		return EntityList.getEntityString(this);
 	}
 
@@ -753,10 +750,10 @@ export abstract  class Entity extends JavaObject {
 
 	protected abstract writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void;
 
-	protected newDoubleNBTList(...d1: double[]):  NBTTagList | null {
+	protected newDoubleNBTList(d1: double[]):  NBTTagList | null {
 		let  nBTTagList2: NBTTagList = new  NBTTagList();
-		let  d3: Float64Array = WorldGenerator.func_517_a.d1;
-		let  i4: int = WorldGenerator.func_517_a.d1.length;
+		let  d3 = d1;
+		let  i4: int = d1.length;
 
 		for(let  i5: int = 0; i5 < i4; ++i5) {
 			let  d6: double = d3[i5];
@@ -766,10 +763,10 @@ export abstract  class Entity extends JavaObject {
 		return nBTTagList2;
 	}
 
-	protected func_377_a(...f1: float[]):  NBTTagList | null {
+	protected func_377_a(f1: float[]):  NBTTagList | null {
 		let  nBTTagList2: NBTTagList = new  NBTTagList();
-		let  f3: Float64Array = WorldProviderHell.func_4096_a.f1;
-		let  i4: int = WorldProviderHell.func_4096_a.f1.length;
+		let  f3 = f1;
+		let  i4: int = f1.length;
 
 		for(let  i5: int = 0; i5 < i4; ++i5) {
 			let  f6: float = f3[i5];
@@ -802,11 +799,11 @@ export abstract  class Entity extends JavaObject {
 		return !this.isDead;
 	}
 
-	public func_345_I():  boolean {
+	public async func_345_I():  Promise<boolean> {
 		let  i1: int = MathHelper.floor_double(this.posX);
 		let  i2: int = MathHelper.floor_double(this.posY + this.getEyeHeight() as double);
 		let  i3: int = MathHelper.floor_double(this.posZ);
-		return this.worldObj.isBlockOpaqueCube(i1, i2, i3);
+		return await this.worldObj.isBlockOpaqueCube(i1, i2, i3);
 	}
 
 	public interact(entityPlayer1: EntityPlayer| null):  boolean {
@@ -846,20 +843,20 @@ export abstract  class Entity extends JavaObject {
 			let  d1: double = this.entityRiderYawDelta * 0.5;
 			let  d3: double = this.entityRiderPitchDelta * 0.5;
 			let  f5: float = 10.0;
-			if(d1 > f5 as double) {
-				d1 = f5 as double;
+			if(d1 > f5) {
+				d1 = f5;
 			}
 
-			if(d1 < (-f5) as double) {
-				d1 = (-f5) as double;
+			if(d1 < (-f5)) {
+				d1 = (-f5);
 			}
 
-			if(d3 > f5 as double) {
-				d3 = f5 as double;
+			if(d3 > f5) {
+				d3 = f5;
 			}
 
-			if(d3 < (-f5) as double) {
-				d3 = (-f5) as double;
+			if(d3 < (-f5)) {
+				d3 = (-f5);
 			}
 
 			this.entityRiderYawDelta -= d1;

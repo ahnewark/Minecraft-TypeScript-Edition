@@ -4,91 +4,30 @@
 import { java, S } from "../jree/index";
 import { World } from "./World";
 import { Vec3D } from "./Vec3D";
-// import { TileEntitySign } from "./TileEntitySign";
 import { StepSoundStone } from "./StepSoundStone";
 import { StepSoundSand } from "./StepSoundSand";
 import { StepSound } from "./StepSound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
 import { Material } from "./Material";
-// TODO: Items
-// import { ItemStack } from "./ItemStack";
-// import { ItemLog } from "./ItemLog";
-// import { ItemCloth } from "./ItemCloth";
-// import { ItemBlock } from "./ItemBlock";
-// import { Item } from "./Item";
+import { ItemStack } from "./ItemStack";
+import { ItemLog } from "./ItemLog";
+import { ItemCloth } from "./ItemCloth";
+import { ItemBlock } from "./ItemBlock";
+import { Item } from "./Item";
 import { IBlockAccess } from "./IBlockAccess";
-// TODO: Entities
-// import { EnumMobType } from "./EnumMobType";
-// import { EntityPlayer } from "./EntityPlayer";
-// import { EntityLiving } from "./EntityLiving";
-// import { EntityItem } from "./EntityItem";
-// import { Entity } from "./Entity";
-// TODO: Blocks
-// // import { BlockWorkbench } from "./BlockWorkbench";
-// // import { BlockTorch } from "./BlockTorch";
-// // import { BlockTNT } from "./BlockTNT";
-// import { BlockStone } from "./BlockStone";
-// // import { BlockStep } from "./BlockStep";
-// // import { BlockStationary } from "./BlockStationary";
-// // import { BlockStairs } from "./BlockStairs";
-// // import { BlockSponge } from "./BlockSponge";
-// // import { BlockSoil } from "./BlockSoil";
-// // import { BlockSnowBlock } from "./BlockSnowBlock";
-// // import { BlockSnow } from "./BlockSnow";
-// // import { BlockSlowSand } from "./BlockSlowSand";
-// // import { BlockSign } from "./BlockSign";
-// // import { BlockSapling } from "./BlockSapling";
-// import { BlockSandStone } from "./BlockSandStone";
-// // import { BlockSand } from "./BlockSand";
-// // import { BlockReed } from "./BlockReed";
-// // import { BlockRedstoneWire } from "./BlockRedstoneWire";
-// // import { BlockRedstoneTorch } from "./BlockRedstoneTorch";
-// // import { BlockRedstoneOre } from "./BlockRedstoneOre";
-// // import { BlockPumpkin } from "./BlockPumpkin";
-// // import { BlockPressurePlate } from "./BlockPressurePlate";
-// // import { BlockPortal } from "./BlockPortal";
-// import { BlockOreBlock } from "./BlockOreBlock";
-// // import { BlockOre } from "./BlockOre";
-// import { BlockObsidian } from "./BlockObsidian";
-// // import { BlockNote } from "./BlockNote";
-// // import { BlockMushroom } from "./BlockMushroom";
-// // import { BlockMobSpawner } from "./BlockMobSpawner";
-// // import { BlockMinecartTrack } from "./BlockMinecartTrack";
-// // import { BlockLog } from "./BlockLog";
-// // import { BlockLightStone } from "./BlockLightStone";
-// // import { BlockLever } from "./BlockLever";
-// // import { BlockLeaves } from "./BlockLeaves";
-// // import { BlockLadder } from "./BlockLadder";
-// // import { BlockJukeBox } from "./BlockJukeBox";
-// // import { BlockIce } from "./BlockIce";
-// // import { BlockGravel } from "./BlockGravel";
-// // import { BlockGrass } from "./BlockGrass";
-// import { BlockGlass } from "./BlockGlass";
-// // import { BlockFurnace } from "./BlockFurnace";
-// // import { BlockFlowing } from "./BlockFlowing";
-// // import { BlockFlower } from "./BlockFlower";
-// // import { BlockFire } from "./BlockFire";
-// // import { BlockFence } from "./BlockFence";
-// // import { BlockDoor } from "./BlockDoor";
-// // import { BlockDispenser } from "./BlockDispenser";
-// import { BlockDirt } from "./BlockDirt";
-// // import { BlockCrops } from "./BlockCrops";
-// import { BlockCloth } from "./BlockCloth";
-// // import { BlockClay } from "./BlockClay";
-// // import { BlockChest } from "./BlockChest";
-// // import { BlockCake } from "./BlockCake";
-// // import { BlockCactus } from "./BlockCactus";
-// // import { BlockButton } from "./BlockButton";
-// import { BlockBookshelf } from "./BlockBookshelf";
-// import { BlockBloodStone } from "./BlockBloodStone";
+import { EntityPlayer } from "./EntityPlayer";
+import { EntityLiving } from "./EntityLiving";
+import { EntityItem } from "./EntityItem";
+import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
+import { BlockRegistry } from "./index";
 
 export class Block {
 	public blockIndexInTexture:  number;
 	public readonly blockID:  number;
-	protected blockHardness:  number;
-	protected blockResistance:  number;
+	public blockHardness:  number;
+	public blockResistance:  number;
 	public minX:  number;
 	public minY:  number;
 	public minZ:  number;
@@ -179,7 +118,7 @@ export class Block {
 		return this;
 	}
 
-	protected setLightOpacity(i1: number):  Block {
+	public setLightOpacity(i1: number):  Block {
 		Block.lightOpacity[this.blockID] = i1;
 		return this;
 	}
@@ -248,19 +187,19 @@ export class Block {
 		return this.blockIndexInTexture;
 	}
 
-	public getSelectedBoundingBoxFromPool(world1: World| null, i2: number, i3: number, i4: number):  AxisAlignedBB | null {
+	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: number, i3: number, i4: number):  Promise<AxisAlignedBB | null> {
 		return AxisAlignedBB.getBoundingBoxFromPool(i2 as number + this.minX, i3 as number + this.minY, i4 as number + this.minZ, i2 as number + this.maxX, i3 as number + this.maxY, i4 as number + this.maxZ);
 	}
 
-	public getCollidingBoundingBoxes(world1: World, i2: number, i3: number, i4: number, axisAlignedBB5: AxisAlignedBB, arrayList6: AxisAlignedBB[]):  void {
-		let  axisAlignedBB7 = this.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
+	public async getCollidingBoundingBoxes(world1: World, i2: number, i3: number, i4: number, axisAlignedBB5: AxisAlignedBB, arrayList6: AxisAlignedBB[]):  Promise<void> {
+		let  axisAlignedBB7 = await this.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 		if(axisAlignedBB7 !== null && axisAlignedBB5.intersectsWith(axisAlignedBB7)) {
 			arrayList6.push(axisAlignedBB7);
 		}
 
 	}
 
-	public getCollisionBoundingBoxFromPool(world1: World, i2: number, i3: number, i4: number):  AxisAlignedBB {
+	public async getCollisionBoundingBoxFromPool(world1: World, i2: number, i3: number, i4: number):  Promise<AxisAlignedBB> {
 		return AxisAlignedBB.getBoundingBoxFromPool(i2 as number + this.minX, i3 as number + this.minY, i4 as number + this.minZ, i2 as number + this.maxX, i3 as number + this.maxY, i4 as number + this.maxZ);
 	}
 
@@ -276,26 +215,26 @@ export class Block {
 		return true;
 	}
 
-	public updateTick(world1: World| null, i2: number, i3: number, i4: number, random5: Random):  void {
+	public async updateTick(world1: World| null, i2: number, i3: number, i4: number, random5: Random):  Promise<void> {
 	}
 
 	public randomDisplayTick(world1: World| null, i2: number, i3: number, i4: number, random5: Random):  void {
 	}
 
-	public onBlockDestroyedByPlayer(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
+	public async onBlockDestroyedByPlayer(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 	}
 
-	public onNeighborBlockChange(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
+	public async onNeighborBlockChange(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 	}
 
 	public tickRate():  number {
 		return 10;
 	}
 
-	public onBlockAdded(world1: World| null, i2: number, i3: number, i4: number):  void {
+	public async onBlockAdded(world1: World| null, i2: number, i3: number, i4: number):  Promise<void> {
 	}
 
-	public onBlockRemoval(world1: World| null, i2: number, i3: number, i4: number):  void {
+	public async onBlockRemoval(world1: World| null, i2: number, i3: number, i4: number):  Promise<void> {
 	}
 
 	public quantityDropped(random1: Random):  number {
@@ -306,49 +245,45 @@ export class Block {
 		return this.blockID;
 	}
 
-    // TODO: Entities
-	// public blockStrength(entityPlayer1: EntityPlayer| null):  number {
-	// 	return this.blockHardness < 0.0 ? 0.0 : (!entityPlayer1.canHarvestBlock(this) ? 1.0 / this.blockHardness / 100.0 : entityPlayer1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0);
-	// }
+	public blockStrength(entityPlayer1: EntityPlayer| null):  number {
+		return this.blockHardness < 0.0 ? 0.0 : (!entityPlayer1.canHarvestBlock(this) ? 1.0 / this.blockHardness / 100.0 : entityPlayer1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0);
+	}
 
-    // TODO: Entities
+	public dropBlockAsItem(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
+		this.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, 1.0);
+	}
 
-	// public dropBlockAsItem(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
-	// 	this.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, 1.0);
-	// }
+	public dropBlockAsItemWithChance(world1: World| null, i2: number, i3: number, i4: number, i5: number, f6: number):  void {
+		if(!world1.multiplayerWorld) {
+			let  i7: number = this.quantityDropped(world1.rand);
 
-	// public dropBlockAsItemWithChance(world1: World| null, i2: number, i3: number, i4: number, i5: number, f6: number):  void {
-	// 	if(!world1.multiplayerWorld) {
-	// 		let  i7: number = this.quantityDropped(world1.rand);
+			for(let  i8: number = 0; i8 < i7; ++i8) {
+				if(world1.rand.nextFloat() <= f6) {
+					let  i9: number = this.idDropped(i5, world1.rand);
+					if(i9 > 0) {
+						let  f10: number = 0.7;
+						let  d11: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
+						let  d13: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
+						let  d15: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
+						let  entityItem17: EntityItem = new  EntityItem(world1, i2 as number + d11, i3 as number + d13, i4 as number + d15, new  ItemStack(i9, 1, this.damageDropped(i5)));
+						entityItem17.delayBeforeCanPickup = 10;
+						world1.entityJoinedWorld(entityItem17);
+					}
+				}
+			}
 
-	// 		for(let  i8: number = 0; i8 < i7; ++i8) {
-	// 			if(world1.rand.nextFloat() <= f6) {
-	// 				let  i9: number = this.idDropped(i5, world1.rand);
-	// 				if(i9 > 0) {
-	// 					let  f10: number = 0.7;
-	// 					let  d11: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
-	// 					let  d13: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
-	// 					let  d15: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
-	// 					let  entityItem17: EntityItem = new  EntityItem(world1, i2 as number + d11, i3 as number + d13, i4 as number + d15, new  ItemStack(i9, 1, this.damageDropped(i5)));
-	// 					entityItem17.delayBeforeCanPickup = 10;
-	// 					world1.entityJoinedWorld(entityItem17);
-	// 				}
-	// 			}
-	// 		}
-
-	// 	}
-	// }
+		}
+	}
 
 	protected damageDropped(i1: number):  number {
 		return 0;
 	}
 
-    // TODO: Entities
-	// public getExplosionResistance(entity1: Entity| null):  number {
-	// 	return this.blockResistance / 5.0;
-	// }
+	public getExplosionResistance(entity1: Entity| null):  number {
+		return this.blockResistance / 5.0;
+	}
 
-	public collisionRayTrace(world1: World, i2: number, i3: number, i4: number, vec3D5: Vec3D, vec3D6: Vec3D):  MovingObjectPosition | null {
+	public async collisionRayTrace(world1: World, i2: number, i3: number, i4: number, vec3D5: Vec3D, vec3D6: Vec3D):  Promise<MovingObjectPosition | null> {
 		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		vec3D5 = vec3D5.addVector((-i2) as number, (-i3) as number, (-i4) as number);
 		vec3D6 = vec3D6.addVector((-i2) as number, (-i3) as number, (-i4) as number);
@@ -451,7 +386,7 @@ export class Block {
 		return vec3D1 === null ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY;
 	}
 
-	public onBlockDestroyedByExplosion(world1: World| null, i2: number, i3: number, i4: number):  void {
+	public async onBlockDestroyedByExplosion(world1: World| null, i2: number, i3: number, i4: number):  Promise<void> {
 	}
 
 	public getRenderBlockPass():  number {
@@ -463,28 +398,26 @@ export class Block {
 		return i5 === 0 || Block.blocksList[i5].blockMaterial.getIsLiquid();
 	}
 
-    // TODO: ENtities
-	// public blockActivated(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: EntityPlayer| null):  boolean {
-	// 	return false;
-	// }
-
-	// public onEntityWalking(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  void {
-	// }
-
-	public onBlockPlaced(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
+	public async blockActivated(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+		return false;
 	}
 
-    // TODO: ENtities
-	// public onBlockClicked(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: EntityPlayer| null):  void {
-	// }
+	public async onEntityWalking(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  Promise<void> {
+	}
 
-	// public velocityToAddToEntity(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null, vec3D6: Vec3D| null):  void {
-	// }
+	public async onBlockPlaced(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+	}
+
+	public async onBlockClicked(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: EntityPlayer| null):  Promise<void> {
+	}
+
+	public velocityToAddToEntity(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null, vec3D6: Vec3D| null):  void {
+	}
 
 	public setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number):  void {
 	}
 
-	public colorMultiplier(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number):  number {
+	public async colorMultiplier(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number):  Promise<number> {
 		return 0xFFFFFF;
 	}
 
@@ -496,9 +429,8 @@ export class Block {
 		return false;
 	}
 
-    // TODO: ENtities
-	// public onEntityCollidedWithBlock(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  void {
-	// }
+	public async onEntityCollidedWithBlock(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  Promise<void> {
+	}
 
 	public isIndirectlyPoweringTo(world1: World| null, i2: number, i3: number, i4: number, i5: number):  boolean {
 		return false;
@@ -507,18 +439,16 @@ export class Block {
 	public func_237_e():  void {
 	}
 
-	public harvestBlock(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
-		// TODO: ENtities
-        //this.dropBlockAsItem(world1, i2, i3, i4, i5);
+	public async harvestBlock(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+        this.dropBlockAsItem(world1, i2, i3, i4, i5);
 	}
 
-	public canBlockStay(world1: World| null, i2: number, i3: number, i4: number):  boolean {
+	public async canBlockStay(world1: World| null, i2: number, i3: number, i4: number):  Promise<boolean> {
 		return true;
 	}
 
-    // TODO: Entities
-	// public onBlockPlacedBy(world1: World| null, i2: number, i3: number, i4: number, entityLiving5: EntityLiving| null):  void {
-	// }
+	public async onBlockPlacedBy(world1: World| null, i2: number, i3: number, i4: number, entityLiving5: EntityLiving| null):  Promise<void> {
+	}
 
 	public setBlockName(string1: string):  Block {
 		this.blockName = "tile." + string1;
@@ -533,15 +463,13 @@ export class Block {
 	}
 
 	static {
-        // TODO: Items
-		// Item.itemsList[Block.cloth.blockID] = (new  ItemCloth(Block.cloth.blockID - 256)).setItemName("cloth");
-		// Item.itemsList[Block.wood.blockID] = (new  ItemLog(Block.wood.blockID - 256)).setItemName("log");
+		Item.itemsList[BlockRegistry.cloth.blockID] = (new  ItemCloth(BlockRegistry.cloth.blockID - 256)).setItemName("cloth");
+		Item.itemsList[BlockRegistry.wood.blockID] = (new  ItemLog(BlockRegistry.wood.blockID - 256)).setItemName("log");
 
-		// for(let  i0: number = 0; i0 < 256; ++i0) {
-		// 	if(Block.blocksList[i0] !== null && Item.itemsList[i0] === null) {
-		// 		Item.itemsList[i0] = new  ItemBlock(i0 - 256);
-		// 	}
-		// }
-
+		for(let  i0: number = 0; i0 < 256; ++i0) {
+			if(Block.blocksList[i0] !== null && Item.itemsList[i0] === null) {
+				Item.itemsList[i0] = new  ItemBlock(i0 - 256);
+			}
+		}
 	}
 }

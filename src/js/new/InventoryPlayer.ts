@@ -2,13 +2,13 @@
 import { int, float, byte } from "../jree/index";
 import { NBTTagList } from "./NBTTagList";
 import { NBTTagCompound } from "./NBTTagCompound";
-import { Material } from "./Material";
 import { ItemArmor } from "./ItemArmor";
 import { IInventory } from "./IInventory";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
 import { MaterialRegistry } from './moved/MaterialRegistry';
+import { ItemStack } from "./ItemStack";
 
 export  class InventoryPlayer implements IInventory {
 	public mainInventory:  ItemStack[] | null = new   Array<ItemStack>(36);

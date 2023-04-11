@@ -5,7 +5,7 @@ import { Block } from "./Block";
 import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export  class BlockSponge extends Block {
-	protected constructor(i1: number) {
+	public constructor(i1: number) {
 		super(i1, MaterialRegistry.sponge);
 		this.blockIndexInTexture = 48;
 	}
@@ -31,7 +31,7 @@ export  class BlockSponge extends Block {
 		for(let  i6: number = i2 - b5; i6 <= i2 + b5; ++i6) {
 			for(let  i7: number = i3 - b5; i7 <= i3 + b5; ++i7) {
 				for(let  i8: number = i4 - b5; i8 <= i4 + b5; ++i8) {
-					world1.notifyBlocksOfNeighborChange(i6, i7, i8, await world1.getBlockId(i6, i7, i8));
+					await world1.notifyBlocksOfNeighborChange(i6, i7, i8, await world1.getBlockId(i6, i7, i8));
 				}
 			}
 		}

@@ -6,7 +6,7 @@ import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { MapGenBase } from "./MapGenBase";
 import { Random } from "../java/util/Random";
-import { Block } from "./Block";
+import { BlockRegistry } from "./index";
 
 export  class MapGenCaves extends MapGenBase {
 	protected func_870_a(i1: number, i2: number, b3: Int8Array, d4: number, d6: number, d8: number):  void {
@@ -107,9 +107,9 @@ export  class MapGenCaves extends MapGenBase {
 							for(let  i42: number = i36 + 1; !z56 && i42 >= i54 - 1; --i42) {
 								i43 = (i40 * 16 + i41) * 128 + i42;
 								if(i42 >= 0 && i42 < 128) {
-									// if(b3[i43] === EnumSkyBlock.Block.waterStill.blockID || b3[i43] === EnumSkyBlock.Block.waterMoving.blockID) {
-									// 	z56 = true;
-									// }
+									if(b3[i43] === BlockRegistry.waterStill.blockID || b3[i43] === BlockRegistry.waterMoving.blockID) {
+										z56 = true;
+									}
 
 									if(i42 !== i54 - 1 && i40 !== i53 && i40 !== i34 - 1 && i41 !== i55 && i41 !== i38 - 1) {
 										i42 = i54;
@@ -132,20 +132,20 @@ export  class MapGenCaves extends MapGenBase {
 										let  d49: number = (i48 as number + 0.5 - d6) / d29;
 										if(d49 > -0.7 && d57 * d57 + d49 * d49 + d44 * d44 < 1.0) {
 											let  b51: number = b3[i46];
-											// if(b51 === EnumSkyBlock.Block.grass.blockID) {
-											// 	z47 = true;
-											// }
+											if(b51 === BlockRegistry.grass.blockID) {
+												z47 = true;
+											}
 
-											// if(b51 === Block.stone.blockID || b51 === Block.dirt.blockID || b51 === EnumSkyBlock.Block.grass.blockID) {
-											// 	if(i48 < 10) {
-											// 		b3[i46] = EnumSkyBlock.Block.lavaStill.blockID as number;
-											// 	} else {
-											// 		b3[i46] = 0;
-											// 		if(z47 && b3[i46 - 1] === EnumSkyBlock.Block.dirt.blockID) {
-											// 			b3[i46 - 1] = EnumSkyBlock.Block.grass.blockID as number;
-											// 		}
-											// 	}
-											// }
+											if(b51 === BlockRegistry.stone.blockID || b51 === BlockRegistry.dirt.blockID || b51 === BlockRegistry.grass.blockID) {
+												if(i48 < 10) {
+													b3[i46] = BlockRegistry.lavaStill.blockID as number;
+												} else {
+													b3[i46] = 0;
+													if(z47 && b3[i46 - 1] === BlockRegistry.dirt.blockID) {
+														b3[i46 - 1] = BlockRegistry.grass.blockID as number;
+													}
+												}
+											}
 										}
 
 										--i46;

@@ -7,9 +7,7 @@ import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
-
-
-
+import { ItemStack } from "./ItemStack";
 
 export  class Item extends JavaObject {
 	protected static itemRand:  java.util.Random | null = new  java.util.Random();
@@ -25,7 +23,7 @@ export  class Item extends JavaObject {
 
 	public constructor(i1: int) {
 		super();
-this.shiftedIndex = 256 + i1;
+        this.shiftedIndex = 256 + i1;
 		if(Item.itemsList[256 + i1] !== null) {
 			java.lang.System.out.println("CONFLICT @ " + i1);
 		}
@@ -52,11 +50,11 @@ this.shiftedIndex = 256 + i1;
 		return this.iconIndex;
 	}
 
-	public onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  boolean {
+	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
 		return false;
 	}
 
-	public getStrVsBlock(itemStack1: ItemStack| null, block2: EnumSkyBlock.Block| null):  float {
+	public getStrVsBlock(itemStack1: ItemStack| null, block2: Block| null):  float {
 		return 1.0;
 	}
 

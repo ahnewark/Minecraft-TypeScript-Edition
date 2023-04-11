@@ -7,11 +7,11 @@ export  class PathPoint extends JavaObject {
 	public readonly yCoord:  int;
 	public readonly zCoord:  int;
 	public readonly hash:  int;
-	protected index: int = -1;
-	protected totalPathDistance: float;
-	protected distanceToNext: float;
-	protected distanceToTarget: float;
-	protected previous: PathPoint | null;
+	public index: int = -1;
+	public totalPathDistance: float;
+	public distanceToNext: float;
+	public distanceToTarget: float;
+	public previous: PathPoint | null;
 	public isFirst:  boolean = false;
 
 	public constructor(i1: int, i2: int, i3: int) {

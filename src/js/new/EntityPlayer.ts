@@ -9,9 +9,7 @@ import { TileEntityDispenser } from "./TileEntityDispenser";
 import { NBTTagList } from "./NBTTagList";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { MathHelper } from "./MathHelper";
-import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
-import { Item } from "./Item";
 import { InventoryPlayer } from "./InventoryPlayer";
 import { IInventory } from "./IInventory";
 import { EntityMobs } from "./EntityMobs";
@@ -22,6 +20,9 @@ import { EntityArrow } from "./EntityArrow";
 import { Entity } from "./Entity";
 import { CraftingInventoryPlayerCB } from "./CraftingInventoryPlayerCB";
 import { CraftingInventoryCB } from "./CraftingInventoryCB";
+import { ItemRegistry } from "./moved/ItemRegistry";
+import { Block } from './Block';
+import { MaterialRegistry } from "./moved/MaterialRegistry";
 
 export abstract  class EntityPlayer extends EntityLiving {
 	public inventory:  InventoryPlayer | null = new  InventoryPlayer(this);
@@ -33,9 +34,9 @@ export abstract  class EntityPlayer extends EntityLiving {
 	public field_774_f:  float;
 	public isSwinging:  boolean = false;
 	public swingProgressInt:  int = 0;
-	public username:  java.lang.String | null;
+	public username:  string | null;
 	public dimension:  int;
-	public field_20067_q:  java.lang.String | null;
+	public field_20067_q:  string | null;
 	public field_20066_r:  double;
 	public field_20065_s:  double;
 	public field_20064_t:  double;
@@ -44,6 +45,10 @@ export abstract  class EntityPlayer extends EntityLiving {
 	public field_20061_w:  double;
 	private damageRemainder:  int = 0;
 	public fishEntity:  EntityFish | null = null;
+
+	public override get type(): string {
+		return 'Player';
+	}
 
 	public constructor(world1: World| null) {
 		super(world1);
@@ -58,7 +63,7 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.texture = "/mob/char.png";
 	}
 
-	public onUpdate():  void {
+	public async onUpdate():  Promise<void> {
 		super.onUpdate();
 		if(!this.worldObj.multiplayerWorld && this.craftingInventory !== null && !this.craftingInventory.func_20120_b(this)) {
 			this.func_20059_m();
@@ -116,15 +121,15 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.field_774_f = 0.0;
 	}
 
-	public preparePlayerToSpawn():  void {
+	public async preparePlayerToSpawn():  Promise<void> {
 		this.yOffset = 1.62;
 		this.setSize(0.6, 1.8);
-		super.preparePlayerToSpawn();
+		await super.preparePlayerToSpawn();
 		this.health = 20;
 		this.deathTime = 0;
 	}
 
-	protected updatePlayerActionState():  void {
+	protected async updatePlayerActionState():  Promise<void> {
 		if(this.isSwinging) {
 			++this.swingProgressInt;
 			if(this.swingProgressInt === 8) {
@@ -138,14 +143,14 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.swingProgress = this.swingProgressInt as float / 8.0;
 	}
 
-	public onLivingUpdate():  void {
+	public async onLivingUpdate():  Promise<void> {
 		if(this.worldObj.difficultySetting === 0 && this.health < 20 && this.ticksExisted % 20 * 12 === 0) {
 			this.heal(1);
 		}
 
 		this.inventory.decrementAnimations();
 		this.field_775_e = this.field_774_f;
-		super.onLivingUpdate();
+		await super.onLivingUpdate();
 		let  f1: float = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		let  f2: float = java.lang.Math.atan(-this.motionY * 0.2 as double) as float * 15.0;
 		if(f1 > 0.1) {
@@ -163,10 +168,10 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.field_774_f += (f1 - this.field_774_f) * 0.4;
 		this.field_9328_R += (f2 - this.field_9328_R) * 0.8;
 		if(this.health > 0) {
-			let  list3: java.util.List = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0, 0.0, 1.0));
+			let  list3 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0, 0.0, 1.0));
 			if(list3 !== null) {
-				for(let  i4: int = 0; i4 < list3.size(); ++i4) {
-					let  entity5: Entity = list3.get(i4) as Entity;
+				for(let  i4: int = 0; i4 < list3.length; ++i4) {
+					let  entity5: Entity = list3[i4];
 					if(!entity5.isDead) {
 						this.func_451_h(entity5);
 					}
@@ -189,8 +194,8 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.setSize(0.2, 0.2);
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.motionY = 0.1 as double;
-		if(this.username.equals("Notch")) {
-			this.dropPlayerItemWithRandomChoice(new  ItemStack(Item.appleRed, 1), true);
+		if(this.username === "Notch") {
+			this.dropPlayerItemWithRandomChoice(new  ItemStack(ItemRegistry.appleRed, 1), true);
 		}
 
 		this.inventory.dropAllItems();
@@ -249,9 +254,9 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.worldObj.entityJoinedWorld(entityItem1);
 	}
 
-	public getCurrentPlayerStrVsBlock(block1: EnumSkyBlock.Block| null):  float {
+	public getCurrentPlayerStrVsBlock(block1: Block| null):  float {
 		let  f2: float = this.inventory.getStrVsBlock(block1);
-		if(this.isInsideOfMaterial(Material.water)) {
+		if(this.isInsideOfMaterial(MaterialRegistry.water)) {
 			f2 /= 5.0;
 		}
 
@@ -262,7 +267,7 @@ export abstract  class EntityPlayer extends EntityLiving {
 		return f2;
 	}
 
-	public canHarvestBlock(block1: EnumSkyBlock.Block| null):  boolean {
+	public canHarvestBlock(block1: Block| null):  boolean {
 		return this.inventory.canHarvestBlock(block1);
 	}
 
@@ -292,7 +297,7 @@ export abstract  class EntityPlayer extends EntityLiving {
 		return 0.12;
 	}
 
-	public attackEntityFrom(entity1: Entity| null, i2: int):  boolean {
+	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
 		this.field_9344_ag = 0;
 		if(this.health <= 0) {
 			return false;
@@ -311,7 +316,7 @@ export abstract  class EntityPlayer extends EntityLiving {
 				}
 			}
 
-			return i2 === 0 ? false : super.attackEntityFrom(entity1, i2);
+			return i2 === 0 ? false : await super.attackEntityFrom(entity1, i2);
 		}
 	}
 

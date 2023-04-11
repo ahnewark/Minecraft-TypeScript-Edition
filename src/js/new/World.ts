@@ -2,14 +2,14 @@
 
 
 import { java, long, int, float, double, byte, S } from "../jree/index";
-// import { WorldProviderHell } from "./WorldProviderHell";
+import { WorldProviderHell } from "./WorldProviderHell";
 import { WorldProvider } from "./WorldProvider";
 import { WorldChunkManager } from "./WorldChunkManager";
 import { Vec3D } from "./Vec3D";
-// import { TileEntity } from "./TileEntity";
-// import { SpawnerAnimals } from "./SpawnerAnimals";
-// import { Pathfinder } from "./Pathfinder";
-// import { PathEntity } from "./PathEntity";
+import { TileEntity } from "./TileEntity";
+import { SpawnerAnimals } from "./SpawnerAnimals";
+import { Pathfinder } from "./Pathfinder";
+import { PathEntity } from "./PathEntity";
 import { NextTickListEntry } from "./NextTickListEntry";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
@@ -20,16 +20,16 @@ import { Material } from "./Material";
 import { IWorldAccess } from "./IWorldAccess";
 import { IProgressUpdate } from "./IProgressUpdate";
 import { IChunkProvider } from "./IChunkProvider";
-// import { Explosion } from "./Explosion";
+import { Explosion } from "./Explosion";
 import { EnumSkyBlock } from "./EnumSkyBlock";
-// import { EntityPlayer } from "./EntityPlayer";
-// import { Entity } from "./Entity";
+import { EntityPlayer } from "./EntityPlayer";
+import { Entity } from "./Entity";
 import { CompressedStreamTools } from "./CompressedStreamTools";
 import { ChunkProviderLoadOrGenerate } from "./ChunkProviderLoadOrGenerate";
 import { ChunkCoordIntPair } from "./ChunkCoordIntPair";
 import { ChunkCache } from "./ChunkCache";
 import { Chunk } from "./Chunk";
-// import { BlockFluids } from "./BlockFluids";
+import { BlockFluids } from "./BlockFluids";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { IBlockAccess } from "./IBlockAccess";
 import { Random } from "../java/util/Random";
@@ -40,13 +40,8 @@ import { FileInputStream } from "../jree/java/io/FileInputStream";
 import { FileOutputStream } from "../jree/java/io/FileOutputStream";
 import { File } from "../jree/java/io/index";
 import { JavaString } from "../jree/index";
-import { MaterialRegistry } from "./index";
-import { TileEntity } from "./TileEntity";
-import { Entity } from "./Entity";
-import { EntityPlayer } from "./EntityPlayer";
-
-
-
+import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { BlockRegistry } from "./moved/BlockRegistry";
 
 export  class World implements IBlockAccess {
 	public scheduledUpdatesAreImmediate:  boolean;
@@ -319,10 +314,9 @@ export  class World implements IBlockAccess {
 						if(nBTTagCompound9.hasKey("Player")) {
 							_this.nbtCompoundPlayer = nBTTagCompound9.getCompoundTag("Player");
 							let  i10: int = _this.nbtCompoundPlayer.getInteger("Dimension");
-							// TODO: Nether
-							// if(i10 === -1) {
-							// 	object17 = new  WorldProviderHell();
-							// }
+							if(i10 === -1) {
+								object17 = new  WorldProviderHell();
+							}
 						}
 					} catch (exception14) {
 						if (exception14 instanceof java.lang.Exception) {
@@ -397,30 +391,29 @@ export  class World implements IBlockAccess {
 	public func_6464_c():  void {
 	}
 
-	// TODO: Entities
-	// public func_608_a(entityPlayer1: EntityPlayer| null):  void {
-	// 	try {
-	// 		if(this.nbtCompoundPlayer !== null) {
-	// 			entityPlayer1.readFromNBT(this.nbtCompoundPlayer);
-	// 			this.nbtCompoundPlayer = null;
-	// 		}
+	public func_608_a(entityPlayer1: EntityPlayer| null):  void {
+		try {
+			if(this.nbtCompoundPlayer !== null) {
+				entityPlayer1.readFromNBT(this.nbtCompoundPlayer);
+				this.nbtCompoundPlayer = null;
+			}
 
-	// 		if(this.chunkProvider instanceof ChunkProviderLoadOrGenerate) {
-	// 			let  chunkProviderLoadOrGenerate2: ChunkProviderLoadOrGenerate = this.chunkProvider as ChunkProviderLoadOrGenerate;
-	// 			let  i3: int = MathHelper.floor_float((entityPlayer1.posX as int) as float) >> 4;
-	// 			let  i4: int = MathHelper.floor_float((entityPlayer1.posZ as int) as float) >> 4;
-	// 			chunkProviderLoadOrGenerate2.func_21110_c(i3, i4);
-	// 		}
+			if(this.chunkProvider instanceof ChunkProviderLoadOrGenerate) {
+				let  chunkProviderLoadOrGenerate2: ChunkProviderLoadOrGenerate = this.chunkProvider as ChunkProviderLoadOrGenerate;
+				let  i3: int = MathHelper.floor_float((entityPlayer1.posX as int) as float) >> 4;
+				let  i4: int = MathHelper.floor_float((entityPlayer1.posZ as int) as float) >> 4;
+				chunkProviderLoadOrGenerate2.func_21110_c(i3, i4);
+			}
 
-	// 		this.entityJoinedWorld(entityPlayer1);
-	// 	} catch (exception5) {
-	// 		if (exception5 instanceof java.lang.Exception) {
-	// 			console.error(exception5)
-	// 		} else {
-	// 			throw exception5;
-	// 		}
-	// 	}
-	// }
+			this.entityJoinedWorld(entityPlayer1);
+		} catch (exception5) {
+			if (exception5 instanceof java.lang.Exception) {
+				console.error(exception5)
+			} else {
+				throw exception5;
+			}
+		}
+	}
 
 	public async saveWorld(z1: boolean, iProgressUpdate2: IProgressUpdate | null):  Promise<void> {
 		if(this.chunkProvider.func_536_b()) {
@@ -447,17 +440,17 @@ export  class World implements IBlockAccess {
 		nBTTagCompound1.setLong("Time", this.worldTime);
 		nBTTagCompound1.setLong("SizeOnDisk", this.sizeOnDisk);
 		nBTTagCompound1.setLong("LastPlayed", java.lang.System.currentTimeMillis());
-		// let  entityPlayer2: EntityPlayer = null;
-		// if(this.playerEntities.size() > 0) {
-		// 	entityPlayer2 = this.playerEntities.get(0) as EntityPlayer;
-		// }
+		let  entityPlayer2: EntityPlayer = null;
+		if(this.playerEntities.length > 0) {
+			entityPlayer2 = this.playerEntities[0];
+		}
 
 		let  nBTTagCompound3: NBTTagCompound;
-		// if(entityPlayer2 !== null) {
-		// 	nBTTagCompound3 = new  NBTTagCompound();
-		// 	entityPlayer2.writeToNBT(nBTTagCompound3);
-		// 	nBTTagCompound1.setCompoundTag("Player", nBTTagCompound3);
-		// }
+		if(entityPlayer2 !== null) {
+			nBTTagCompound3 = new  NBTTagCompound();
+			entityPlayer2.writeToNBT(nBTTagCompound3);
+			nBTTagCompound1.setCompoundTag("Player", nBTTagCompound3);
+		}
 
 		nBTTagCompound3 = new  NBTTagCompound();
 		nBTTagCompound3.setTag("Data", nBTTagCompound1);
@@ -716,30 +709,30 @@ export  class World implements IBlockAccess {
 			let  i5: int;
 			if(z4) {
 				i5 = await this.getBlockId(i1, i2, i3);
-				// if(i5 === Block.stairSingle.blockID || i5 === Block.tilledField.blockID) {
-				// 	let  i6: int = this.getBlockLightValue_do(i1, i2 + 1, i3, false);
-				// 	let  i7: int = this.getBlockLightValue_do(i1 + 1, i2, i3, false);
-				// 	let  i8: int = this.getBlockLightValue_do(i1 - 1, i2, i3, false);
-				// 	let  i9: int = this.getBlockLightValue_do(i1, i2, i3 + 1, false);
-				// 	let  i10: int = this.getBlockLightValue_do(i1, i2, i3 - 1, false);
-				// 	if(i7 > i6) {
-				// 		i6 = i7;
-				// 	}
+				if(i5 === BlockRegistry.stairSingle.blockID || i5 === BlockRegistry.tilledField.blockID) {
+					let  i6: int = await this.getBlockLightValue_do(i1, i2 + 1, i3, false);
+					let  i7: int = await this.getBlockLightValue_do(i1 + 1, i2, i3, false);
+					let  i8: int = await this.getBlockLightValue_do(i1 - 1, i2, i3, false);
+					let  i9: int = await this.getBlockLightValue_do(i1, i2, i3 + 1, false);
+					let  i10: int = await this.getBlockLightValue_do(i1, i2, i3 - 1, false);
+					if(i7 > i6) {
+						i6 = i7;
+					}
 
-				// 	if(i8 > i6) {
-				// 		i6 = i8;
-				// 	}
+					if(i8 > i6) {
+						i6 = i8;
+					}
 
-				// 	if(i9 > i6) {
-				// 		i6 = i9;
-				// 	}
+					if(i9 > i6) {
+						i6 = i9;
+					}
 
-				// 	if(i10 > i6) {
-				// 		i6 = i10;
-				// 	}
+					if(i10 > i6) {
+						i6 = i10;
+					}
 
-				// 	return i6;
-				// }
+					return i6;
+				}
 			}
 
 			if(i2 < 0) {
@@ -983,7 +976,7 @@ export  class World implements IBlockAccess {
 					let  i32: int = await this.getBlockMetadata(i7, i8, i9);
 					let  block33: Block = Block.blocksList[i31];
 					if(i31 > 0 && block33.canCollideCheck(i32, z3)) {
-						let  movingObjectPosition34: MovingObjectPosition | null = block33.collisionRayTrace(this, i7, i8, i9, vec3D1, vec3D2);
+						let  movingObjectPosition34: MovingObjectPosition | null = await block33.collisionRayTrace(this, i7, i8, i9, vec3D1, vec3D2);
 						if(movingObjectPosition34 !== null) {
 							return movingObjectPosition34;
 						}
@@ -1142,29 +1135,29 @@ export  class World implements IBlockAccess {
 		return (f3 * 11.0) as int;
 	}
 
-	// public func_4079_a(entity1: Entity| null, f2: float):  Vec3D | null {
-	// 	let  f3: float = this.getCelestialAngle(f2);
-	// 	let  f4: float = MathHelper.cos(f3 * java.lang.Math.PI as float * 2.0) * 2.0 + 0.5;
-	// 	if(f4 < 0.0) {
-	// 		f4 = 0.0;
-	// 	}
+	public func_4079_a(entity1: Entity| null, f2: float):  Vec3D | null {
+		let  f3: float = this.getCelestialAngle(f2);
+		let  f4: float = MathHelper.cos(f3 * java.lang.Math.PI as float * 2.0) * 2.0 + 0.5;
+		if(f4 < 0.0) {
+			f4 = 0.0;
+		}
 
-	// 	if(f4 > 1.0) {
-	// 		f4 = 1.0;
-	// 	}
+		if(f4 > 1.0) {
+			f4 = 1.0;
+		}
 
-	// 	let  i5: int = MathHelper.floor_double(entity1.posX);
-	// 	let  i6: int = MathHelper.floor_double(entity1.posZ);
-	// 	let  f7: float = this.getWorldChunkManager().func_4072_b(i5, i6) as float;
-	// 	let  i8: int = this.getWorldChunkManager().func_4073_a(i5, i6).getSkyColorByTemp(f7);
-	// 	let  f9: float = (i8 >> 16 & 255) as float / 255.0;
-	// 	let  f10: float = (i8 >> 8 & 255) as float / 255.0;
-	// 	let  f11: float = (i8 & 255) as float / 255.0;
-	// 	f9 *= f4;
-	// 	f10 *= f4;
-	// 	f11 *= f4;
-	// 	return Vec3D.createVector(f9 as double, f10 as double, f11 as double);
-	// }
+		let  i5: int = MathHelper.floor_double(entity1.posX);
+		let  i6: int = MathHelper.floor_double(entity1.posZ);
+		let  f7: float = this.getWorldChunkManager().func_4072_b(i5, i6) as float;
+		let  i8: int = this.getWorldChunkManager().func_4073_a(i5, i6).getSkyColorByTemp(f7);
+		let  f9: float = (i8 >> 16 & 255) as float / 255.0;
+		let  f10: float = (i8 >> 8 & 255) as float / 255.0;
+		let  f11: float = (i8 & 255) as float / 255.0;
+		f9 *= f4;
+		f10 *= f4;
+		f11 *= f4;
+		return Vec3D.createVector(f9 as double, f10 as double, f11 as double);
+	}
 
 	public getCelestialAngle(f1: float):  float {
 		return this.worldProvider.calculateCelestialAngle(this.worldTime, f1);
@@ -1258,144 +1251,144 @@ export  class World implements IBlockAccess {
 		}
 	}
 
-	// public func_633_c():  void {
-	// 	this.loadedEntityList.removeAll(this.unloadedEntityList);
+	public async func_633_c():  Promise<void> {
+		this.loadedEntityList = this.loadedEntityList.filter(loadedEntity => !this.unloadedEntityList.includes(loadedEntity))
 
-	// 	let  i1: int;
-	// 	let  entity2: Entity;
-	// 	let  i3: int;
-	// 	let  i4: int;
-	// 	for(i1 = 0; i1 < this.unloadedEntityList.size(); ++i1) {
-	// 		entity2 = this.unloadedEntityList.get(i1) as Entity;
-	// 		i3 = entity2.chunkCoordX;
-	// 		i4 = entity2.chunkCoordZ;
-	// 		if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
-	// 			this.getChunkFromChunkCoords(i3, i4).func_1015_b(entity2);
-	// 		}
-	// 	}
+		let  i1: int;
+		let  entity2: Entity;
+		let  i3: int;
+		let  i4: int;
+		for(i1 = 0; i1 < this.unloadedEntityList.length; ++i1) {
+			entity2 = this.unloadedEntityList[i1];
+			i3 = entity2.chunkCoordX;
+			i4 = entity2.chunkCoordZ;
+			if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
+				(await this.getChunkFromChunkCoords(i3, i4)).func_1015_b(entity2);
+			}
+		}
 
-	// 	for(i1 = 0; i1 < this.unloadedEntityList.size(); ++i1) {
-	// 		this.releaseEntitySkin(this.unloadedEntityList.get(i1) as Entity);
-	// 	}
+		for(i1 = 0; i1 < this.unloadedEntityList.length; ++i1) {
+			this.releaseEntitySkin(this.unloadedEntityList[i1]);
+		}
 
-	// 	this.unloadedEntityList.clear();
+		this.unloadedEntityList = [];
 
-	// 	for(i1 = 0; i1 < this.loadedEntityList.size(); ++i1) {
-	// 		entity2 = this.loadedEntityList.get(i1) as Entity;
-	// 		if(entity2.ridingEntity !== null) {
-	// 			if(!entity2.ridingEntity.isDead && entity2.ridingEntity.riddenByEntity === entity2) {
-	// 				continue;
-	// 			}
+		for(i1 = 0; i1 < this.loadedEntityList.length; ++i1) {
+			entity2 = this.loadedEntityList[i1];
+			if(entity2.ridingEntity !== null) {
+				if(!entity2.ridingEntity.isDead && entity2.ridingEntity.riddenByEntity === entity2) {
+					continue;
+				}
 
-	// 			entity2.ridingEntity.riddenByEntity = null;
-	// 			entity2.ridingEntity = null;
-	// 		}
+				entity2.ridingEntity.riddenByEntity = null;
+				entity2.ridingEntity = null;
+			}
 
-	// 		if(!entity2.isDead) {
-	// 			this.updateEntity(entity2);
-	// 		}
+			if(!entity2.isDead) {
+				this.updateEntity(entity2);
+			}
 
-	// 		if(entity2.isDead) {
-	// 			i3 = entity2.chunkCoordX;
-	// 			i4 = entity2.chunkCoordZ;
-	// 			if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
-	// 				this.getChunkFromChunkCoords(i3, i4).func_1015_b(entity2);
-	// 			}
+			if(entity2.isDead) {
+				i3 = entity2.chunkCoordX;
+				i4 = entity2.chunkCoordZ;
+				if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
+					(await this.getChunkFromChunkCoords(i3, i4)).func_1015_b(entity2);
+				}
 
-	// 			this.loadedEntityList.remove(i1--);
-	// 			this.releaseEntitySkin(entity2);
-	// 		}
-	// 	}
+				this.loadedEntityList = this.loadedEntityList.splice(i1--, 1);
+				this.releaseEntitySkin(entity2);
+			}
+		}
 
-	// 	for(i1 = 0; i1 < this.loadedTileEntityList.size(); ++i1) {
-	// 		let  tileEntity5: TileEntity = this.loadedTileEntityList.get(i1) as TileEntity;
-	// 		tileEntity5.updateEntity();
-	// 	}
+		for(i1 = 0; i1 < this.loadedTileEntityList.length; ++i1) {
+			let  tileEntity5: TileEntity = this.loadedTileEntityList[i1] as TileEntity;
+			tileEntity5.updateEntity();
+		}
 
-	// }
+	}
 
-	// public updateEntity(entity1: Entity| null):  void {
-	// 	this.updateEntityWithOptionalForce(entity1, true);
-	// }
+	public updateEntity(entity1: Entity| null):  void {
+		this.updateEntityWithOptionalForce(entity1, true);
+	}
 
-	// public updateEntityWithOptionalForce(entity1: Entity| null, z2: boolean):  void {
-	// 	let  i3: int = MathHelper.floor_double(entity1.posX);
-	// 	let  i4: int = MathHelper.floor_double(entity1.posZ);
-	// 	let  b5: byte = 32;
-	// 	if(!z2 || this.checkChunksExist(i3 - b5, 0, i4 - b5, i3 + b5, 128, i4 + b5)) {
-	// 		entity1.lastTickPosX = entity1.posX;
-	// 		entity1.lastTickPosY = entity1.posY;
-	// 		entity1.lastTickPosZ = entity1.posZ;
-	// 		entity1.prevRotationYaw = entity1.rotationYaw;
-	// 		entity1.prevRotationPitch = entity1.rotationPitch;
-	// 		if(z2 && entity1.addedToChunk) {
-	// 			if(entity1.ridingEntity !== null) {
-	// 				entity1.updateRidden();
-	// 			} else {
-	// 				entity1.onUpdate();
-	// 			}
-	// 		}
+	public async updateEntityWithOptionalForce(entity1: Entity| null, z2: boolean):  Promise<void> {
+		let  i3: int = MathHelper.floor_double(entity1.posX);
+		let  i4: int = MathHelper.floor_double(entity1.posZ);
+		let  b5: byte = 32;
+		if(!z2 || this.checkChunksExist(i3 - b5, 0, i4 - b5, i3 + b5, 128, i4 + b5)) {
+			entity1.lastTickPosX = entity1.posX;
+			entity1.lastTickPosY = entity1.posY;
+			entity1.lastTickPosZ = entity1.posZ;
+			entity1.prevRotationYaw = entity1.rotationYaw;
+			entity1.prevRotationPitch = entity1.rotationPitch;
+			if(z2 && entity1.addedToChunk) {
+				if(entity1.ridingEntity !== null) {
+					entity1.updateRidden();
+				} else {
+					entity1.onUpdate();
+				}
+			}
 
-	// 		if(java.lang.Double.isNaN(entity1.posX) || java.lang.Double.isInfinite(entity1.posX)) {
-	// 			entity1.posX = entity1.lastTickPosX;
-	// 		}
+			if(isNaN(entity1.posX) || entity1.posX == 0x7ff0000000000000 || entity1.posX == 0xfff0000000000000) {
+				entity1.posX = entity1.lastTickPosX;
+			}
 
-	// 		if(java.lang.Double.isNaN(entity1.posY) || java.lang.Double.isInfinite(entity1.posY)) {
-	// 			entity1.posY = entity1.lastTickPosY;
-	// 		}
+			if(isNaN(entity1.posY) || entity1.posY == 0x7ff0000000000000 || entity1.posY == 0xfff0000000000000) {
+				entity1.posY = entity1.lastTickPosY;
+			}
 
-	// 		if(java.lang.Double.isNaN(entity1.posZ) || java.lang.Double.isInfinite(entity1.posZ)) {
-	// 			entity1.posZ = entity1.lastTickPosZ;
-	// 		}
+			if(isNaN(entity1.posZ) || entity1.posZ == 0x7ff0000000000000 || entity1.posZ == 0xfff0000000000000) {
+				entity1.posZ = entity1.lastTickPosZ;
+			}
 
-	// 		if(java.lang.Double.isNaN(entity1.rotationPitch as double) || java.lang.Double.isInfinite(entity1.rotationPitch as double)) {
-	// 			entity1.rotationPitch = entity1.prevRotationPitch;
-	// 		}
+			if(isNaN(entity1.rotationPitch) || entity1.rotationPitch == 0x7ff0000000000000 || entity1.rotationPitch == 0xfff0000000000000) {
+				entity1.rotationPitch = entity1.prevRotationPitch;
+			}
 
-	// 		if(java.lang.Double.isNaN(entity1.rotationYaw as double) || java.lang.Double.isInfinite(entity1.rotationYaw as double)) {
-	// 			entity1.rotationYaw = entity1.prevRotationYaw;
-	// 		}
+			if(isNaN(entity1.rotationYaw) || entity1.rotationYaw == 0x7ff0000000000000 || entity1.rotationYaw == 0xfff0000000000000) {
+				entity1.rotationYaw = entity1.prevRotationYaw;
+			}
 
-	// 		let  i6: int = MathHelper.floor_double(entity1.posX / 16.0);
-	// 		let  i7: int = MathHelper.floor_double(entity1.posY / 16.0);
-	// 		let  i8: int = MathHelper.floor_double(entity1.posZ / 16.0);
-	// 		if(!entity1.addedToChunk || entity1.chunkCoordX !== i6 || entity1.chunkCoordY !== i7 || entity1.chunkCoordZ !== i8) {
-	// 			if(entity1.addedToChunk && this.chunkExists(entity1.chunkCoordX, entity1.chunkCoordZ)) {
-	// 				this.getChunkFromChunkCoords(entity1.chunkCoordX, entity1.chunkCoordZ).func_1016_a(entity1, entity1.chunkCoordY);
-	// 			}
+			let  i6: int = MathHelper.floor_double(entity1.posX / 16.0);
+			let  i7: int = MathHelper.floor_double(entity1.posY / 16.0);
+			let  i8: int = MathHelper.floor_double(entity1.posZ / 16.0);
+			if(!entity1.addedToChunk || entity1.chunkCoordX !== i6 || entity1.chunkCoordY !== i7 || entity1.chunkCoordZ !== i8) {
+				if(entity1.addedToChunk && this.chunkExists(entity1.chunkCoordX, entity1.chunkCoordZ)) {
+					(await this.getChunkFromChunkCoords(entity1.chunkCoordX, entity1.chunkCoordZ)).func_1016_a(entity1, entity1.chunkCoordY);
+				}
 
-	// 			if(this.chunkExists(i6, i8)) {
-	// 				entity1.addedToChunk = true;
-	// 				this.getChunkFromChunkCoords(i6, i8).addEntity(entity1);
-	// 			} else {
-	// 				entity1.addedToChunk = false;
-	// 			}
-	// 		}
+				if(this.chunkExists(i6, i8)) {
+					entity1.addedToChunk = true;
+					(await this.getChunkFromChunkCoords(i6, i8)).addEntity(entity1);
+				} else {
+					entity1.addedToChunk = false;
+				}
+			}
 
-	// 		if(z2 && entity1.addedToChunk && entity1.riddenByEntity !== null) {
-	// 			if(!entity1.riddenByEntity.isDead && entity1.riddenByEntity.ridingEntity === entity1) {
-	// 				this.updateEntity(entity1.riddenByEntity);
-	// 			} else {
-	// 				entity1.riddenByEntity.ridingEntity = null;
-	// 				entity1.riddenByEntity = null;
-	// 			}
-	// 		}
+			if(z2 && entity1.addedToChunk && entity1.riddenByEntity !== null) {
+				if(!entity1.riddenByEntity.isDead && entity1.riddenByEntity.ridingEntity === entity1) {
+					this.updateEntity(entity1.riddenByEntity);
+				} else {
+					entity1.riddenByEntity.ridingEntity = null;
+					entity1.riddenByEntity = null;
+				}
+			}
 
-	// 	}
-	// }
+		}
+	}
 
-	// public checkIfAABBIsClear(axisAlignedBB1: AxisAlignedBB| null):  boolean {
-	// 	let  list2: java.util.List = this.getEntitiesWithinAABBExcludingEntity(null as Entity, axisAlignedBB1);
+	public async checkIfAABBIsClear(axisAlignedBB1: AxisAlignedBB| null):  Promise<boolean> {
+		let  list2 = await this.getEntitiesWithinAABBExcludingEntity(null as Entity, axisAlignedBB1);
 
-	// 	for(let  i3: int = 0; i3 < list2.size(); ++i3) {
-	// 		let  entity4: Entity = list2.get(i3) as Entity;
-	// 		if(!entity4.isDead && entity4.preventEntitySpawning) {
-	// 			return false;
-	// 		}
-	// 	}
+		for(let  i3: int = 0; i3 < list2.length; ++i3) {
+			let  entity4: Entity = list2[i3];
+			if(!entity4.isDead && entity4.preventEntitySpawning) {
+				return false;
+			}
+		}
 
-	// 	return true;
-	// }
+		return true;
+	}
 
 	public async getIsAnyLiquid(axisAlignedBB1: AxisAlignedBB):  Promise<boolean> {
 		let  i2: int = MathHelper.floor_double(axisAlignedBB1.minX);
@@ -1430,68 +1423,68 @@ export  class World implements IBlockAccess {
 		return false;
 	}
 
-	// public isBoundingBoxBurning(axisAlignedBB1: AxisAlignedBB):  boolean {
-	// 	let  i2: int = MathHelper.floor_double(axisAlignedBB1.minX);
-	// 	let  i3: int = MathHelper.floor_double(axisAlignedBB1.maxX + 1.0);
-	// 	let  i4: int = MathHelper.floor_double(axisAlignedBB1.minY);
-	// 	let  i5: int = MathHelper.floor_double(axisAlignedBB1.maxY + 1.0);
-	// 	let  i6: int = MathHelper.floor_double(axisAlignedBB1.minZ);
-	// 	let  i7: int = MathHelper.floor_double(axisAlignedBB1.maxZ + 1.0);
-	// 	if(this.checkChunksExist(i2, i4, i6, i3, i5, i7)) {
-	// 		for(let  i8: int = i2; i8 < i3; ++i8) {
-	// 			for(let  i9: int = i4; i9 < i5; ++i9) {
-	// 				for(let  i10: int = i6; i10 < i7; ++i10) {
-	// 					let  i11: int = this.getBlockId(i8, i9, i10);
-	// 					if(i11 === Block.fire.blockID || i11 === Block.lavaStill.blockID || i11 === Block.lavaMoving.blockID) {
-	// 						return true;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
+	public async isBoundingBoxBurning(axisAlignedBB1: AxisAlignedBB):  Promise<boolean> {
+		let  i2: int = MathHelper.floor_double(axisAlignedBB1.minX);
+		let  i3: int = MathHelper.floor_double(axisAlignedBB1.maxX + 1.0);
+		let  i4: int = MathHelper.floor_double(axisAlignedBB1.minY);
+		let  i5: int = MathHelper.floor_double(axisAlignedBB1.maxY + 1.0);
+		let  i6: int = MathHelper.floor_double(axisAlignedBB1.minZ);
+		let  i7: int = MathHelper.floor_double(axisAlignedBB1.maxZ + 1.0);
+		if(this.checkChunksExist(i2, i4, i6, i3, i5, i7)) {
+			for(let  i8: int = i2; i8 < i3; ++i8) {
+				for(let  i9: int = i4; i9 < i5; ++i9) {
+					for(let  i10: int = i6; i10 < i7; ++i10) {
+						let  i11: int = await this.getBlockId(i8, i9, i10);
+						if(i11 === BlockRegistry.fire.blockID || i11 === BlockRegistry.lavaStill.blockID || i11 === BlockRegistry.lavaMoving.blockID) {
+							return true;
+						}
+					}
+				}
+			}
+		}
 
-	// 	return false;
-	// }
+		return false;
+	}
 
-	// public handleMaterialAcceleration(axisAlignedBB1: AxisAlignedBB| null, material2: Material| null, entity3: Entity| null):  boolean {
-	// 	let  i4: int = MathHelper.floor_double(axisAlignedBB1.minX);
-	// 	let  i5: int = MathHelper.floor_double(axisAlignedBB1.maxX + 1.0);
-	// 	let  i6: int = MathHelper.floor_double(axisAlignedBB1.minY);
-	// 	let  i7: int = MathHelper.floor_double(axisAlignedBB1.maxY + 1.0);
-	// 	let  i8: int = MathHelper.floor_double(axisAlignedBB1.minZ);
-	// 	let  i9: int = MathHelper.floor_double(axisAlignedBB1.maxZ + 1.0);
-	// 	if(!this.checkChunksExist(i4, i6, i8, i5, i7, i9)) {
-	// 		return false;
-	// 	} else {
-	// 		let  z10: boolean = false;
-	// 		let  vec3D11: Vec3D = Vec3D.createVector(0.0, 0.0, 0.0);
+	public async handleMaterialAcceleration(axisAlignedBB1: AxisAlignedBB| null, material2: Material| null, entity3: Entity| null):  Promise<boolean> {
+		let  i4: int = MathHelper.floor_double(axisAlignedBB1.minX);
+		let  i5: int = MathHelper.floor_double(axisAlignedBB1.maxX + 1.0);
+		let  i6: int = MathHelper.floor_double(axisAlignedBB1.minY);
+		let  i7: int = MathHelper.floor_double(axisAlignedBB1.maxY + 1.0);
+		let  i8: int = MathHelper.floor_double(axisAlignedBB1.minZ);
+		let  i9: int = MathHelper.floor_double(axisAlignedBB1.maxZ + 1.0);
+		if(!this.checkChunksExist(i4, i6, i8, i5, i7, i9)) {
+			return false;
+		} else {
+			let  z10: boolean = false;
+			let  vec3D11: Vec3D = Vec3D.createVector(0.0, 0.0, 0.0);
 
-	// 		for(let  i12: int = i4; i12 < i5; ++i12) {
-	// 			for(let  i13: int = i6; i13 < i7; ++i13) {
-	// 				for(let  i14: int = i8; i14 < i9; ++i14) {
-	// 					let  block15: EnumSkyBlock.Block = EnumSkyBlock.Block.blocksList[this.getBlockId(i12, i13, i14)];
-	// 					if(block15 !== null && block15.blockMaterial === material2) {
-	// 						let  d16: double = ((i13 + 1) as float - BlockFluids.setFluidHeight(this.getBlockMetadata(i12, i13, i14))) as double;
-	// 						if(i7 as double >= d16) {
-	// 							z10 = true;
-	// 							block15.velocityToAddToEntity(this, i12, i13, i14, entity3, vec3D11);
-	// 						}
-	// 					}
-	// 				}
-	// 			}
-	// 		}
+			for(let  i12: int = i4; i12 < i5; ++i12) {
+				for(let  i13: int = i6; i13 < i7; ++i13) {
+					for(let  i14: int = i8; i14 < i9; ++i14) {
+						let  block15: Block = Block.blocksList[await this.getBlockId(i12, i13, i14)];
+						if(block15 !== null && block15.blockMaterial === material2) {
+							let  d16: double = ((i13 + 1) as float - BlockFluids.setFluidHeight(await this.getBlockMetadata(i12, i13, i14))) as double;
+							if(i7 as double >= d16) {
+								z10 = true;
+								block15.velocityToAddToEntity(this, i12, i13, i14, entity3, vec3D11);
+							}
+						}
+					}
+				}
+			}
 
-	// 		if(vec3D11.lengthVector() > 0.0) {
-	// 			vec3D11 = vec3D11.normalize();
-	// 			let  d18: double = 0.004;
-	// 			entity3.motionX += vec3D11.xCoord * d18;
-	// 			entity3.motionY += vec3D11.yCoord * d18;
-	// 			entity3.motionZ += vec3D11.zCoord * d18;
-	// 		}
+			if(vec3D11.lengthVector() > 0.0) {
+				vec3D11 = vec3D11.normalize();
+				let  d18: double = 0.004;
+				entity3.motionX += vec3D11.xCoord * d18;
+				entity3.motionY += vec3D11.yCoord * d18;
+				entity3.motionZ += vec3D11.zCoord * d18;
+			}
 
-	// 		return z10;
-	// 	}
-	// }
+			return z10;
+		}
+	}
 
 	public async isMaterialInBB(axisAlignedBB1: AxisAlignedBB, material2: Material):  Promise<boolean> {
 		let  i3: int = MathHelper.floor_double(axisAlignedBB1.minX);
@@ -1545,19 +1538,19 @@ export  class World implements IBlockAccess {
 		return false;
 	}
 
-	// public createExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Explosion | null {
-	// 	return this.newExplosion(entity1, d2, d4, d6, f8, false);
-	// }
+	public createExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Explosion | null {
+		return this.newExplosion(entity1, d2, d4, d6, f8, false);
+	}
 
-	// public newExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float, z9: boolean):  Explosion | null {
-	// 	let  explosion10: Explosion = new  Explosion(this, entity1, d2, d4, d6, f8);
-	// 	explosion10.field_12257_a = z9;
-	// 	explosion10.func_12248_a();
-	// 	explosion10.func_12247_b();
-	// 	return explosion10;
-	// }
+	public newExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float, z9: boolean):  Explosion | null {
+		let  explosion10: Explosion = new  Explosion(this, entity1, d2, d4, d6, f8);
+		explosion10.field_12257_a = z9;
+		explosion10.func_12248_a();
+		explosion10.func_12247_b();
+		return explosion10;
+	}
 
-	public func_675_a(vec3D1: Vec3D, axisAlignedBB2: AxisAlignedBB):  float {
+	public async func_675_a(vec3D1: Vec3D, axisAlignedBB2: AxisAlignedBB):  Promise<float> {
 		let  d3: double = 1.0 / ((axisAlignedBB2.maxX - axisAlignedBB2.minX) * 2.0 + 1.0);
 		let  d5: double = 1.0 / ((axisAlignedBB2.maxY - axisAlignedBB2.minY) * 2.0 + 1.0);
 		let  d7: double = 1.0 / ((axisAlignedBB2.maxZ - axisAlignedBB2.minZ) * 2.0 + 1.0);
@@ -1570,7 +1563,7 @@ export  class World implements IBlockAccess {
 					let  d14: double = axisAlignedBB2.minX + (axisAlignedBB2.maxX - axisAlignedBB2.minX) * f11 as double;
 					let  d16: double = axisAlignedBB2.minY + (axisAlignedBB2.maxY - axisAlignedBB2.minY) * f12 as double;
 					let  d18: double = axisAlignedBB2.minZ + (axisAlignedBB2.maxZ - axisAlignedBB2.minZ) * f13 as double;
-					if(this.rayTraceBlocks(Vec3D.createVector(d14, d16, d18), vec3D1) === null) {
+					if(await this.rayTraceBlocks(Vec3D.createVector(d14, d16, d18), vec3D1) === null) {
 						++i9;
 					}
 
@@ -1582,7 +1575,7 @@ export  class World implements IBlockAccess {
 		return i9 as float / i10 as float;
 	}
 
-	public onBlockHit(i1: int, i2: int, i3: int, i4: int):  void {
+	public async onBlockHit(i1: int, i2: int, i3: int, i4: int):  Promise<void> {
 		if(i4 === 0) {
 			--i2;
 		}
@@ -1607,20 +1600,20 @@ export  class World implements IBlockAccess {
 			++i1;
 		}
 
-		// if(this.getBlockId(i1, i2, i3) === EnumSkyBlock.Block.fire.blockID) {
-		// 	this.playSoundEffect((i1 as float + 0.5) as double, (i2 as float + 0.5) as double, (i3 as float + 0.5) as double, "random.fizz", 0.5, 2.6 + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8);
-		// 	this.setBlockWithNotify(i1, i2, i3, 0);
-		// }
+		if(await this.getBlockId(i1, i2, i3) === BlockRegistry.fire.blockID) {
+			this.playSoundEffect((i1 as float + 0.5) as double, (i2 as float + 0.5) as double, (i3 as float + 0.5) as double, "random.fizz", 0.5, 2.6 + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8);
+			this.setBlockWithNotify(i1, i2, i3, 0);
+		}
 
 	}
 
-	// public func_4085_a(class1: java.lang.Class| null):  Entity | null {
-	// 	return null;
-	// }
+	public func_4085_a(class1: string):  Entity | null {
+		return null;
+	}
 
-	// public func_687_d():  java.lang.String | null {
-	// 	return "All: " + this.loadedEntityList.size();
-	// }
+	public func_687_d():  string {
+		return "All: " + this.loadedEntityList.length;
+	}
 
 	public func_21119_g(): string {
 		return this.chunkProvider.toString();
@@ -1743,7 +1736,7 @@ export  class World implements IBlockAccess {
 	}
 
 	public async tick():  Promise<void> {
-		// SpawnerAnimals.performSpawning(this, this.field_21121_K, this.field_21120_L);
+		SpawnerAnimals.performSpawning(this, this.field_21121_K, this.field_21120_L);
 		this.chunkProvider.func_532_a();
 		let  i1: int = this.calculateSkylightSubtracted(1.0);
 		if(i1 !== this.skylightSubtracted) {
@@ -1770,18 +1763,18 @@ export  class World implements IBlockAccess {
 		let  i4: int;
 		let  i6: int;
 		let  i7: int;
-		// for(let  i1: int = 0; i1 < this.playerEntities.size(); ++i1) {
-		// 	let  entityPlayer2: EntityPlayer = this.playerEntities.get(i1) as EntityPlayer;
-		// 	i3 = MathHelper.floor_double(entityPlayer2.posX / 16.0);
-		// 	i4 = MathHelper.floor_double(entityPlayer2.posZ / 16.0);
-		// 	let  b5: byte = 9;
+		for(let  i1: int = 0; i1 < this.playerEntities.length; ++i1) {
+			let  entityPlayer2: EntityPlayer = this.playerEntities[i1] as EntityPlayer;
+			i3 = MathHelper.floor_double(entityPlayer2.posX / 16.0);
+			i4 = MathHelper.floor_double(entityPlayer2.posZ / 16.0);
+			let  b5: byte = 9;
 
-		// 	for(i6 = -b5; i6 <= b5; ++i6) {
-		// 		for(i7 = -b5; i7 <= b5; ++i7) {
-		// 			this.field_9427_K.add(new  ChunkCoordIntPair(i6 + i3, i7 + i4));
-		// 		}
-		// 	}
-		// }
+			for(i6 = -b5; i6 <= b5; ++i6) {
+				for(i7 = -b5; i7 <= b5; ++i7) {
+					this.field_9427_K.add(new  ChunkCoordIntPair(i6 + i3, i7 + i4));
+				}
+			}
+		}
 
 		if(this.field_9426_L > 0) {
 			--this.field_9426_L;
@@ -1804,13 +1797,13 @@ export  class World implements IBlockAccess {
 				i10 = chunk14.getBlockID(i7, i9, i8);
 				i7 += i3;
 				i8 += i4;
-				// if(i10 === 0 && this.getBlockLightValue(i7, i9, i8) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, i7, i9, i8) <= 0) {
-				// 	let  entityPlayer11: EntityPlayer = this.getClosestPlayer(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, 8.0);
-				// 	if(entityPlayer11 !== null && entityPlayer11.getDistanceSq(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5) > 4.0) {
-				// 		this.playSoundEffect(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, "ambient.cave.cave", 0.7, 0.8 + this.rand.nextFloat() * 0.2);
-				// 		this.field_9426_L = this.rand.nextInt(12000) + 6000;
-				// 	}
-				// }
+				if(i10 === 0 && await this.getBlockLightValue(i7, i9, i8) <= this.rand.nextInt(8) && await this.getSavedLightValue(EnumSkyBlock.Sky, i7, i9, i8) <= 0) {
+					let  entityPlayer11: EntityPlayer = this.getClosestPlayer(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, 8.0);
+					if(entityPlayer11 !== null && entityPlayer11.getDistanceSq(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5) > 4.0) {
+						this.playSoundEffect(i7 as double + 0.5, i9 as double + 0.5, i8 as double + 0.5, "ambient.cave.cave", 0.7, 0.8 + this.rand.nextFloat() * 0.2);
+						this.field_9426_L = this.rand.nextInt(12000) + 6000;
+					}
+				}
 			}
 
 			for(i6 = 0; i6 < 80; ++i6) {
@@ -1891,27 +1884,27 @@ export  class World implements IBlockAccess {
 		return this.field_1012_M;
 	}
 
-	// public getEntitiesWithinAABB(class1: java.lang.Class| null, axisAlignedBB2: AxisAlignedBB| null):  java.util.List | null {
-	// 	let  i3: int = MathHelper.floor_double((axisAlignedBB2.minX - 2.0) / 16.0);
-	// 	let  i4: int = MathHelper.floor_double((axisAlignedBB2.maxX + 2.0) / 16.0);
-	// 	let  i5: int = MathHelper.floor_double((axisAlignedBB2.minZ - 2.0) / 16.0);
-	// 	let  i6: int = MathHelper.floor_double((axisAlignedBB2.maxZ + 2.0) / 16.0);
-	// 	let  arrayList7: java.util.ArrayList = new  java.util.ArrayList();
+	public async getEntitiesWithinAABB(class1: string, axisAlignedBB2: AxisAlignedBB| null): Promise<Entity[]> {
+		let  i3: int = MathHelper.floor_double((axisAlignedBB2.minX - 2.0) / 16.0);
+		let  i4: int = MathHelper.floor_double((axisAlignedBB2.maxX + 2.0) / 16.0);
+		let  i5: int = MathHelper.floor_double((axisAlignedBB2.minZ - 2.0) / 16.0);
+		let  i6: int = MathHelper.floor_double((axisAlignedBB2.maxZ + 2.0) / 16.0);
+		let  arrayList7: Entity[] = [];
 
-	// 	for(let  i8: int = i3; i8 <= i4; ++i8) {
-	// 		for(let  i9: int = i5; i9 <= i6; ++i9) {
-	// 			if(this.chunkExists(i8, i9)) {
-	// 				this.getChunkFromChunkCoords(i8, i9).getEntitiesOfTypeWithinAAAB(class1, axisAlignedBB2, arrayList7);
-	// 			}
-	// 		}
-	// 	}
+		for(let  i8: int = i3; i8 <= i4; ++i8) {
+			for(let  i9: int = i5; i9 <= i6; ++i9) {
+				if(this.chunkExists(i8, i9)) {
+					(await this.getChunkFromChunkCoords(i8, i9)).getEntitiesOfTypeWithinAAAB(class1, axisAlignedBB2, arrayList7);
+				}
+			}
+		}
 
-	// 	return arrayList7;
-	// }
+		return arrayList7;
+	}
 
-	// public getLoadedEntityList():  java.util.List | null {
-	// 	return this.loadedEntityList;
-	// }
+	public getLoadedEntityList(): Entity[] {
+		return this.loadedEntityList;
+	}
 
 	public async func_698_b(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  Promise<void> {
 		if(this.blockExists(i1, i2, i3)) {
@@ -1924,31 +1917,38 @@ export  class World implements IBlockAccess {
 
 	}
 
-	// public countEntities(class1: java.lang.Class| null):  int {
-	// 	let  i2: int = 0;
+	public countEntities(class1: string):  int {
+		let  i2: int = 0;
 
-	// 	for(let  i3: int = 0; i3 < this.loadedEntityList.size(); ++i3) {
-	// 		let  entity4: Entity = this.loadedEntityList.get(i3) as Entity;
-	// 		if(class1.isAssignableFrom(entity4.getClass())) {
-	// 			++i2;
-	// 		}
-	// 	}
+		for(let  i3: int = 0; i3 < this.loadedEntityList.length; ++i3) {
+			let  entity4: Entity = this.loadedEntityList[i3] as Entity;
+			switch (class1) {
+				case 'monster':
+				case 'creature':
+				case 'waterCreature':
+				default:
+					console.error('World.countEntities is not yet implemented!');
+			}
+			// if(class1.isAssignableFrom(entity4.getClass())) {
+			// 	++i2;
+			// }
+		}
 
-	// 	return i2;
-	// }
+		return i2;
+	}
 
-	// public func_636_a(list1: java.util.List| null):  void {
-	// 	this.loadedEntityList.addAll(list1);
+	public func_636_a(list1: Entity[]):  void {
+		this.loadedEntityList = [...this.loadedEntityList, ...list1];
 
-	// 	for(let  i2: int = 0; i2 < list1.size(); ++i2) {
-	// 		this.obtainEntitySkin(list1.get(i2) as Entity);
-	// 	}
+		for(let  i2: int = 0; i2 < list1.length; ++i2) {
+			this.obtainEntitySkin(list1[i2]);
+		}
 
-	// }
+	}
 
-	// public func_632_b(list1: java.util.List| null):  void {
-	// 	this.unloadedEntityList.addAll(list1);
-	// }
+	public func_632_b(list1: Entity[]):  void {
+		this.unloadedEntityList = [...this.unloadedEntityList, ...list1];
+	}
 
 	public func_656_j():  void {
 		while(this.chunkProvider.func_532_a()) {
@@ -1960,45 +1960,43 @@ export  class World implements IBlockAccess {
 		let  i6: int = await this.getBlockId(i2, i3, i4);
 		let  block7: Block = Block.blocksList[i6];
 		let  block8: Block = Block.blocksList[i1];
-		let  axisAlignedBB9: AxisAlignedBB | null = block8.getCollisionBoundingBoxFromPool(this, i2, i3, i4);
+		let  axisAlignedBB9: AxisAlignedBB | null = await block8.getCollisionBoundingBoxFromPool(this, i2, i3, i4);
 		if(z5) {
 			axisAlignedBB9 = null;
 		}
 
-		// TODO: Fix
-		return true;
-		//return axisAlignedBB9 !== null && !this.checkIfAABBIsClear(axisAlignedBB9) ? false : (block7 !== Block.waterStill && block7 !== Block.waterMoving && block7 !== Block.lavaStill && block7 !== Block.lavaMoving && block7 !== Block.fire && block7 !== Block.snow ? i1 > 0 && block7 === null && block8.canPlaceBlockAt(this, i2, i3, i4) : true);
+		return axisAlignedBB9 !== null && !this.checkIfAABBIsClear(axisAlignedBB9) ? false : (block7 !== BlockRegistry.waterStill && block7 !== BlockRegistry.waterMoving && block7 !== BlockRegistry.lavaStill && block7 !== BlockRegistry.lavaMoving && block7 !== BlockRegistry.fire && block7 !== BlockRegistry.snow ? i1 > 0 && block7 === null && block8.canPlaceBlockAt(this, i2, i3, i4) : true);
 	}
 
-	// public getPathToEntity(entity1: Entity| null, entity2: Entity| null, f3: float):  PathEntity | null {
-	// 	let  i4: int = MathHelper.floor_double(entity1.posX);
-	// 	let  i5: int = MathHelper.floor_double(entity1.posY);
-	// 	let  i6: int = MathHelper.floor_double(entity1.posZ);
-	// 	let  i7: int = (f3 + 16.0) as int;
-	// 	let  i8: int = i4 - i7;
-	// 	let  i9: int = i5 - i7;
-	// 	let  i10: int = i6 - i7;
-	// 	let  i11: int = i4 + i7;
-	// 	let  i12: int = i5 + i7;
-	// 	let  i13: int = i6 + i7;
-	// 	let  chunkCache14: ChunkCache = new  ChunkCache(this, i8, i9, i10, i11, i12, i13);
-	// 	return (new  Pathfinder(chunkCache14)).createEntityPathTo(entity1, entity2, f3);
-	// }
+	public async getPathToEntity(entity1: Entity| null, entity2: Entity| null, f3: float):  Promise<PathEntity | null> {
+		let  i4: int = MathHelper.floor_double(entity1.posX);
+		let  i5: int = MathHelper.floor_double(entity1.posY);
+		let  i6: int = MathHelper.floor_double(entity1.posZ);
+		let  i7: int = (f3 + 16.0) as int;
+		let  i8: int = i4 - i7;
+		let  i9: int = i5 - i7;
+		let  i10: int = i6 - i7;
+		let  i11: int = i4 + i7;
+		let  i12: int = i5 + i7;
+		let  i13: int = i6 + i7;
+		let  chunkCache14: ChunkCache = await ChunkCache.Construct(this, i8, i9, i10, i11, i12, i13);
+		return await (new  Pathfinder(chunkCache14)).createEntityPathTo(entity1, entity2, f3);
+	}
 
-	// public getEntityPathToXYZ(entity1: Entity| null, i2: int, i3: int, i4: int, f5: float):  PathEntity | null {
-	// 	let  i6: int = MathHelper.floor_double(entity1.posX);
-	// 	let  i7: int = MathHelper.floor_double(entity1.posY);
-	// 	let  i8: int = MathHelper.floor_double(entity1.posZ);
-	// 	let  i9: int = (f5 + 8.0) as int;
-	// 	let  i10: int = i6 - i9;
-	// 	let  i11: int = i7 - i9;
-	// 	let  i12: int = i8 - i9;
-	// 	let  i13: int = i6 + i9;
-	// 	let  i14: int = i7 + i9;
-	// 	let  i15: int = i8 + i9;
-	// 	let  chunkCache16: ChunkCache = new  ChunkCache(this, i10, i11, i12, i13, i14, i15);
-	// 	return (new  Pathfinder(chunkCache16)).createEntityPathTo(entity1, i2, i3, i4, f5);
-	// }
+	public async getEntityPathToXYZ(entity1: Entity| null, i2: int, i3: int, i4: int, f5: float):  Promise<PathEntity | null> {
+		let  i6: int = MathHelper.floor_double(entity1.posX);
+		let  i7: int = MathHelper.floor_double(entity1.posY);
+		let  i8: int = MathHelper.floor_double(entity1.posZ);
+		let  i9: int = (f5 + 8.0) as int;
+		let  i10: int = i6 - i9;
+		let  i11: int = i7 - i9;
+		let  i12: int = i8 - i9;
+		let  i13: int = i6 + i9;
+		let  i14: int = i7 + i9;
+		let  i15: int = i8 + i9;
+		let  chunkCache16: ChunkCache = await ChunkCache.Construct(this, i10, i11, i12, i13, i14, i15);
+		return await (new  Pathfinder(chunkCache16)).createEntityPathTo(entity1, i2, i3, i4, f5);
+	}
 
 	public async isBlockProvidingPowerTo(i1: int, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  i5: int = await this.getBlockId(i1, i2, i3);
@@ -2022,25 +2020,25 @@ export  class World implements IBlockAccess {
 		return this.isBlockIndirectlyProvidingPowerTo(i1, i2 - 1, i3, 0) ? true : (this.isBlockIndirectlyProvidingPowerTo(i1, i2 + 1, i3, 1) ? true : (this.isBlockIndirectlyProvidingPowerTo(i1, i2, i3 - 1, 2) ? true : (this.isBlockIndirectlyProvidingPowerTo(i1, i2, i3 + 1, 3) ? true : (this.isBlockIndirectlyProvidingPowerTo(i1 - 1, i2, i3, 4) ? true : this.isBlockIndirectlyProvidingPowerTo(i1 + 1, i2, i3, 5)))));
 	}
 
-	// public getClosestPlayerToEntity(entity1: Entity| null, d2: double):  EntityPlayer | null {
-	// 	return this.getClosestPlayer(entity1.posX, entity1.posY, entity1.posZ, d2);
-	// }
+	public getClosestPlayerToEntity(entity1: Entity| null, d2: double):  EntityPlayer | null {
+		return this.getClosestPlayer(entity1.posX, entity1.posY, entity1.posZ, d2);
+	}
 
-	// public getClosestPlayer(d1: double, d3: double, d5: double, d7: double):  EntityPlayer | null {
-	// 	let  d9: double = -1.0;
-	// 	let  entityPlayer11: EntityPlayer = null;
+	public getClosestPlayer(d1: double, d3: double, d5: double, d7: double):  EntityPlayer | null {
+		let  d9: double = -1.0;
+		let  entityPlayer11: EntityPlayer = null;
 
-	// 	for(let  i12: int = 0; i12 < this.playerEntities.size(); ++i12) {
-	// 		let  entityPlayer13: EntityPlayer = this.playerEntities.get(i12) as EntityPlayer;
-	// 		let  d14: double = entityPlayer13.getDistanceSq(d1, d3, d5);
-	// 		if((d7 < 0.0 || d14 < d7 * d7) && (d9 === -1.0 || d14 < d9)) {
-	// 			d9 = d14;
-	// 			entityPlayer11 = entityPlayer13;
-	// 		}
-	// 	}
+		for(let  i12: int = 0; i12 < this.playerEntities.length; ++i12) {
+			let  entityPlayer13: EntityPlayer = this.playerEntities[i12];
+			let  d14: double = entityPlayer13.getDistanceSq(d1, d3, d5);
+			if((d7 < 0.0 || d14 < d7 * d7) && (d9 === -1.0 || d14 < d9)) {
+				d9 = d14;
+				entityPlayer11 = entityPlayer13;
+			}
+		}
 
-	// 	return entityPlayer11;
-	// }
+		return entityPlayer11;
+	}
 
 	public async setChunkData(i1: int, i2: int, i3: int, i4: int, i5: int, i6: int, b7: Int8Array):  Promise<void> {
 		let  i8: int = i1 >> 4;
@@ -2117,76 +2115,76 @@ export  class World implements IBlockAccess {
 		this.worldTime = j1;
 	}
 
-	// public func_705_f(entity1: Entity| null):  void {
-	// 	let  i2: int = MathHelper.floor_double(entity1.posX / 16.0);
-	// 	let  i3: int = MathHelper.floor_double(entity1.posZ / 16.0);
-	// 	let  b4: byte = 2;
+	public func_705_f(entity1: Entity| null):  void {
+		let  i2: int = MathHelper.floor_double(entity1.posX / 16.0);
+		let  i3: int = MathHelper.floor_double(entity1.posZ / 16.0);
+		let  b4: byte = 2;
 
-	// 	for(let  i5: int = i2 - b4; i5 <= i2 + b4; ++i5) {
-	// 		for(let  i6: int = i3 - b4; i6 <= i3 + b4; ++i6) {
-	// 			this.getChunkFromChunkCoords(i5, i6);
-	// 		}
-	// 	}
+		for(let  i5: int = i2 - b4; i5 <= i2 + b4; ++i5) {
+			for(let  i6: int = i3 - b4; i6 <= i3 + b4; ++i6) {
+				this.getChunkFromChunkCoords(i5, i6);
+			}
+		}
 
-	// 	if(!this.loadedEntityList.contains(entity1)) {
-	// 		this.loadedEntityList.add(entity1);
-	// 	}
+		if(!this.loadedEntityList.includes(entity1)) {
+			this.loadedEntityList.push(entity1);
+		}
 
-	// }
+	}
 
-	// public func_6466_a(entityPlayer1: EntityPlayer| null, i2: int, i3: int, i4: int):  boolean {
-	// 	return true;
-	// }
+	public func_6466_a(entityPlayer1: EntityPlayer| null, i2: int, i3: int, i4: int):  boolean {
+		return true;
+	}
 
-	// public func_9425_a(entity1: Entity| null, b2: byte):  void {
-	// }
+	public func_9425_a(entity1: Entity| null, b2: byte):  void {
+	}
 
-	// public updateEntityList():  void {
-	// 	this.loadedEntityList.removeAll(this.unloadedEntityList);
+	public async updateEntityList():  Promise<void> {
+		this.loadedEntityList = this.loadedEntityList.filter(loadedEntity => !this.unloadedEntityList.includes(loadedEntity));
 
-	// 	let  i1: int;
-	// 	let  entity2: Entity;
-	// 	let  i3: int;
-	// 	let  i4: int;
-	// 	for(i1 = 0; i1 < this.unloadedEntityList.size(); ++i1) {
-	// 		entity2 = this.unloadedEntityList.get(i1) as Entity;
-	// 		i3 = entity2.chunkCoordX;
-	// 		i4 = entity2.chunkCoordZ;
-	// 		if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
-	// 			this.getChunkFromChunkCoords(i3, i4).func_1015_b(entity2);
-	// 		}
-	// 	}
+		let  i1: int;
+		let  entity2: Entity;
+		let  i3: int;
+		let  i4: int;
+		for(i1 = 0; i1 < this.unloadedEntityList.length; ++i1) {
+			entity2 = this.unloadedEntityList[i1];
+			i3 = entity2.chunkCoordX;
+			i4 = entity2.chunkCoordZ;
+			if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
+				(await this.getChunkFromChunkCoords(i3, i4)).func_1015_b(entity2);
+			}
+		}
 
-	// 	for(i1 = 0; i1 < this.unloadedEntityList.size(); ++i1) {
-	// 		this.releaseEntitySkin(this.unloadedEntityList.get(i1) as Entity);
-	// 	}
+		for(i1 = 0; i1 < this.unloadedEntityList.length; ++i1) {
+			this.releaseEntitySkin(this.unloadedEntityList[i1]);
+		}
 
-	// 	this.unloadedEntityList.clear();
+		this.unloadedEntityList = [];
 
-	// 	for(i1 = 0; i1 < this.loadedEntityList.size(); ++i1) {
-	// 		entity2 = this.loadedEntityList.get(i1) as Entity;
-	// 		if(entity2.ridingEntity !== null) {
-	// 			if(!entity2.ridingEntity.isDead && entity2.ridingEntity.riddenByEntity === entity2) {
-	// 				continue;
-	// 			}
+		for(i1 = 0; i1 < this.loadedEntityList.length; ++i1) {
+			entity2 = this.loadedEntityList[i1];
+			if(entity2.ridingEntity !== null) {
+				if(!entity2.ridingEntity.isDead && entity2.ridingEntity.riddenByEntity === entity2) {
+					continue;
+				}
 
-	// 			entity2.ridingEntity.riddenByEntity = null;
-	// 			entity2.ridingEntity = null;
-	// 		}
+				entity2.ridingEntity.riddenByEntity = null;
+				entity2.ridingEntity = null;
+			}
 
-	// 		if(entity2.isDead) {
-	// 			i3 = entity2.chunkCoordX;
-	// 			i4 = entity2.chunkCoordZ;
-	// 			if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
-	// 				this.getChunkFromChunkCoords(i3, i4).func_1015_b(entity2);
-	// 			}
+			if(entity2.isDead) {
+				i3 = entity2.chunkCoordX;
+				i4 = entity2.chunkCoordZ;
+				if(entity2.addedToChunk && this.chunkExists(i3, i4)) {
+					(await this.getChunkFromChunkCoords(i3, i4)).func_1015_b(entity2);
+				}
 
-	// 			this.loadedEntityList.remove(i1--);
-	// 			this.releaseEntitySkin(entity2);
-	// 		}
-	// 	}
+				this.loadedEntityList = this.loadedEntityList.splice(i1--, 1);
+				this.releaseEntitySkin(entity2);
+			}
+		}
 
-	// }
+	}
 
 	public func_21118_q():  IChunkProvider | null {
 		return this.chunkProvider;

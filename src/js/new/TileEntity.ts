@@ -5,13 +5,14 @@ import { java, int, double } from "../jree/index";
 import { World } from "./World";
 import { TileEntitySign } from "./TileEntitySign";
 // import { TileEntityNote } from "./TileEntityNote";
-// import { TileEntityMobSpawner } from "./TileEntityMobSpawner";
+import { TileEntityMobSpawner } from "./TileEntityMobSpawner";
 import { TileEntityFurnace } from "./TileEntityFurnace";
 // import { TileEntityDispenser } from "./TileEntityDispenser";
-// import { TileEntityChest } from "./TileEntityChest";
+import { TileEntityChest } from "./TileEntityChest";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { Block } from "./Block";
 import { TileEntityDispenser } from "./TileEntityDispenser";
+import { TileEntityNote } from "./TileEntityNote";
 
 // CHANGES:
 // - The nameToClass / classToName maps have been changed due to the lack of Java Class types.
@@ -99,10 +100,14 @@ export abstract class TileEntity {
 
 	static {
 		TileEntity.addMapping("Furnace", () => { return new TileEntityFurnace() });
-		// TileEntity.addMapping(TileEntityChest.class, "Chest");
+		TileEntity.addMapping("Chest", () => { return new TileEntityChest() });
 		TileEntity.addMapping("Trap", () => { return new TileEntityDispenser() });
 		TileEntity.addMapping("Sign", () => { return new TileEntitySign() });
-		// TileEntity.addMapping(TileEntityMobSpawner.class, "MobSpawner");
-		// TileEntity.addMapping(TileEntityNote.class, "Music");
+		TileEntity.addMapping("MobSpawner", () => { return new TileEntityMobSpawner() });
+		TileEntity.addMapping("Music", () => { return new TileEntityNote() });
+	}
+
+	public static getCtor(type: string) {
+		return this.nameToClassMap[type];
 	}
 }

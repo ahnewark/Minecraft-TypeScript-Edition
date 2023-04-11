@@ -31,14 +31,14 @@ export abstract  class BlockContainer extends Block {
 	}
 
 
-	public onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  void {
-		super.onBlockAdded(world1, i2, i3, i4);
-		world1.setBlockTileEntity(i2, i3, i4, this.getBlockEntity());
+	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+		await super.onBlockAdded(world1, i2, i3, i4);
+		await world1.setBlockTileEntity(i2, i3, i4, this.getBlockEntity());
 	}
 
-	public onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  void {
-		super.onBlockRemoval(world1, i2, i3, i4);
-		world1.removeBlockTileEntity(i2, i3, i4);
+	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+		await super.onBlockRemoval(world1, i2, i3, i4);
+		await world1.removeBlockTileEntity(i2, i3, i4);
 	}
 
 	protected abstract getBlockEntity():  TileEntity | null;

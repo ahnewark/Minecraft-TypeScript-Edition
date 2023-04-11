@@ -1,16 +1,12 @@
 
-import { int, float, java, double, byte, short, S } from "jree";
+import { int, float, java, double, byte, short, S } from "../jree/index";
 import { World } from "./World";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { MathHelper } from "./MathHelper";
-import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
-import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
-
-
-
+import { Block, MaterialRegistry } from "./index";
 
 export  class EntityItem extends Entity {
 	public item:  ItemStack | null;
@@ -20,7 +16,7 @@ export  class EntityItem extends Entity {
 	private health:  int = 5;
 	public field_804_d:  float = (java.lang.Math.random() * java.lang.Math.PI * 2.0) as float;
 
-	public get type(): string {
+	public override get type(): string {
 		return 'Item';
 	}
 
@@ -28,19 +24,18 @@ export  class EntityItem extends Entity {
 
 	public constructor(world1: World| null, d2: double, d4: double, d6: double, itemStack8: ItemStack| null);
     public constructor(...args: unknown[]) {
+		const [world1] = args as [World];
+		super(world1);
+
 		switch (args.length) {
 			case 1: {
-				const [world1] = args as [World];
-				super(world1);
 				this.setSize(0.25, 0.25);
 				this.yOffset = this.height / 2.0;
-
 				break;
 			}
 
 			case 5: {
-				const [world1, d2, d4, d6, itemStack8] = args as [World, double, double, double, ItemStack];
-				super(world1);
+				const [, d2, d4, d6, itemStack8] = args as [World, double, double, double, ItemStack];
 				this.setSize(0.25, 0.25);
 				this.yOffset = this.height / 2.0;
 				this.setPosition(d2, d4, d6);
@@ -63,7 +58,7 @@ export  class EntityItem extends Entity {
 	protected entityInit():  void {
 	}
 
-	public onUpdate():  void {
+	public async onUpdate(): Promise<void> {
 		super.onUpdate();
 		if(this.delayBeforeCanPickup > 0) {
 			--this.delayBeforeCanPickup;
@@ -73,7 +68,7 @@ export  class EntityItem extends Entity {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.motionY -= 0.04 as double;
-		if(this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) === Material.lava) {
+		if(await this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) === MaterialRegistry.lava) {
 			this.motionY = 0.2 as double;
 			this.motionX = ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2) as double;
 			this.motionZ = ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2) as double;
@@ -85,9 +80,9 @@ export  class EntityItem extends Entity {
 		let  f1: float = 0.98;
 		if(this.onGround) {
 			f1 = 0.58800006;
-			let  i2: int = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+			let  i2: int = await this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 			if(i2 > 0) {
-				f1 = EnumSkyBlock.Block.blocksList[i2].slipperiness * 0.98;
+				f1 = Block.blocksList[i2].slipperiness * 0.98;
 			}
 		}
 
@@ -106,24 +101,24 @@ export  class EntityItem extends Entity {
 
 	}
 
-	public handleWaterMovement():  boolean {
-		return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
+	public async handleWaterMovement():  Promise<boolean> {
+		return await this.worldObj.handleMaterialAcceleration(this.boundingBox, MaterialRegistry.water, this);
 	}
 
-	private func_466_g(d1: double, d3: double, d5: double):  boolean {
+	private async func_466_g(d1: double, d3: double, d5: double): Promise<boolean> {
 		let  i7: int = MathHelper.floor_double(d1);
 		let  i8: int = MathHelper.floor_double(d3);
 		let  i9: int = MathHelper.floor_double(d5);
 		let  d10: double = d1 - i7 as double;
 		let  d12: double = d3 - i8 as double;
 		let  d14: double = d5 - i9 as double;
-		if(EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7, i8, i9)]) {
-			let  z16: boolean = !EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7 - 1, i8, i9)];
-			let  z17: boolean = !EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7 + 1, i8, i9)];
-			let  z18: boolean = !EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7, i8 - 1, i9)];
-			let  z19: boolean = !EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7, i8 + 1, i9)];
-			let  z20: boolean = !EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7, i8, i9 - 1)];
-			let  z21: boolean = !EnumSkyBlock.Block.opaqueCubeLookup[this.worldObj.getBlockId(i7, i8, i9 + 1)];
+		if(Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7, i8, i9)]) {
+			let  z16: boolean = !Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7 - 1, i8, i9)];
+			let  z17: boolean = !Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7 + 1, i8, i9)];
+			let  z18: boolean = !Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7, i8 - 1, i9)];
+			let  z19: boolean = !Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7, i8 + 1, i9)];
+			let  z20: boolean = !Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7, i8, i9 - 1)];
+			let  z21: boolean = !Block.opaqueCubeLookup[await this.worldObj.getBlockId(i7, i8, i9 + 1)];
 			let  b22: byte = -1;
 			let  d23: double = 9999.0;
 			if(z16 && d10 < d23) {
@@ -185,11 +180,11 @@ export  class EntityItem extends Entity {
 		return false;
 	}
 
-	protected dealFireDamage(i1: int):  void {
-		this.attackEntityFrom(null as Entity, i1);
+	protected async dealFireDamage(i1: int):  Promise<void> {
+		await this.attackEntityFrom(null as Entity, i1);
 	}
 
-	public attackEntityFrom(entity1: Entity| null, i2: int):  boolean {
+	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
 		this.setBeenAttacked();
 		this.health -= i2;
 		if(this.health <= 0) {

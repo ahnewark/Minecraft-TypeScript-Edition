@@ -78,7 +78,7 @@ export  class ChunkLoader implements IChunkLoader {
 			} catch (exception8) {
 				if (exception8 instanceof java.lang.Exception) {
 					console.error(exception8);
-				// exception8.printStackTrace();
+					console.trace();
 				} else {
 					throw exception8;
 				}
@@ -135,35 +135,31 @@ export  class ChunkLoader implements IChunkLoader {
 		nBTTagCompound3.setBoolean("TerrainPopulated", chunk1.isTerrainPopulated);
 		chunk1.hasEntities = false;
 
-		// TODO: Entities
-		// let  nBTTagList4: NBTTagList = new  NBTTagList();
+		let  nBTTagList4: NBTTagList = new  NBTTagList();
 
-		// let  nBTTagCompound8: NBTTagCompound;
-		// for(let  i5: number = 0; i5 < chunk1.entities.length; ++i5) {
-		// 	iterator6 = chunk1.entities[i5].iterator();
+		let  nBTTagCompound8: NBTTagCompound;
+		for(let  i5: number = 0; i5 < chunk1.entities.length; ++i5) {
+			chunk1.entities[i5].forEach(entity7 => {
+				chunk1.hasEntities = true;
+				nBTTagCompound8 = new  NBTTagCompound();
+				if(entity7.addEntityID(nBTTagCompound8)) {
+					nBTTagList4.setTag(nBTTagCompound8);
+				}
+			})
+		}
 
-		// 	while(iterator6.hasNext()) {
-		// 		let  entity7: Entity = iterator6.next() as Entity;
-		// 		chunk1.hasEntities = true;
-		// 		nBTTagCompound8 = new  NBTTagCompound();
-		// 		if(entity7.addEntityID(nBTTagCompound8)) {
-		// 			nBTTagList4.setTag(nBTTagCompound8);
-		// 		}
-		// 	}
-		// }
+		nBTTagCompound3.setTag("Entities", nBTTagList4);
+		let  nBTTagList9: NBTTagList = new  NBTTagList();
 
-		// nBTTagCompound3.setTag("Entities", nBTTagList4);
-		// let  nBTTagList9: NBTTagList = new  NBTTagList();
-		// iterator6 = chunk1.chunkTileEntityMap.values().iterator();
+		const tileEntities = Array.from(chunk1.chunkTileEntityMap.values());
 
-		// while(iterator6.hasNext()) {
-		// 	let  tileEntity10: TileEntity = iterator6.next() as TileEntity;
-		// 	nBTTagCompound8 = new  NBTTagCompound();
-		// 	tileEntity10.writeToNBT(nBTTagCompound8);
-		// 	nBTTagList9.setTag(nBTTagCompound8);
-		// }
+		tileEntities.forEach(tileEntity10 => {
+			nBTTagCompound8 = new  NBTTagCompound();
+			tileEntity10.writeToNBT(nBTTagCompound8);
+			nBTTagList9.setTag(nBTTagCompound8);
+		})
 
-		// nBTTagCompound3.setTag("TileEntities", nBTTagList9);
+		nBTTagCompound3.setTag("TileEntities", nBTTagList9);
 	}
 
 	public static async loadChunkIntoWorldFromCompound(world0: World| null, nBTTagCompound1: NBTTagCompound): Promise<Chunk> {

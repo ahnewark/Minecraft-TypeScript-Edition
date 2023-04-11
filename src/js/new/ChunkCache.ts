@@ -31,6 +31,7 @@ export  class ChunkCache implements IBlockAccess {
 			}
 		}
 
+		return _this;
 	}
 
 	public async getBlockId(i1: int, i2: int, i3: int):  Promise<int> {
