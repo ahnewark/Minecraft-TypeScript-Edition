@@ -3,7 +3,7 @@ import { int } from "../jree/index";
 import { World } from "./World";
 import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { EntityPlayer } from "./EntityPlayer";
 
 export  class ItemRedstone extends Item {
@@ -39,9 +39,9 @@ export  class ItemRedstone extends Item {
 		if(!await world3.isAirBlock(i4, i5, i6)) {
 			return false;
 		} else {
-			if(await BlockRegistry.redstoneWire.canPlaceBlockAt(world3, i4, i5, i6)) {
+			if(await Block.redstoneWire.canPlaceBlockAt(world3, i4, i5, i6)) {
 				--itemStack1.stackSize;
-				await world3.setBlockWithNotify(i4, i5, i6, BlockRegistry.redstoneWire.blockID);
+				await world3.setBlockWithNotify(i4, i5, i6, Block.redstoneWire.blockID);
 			}
 
 			return true;

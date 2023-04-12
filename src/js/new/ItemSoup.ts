@@ -5,7 +5,7 @@ import { ItemStack } from "./ItemStack";
 import { ItemFood } from "./ItemFood";
 import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class ItemSoup extends ItemFood {
 	public constructor(i1: int, i2: int) {
@@ -13,7 +13,7 @@ export  class ItemSoup extends ItemFood {
 	}
 
 	public async onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
-		super.onItemRightClick(itemStack1, world2, entityPlayer3);
-		return new  ItemStack(ItemRegistry.bowlEmpty);
+		await super.onItemRightClick(itemStack1, world2, entityPlayer3);
+		return new  ItemStack(Item.bowlEmpty);
 	}
 }

@@ -26,15 +26,15 @@ export  class InventoryLargeChest implements IInventory {
 		return i1 >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(i1 - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(i1);
 	}
 
-	public decrStackSize(i1: int, i2: int):  ItemStack | null {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
 		return i1 >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(i1 - this.upperChest.getSizeInventory(), i2) : this.upperChest.decrStackSize(i1, i2);
 	}
 
-	public setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  void {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
 		if(i1 >= this.upperChest.getSizeInventory()) {
-			this.lowerChest.setInventorySlotContents(i1 - this.upperChest.getSizeInventory(), itemStack2);
+			await this.lowerChest.setInventorySlotContents(i1 - this.upperChest.getSizeInventory(), itemStack2);
 		} else {
-			this.upperChest.setInventorySlotContents(i1, itemStack2);
+			await this.upperChest.setInventorySlotContents(i1, itemStack2);
 		}
 
 	}

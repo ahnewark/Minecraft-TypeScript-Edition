@@ -4,10 +4,11 @@ import { MathHelper } from "./MathHelper";
 import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
-import { BlockRegistry } from "./moved/BlockRegistry";
-import { EntityPlayer } from "./EntityPlayer";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
 import { Block } from "./Block";
+import { EntityPlayer } from "./EntityPlayer";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
+
 
 export  class ItemDoor extends Item {
 	private field_321_a:  Material | null;
@@ -26,9 +27,9 @@ export  class ItemDoor extends Item {
 			++i5;
 			let  block8: Block;
 			if(this.field_321_a === MaterialRegistry.wood) {
-				block8 = BlockRegistry.doorWood;
+				block8 = Block.doorWood;
 			} else {
-				block8 = BlockRegistry.doorSteel;
+				block8 = Block.doorSteel;
 			}
 
 			if(!await block8.canPlaceBlockAt(world3, i4, i5, i6)) {

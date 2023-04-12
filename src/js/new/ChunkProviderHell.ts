@@ -16,7 +16,7 @@ import { IChunkProvider } from "./IChunkProvider";
 import { Chunk } from "./Chunk";
 import { BlockSand } from "./BlockSand";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
 
 export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 	private hellRNG:  Random | null;
@@ -90,11 +90,11 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 							for(let  i50: int = 0; i50 < 4; ++i50) {
 								let  i51: int = 0;
 								if(i11 * 8 + i30 < b5) {
-									i51 = BlockRegistry.lavaMoving.blockID;
+									i51 = Block.lavaMoving.blockID;
 								}
 
 								if(d46 > 0.0) {
-									i51 = BlockRegistry.bloodStone.blockID;
+									i51 = Block.bloodStone.blockID;
 								}
 
 								b3[i42] = i51 as byte;
@@ -130,46 +130,46 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 				let  z10: boolean = this.field_4161_q[i7 + i8 * 16] + this.hellRNG.nextDouble() * 0.2 > 0.0;
 				let  i11: int = (this.field_4160_r[i7 + i8 * 16] / 3.0 + 3.0 + this.hellRNG.nextDouble() * 0.25) as int;
 				let  i12: int = -1;
-				let  b13: byte = BlockRegistry.bloodStone.blockID as byte;
-				let  b14: byte = BlockRegistry.bloodStone.blockID as byte;
+				let  b13: byte = Block.bloodStone.blockID as byte;
+				let  b14: byte = Block.bloodStone.blockID as byte;
 
 				for(let  i15: int = 127; i15 >= 0; --i15) {
 					let  i16: int = (i7 * 16 + i8) * 128 + i15;
 					if(i15 >= 127 - this.hellRNG.nextInt(5)) {
-						b3[i16] = BlockRegistry.bedrock.blockID as byte;
+						b3[i16] = Block.bedrock.blockID as byte;
 					} else if(i15 <= 0 + this.hellRNG.nextInt(5)) {
-						b3[i16] = BlockRegistry.bedrock.blockID as byte;
+						b3[i16] = Block.bedrock.blockID as byte;
 					} else {
 						let  b17: byte = b3[i16];
 						if(b17 === 0) {
 							i12 = -1;
-						} else if(b17 === BlockRegistry.bloodStone.blockID) {
+						} else if(b17 === Block.bloodStone.blockID) {
 							if(i12 === -1) {
 								if(i11 <= 0) {
 									b13 = 0;
-									b14 = BlockRegistry.bloodStone.blockID as byte;
+									b14 = Block.bloodStone.blockID as byte;
 								} else if(i15 >= b4 - 4 && i15 <= b4 + 1) {
-									b13 = BlockRegistry.bloodStone.blockID as byte;
-									b14 = BlockRegistry.bloodStone.blockID as byte;
+									b13 = Block.bloodStone.blockID as byte;
+									b14 = Block.bloodStone.blockID as byte;
 									if(z10) {
-										b13 = BlockRegistry.gravel.blockID as byte;
+										b13 = Block.gravel.blockID as byte;
 									}
 
 									if(z10) {
-										b14 = BlockRegistry.bloodStone.blockID as byte;
+										b14 = Block.bloodStone.blockID as byte;
 									}
 
 									if(z9) {
-										b13 = BlockRegistry.slowSand.blockID as byte;
+										b13 = Block.slowSand.blockID as byte;
 									}
 
 									if(z9) {
-										b14 = BlockRegistry.slowSand.blockID as byte;
+										b14 = Block.slowSand.blockID as byte;
 									}
 								}
 
 								if(i15 < b4 && b13 === 0) {
-									b13 = BlockRegistry.lavaMoving.blockID as byte;
+									b13 = Block.lavaMoving.blockID as byte;
 								}
 
 								i12 = i11;
@@ -201,7 +201,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 	}
 
 	private func_4057_a(d1: Float64Array, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  Float64Array {
-		if(d1 === null) {
+		if(!d1) {
 			d1 = new Float64Array(i5 * i6 * i7);
 		}
 
@@ -325,7 +325,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 			i7 = i4 + this.hellRNG.nextInt(16) + 8;
 			i8 = this.hellRNG.nextInt(120) + 4;
 			i9 = i5 + this.hellRNG.nextInt(16) + 8;
-			await (new  WorldGenHellLava(BlockRegistry.lavaStill.blockID)).generate(this.field_4164_n, this.hellRNG, i7, i8, i9);
+			await (new  WorldGenHellLava(Block.lavaStill.blockID)).generate(this.field_4164_n, this.hellRNG, i7, i8, i9);
 		}
 
 		i6 = this.hellRNG.nextInt(this.hellRNG.nextInt(10) + 1) + 1;
@@ -351,21 +351,21 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 			i8 = i4 + this.hellRNG.nextInt(16) + 8;
 			i9 = this.hellRNG.nextInt(128);
 			i10 = i5 + this.hellRNG.nextInt(16) + 8;
-			(new  WorldGenLightStone2()).generate(this.field_4164_n, this.hellRNG, i8, i9, i10);
+			await (new  WorldGenLightStone2()).generate(this.field_4164_n, this.hellRNG, i8, i9, i10);
 		}
 
 		if(this.hellRNG.nextInt(1) === 0) {
 			i7 = i4 + this.hellRNG.nextInt(16) + 8;
 			i8 = this.hellRNG.nextInt(128);
 			i9 = i5 + this.hellRNG.nextInt(16) + 8;
-			(new  WorldGenFlowers(BlockRegistry.mushroomBrown.blockID)).generate(this.field_4164_n, this.hellRNG, i7, i8, i9);
+			await (new  WorldGenFlowers(Block.mushroomBrown.blockID)).generate(this.field_4164_n, this.hellRNG, i7, i8, i9);
 		}
 
 		if(this.hellRNG.nextInt(1) === 0) {
 			i7 = i4 + this.hellRNG.nextInt(16) + 8;
 			i8 = this.hellRNG.nextInt(128);
 			i9 = i5 + this.hellRNG.nextInt(16) + 8;
-			await (new  WorldGenFlowers(BlockRegistry.mushroomRed.blockID)).generate(this.field_4164_n, this.hellRNG, i7, i8, i9);
+			await (new  WorldGenFlowers(Block.mushroomRed.blockID)).generate(this.field_4164_n, this.hellRNG, i7, i8, i9);
 		}
 
 		BlockSand.fallInstantly = false;

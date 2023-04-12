@@ -1,8 +1,9 @@
 import { int } from "../jree/index";
 import { World } from "./World";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockFence extends Block {
 	public constructor(i1: int, i2: int) {

@@ -1,7 +1,7 @@
 import { int } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
 
 export  class WorldGenPumpkin extends WorldGenerator {
@@ -10,8 +10,8 @@ export  class WorldGenPumpkin extends WorldGenerator {
 			let  i7: int = i3 + random2.nextInt(8) - random2.nextInt(8);
 			let  i8: int = i4 + random2.nextInt(4) - random2.nextInt(4);
 			let  i9: int = i5 + random2.nextInt(8) - random2.nextInt(8);
-			if(await world1.isAirBlock(i7, i8, i9) && await world1.getBlockId(i7, i8 - 1, i9) === BlockRegistry.grass.blockID && await BlockRegistry.pumpkin.canPlaceBlockAt(world1, i7, i8, i9)) {
-				await world1.setBlockAndMetadata(i7, i8, i9, BlockRegistry.pumpkin.blockID, random2.nextInt(4));
+			if(await world1.isAirBlock(i7, i8, i9) && await world1.getBlockId(i7, i8 - 1, i9) === Block.grass.blockID && await Block.pumpkin.canPlaceBlockAt(world1, i7, i8, i9)) {
+				await world1.setBlockAndMetadata(i7, i8, i9, Block.pumpkin.blockID, random2.nextInt(4));
 			}
 		}
 

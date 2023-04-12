@@ -14,8 +14,8 @@ import { EntityPlayer } from "./EntityPlayer";
 import { EntityItem } from "./EntityItem";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Item } from "./Item";
 
 export  class EntityFish extends Entity {
 	private tileX:  int;
@@ -178,8 +178,8 @@ export  class EntityFish extends Entity {
 		} else {
 			if(!this.worldObj.multiplayerWorld) {
 				let  itemStack1: ItemStack = this.angler.getCurrentEquippedItem();
-				if(this.angler.isDead || !this.angler.isEntityAlive() || itemStack1 === null || itemStack1.getItem() !== ItemRegistry.fishingRod || this.getDistanceSqToEntity(this.angler) > 1024.0) {
-					this.setEntityDead();
+				if(this.angler.isDead || !this.angler.isEntityAlive() || itemStack1 === null || itemStack1.getItem() !== Item.fishingRod || this.getDistanceSqToEntity(this.angler) > 1024.0) {
+					await this.setEntityDead();
 					this.angler.fishEntity = null;
 					return;
 				}
@@ -205,7 +205,7 @@ export  class EntityFish extends Entity {
 				if(i19 === this.field_4092_g) {
 					++this.field_4090_i;
 					if(this.field_4090_i === 1200) {
-						this.setEntityDead();
+						await this.setEntityDead();
 					}
 
 					return;
@@ -266,7 +266,7 @@ export  class EntityFish extends Entity {
 			}
 
 			if(!this.field_4091_h) {
-				this.moveEntity(this.motionX, this.motionY, this.motionZ);
+				await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 				let  f24: float = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 				this.rotationYaw = (java.lang.Math.atan2(this.motionX, this.motionZ) * 180.0 / java.lang.Math.PI as float as double) as float;
 
@@ -371,7 +371,7 @@ export  class EntityFish extends Entity {
 		return 0.0;
 	}
 
-	public func_4043_i():  int {
+	public async func_4043_i():  Promise<int> {
 		let  b1: byte = 0;
 		if(this.field_4096_c !== null) {
 			let  d2: double = this.angler.posX - this.posX;
@@ -384,7 +384,7 @@ export  class EntityFish extends Entity {
 			this.field_4096_c.motionZ += d6 * d10;
 			b1 = 3;
 		} else if(this.field_4088_k > 0) {
-			let  entityItem13: EntityItem = new  EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new  ItemStack(ItemRegistry.fishRaw));
+			let  entityItem13: EntityItem = new  EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new  ItemStack(Item.fishRaw));
 			let  d3: double = this.angler.posX - this.posX;
 			let  d5: double = this.angler.posY - this.posY;
 			let  d7: double = this.angler.posZ - this.posZ;
@@ -393,7 +393,7 @@ export  class EntityFish extends Entity {
 			entityItem13.motionX = d3 * d11;
 			entityItem13.motionY = d5 * d11 + MathHelper.sqrt_double(d9) as double * 0.08;
 			entityItem13.motionZ = d7 * d11;
-			this.worldObj.entityJoinedWorld(entityItem13);
+			await this.worldObj.entityJoinedWorld(entityItem13);
 			b1 = 1;
 		}
 
@@ -401,7 +401,7 @@ export  class EntityFish extends Entity {
 			b1 = 2;
 		}
 
-		this.setEntityDead();
+		await this.setEntityDead();
 		this.angler.fishEntity = null;
 		return b1;
 	}

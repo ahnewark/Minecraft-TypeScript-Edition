@@ -3,7 +3,7 @@
 
 import { int } from "../jree/index";
 import { BlockSand } from "./BlockSand";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 import { Random } from "../java/util/Random";
 
 export  class BlockGravel extends BlockSand {
@@ -12,6 +12,6 @@ export  class BlockGravel extends BlockSand {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return random2.nextInt(10) === 0 ? ItemRegistry.flint.shiftedIndex : this.blockID;
+		return random2.nextInt(10) === 0 ? Item.flint.shiftedIndex : this.blockID;
 	}
 }

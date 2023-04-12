@@ -4,8 +4,9 @@
 import { int, java } from "../jree/index";
 import { Material } from "./Material";
 import { Block } from "./Block";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { MaterialRegistry } from "./index";
+
+import { Item } from "./Item";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockClay extends Block {
@@ -14,7 +15,7 @@ export  class BlockClay extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return ItemRegistry.clay.shiftedIndex;
+		return Item.clay.shiftedIndex;
 	}
 
 	public quantityDropped(random1: Random| null):  int {

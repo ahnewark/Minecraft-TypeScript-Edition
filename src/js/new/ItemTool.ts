@@ -7,6 +7,7 @@ import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
 
+
 export  class ItemTool extends Item {
 	private blocksEffectiveAgainst:  Block[] | null;
 	private efficiencyOnProperMaterial:  float = 4.0;

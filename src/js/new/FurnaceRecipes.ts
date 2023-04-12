@@ -3,28 +3,28 @@
 
 import { JavaObject, java, int } from "../jree/index";
 import { ItemStack } from "./ItemStack";
-import { BlockRegistry } from "./index";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Block } from "./Block";
+import { Item } from "./Item";
 
 export class FurnaceRecipes {
-	private static readonly smeltingBase:  FurnaceRecipes | null = new  FurnaceRecipes();
-	private smeltingList: { [id: number]: ItemStack};
+	public static smeltingBase:  FurnaceRecipes;
+	private smeltingList: { [id: number]: ItemStack} = {};
 
 	public static smelting():  FurnaceRecipes | null {
 		return FurnaceRecipes.smeltingBase;
 	}
 
-	private constructor() {
-		this.addSmelting(BlockRegistry.oreIron.blockID, new  ItemStack(ItemRegistry.ingotIron));
-		this.addSmelting(BlockRegistry.oreGold.blockID, new  ItemStack(ItemRegistry.ingotGold));
-		this.addSmelting(BlockRegistry.oreDiamond.blockID, new  ItemStack(ItemRegistry.diamond));
-		this.addSmelting(BlockRegistry.sand.blockID, new  ItemStack(BlockRegistry.glass));
-		this.addSmelting(ItemRegistry.porkRaw.shiftedIndex, new  ItemStack(ItemRegistry.porkCooked));
-		this.addSmelting(ItemRegistry.fishRaw.shiftedIndex, new  ItemStack(ItemRegistry.fishCooked));
-		this.addSmelting(BlockRegistry.cobblestone.blockID, new  ItemStack(BlockRegistry.stone));
-		this.addSmelting(ItemRegistry.clay.shiftedIndex, new  ItemStack(ItemRegistry.brick));
-		this.addSmelting(BlockRegistry.cactus.blockID, new  ItemStack(ItemRegistry.dyePowder, 1, 2));
-		this.addSmelting(BlockRegistry.wood.blockID, new  ItemStack(ItemRegistry.coal, 1, 1));
+	public constructor() {
+		this.addSmelting(Block.oreIron.blockID, new  ItemStack(Item.ingotIron));
+		this.addSmelting(Block.oreGold.blockID, new  ItemStack(Item.ingotGold));
+		this.addSmelting(Block.oreDiamond.blockID, new  ItemStack(Item.diamond));
+		this.addSmelting(Block.sand.blockID, new  ItemStack(Block.glass));
+		this.addSmelting(Item.porkRaw.shiftedIndex, new  ItemStack(Item.porkCooked));
+		this.addSmelting(Item.fishRaw.shiftedIndex, new  ItemStack(Item.fishCooked));
+		this.addSmelting(Block.cobblestone.blockID, new  ItemStack(Block.stone));
+		this.addSmelting(Item.clay.shiftedIndex, new  ItemStack(Item.brick));
+		this.addSmelting(Block.cactus.blockID, new  ItemStack(Item.dyePowder, 1, 2));
+		this.addSmelting(Block.wood.blockID, new  ItemStack(Item.coal, 1, 1));
 	}
 
 	public addSmelting(i1: int, itemStack2: ItemStack):  void {

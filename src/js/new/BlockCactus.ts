@@ -5,10 +5,11 @@ import { int, float, double } from "../jree/index";
 import { World } from "./World";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 
 export  class BlockCactus extends Block {
 	public constructor(i1: int, i2: int) {
@@ -67,7 +68,7 @@ export  class BlockCactus extends Block {
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(!await this.canBlockStay(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 
@@ -84,11 +85,11 @@ export  class BlockCactus extends Block {
 			return false;
 		} else {
 			let  i5: int = await world1.getBlockId(i2, i3 - 1, i4);
-			return i5 === BlockRegistry.cactus.blockID || i5 === BlockRegistry.sand.blockID;
+			return i5 === Block.cactus.blockID || i5 === Block.sand.blockID;
 		}
 	}
 
 	public async onEntityCollidedWithBlock(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
-		entity5.attackEntityFrom(null as Entity, 1);
+		await entity5.attackEntityFrom(null as Entity, 1);
 	}
 }

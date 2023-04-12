@@ -2,9 +2,10 @@ import { int, double, float } from "../jree/index";
 import { World } from "./World";
 import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { EntityPlayer } from "./EntityPlayer";
-import { Block } from "./index";
+import { Block } from "./Block";
+
 
 export  class ItemReed extends Item {
 	private field_320_a:  int;
@@ -15,7 +16,7 @@ export  class ItemReed extends Item {
 	}
 
 	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
-		if(await world3.getBlockId(i4, i5, i6) === BlockRegistry.snow.blockID) {
+		if(await world3.getBlockId(i4, i5, i6) === Block.snow.blockID) {
 			i7 = 0;
 		} else {
 			if(i7 === 0) {
@@ -49,7 +50,7 @@ export  class ItemReed extends Item {
 			if(await world3.canBlockBePlacedAt(this.field_320_a, i4, i5, i6, false)) {
 				let  block8: Block = Block.blocksList[this.field_320_a];
 				if(await world3.setBlockWithNotify(i4, i5, i6, this.field_320_a)) {
-					Block.blocksList[this.field_320_a].onBlockPlaced(world3, i4, i5, i6, i7);
+					await Block.blocksList[this.field_320_a].onBlockPlaced(world3, i4, i5, i6, i7);
 					world3.playSoundEffect((i4 as float + 0.5) as double, (i5 as float + 0.5) as double, (i6 as float + 0.5) as double, block8.stepSound.func_1145_d(), (block8.stepSound.func_1147_b() + 1.0) / 2.0, block8.stepSound.func_1144_c() * 0.8);
 					--itemStack1.stackSize;
 				}

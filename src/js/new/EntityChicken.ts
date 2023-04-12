@@ -2,7 +2,7 @@ import { float, int, double, java } from "../jree/index";
 import { World } from "./World";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { EntityAnimals } from "./EntityAnimals";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityChicken extends EntityAnimals {
 	public field_753_a:  boolean = false;
@@ -50,7 +50,7 @@ export  class EntityChicken extends EntityAnimals {
 		this.field_752_b += this.field_755_h * 2.0;
 		if(!this.worldObj.multiplayerWorld && --this.timeUntilNextEgg <= 0) {
 			this.worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
-			this.dropItem(ItemRegistry.egg.shiftedIndex, 1);
+			await this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
 		}
 
@@ -80,6 +80,6 @@ export  class EntityChicken extends EntityAnimals {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.feather.shiftedIndex;
+		return Item.feather.shiftedIndex;
 	}
 }

@@ -3,8 +3,9 @@ import { World } from "./World";
 import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockLadder extends Block {
@@ -113,7 +114,7 @@ export  class BlockLadder extends Block {
 		}
 
 		if(!z7) {
-			this.dropBlockAsItem(world1, i2, i3, i4, i6);
+			await this.dropBlockAsItem(world1, i2, i3, i4, i6);
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 

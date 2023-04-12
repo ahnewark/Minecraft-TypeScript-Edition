@@ -7,6 +7,7 @@ import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
 
@@ -49,24 +50,24 @@ export  class BlockStairs extends Block {
 		let  i7: int = await world1.getBlockMetadata(i2, i3, i4);
 		if(i7 === 0) {
 			this.setBlockBounds(0.0, 0.0, 0.0, 0.5, 0.5, 1.0);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.5, 0.0, 0.0, 1.0, 1.0, 1.0);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		} else if(i7 === 1) {
 			this.setBlockBounds(0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.5, 0.0, 0.0, 1.0, 0.5, 1.0);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		} else if(i7 === 2) {
 			this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 0.5, 0.5);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.0, 0.0, 0.5, 1.0, 1.0, 1.0);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		} else if(i7 === 3) {
 			this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 1.0, 0.5);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 			this.setBlockBounds(0.0, 0.0, 0.5, 1.0, 0.5, 1.0);
-			super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
+			await super.getCollidingBoundingBoxes(world1, i2, i3, i4, axisAlignedBB5, arrayList6);
 		}
 
 		this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
@@ -77,7 +78,7 @@ export  class BlockStairs extends Block {
 	}
 
 	public async onBlockClicked(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<void> {
-		this.modelBlock.onBlockClicked(world1, i2, i3, i4, entityPlayer5);
+		await this.modelBlock.onBlockClicked(world1, i2, i3, i4, entityPlayer5);
 	}
 
 	public async onBlockDestroyedByPlayer(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
@@ -141,12 +142,12 @@ export  class BlockStairs extends Block {
 	}
 
 	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		this.onNeighborBlockChange(world1, i2, i3, i4, 0);
-		this.modelBlock.onBlockAdded(world1, i2, i3, i4);
+		await this.onNeighborBlockChange(world1, i2, i3, i4, 0);
+		await this.modelBlock.onBlockAdded(world1, i2, i3, i4);
 	}
 
 	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		this.modelBlock.onBlockRemoval(world1, i2, i3, i4);
+		await this.modelBlock.onBlockRemoval(world1, i2, i3, i4);
 	}
 
 	public async dropBlockAsItemWithChance(world1: World| null, i2: int, i3: int, i4: int, i5: int, f6: float):  Promise<void> {
@@ -158,11 +159,11 @@ export  class BlockStairs extends Block {
 	}
 
 	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
-		this.modelBlock.onEntityWalking(world1, i2, i3, i4, entity5);
+		await this.modelBlock.onEntityWalking(world1, i2, i3, i4, entity5);
 	}
 
 	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
-		this.modelBlock.updateTick(world1, i2, i3, i4, random5);
+		await this.modelBlock.updateTick(world1, i2, i3, i4, random5);
 	}
 
 	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
@@ -170,7 +171,7 @@ export  class BlockStairs extends Block {
 	}
 
 	public async onBlockDestroyedByExplosion(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		this.modelBlock.onBlockDestroyedByExplosion(world1, i2, i3, i4);
+		await this.modelBlock.onBlockDestroyedByExplosion(world1, i2, i3, i4);
 	}
 
 	public async onBlockPlacedBy(world1: World| null, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| null):  Promise<void> {

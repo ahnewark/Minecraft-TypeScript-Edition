@@ -1,7 +1,8 @@
 import { int } from "../jree/index";
 import { Material } from "./Material";
 import { Block } from "./Block";
-import { ItemRegistry } from "./moved/ItemRegistry";
+
+import { Item } from "./Item";
 import { Random } from "../java/util/Random";
 
 export  class BlockLightStone extends Block {
@@ -10,6 +11,6 @@ export  class BlockLightStone extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random | null):  int {
-		return ItemRegistry.lightStoneDust.shiftedIndex;
+		return Item.lightStoneDust.shiftedIndex;
 	}
 }

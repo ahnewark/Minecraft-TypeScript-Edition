@@ -10,7 +10,7 @@ import { EntityLiving } from "./EntityLiving";
 import { EntityChicken } from "./EntityChicken";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityEgg extends Entity {
 	private field_20056_b:  int = -1;
@@ -131,7 +131,7 @@ export  class EntityEgg extends Entity {
 			if(i1 === this.field_20053_e) {
 				++this.field_20050_h;
 				if(this.field_20050_h === 1200) {
-					this.setEntityDead();
+					await this.setEntityDead();
 				}
 
 				return;
@@ -204,7 +204,7 @@ export  class EntityEgg extends Entity {
 				this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
 			}
 
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 		this.posX += this.motionX;
@@ -266,11 +266,11 @@ export  class EntityEgg extends Entity {
 		this.field_20052_f = nBTTagCompound1.getByte("inGround") === 1;
 	}
 
-	public onCollideWithPlayer(entityPlayer1: EntityPlayer):  void {
-		if(this.field_20052_f && this.field_20051_g === entityPlayer1 && this.field_20057_a <= 0 && entityPlayer1.inventory.addItemStackToInventory(new  ItemStack(ItemRegistry.arrow, 1))) {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer):  Promise<void> {
+		if(this.field_20052_f && this.field_20051_g === entityPlayer1 && this.field_20057_a <= 0 && entityPlayer1.inventory.addItemStackToInventory(new  ItemStack(Item.arrow, 1))) {
 			this.worldObj.playSoundAtEntity(this, "random.pop", 0.2, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7 + 1.0) * 2.0);
 			entityPlayer1.onItemPickup(this, 1);
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 	}

@@ -3,10 +3,11 @@ import { World } from "./World";
 import { IBlockAccess } from "./IBlockAccess";
 import { ChunkPosition } from "./ChunkPosition";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Item } from "./Item";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
 
 export  class BlockRedstoneWire extends Block {
@@ -281,7 +282,7 @@ export  class BlockRedstoneWire extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random | null):  int {
-		return ItemRegistry.redstone.shiftedIndex;
+		return Item.redstone.shiftedIndex;
 	}
 
 	public async isIndirectlyPoweringTo(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
@@ -338,6 +339,6 @@ export  class BlockRedstoneWire extends Block {
 
 	public static async isPowerProviderOrWire(iBlockAccess0: IBlockAccess| null, i1: int, i2: int, i3: int):  Promise<boolean> {
 		let  i4: int = await iBlockAccess0.getBlockId(i1, i2, i3);
-		return i4 === BlockRegistry.redstoneWire.blockID ? true : (i4 === 0 ? false : await Block.blocksList[i4].canProvidePower());
+		return i4 === Block.redstoneWire.blockID ? true : (i4 === 0 ? false : await Block.blocksList[i4].canProvidePower());
 	}
 }

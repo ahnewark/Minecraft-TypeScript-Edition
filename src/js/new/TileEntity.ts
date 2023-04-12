@@ -3,16 +3,8 @@
 
 import { java, int, double } from "../jree/index";
 import { World } from "./World";
-import { TileEntitySign } from "./TileEntitySign";
-// import { TileEntityNote } from "./TileEntityNote";
-import { TileEntityMobSpawner } from "./TileEntityMobSpawner";
-import { TileEntityFurnace } from "./TileEntityFurnace";
-// import { TileEntityDispenser } from "./TileEntityDispenser";
-import { TileEntityChest } from "./TileEntityChest";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { Block } from "./Block";
-import { TileEntityDispenser } from "./TileEntityDispenser";
-import { TileEntityNote } from "./TileEntityNote";
 
 // CHANGES:
 // - The nameToClass / classToName maps have been changed due to the lack of Java Class types.
@@ -26,7 +18,7 @@ export abstract class TileEntity {
 
 	public abstract get name(): string;
 
-	private static addMapping(name: string, construct: () => TileEntity):  void {
+	public static addMapping(name: string, construct: () => TileEntity):  void {
 		TileEntity.nameToClassMap[name] = construct;
 		// if (TileEntity.classToNameMap.containsKey(string1)) {
 		// 	throw new  java.lang.IllegalArgumentException("Duplicate id: " + string1);
@@ -96,15 +88,6 @@ export abstract class TileEntity {
 
 	public async getBlockType():  Promise<Block | undefined> {
 		return Block.blocksList[await this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord)];
-	}
-
-	static {
-		TileEntity.addMapping("Furnace", () => { return new TileEntityFurnace() });
-		TileEntity.addMapping("Chest", () => { return new TileEntityChest() });
-		TileEntity.addMapping("Trap", () => { return new TileEntityDispenser() });
-		TileEntity.addMapping("Sign", () => { return new TileEntitySign() });
-		TileEntity.addMapping("MobSpawner", () => { return new TileEntityMobSpawner() });
-		TileEntity.addMapping("Music", () => { return new TileEntityNote() });
 	}
 
 	public static getCtor(type: string) {

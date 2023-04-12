@@ -6,7 +6,9 @@ import { World } from "./World";
 import { Material } from "./Material";
 import { EntityFallingSand } from "./EntityFallingSand";
 import { Block } from "./Block";
-import { BlockRegistry, MaterialRegistry } from "./index";
+
+import { BlockRegistry, } from "./static/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockSand extends Block {
@@ -57,7 +59,7 @@ export  class BlockSand extends Block {
 		let  i4: int = await world0.getBlockId(i1, i2, i3);
 		if(i4 === 0) {
 			return true;
-		} else if(i4 === BlockRegistry.fire.blockID) {
+		} else if(i4 === Block.fire.blockID) {
 			return true;
 		} else {
 			let  material5: Material = Block.blocksList[i4].blockMaterial;

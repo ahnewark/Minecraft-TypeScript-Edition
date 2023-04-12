@@ -3,7 +3,7 @@ import { int } from "../jree/index";
 import { ItemStack } from "./ItemStack";
 import { ItemBlock } from "./ItemBlock";
 import { Item } from "./Item";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export  class ItemLog extends ItemBlock {
 	public constructor(i1: int) {
@@ -13,7 +13,7 @@ export  class ItemLog extends ItemBlock {
 	}
 
 	public getIconIndex(itemStack1: ItemStack| null):  int {
-		return BlockRegistry.wood.getBlockTextureFromSideAndMetadata(2, itemStack1.getItemDamage());
+		return Block.wood.getBlockTextureFromSideAndMetadata(2, itemStack1.getItemDamage());
 	}
 
 	public func_21012_a(i1: int):  int {

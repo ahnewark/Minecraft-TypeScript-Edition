@@ -4,8 +4,8 @@ import { IBlockAccess } from "./IBlockAccess";
 import { Entity } from "./Entity";
 import { BlockBreakable } from "./BlockBreakable";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from './moved/BlockRegistry'
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { BlockRegistry } from './static/BlockRegistry'
 import { Random } from "../java/util/Random";
 
 export  class BlockPortal extends BlockBreakable {
@@ -43,11 +43,11 @@ export  class BlockPortal extends BlockBreakable {
 	public async tryToCreatePortal(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  b5: byte = 0;
 		let  b6: byte = 0;
-		if(await world1.getBlockId(i2 - 1, i3, i4) === BlockRegistry.obsidian.blockID || await world1.getBlockId(i2 + 1, i3, i4) === BlockRegistry.obsidian.blockID) {
+		if(await world1.getBlockId(i2 - 1, i3, i4) === Block.obsidian.blockID || await world1.getBlockId(i2 + 1, i3, i4) === Block.obsidian.blockID) {
 			b5 = 1;
 		}
 
-		if(await world1.getBlockId(i2, i3, i4 - 1) === BlockRegistry.obsidian.blockID || await world1.getBlockId(i2, i3, i4 + 1) === BlockRegistry.obsidian.blockID) {
+		if(await world1.getBlockId(i2, i3, i4 - 1) === Block.obsidian.blockID || await world1.getBlockId(i2, i3, i4 + 1) === Block.obsidian.blockID) {
 			b6 = 1;
 		}
 
@@ -68,10 +68,10 @@ export  class BlockPortal extends BlockBreakable {
 					if(i7 !== -1 && i7 !== 2 || i8 !== -1 && i8 !== 3) {
 						let  i10: int = await world1.getBlockId(i2 + b5 * i7, i3 + i8, i4 + b6 * i7);
 						if(z9) {
-							if(i10 !== BlockRegistry.obsidian.blockID) {
+							if(i10 !== Block.obsidian.blockID) {
 								return false;
 							}
-						} else if(i10 !== 0 && i10 !== BlockRegistry.fire.blockID) {
+						} else if(i10 !== 0 && i10 !== Block.fire.blockID) {
 							return false;
 						}
 					}
@@ -82,7 +82,7 @@ export  class BlockPortal extends BlockBreakable {
 
 			for(i7 = 0; i7 < 2; ++i7) {
 				for(i8 = 0; i8 < 3; ++i8) {
-					await world1.setBlockWithNotify(i2 + b5 * i7, i3 + i8, i4 + b6 * i7, BlockRegistry.portal.blockID);
+					await world1.setBlockWithNotify(i2 + b5 * i7, i3 + i8, i4 + b6 * i7, Block.portal.blockID);
 				}
 			}
 
@@ -103,19 +103,19 @@ export  class BlockPortal extends BlockBreakable {
 		for(i8 = i3; await world1.getBlockId(i2, i8 - 1, i4) === this.blockID; --i8) {
 		}
 
-		if(await world1.getBlockId(i2, i8 - 1, i4) !== BlockRegistry.obsidian.blockID) {
+		if(await world1.getBlockId(i2, i8 - 1, i4) !== Block.obsidian.blockID) {
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		} else {
 			let  i9: int;
 			for(i9 = 1; i9 < 4 && await world1.getBlockId(i2, i8 + i9, i4) === this.blockID; ++i9) {
 			}
 
-			if(i9 === 3 && await world1.getBlockId(i2, i8 + i9, i4) === BlockRegistry.obsidian.blockID) {
+			if(i9 === 3 && await world1.getBlockId(i2, i8 + i9, i4) === Block.obsidian.blockID) {
 				let  z10: boolean = await world1.getBlockId(i2 - 1, i3, i4) === this.blockID || await world1.getBlockId(i2 + 1, i3, i4) === this.blockID;
 				let  z11: boolean = await world1.getBlockId(i2, i3, i4 - 1) === this.blockID || await world1.getBlockId(i2, i3, i4 + 1) === this.blockID;
 				if(z10 && z11) {
 					await world1.setBlockWithNotify(i2, i3, i4, 0);
-				} else if(await ((await world1.getBlockId(i2 + b6, i3, i4 + b7)) !== BlockRegistry.obsidian.blockID || await world1.getBlockId(i2 - b6, i3, i4 - b7) !== this.blockID) && (await world1.getBlockId(i2 - b6, i3, i4 - b7) !== BlockRegistry.obsidian.blockID || await world1.getBlockId(i2 + b6, i3, i4 + b7) !== this.blockID)) {
+				} else if(await ((await world1.getBlockId(i2 + b6, i3, i4 + b7)) !== Block.obsidian.blockID || await world1.getBlockId(i2 - b6, i3, i4 - b7) !== this.blockID) && (await world1.getBlockId(i2 - b6, i3, i4 - b7) !== Block.obsidian.blockID || await world1.getBlockId(i2 + b6, i3, i4 + b7) !== this.blockID)) {
 					await world1.setBlockWithNotify(i2, i3, i4, 0);
 				}
 			} else {

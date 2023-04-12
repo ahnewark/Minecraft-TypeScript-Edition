@@ -8,8 +8,9 @@ import { IBlockAccess } from "./IBlockAccess";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityPlayer } from "./EntityPlayer";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockButton extends Block {
@@ -96,7 +97,7 @@ export  class BlockButton extends Block {
 			}
 
 			if(z7) {
-				this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+				await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 				await world1.setBlockWithNotify(i2, i3, i4, 0);
 			}
 		}
@@ -105,7 +106,7 @@ export  class BlockButton extends Block {
 
 	private async func_305_h(world1: World| null, i2: int, i3: int, i4: int): Promise<boolean> {
 		if(!await this.canPlaceBlockAt(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 			return false;
 		} else {

@@ -8,7 +8,7 @@ import { MCHashTable } from "./MCHashTable";
 import { IBlockAccess } from "./IBlockAccess";
 import { Entity } from "./Entity";
 import { Path } from "./Path";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class Pathfinder extends JavaObject {
 	private worldMap:  IBlockAccess | null;
@@ -24,7 +24,6 @@ export  class Pathfinder extends JavaObject {
 	public async createEntityPathTo(entity1: Entity| null, entity2: Entity| null, f3: float):  Promise<PathEntity | null>;
 
 	public async createEntityPathTo(entity1: Entity| null, i2: int, i3: int, i4: int, f5: float):  Promise<PathEntity | null>;
-	public async createEntityPathTo(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Promise<PathEntity | null>;
 	public async createEntityPathTo(...args: unknown[]):  Promise<PathEntity | null> {
 		switch (args.length) {
 			case 3: {
@@ -34,24 +33,23 @@ export  class Pathfinder extends JavaObject {
 
 			case 5: {
 				const [entity1, i2, i3, i4, f5] = args as [Entity, int, int, int, float];
-				return this.createEntityPathTo(entity1, (i2 as float + 0.5) as double, (i3 as float + 0.5) as double, (i4 as float + 0.5) as double, f5);
-			}
-
-			case 5: {
-				const [entity1, d2, d4, d6, f8] = args as [Entity, double, double, double, float];
-				this.path.clearPath();
-				this.pointMap.clearMap();
-				let  pathPoint9: PathPoint = this.openPoint(MathHelper.floor_double(entity1.boundingBox.minX), MathHelper.floor_double(entity1.boundingBox.minY), MathHelper.floor_double(entity1.boundingBox.minZ));
-				let  pathPoint10: PathPoint = this.openPoint(MathHelper.floor_double(d2 - (entity1.width / 2.0) as double), MathHelper.floor_double(d4), MathHelper.floor_double(d6 - (entity1.width / 2.0) as double));
-				let  pathPoint11: PathPoint = new  PathPoint(MathHelper.floor_float(entity1.width + 1.0), MathHelper.floor_float(entity1.height + 1.0), MathHelper.floor_float(entity1.width + 1.0));
-				let  pathEntity12: PathEntity = await this.addToPath(entity1, pathPoint9, pathPoint10, pathPoint11, f8);
-				return pathEntity12;
+				return this.createEntityPathTo2(entity1, (i2 as float + 0.5) as double, (i3 as float + 0.5) as double, (i4 as float + 0.5) as double, f5);
 			}
 
 			default: {
 				throw new java.lang.IllegalArgumentException(S`Invalid number of arguments`);
 			}
 		}
+	}
+
+	public async createEntityPathTo2(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Promise<PathEntity | null> {
+		this.path.clearPath();
+		this.pointMap.clearMap();
+		let  pathPoint9: PathPoint = this.openPoint(MathHelper.floor_double(entity1.boundingBox.minX), MathHelper.floor_double(entity1.boundingBox.minY), MathHelper.floor_double(entity1.boundingBox.minZ));
+		let  pathPoint10: PathPoint = this.openPoint(MathHelper.floor_double(d2 - (entity1.width / 2.0) as double), MathHelper.floor_double(d4), MathHelper.floor_double(d6 - (entity1.width / 2.0) as double));
+		let  pathPoint11: PathPoint = new  PathPoint(MathHelper.floor_float(entity1.width + 1.0), MathHelper.floor_float(entity1.height + 1.0), MathHelper.floor_float(entity1.width + 1.0));
+		let  pathEntity12: PathEntity = await this.addToPath(entity1, pathPoint9, pathPoint10, pathPoint11, f8);
+		return pathEntity12;
 	}
 
 

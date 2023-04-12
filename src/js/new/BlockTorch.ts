@@ -5,8 +5,9 @@ import { MovingObjectPosition } from "./MovingObjectPosition";
 import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockTorch extends Block {
@@ -81,7 +82,7 @@ export  class BlockTorch extends Block {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 5);
 		}
 
-	    this.dropTorchIfCantStay(world1, i2, i3, i4);
+	    await this.dropTorchIfCantStay(world1, i2, i3, i4);
 	}
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
@@ -109,7 +110,7 @@ export  class BlockTorch extends Block {
 			}
 
 			if(z7) {
-				this.dropBlockAsItem(world1, i2, i3, i4,await  world1.getBlockMetadata(i2, i3, i4));
+				await this.dropBlockAsItem(world1, i2, i3, i4,await  world1.getBlockMetadata(i2, i3, i4));
 				await world1.setBlockWithNotify(i2, i3, i4, 0);
 			}
 		}
@@ -118,7 +119,7 @@ export  class BlockTorch extends Block {
 
 	private async dropTorchIfCantStay(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
 		if(!await this.canPlaceBlockAt(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 			return false;
 		} else {

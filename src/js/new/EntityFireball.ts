@@ -85,7 +85,7 @@ export  class EntityFireball extends Entity {
 			if(i1 === this.field_9399_h) {
 				++this.field_9396_k;
 				if(this.field_9396_k === 1200) {
-					this.setEntityDead();
+					await this.setEntityDead();
 				}
 
 				return;
@@ -139,8 +139,8 @@ export  class EntityFireball extends Entity {
 				;
 			}
 
-			this.worldObj.newExplosion(null as Entity, this.posX, this.posY, this.posZ, 1.0, true);
-			this.setEntityDead();
+			await this.worldObj.newExplosion(null as Entity, this.posX, this.posY, this.posZ, 1.0, true);
+			await this.setEntityDead();
 		}
 
 		this.posX += this.motionX;

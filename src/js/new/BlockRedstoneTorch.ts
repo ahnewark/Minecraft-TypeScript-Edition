@@ -6,7 +6,7 @@ import { World } from "./World";
 import { RedstoneUpdateInfo } from "./RedstoneUpdateInfo";
 import { IBlockAccess } from "./IBlockAccess";
 import { BlockTorch } from "./BlockTorch";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
 
 export  class BlockRedstoneTorch extends BlockTorch {
@@ -14,7 +14,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 	private static torchUpdates:  RedstoneUpdateInfo[] = [];
 
 	public getBlockTextureFromSideAndMetadata(i1: int, i2: int):  int {
-		return i1 === 1 ? BlockRegistry.redstoneWire.getBlockTextureFromSideAndMetadata(i1, i2) : super.getBlockTextureFromSideAndMetadata(i1, i2);
+		return i1 === 1 ? Block.redstoneWire.getBlockTextureFromSideAndMetadata(i1, i2) : super.getBlockTextureFromSideAndMetadata(i1, i2);
 	}
 
 	private checkForBurnout(world1: World| null, i2: int, i3: int, i4: int, z5: boolean):  boolean {
@@ -98,7 +98,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 
 		if(this.torchActive) {
 			if(z6) {
-				await world1.setBlockAndMetadataWithNotify(i2, i3, i4, BlockRegistry.torchRedstoneIdle.blockID, await world1.getBlockMetadata(i2, i3, i4));
+				await world1.setBlockAndMetadataWithNotify(i2, i3, i4, Block.torchRedstoneIdle.blockID, await world1.getBlockMetadata(i2, i3, i4));
 				if(this.checkForBurnout(world1, i2, i3, i4, true)) {
 					world1.playSoundEffect((i2 as float + 0.5) as double, (i3 as float + 0.5) as double, (i4 as float + 0.5) as double, "random.fizz", 0.5, 2.6 + (world1.rand.nextFloat() - world1.rand.nextFloat()) * 0.8);
 
@@ -111,7 +111,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 				}
 			}
 		} else if(!z6 && !this.checkForBurnout(world1, i2, i3, i4, false)) {
-			world1.setBlockAndMetadataWithNotify(i2, i3, i4, BlockRegistry.torchRedstoneActive.blockID, await world1.getBlockMetadata(i2, i3, i4));
+			await world1.setBlockAndMetadataWithNotify(i2, i3, i4, Block.torchRedstoneActive.blockID, await world1.getBlockMetadata(i2, i3, i4));
 		}
 
 	}
@@ -126,7 +126,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.torchRedstoneActive.blockID;
+		return Block.torchRedstoneActive.blockID;
 	}
 
 	public canProvidePower():  boolean {

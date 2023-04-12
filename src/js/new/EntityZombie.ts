@@ -2,7 +2,7 @@ import { float, int } from "../jree/index";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { EntityMobs } from "./EntityMobs";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityZombie extends EntityMobs {
 	public constructor(world1: World| null) {
@@ -24,7 +24,7 @@ export  class EntityZombie extends EntityMobs {
 			}
 		}
 
-		super.onLivingUpdate();
+		await super.onLivingUpdate();
 	}
 
 	protected getLivingSound(): string {
@@ -40,6 +40,6 @@ export  class EntityZombie extends EntityMobs {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.feather.shiftedIndex;
+		return Item.feather.shiftedIndex;
 	}
 }

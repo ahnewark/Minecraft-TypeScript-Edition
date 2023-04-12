@@ -6,9 +6,10 @@ import { World } from "./World";
 import { Material } from "./Material";
 import { BlockFluids } from "./BlockFluids";
 import { Random } from "../java/util/Random";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Block } from "./Block";
+import { Block } from "./Block";
+
 
 export  class BlockFlowing extends BlockFluids {
 	protected field_460_a: int = 0;
@@ -21,7 +22,7 @@ export  class BlockFlowing extends BlockFluids {
 
 	private async func_20015_j(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
-		world1.setBlockAndMetadata(i2, i3, i4, this.blockID + 1, i5);
+		await world1.setBlockAndMetadata(i2, i3, i4, this.blockID + 1, i5);
 		world1.markBlocksDirty(i2, i3, i4, i2, i3, i4);
 		world1.markBlockNeedsUpdate(i2, i3, i4);
 	}
@@ -103,19 +104,19 @@ export  class BlockFlowing extends BlockFluids {
 			}
 
 			if(z13[0]) {
-				this.func_299_g(world1, i2 - 1, i3, i4, i10);
+				await this.func_299_g(world1, i2 - 1, i3, i4, i10);
 			}
 
 			if(z13[1]) {
-				this.func_299_g(world1, i2 + 1, i3, i4, i10);
+				await this.func_299_g(world1, i2 + 1, i3, i4, i10);
 			}
 
 			if(z13[2]) {
-				this.func_299_g(world1, i2, i3, i4 - 1, i10);
+				await this.func_299_g(world1, i2, i3, i4 - 1, i10);
 			}
 
 			if(z13[3]) {
-				this.func_299_g(world1, i2, i3, i4 + 1, i10);
+				await this.func_299_g(world1, i2, i3, i4 + 1, i10);
 			}
 		}
 
@@ -128,7 +129,7 @@ export  class BlockFlowing extends BlockFluids {
 				if(this.blockMaterial === MaterialRegistry.lava) {
 					this.func_292_i(world1, i2, i3, i4);
 				} else {
-					Block.blocksList[i6].dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+					await Block.blocksList[i6].dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 				}
 			}
 
@@ -227,7 +228,7 @@ export  class BlockFlowing extends BlockFluids {
 
 	private async func_295_l(world1: World| null, i2: int, i3: int, i4: int): Promise<boolean> {
 		// let  i5: int = await world1.getBlockId(i2, i3, i4);
-		// if(i5 !== BlockRegistry.doorWood.blockID && i5 !== BlockRegistry.doorSteel.blockID && i5 !== BlockRegistry.signPost.blockID && i5 !== BlockRegistry.ladder.blockID && i5 !== BlockRegistry.reed.blockID) {
+		// if(i5 !== Block.doorWood.blockID && i5 !== Block.doorSteel.blockID && i5 !== Block.signPost.blockID && i5 !== Block.ladder.blockID && i5 !== Block.reed.blockID) {
 		// 	if(i5 === 0) {
 		// 		return false;
 		// 	} else {

@@ -5,7 +5,7 @@ import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Random } from "../java/util/Random";
 import { Block } from "./Block";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
 
 export  class WorldGenLiquids extends WorldGenerator {
 	private liquidBlockId:  number;
@@ -16,27 +16,27 @@ export  class WorldGenLiquids extends WorldGenerator {
 	}
 
 	public async generate(world1: World, random2: Random, i3: number, i4: number, i5: number):  Promise<boolean> {
-		if(await world1.getBlockId(i3, i4 + 1, i5) !== BlockRegistry.stone.blockID) {
+		if(await world1.getBlockId(i3, i4 + 1, i5) !== Block.stone.blockID) {
 			return false;
-		} else if(await world1.getBlockId(i3, i4 - 1, i5) !== BlockRegistry.stone.blockID) {
+		} else if(await world1.getBlockId(i3, i4 - 1, i5) !== Block.stone.blockID) {
 			return false;
-		} else if(await world1.getBlockId(i3, i4, i5) !== 0 && await world1.getBlockId(i3, i4, i5) !== BlockRegistry.stone.blockID) {
+		} else if(await world1.getBlockId(i3, i4, i5) !== 0 && await world1.getBlockId(i3, i4, i5) !== Block.stone.blockID) {
 			return false;
 		} else {
 			let  i6: number = 0;
-			if(await world1.getBlockId(i3 - 1, i4, i5) === BlockRegistry.stone.blockID) {
+			if(await world1.getBlockId(i3 - 1, i4, i5) === Block.stone.blockID) {
 				++i6;
 			}
 
-			if(await world1.getBlockId(i3 + 1, i4, i5) === BlockRegistry.stone.blockID) {
+			if(await world1.getBlockId(i3 + 1, i4, i5) === Block.stone.blockID) {
 				++i6;
 			}
 
-			if(await world1.getBlockId(i3, i4, i5 - 1) === BlockRegistry.stone.blockID) {
+			if(await world1.getBlockId(i3, i4, i5 - 1) === Block.stone.blockID) {
 				++i6;
 			}
 
-			if(await world1.getBlockId(i3, i4, i5 + 1) === BlockRegistry.stone.blockID) {
+			if(await world1.getBlockId(i3, i4, i5 + 1) === Block.stone.blockID) {
 				++i6;
 			}
 
@@ -58,9 +58,9 @@ export  class WorldGenLiquids extends WorldGenerator {
 			}
 
 			if(i6 === 3 && i7 === 1) {
-				world1.setBlockWithNotify(i3, i4, i5, this.liquidBlockId);
+				await world1.setBlockWithNotify(i3, i4, i5, this.liquidBlockId);
 				world1.scheduledUpdatesAreImmediate = true;
-				Block.blocksList[this.liquidBlockId].updateTick(world1, i3, i4, i5, random2);
+				await Block.blocksList[this.liquidBlockId].updateTick(world1, i3, i4, i5, random2);
 				world1.scheduledUpdatesAreImmediate = false;
 			}
 

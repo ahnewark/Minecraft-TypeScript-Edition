@@ -4,10 +4,11 @@ import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { BlockBreakable } from "./BlockBreakable";
-import { BlockRegistry } from "./moved/BlockRegistry";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { Block } from "./Block";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { Block } from "./index";
+import { Block } from "./Block";
+
 
 
 export  class BlockIce extends BlockBreakable {
@@ -28,7 +29,7 @@ export  class BlockIce extends BlockBreakable {
 	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
 		let  material5: Material = await world1.getBlockMaterial(i2, i3 - 1, i4);
 		if(material5.getIsSolid() || material5.getIsLiquid()) {
-			await world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.waterStill.blockID);
+			await world1.setBlockWithNotify(i2, i3, i4, Block.waterStill.blockID);
 		}
 
 	}
@@ -39,8 +40,8 @@ export  class BlockIce extends BlockBreakable {
 
 	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
 		if(await world1.getSavedLightValue(EnumSkyBlock.Block, i2, i3, i4) > 11 - Block.lightOpacity[this.blockID]) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
-			world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.waterMoving.blockID);
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await world1.setBlockWithNotify(i2, i3, i4, Block.waterMoving.blockID);
 		}
 
 	}

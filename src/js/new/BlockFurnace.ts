@@ -10,9 +10,10 @@ import { IBlockAccess } from "./IBlockAccess";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { BlockContainer } from "./BlockContainer";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
-import { Block } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
+import { Block } from "./Block";
+
 import { Random } from "../java/util/Random";
 
 export  class BlockFurnace extends BlockContainer {
@@ -25,12 +26,12 @@ export  class BlockFurnace extends BlockContainer {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.stoneOvenIdle.blockID;
+		return Block.stoneOvenIdle.blockID;
 	}
 
 	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		super.onBlockAdded(world1, i2, i3, i4);
-		this.setDefaultDirection(world1, i2, i3, i4);
+		await super.onBlockAdded(world1, i2, i3, i4);
+		await this.setDefaultDirection(world1, i2, i3, i4);
 	}
 
 	private async setDefaultDirection(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
@@ -112,13 +113,13 @@ export  class BlockFurnace extends BlockContainer {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  tileEntity6: TileEntity = await world1.getBlockTileEntity(i2, i3, i4);
 		if(z0) {
-			world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.stoneOvenActive.blockID);
+			await world1.setBlockWithNotify(i2, i3, i4, Block.stoneOvenActive.blockID);
 		} else {
-			world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.stoneOvenIdle.blockID);
+			await world1.setBlockWithNotify(i2, i3, i4, Block.stoneOvenIdle.blockID);
 		}
 
-		world1.setBlockMetadataWithNotify(i2, i3, i4, i5);
-		world1.setBlockTileEntity(i2, i3, i4, tileEntity6);
+		await world1.setBlockMetadataWithNotify(i2, i3, i4, i5);
+		await world1.setBlockTileEntity(i2, i3, i4, tileEntity6);
 	}
 
 	protected getBlockEntity():  TileEntity | null {

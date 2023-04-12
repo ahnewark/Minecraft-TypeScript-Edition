@@ -10,7 +10,8 @@ import { IBlockAccess } from "./IBlockAccess";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityItem } from "./EntityItem";
 import { BlockContainer } from "./BlockContainer";
-import { Block, MaterialRegistry } from "./index";
+import { Block } from "./Block";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockChest extends BlockContainer {

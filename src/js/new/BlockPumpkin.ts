@@ -3,7 +3,8 @@ import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { EntityLiving } from "./EntityLiving";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./index";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockPumpkin extends Block {
 	private blockType:  boolean;
@@ -35,7 +36,7 @@ export  class BlockPumpkin extends Block {
 	}
 
 	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
-		super.onBlockAdded(world1, i2, i3, i4);
+		await super.onBlockAdded(world1, i2, i3, i4);
 	}
 
 	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
@@ -45,6 +46,6 @@ export  class BlockPumpkin extends Block {
 
 	public async onBlockPlacedBy(world1: World| null, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| null):  Promise<void> {
 		let  i6: int = MathHelper.floor_double((entityLiving5.rotationYaw * 4.0 / 360.0) as double + 0.5) & 3;
-		world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
+		await world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
 	}
 }

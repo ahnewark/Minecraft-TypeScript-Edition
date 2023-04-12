@@ -2,10 +2,11 @@ import { int, double, java, B } from "../jree/index";
 import { World } from "./World";
 import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { ColorizerGrass } from "./ColorizerGrass";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockGrass extends Block {
@@ -40,13 +41,13 @@ export  class BlockGrass extends Block {
 					return;
 				}
 
-				await world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.dirt.blockID);
+				await world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
 			} else if(await world1.getBlockLightValue(i2, i3 + 1, i4) >= 9) {
 				let  i6: int = i2 + random5.nextInt(3) - 1;
 				let  i7: int = i3 + random5.nextInt(5) - 3;
 				let  i8: int = i4 + random5.nextInt(3) - 1;
-				if(await world1.getBlockId(i6, i7, i8) === BlockRegistry.dirt.blockID && await world1.getBlockLightValue(i6, i7 + 1, i8) >= 4 && !(await world1.getBlockMaterial(i6, i7 + 1, i8)).getCanBlockGrass()) {
-					await world1.setBlockWithNotify(i6, i7, i8, BlockRegistry.grass.blockID);
+				if(await world1.getBlockId(i6, i7, i8) === Block.dirt.blockID && await world1.getBlockLightValue(i6, i7 + 1, i8) >= 4 && !(await world1.getBlockMaterial(i6, i7 + 1, i8)).getCanBlockGrass()) {
+					await world1.setBlockWithNotify(i6, i7, i8, Block.grass.blockID);
 				}
 			}
 
@@ -54,6 +55,6 @@ export  class BlockGrass extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.dirt.idDropped(0, random2);
+		return Block.dirt.idDropped(0, random2);
 	}
 }

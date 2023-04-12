@@ -1,6 +1,6 @@
 import { DataInput } from "../java/io/DataInput";
 import { DataOutput } from "../java/io/DataOutput";
-import { NBTRegistry } from "./moved/NBTRegistry";
+import { NBTRegistry } from "./static/NBTRegistry";
 import { NBTBase } from "./NBTBase";
 
 export  class NBTTagList extends NBTBase {

@@ -6,9 +6,11 @@ import { MathHelper } from "./MathHelper";
 import { ItemStack } from "./ItemStack";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
-import { Block, MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
+import { IEntityItem } from "./interfaces/IEntityItem";
 
-export  class EntityItem extends Entity {
+export  class EntityItem extends Entity implements IEntityItem {
 	public item:  ItemStack | null;
 	private field_803_e:  int;
 	public age:  int = 0;
@@ -59,7 +61,7 @@ export  class EntityItem extends Entity {
 	}
 
 	public async onUpdate(): Promise<void> {
-		super.onUpdate();
+		await super.onUpdate();
 		if(this.delayBeforeCanPickup > 0) {
 			--this.delayBeforeCanPickup;
 		}
@@ -75,8 +77,8 @@ export  class EntityItem extends Entity {
 			this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4, 2.0 + this.rand.nextFloat() * 0.4);
 		}
 
-		this.func_466_g(this.posX, this.posY, this.posZ);
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		await this.func_466_g(this.posX, this.posY, this.posZ);
+		await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		let  f1: float = 0.98;
 		if(this.onGround) {
 			f1 = 0.58800006;
@@ -96,7 +98,7 @@ export  class EntityItem extends Entity {
 		++this.field_803_e;
 		++this.age;
 		if(this.age >= 6000) {
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 	}
@@ -188,7 +190,7 @@ export  class EntityItem extends Entity {
 		this.setBeenAttacked();
 		this.health -= i2;
 		if(this.health <= 0) {
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 		return false;
@@ -207,13 +209,13 @@ export  class EntityItem extends Entity {
 		this.item = new  ItemStack(nBTTagCompound2);
 	}
 
-	public onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  void {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  Promise<void> {
 		if(!this.worldObj.multiplayerWorld) {
 			let  i2: int = this.item.stackSize;
 			if(this.delayBeforeCanPickup === 0 && entityPlayer1.inventory.addItemStackToInventory(this.item)) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7 + 1.0) * 2.0);
 				entityPlayer1.onItemPickup(this, i2);
-				this.setEntityDead();
+				await this.setEntityDead();
 			}
 
 		}

@@ -9,18 +9,23 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { MathHelper } from "./MathHelper";
 import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
-import { EntityPlayer } from "./EntityPlayer";
+// import { EntityPlayer } from "./EntityPlayer";
 import { EntityList } from "./EntityList";
-import { EntityItem } from "./EntityItem";
+// import { EntityItem } from "./EntityItem";
 import { DataWatcher } from "./DataWatcher";
 import { BlockFluids } from "./BlockFluids";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
-import { Block } from './Block';
-import { BlockRegistry } from "./moved/BlockRegistry";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { Block } from "./Block";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { IEntity } from "./interfaces/IEntity";
+import { IEntityPlayer } from "./interfaces/IEntityPlayer";
+import { IEntityItem } from "./interfaces/IEntityItem";
 
-export abstract  class Entity extends JavaObject {
+export abstract  class Entity extends JavaObject implements IEntity {
+	// circular dep crudeness.
+	public static entityItemCtor: (world: World, a2: number, a3: number, a4: number, itemStack: ItemStack) => IEntityItem;
+
 	private static nextEntityID:  int = 0;
 	public entityId:  int = Entity.nextEntityID++;
 	public renderDistanceWeight:  double = 1.0;
@@ -128,7 +133,7 @@ export abstract  class Entity extends JavaObject {
 		}
 	}
 
-	public setEntityDead():  void {
+	public async setEntityDead():  Promise<void> {
 		this.isDead = true;
 	}
 
@@ -227,19 +232,19 @@ export abstract  class Entity extends JavaObject {
 				}
 			} else {
 				if(this.fire % 20 === 0) {
-					this.attackEntityFrom(null as Entity, 1);
+					await this.attackEntityFrom(null as Entity, 1);
 				}
 
 				--this.fire;
 			}
 		}
 
-		if(this.handleLavaMovement()) {
-			this.setOnFireFromLava();
+		if(await this.handleLavaMovement()) {
+			await this.setOnFireFromLava();
 		}
 
 		if(this.posY < -64.0) {
-			this.kill();
+			await this.kill();
 		}
 
 		if(!this.worldObj.multiplayerWorld) {
@@ -250,16 +255,16 @@ export abstract  class Entity extends JavaObject {
 		this.field_862_c = false;
 	}
 
-	protected setOnFireFromLava():  void {
+	protected async setOnFireFromLava():  Promise<void> {
 		if(!this.isImmuneToFire) {
-			this.attackEntityFrom(null as Entity, 4);
+			await this.attackEntityFrom(null as Entity, 4);
 			this.fire = 600;
 		}
 
 	}
 
-	protected kill():  void {
-		this.setEntityDead();
+	protected async kill():  Promise<void> {
+		await this.setEntityDead();
 	}
 
 	public async isOffsetPositionInLiquid(d1: double, d3: double, d5: double):  Promise<boolean> {
@@ -434,14 +439,14 @@ export abstract  class Entity extends JavaObject {
 				if(this.distanceWalkedModified > this.nextStepDistance && i28 > 0) {
 					++this.nextStepDistance;
 					let  stepSound29: StepSound = Block.blocksList[i28].stepSound;
-					if(await this.worldObj.getBlockId(i38, i26 + 1, i40) === BlockRegistry.snow.blockID) {
-						stepSound29 = BlockRegistry.snow.stepSound;
+					if(await this.worldObj.getBlockId(i38, i26 + 1, i40) === Block.snow.blockID) {
+						stepSound29 = Block.snow.stepSound;
 						this.worldObj.playSoundAtEntity(this, stepSound29.func_1145_d(), stepSound29.func_1147_b() * 0.15, stepSound29.func_1144_c());
 					} else if(!Block.blocksList[i28].blockMaterial.getIsLiquid()) {
 						this.worldObj.playSoundAtEntity(this, stepSound29.func_1145_d(), stepSound29.func_1147_b() * 0.15, stepSound29.func_1144_c());
 					}
 
-					Block.blocksList[i28].onEntityWalking(this.worldObj, i38, i26, i40, this);
+					await Block.blocksList[i28].onEntityWalking(this.worldObj, i38, i26, i40, this);
 				}
 			}
 
@@ -457,7 +462,7 @@ export abstract  class Entity extends JavaObject {
 						for(let  i33: int = i40; i33 <= i30; ++i33) {
 							let  i34: int = await this.worldObj.getBlockId(i31, i32, i33);
 							if(i34 > 0) {
-								Block.blocksList[i34].onEntityCollidedWithBlock(this.worldObj, i31, i32, i33, this);
+								await Block.blocksList[i34].onEntityCollidedWithBlock(this.worldObj, i31, i32, i33, this);
 							}
 						}
 					}
@@ -467,7 +472,7 @@ export abstract  class Entity extends JavaObject {
 			this.ySize *= 0.4;
 			let  z39: boolean = await this.handleWaterMovement();
 			if(await this.worldObj.isBoundingBoxBurning(this.boundingBox)) {
-				this.dealFireDamage(1);
+				await this.dealFireDamage(1);
 				if(!z39) {
 					++this.fire;
 					if(this.fire === 0) {
@@ -502,9 +507,9 @@ export abstract  class Entity extends JavaObject {
 		return null;
 	}
 
-	protected dealFireDamage(i1: int):  void {
+	protected async dealFireDamage(i1: int):  Promise<void> {
 		if(!this.isImmuneToFire) {
-			this.attackEntityFrom(null as Entity, i1);
+			await this.attackEntityFrom(null as Entity, i1);
 		}
 
 	}
@@ -625,7 +630,7 @@ export abstract  class Entity extends JavaObject {
 		return d2 * d2 + d4 * d4 + d6 * d6;
 	}
 
-	public onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  void {
+	public async onCollideWithPlayer(entityPlayer1: IEntityPlayer| null):  Promise<void> {
 	}
 
 	public applyEntityCollision(entity1: Entity| null):  void {
@@ -780,18 +785,20 @@ export abstract  class Entity extends JavaObject {
 		return this.height / 2.0;
 	}
 
-	public dropItem(i1: int, i2: int):  EntityItem | null {
-		return this.dropItemWithOffset(i1, i2, 0.0);
+	public async dropItem(i1: int, i2: int):  Promise<IEntityItem | null> {
+		return await this.dropItemWithOffset(i1, i2, 0.0);
 	}
 
-	public dropItemWithOffset(i1: int, i2: int, f3: float):  EntityItem | null {
-		return this.entityDropItem(new  ItemStack(i1, i2, 0), f3);
+	public async dropItemWithOffset(i1: int, i2: int, f3: float):  Promise<IEntityItem | null> {
+		return await this.entityDropItem(new  ItemStack(i1, i2, 0), f3);
 	}
 
-	public entityDropItem(itemStack1: ItemStack| null, f2: float):  EntityItem | null {
-		let  entityItem3: EntityItem = new  EntityItem(this.worldObj, this.posX, this.posY + f2 as double, this.posZ, itemStack1);
+	public async entityDropItem(itemStack1: ItemStack| null, f2: float):  Promise<IEntityItem | null> {
+
+		let  entityItem3 = Entity.entityItemCtor(this.worldObj, this.posX, this.posY + f2 as double, this.posZ, itemStack1);
+		//let  entityItem3: EntityItem = new  EntityItem(this.worldObj, this.posX, this.posY + f2 as double, this.posZ, itemStack1);
 		entityItem3.delayBeforeCanPickup = 10;
-		this.worldObj.entityJoinedWorld(entityItem3);
+		await this.worldObj.entityJoinedWorld(entityItem3 as any);
 		return entityItem3;
 	}
 
@@ -806,7 +813,7 @@ export abstract  class Entity extends JavaObject {
 		return await this.worldObj.isBlockOpaqueCube(i1, i2, i3);
 	}
 
-	public interact(entityPlayer1: EntityPlayer| null):  boolean {
+	public async interact(entityPlayer1: IEntityPlayer| null):  Promise<boolean> {
 		return false;
 	}
 
@@ -814,14 +821,14 @@ export abstract  class Entity extends JavaObject {
 		return null;
 	}
 
-	public updateRidden():  void {
+	public async updateRidden():  Promise<void> {
 		if(this.ridingEntity.isDead) {
 			this.ridingEntity = null;
 		} else {
 			this.motionX = 0.0;
 			this.motionY = 0.0;
 			this.motionZ = 0.0;
-			this.onUpdate();
+			await this.onUpdate();
 			this.ridingEntity.updateRiderPosition();
 			this.entityRiderYawDelta += (this.ridingEntity.rotationYaw - this.ridingEntity.prevRotationYaw) as double;
 

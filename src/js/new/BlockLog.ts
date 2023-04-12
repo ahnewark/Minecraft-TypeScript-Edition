@@ -1,9 +1,10 @@
 import { int, byte } from "../jree/index";
 import { World } from "./World";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export  class BlockLog extends Block {
 	public constructor(i1: int) {
@@ -16,7 +17,7 @@ export  class BlockLog extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.wood.blockID;
+		return Block.wood.blockID;
 	}
 
 	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
@@ -27,7 +28,7 @@ export  class BlockLog extends Block {
 				for(let  i8: int = -b5; i8 <= b5; ++i8) {
 					for(let  i9: int = -b5; i9 <= b5; ++i9) {
 						let  i10: int = await world1.getBlockId(i2 + i7, i3 + i8, i4 + i9);
-						if(i10 === BlockRegistry.leaves.blockID) {
+						if(i10 === Block.leaves.blockID) {
 							let  i11: int = await world1.getBlockMetadata(i2 + i7, i3 + i8, i4 + i9);
 							if((i11 & 4) === 0) {
 								await world1.setBlockMetadata(i2 + i7, i3 + i8, i4 + i9, i11 | 4);

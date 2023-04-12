@@ -4,7 +4,7 @@ import { World } from "./World";
 import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export  class ItemFlintAndSteel extends Item {
 	public constructor(i1: int) {
@@ -41,7 +41,7 @@ export  class ItemFlintAndSteel extends Item {
 		let  i8: int = await world3.getBlockId(i4, i5, i6);
 		if(i8 === 0) {
 			world3.playSoundEffect(i4 as double + 0.5, i5 as double + 0.5, i6 as double + 0.5, "fire.ignite", 1.0, Item.itemRand.nextFloat() * 0.4 + 0.8);
-			await world3.setBlockWithNotify(i4, i5, i6, BlockRegistry.fire.blockID);
+			await world3.setBlockWithNotify(i4, i5, i6, Block.fire.blockID);
 		}
 
 		itemStack1.damageItem(1);

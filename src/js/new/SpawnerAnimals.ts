@@ -14,7 +14,7 @@ import { EntityLiving } from "./EntityLiving";
 import { ChunkPosition } from "./ChunkPosition";
 import { ChunkCoordIntPair } from "./ChunkCoordIntPair";
 import { EntityList } from "./EntityList";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class SpawnerAnimals extends JavaObject {
 	private static eligibleChunksForSpawning: Set<ChunkCoordIntPair> = new Set();
@@ -127,8 +127,8 @@ export  class SpawnerAnimals extends JavaObject {
 											entityLiving36.setLocationAndAngles(f24 as double, f25 as double, f26 as double, world0.rand.nextFloat() * 360.0, 0.0);
 											if(entityLiving36.getCanSpawnHere()) {
 												++i17;
-												world0.entityJoinedWorld(entityLiving36);
-												SpawnerAnimals.func_21204_a(entityLiving36, world0, f24, f25, f26);
+												await world0.entityJoinedWorld(entityLiving36);
+												await SpawnerAnimals.func_21204_a(entityLiving36, world0, f24, f25, f26);
 												if(i17 >= entityLiving36.getMaxSpawnedInChunk()) {
 													continue label109;
 												}
@@ -152,11 +152,11 @@ export  class SpawnerAnimals extends JavaObject {
 		return enumCreatureType0.getCreatureMaterial() === MaterialRegistry.water ? (await world1.getBlockMaterial(i2, i3, i4)).getIsLiquid() && !await world1.isBlockOpaqueCube(i2, i3 + 1, i4) : await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await world1.isBlockOpaqueCube(i2, i3, i4) && !(await world1.getBlockMaterial(i2, i3, i4)).getIsLiquid() && !await world1.isBlockOpaqueCube(i2, i3 + 1, i4);
 	}
 
-	private static func_21204_a(entityLiving0: EntityLiving| null, world1: World| null, f2: float, f3: float, f4: float):  void {
+	private static async func_21204_a(entityLiving0: EntityLiving| null, world1: World| null, f2: float, f3: float, f4: float):  Promise<void> {
 		if(entityLiving0 instanceof EntitySpider && world1.rand.nextInt(100) === 0) {
 			let  entitySkeleton5: EntitySkeleton = new  EntitySkeleton(world1);
 			entitySkeleton5.setLocationAndAngles(f2 as double, f3 as double, f4 as double, entityLiving0.rotationYaw, 0.0);
-			world1.entityJoinedWorld(entitySkeleton5);
+			await world1.entityJoinedWorld(entitySkeleton5);
 			entitySkeleton5.mountEntity(entityLiving0);
 		} else if(entityLiving0 instanceof EntitySheep) {
 			(entityLiving0 as EntitySheep).setFleeceColor(EntitySheep.func_21070_a(world1.rand));

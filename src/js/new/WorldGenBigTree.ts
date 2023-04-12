@@ -155,17 +155,17 @@ export class WorldGenBigTree extends WorldGenerator {
 		return i1 >= 0 && i1 < this.field_869_n ? (i1 !== 0 && i1 !== this.field_869_n - 1 ? 3.0 : 2.0) : -1.0;
 	}
 
-	protected func_520_a(i1: int, i2: int, i3: int): void {
+	protected async func_520_a(i1: int, i2: int, i3: int): Promise<void> {
 		let  i4: int = i2;
 
 		for(let  i5: int = i2 + this.field_869_n; i4 < i5; ++i4) {
 			let  f6: float = this.func_526_b(i4 - i2);
-			this.func_523_a(i1, i4, i3, f6, 1 as byte, 18);
+			await this.func_523_a(i1, i4, i3, f6, 1 as byte, 18);
 		}
 
 	}
 
-	protected func_522_a(i1: number[], i2: number[], i3: int): void {
+	protected async func_522_a(i1: number[], i2: number[], i3: int): Promise<void> {
 		let  i4 =  [0, 0, 0];
 		let  b5: byte = 0;
 
@@ -196,20 +196,20 @@ export class WorldGenBigTree extends WorldGenerator {
 				i14[b6] = MathHelper.floor_double((i1[b6] + i15) + 0.5);
 				i14[b7] = MathHelper.floor_double(i1[b7] + i15 * d10 + 0.5);
 				i14[b8] = MathHelper.floor_double(i1[b8] + i15 * d12 + 0.5);
-				this.worldObj.setBlock(i14[0], i14[1], i14[2], i3);
+				await this.worldObj.setBlock(i14[0], i14[1], i14[2], i3);
 			}
 
 		}
 	}
 
-	protected func_518_b(): void {
+	protected async func_518_b(): Promise<void> {
 		let  i1: int = 0;
 
 		for(let  i2: int = this.field_868_o.length; i1 < i2; ++i1) {
 			let  i3: int = this.field_868_o[i1][0];
 			let  i4: int = this.field_868_o[i1][1];
 			let  i5: int = this.field_868_o[i1][2];
-			this.func_520_a(i3, i4, i5);
+			await this.func_520_a(i3, i4, i5);
 		}
 
 	}
@@ -218,29 +218,29 @@ export class WorldGenBigTree extends WorldGenerator {
 		return i1 >= this.field_878_e * 0.2;
 	}
 
-	protected func_529_c(): void {
+	protected async func_529_c(): Promise<void> {
 		let  i1: int = this.basePos[0];
 		let  i2: int = this.basePos[1];
 		let  i3: int = this.basePos[1] + this.height;
 		let  i4: int = this.basePos[2];
 		let  i5 =  [i1, i2, i4];
 		let  i6 =  [i1, i3, i4];
-		this.func_522_a(i5, i6, 17);
+		await this.func_522_a(i5, i6, 17);
 		if(this.field_871_l === 2) {
 			++i5[0];
 			++i6[0];
-			this.func_522_a(i5, i6, 17);
+			await this.func_522_a(i5, i6, 17);
 			++i5[2];
 			++i6[2];
-			this.func_522_a(i5, i6, 17);
+			await this.func_522_a(i5, i6, 17);
 			i5[0] += -1;
 			i6[0] += -1;
-			this.func_522_a(i5, i6, 17);
+			await this.func_522_a(i5, i6, 17);
 		}
 
 	}
 
-	protected func_525_d(): void {
+	protected async func_525_d(): Promise<void> {
 		let  i1: int = 0;
 		let  i2: int = this.field_868_o.length;
 
@@ -250,7 +250,7 @@ export class WorldGenBigTree extends WorldGenerator {
 			i3[1] = i4[3];
 			let  i6: int = i3[1] - this.basePos[1];
 			if(this.func_527_c(i6)) {
-				this.func_522_a(i3, i5, 17);
+				await this.func_522_a(i3, i5, 17);
 			}
 		}
 
@@ -344,9 +344,9 @@ export class WorldGenBigTree extends WorldGenerator {
 			return false;
 		} else {
 			await this.func_521_a();
-			this.func_518_b();
-			this.func_529_c();
-			this.func_525_d();
+			await this.func_518_b();
+			await this.func_529_c();
+			await this.func_525_d();
 			return true;
 		}
 	}

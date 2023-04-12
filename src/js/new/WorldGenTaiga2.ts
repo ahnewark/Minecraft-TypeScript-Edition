@@ -5,8 +5,9 @@ import { java, int, byte } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Random } from "../java/util/Random";
-import { Block } from "./index";
-import { BlockRegistry } from './moved/BlockRegistry'
+import { Block } from "./Block";
+
+import { BlockRegistry } from './static/BlockRegistry'
 
 export  class WorldGenTaiga2 extends WorldGenerator {
 	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
@@ -32,7 +33,7 @@ export  class WorldGenTaiga2 extends WorldGenerator {
 					for(let  i14: int = i5 - i21; i14 <= i5 + i21 && z10; ++i14) {
 						if(i11 >= 0 && i11 < 128) {
 							i15 = await world1.getBlockId(i13, i11, i14);
-							if(i15 !== 0 && i15 !== BlockRegistry.leaves.blockID) {
+							if(i15 !== 0 && i15 !== Block.leaves.blockID) {
 								z10 = false;
 							}
 						} else {
@@ -46,8 +47,8 @@ export  class WorldGenTaiga2 extends WorldGenerator {
 				return false;
 			} else {
 				i11 = await world1.getBlockId(i3, i4 - 1, i5);
-				if((i11 === BlockRegistry.grass.blockID || i11 === BlockRegistry.dirt.blockID) && i4 < 128 - i6 - 1) {
-					await world1.setBlock(i3, i4 - 1, i5, BlockRegistry.dirt.blockID);
+				if((i11 === Block.grass.blockID || i11 === Block.dirt.blockID) && i4 < 128 - i6 - 1) {
+					await world1.setBlock(i3, i4 - 1, i5, Block.dirt.blockID);
 					i21 = random2.nextInt(2);
 					i13 = 1;
 					let  b22: byte = 0;
@@ -63,7 +64,7 @@ export  class WorldGenTaiga2 extends WorldGenerator {
 							for(let  i19: int = i5 - i21; i19 <= i5 + i21; ++i19) {
 								let  i20: int = i19 - i5;
 								if((java.lang.Math.abs(i18) !== i21 || java.lang.Math.abs(i20) !== i21 || i21 <= 0) && !Block.opaqueCubeLookup[await world1.getBlockId(i17, i16, i19)]) {
-									await world1.setBlockAndMetadata(i17, i16, i19, BlockRegistry.leaves.blockID, 1);
+									await world1.setBlockAndMetadata(i17, i16, i19, Block.leaves.blockID, 1);
 								}
 							}
 						}
@@ -84,8 +85,8 @@ export  class WorldGenTaiga2 extends WorldGenerator {
 
 					for(i16 = 0; i16 < i6 - i15; ++i16) {
 						i17 = await world1.getBlockId(i3, i4 + i16, i5);
-						if(i17 === 0 || i17 === BlockRegistry.leaves.blockID) {
-							await world1.setBlockAndMetadata(i3, i4 + i16, i5, BlockRegistry.wood.blockID, 1);
+						if(i17 === 0 || i17 === Block.leaves.blockID) {
+							await world1.setBlockAndMetadata(i3, i4 + i16, i5, Block.wood.blockID, 1);
 						}
 					}
 

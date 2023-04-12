@@ -1,10 +1,11 @@
 import { int, java } from "../jree/index";
 import { World } from "./World";
 import { Material } from "./Material";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { BlockFluids } from "./BlockFluids";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockStationary extends BlockFluids {
@@ -20,7 +21,7 @@ export  class BlockStationary extends BlockFluids {
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 		if(await world1.getBlockId(i2, i3, i4) === this.blockID) {
-			this.func_20016_j(world1, i2, i3, i4);
+			await this.func_20016_j(world1, i2, i3, i4);
 		}
 
 	}
@@ -45,7 +46,7 @@ export  class BlockStationary extends BlockFluids {
 				let  i8: int = await world1.getBlockId(i2, i3, i4);
 				if(i8 === 0) {
 					if(await this.func_301_k(world1, i2 - 1, i3, i4) || await this.func_301_k(world1, i2 + 1, i3, i4) || await this.func_301_k(world1, i2, i3, i4 - 1) || await this.func_301_k(world1, i2, i3, i4 + 1) || await this.func_301_k(world1, i2, i3 - 1, i4) || await this.func_301_k(world1, i2, i3 + 1, i4)) {
-						world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.fire.blockID);
+						await world1.setBlockWithNotify(i2, i3, i4, Block.fire.blockID);
 						return;
 					}
 				} else if(Block.blocksList[i8].blockMaterial.getIsSolid()) {

@@ -1,7 +1,7 @@
 
 import { java, S, int } from "../jree/index";
 import { Material } from "./Material";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export class EnumCreatureType extends java.lang.Enum<EnumCreatureType> {
 	public static readonly monster: EnumCreatureType = new class extends EnumCreatureType {}(70, MaterialRegistry.air, false,S`monster`, 0);

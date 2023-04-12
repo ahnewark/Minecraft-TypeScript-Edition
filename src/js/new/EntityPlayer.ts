@@ -20,11 +20,12 @@ import { EntityArrow } from "./EntityArrow";
 import { Entity } from "./Entity";
 import { CraftingInventoryPlayerCB } from "./CraftingInventoryPlayerCB";
 import { CraftingInventoryCB } from "./CraftingInventoryCB";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 import { Block } from './Block';
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { IEntityPlayer } from "./interfaces/IEntityPlayer";
 
-export abstract  class EntityPlayer extends EntityLiving {
+export  class EntityPlayer extends EntityLiving implements IEntityPlayer {
 	public inventory:  InventoryPlayer | null = new  InventoryPlayer(this);
 	public field_20069_g:  CraftingInventoryCB | null;
 	public craftingInventory:  CraftingInventoryCB | null;
@@ -50,21 +51,21 @@ export abstract  class EntityPlayer extends EntityLiving {
 		return 'Player';
 	}
 
-	public constructor(world1: World| null) {
-		super(world1);
-		this.field_20069_g = new  CraftingInventoryPlayerCB(this.inventory, !world1.multiplayerWorld);
-		this.craftingInventory = this.field_20069_g;
-		this.yOffset = 1.62;
-		this.setLocationAndAngles(world1.spawnX as double + 0.5, (world1.spawnY + 1) as double, world1.spawnZ as double + 0.5, 0.0, 0.0);
-		this.health = 20;
-		this.field_9351_C = "humanoid";
-		this.field_9353_B = 180.0;
-		this.fireResistance = 20;
-		this.texture = "/mob/char.png";
+	public static async Construct(world1: World| null) {
+		const _this = new EntityPlayer(world1);
+		_this.field_20069_g = await CraftingInventoryPlayerCB.Construct(_this.inventory, !world1.multiplayerWorld);
+		_this.craftingInventory = _this.field_20069_g;
+		_this.yOffset = 1.62;
+		_this.setLocationAndAngles(world1.spawnX as double + 0.5, (world1.spawnY + 1) as double, world1.spawnZ as double + 0.5, 0.0, 0.0);
+		_this.health = 20;
+		_this.field_9351_C = "humanoid";
+		_this.field_9353_B = 180.0;
+		_this.fireResistance = 20;
+		_this.texture = "/mob/char.png";
 	}
 
 	public async onUpdate():  Promise<void> {
-		super.onUpdate();
+		await super.onUpdate();
 		if(!this.worldObj.multiplayerWorld && this.craftingInventory !== null && !this.craftingInventory.func_20120_b(this)) {
 			this.func_20059_m();
 			this.craftingInventory = this.field_20069_g;
@@ -115,8 +116,8 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.cloakUrl = this.field_20067_q;
 	}
 
-	public updateRidden():  void {
-		super.updateRidden();
+	public async updateRidden():  Promise<void> {
+		await super.updateRidden();
 		this.field_775_e = this.field_774_f;
 		this.field_774_f = 0.0;
 	}
@@ -173,7 +174,7 @@ export abstract  class EntityPlayer extends EntityLiving {
 				for(let  i4: int = 0; i4 < list3.length; ++i4) {
 					let  entity5: Entity = list3[i4];
 					if(!entity5.isDead) {
-						this.func_451_h(entity5);
+						await this.func_451_h(entity5);
 					}
 				}
 			}
@@ -181,24 +182,24 @@ export abstract  class EntityPlayer extends EntityLiving {
 
 	}
 
-	private func_451_h(entity1: Entity| null):  void {
-		entity1.onCollideWithPlayer(this);
+	private async func_451_h(entity1: Entity| null):  Promise<void> {
+		await entity1.onCollideWithPlayer(this);
 	}
 
 	public getScore():  int {
 		return this.score;
 	}
 
-	public onDeath(entity1: Entity| null):  void {
-		super.onDeath(entity1);
+	public async onDeath(entity1: Entity| null):  Promise<void> {
+		await super.onDeath(entity1);
 		this.setSize(0.2, 0.2);
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.motionY = 0.1 as double;
 		if(this.username === "Notch") {
-			this.dropPlayerItemWithRandomChoice(new  ItemStack(ItemRegistry.appleRed, 1), true);
+			await this.dropPlayerItemWithRandomChoice(new  ItemStack(Item.appleRed, 1), true);
 		}
 
-		this.inventory.dropAllItems();
+		await this.inventory.dropAllItems();
 		if(entity1 !== null) {
 			this.motionX = (-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * java.lang.Math.PI as float / 180.0) * 0.1) as double;
 			this.motionZ = (-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * java.lang.Math.PI as float / 180.0) * 0.1) as double;
@@ -213,15 +214,15 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.score += i2;
 	}
 
-	public func_20060_w():  void {
-		this.dropPlayerItemWithRandomChoice(this.inventory.decrStackSize(this.inventory.currentItem, 1), false);
+	public async func_20060_w():  Promise<void> {
+		await this.dropPlayerItemWithRandomChoice(await this.inventory.decrStackSize(this.inventory.currentItem, 1), false);
 	}
 
-	public dropPlayerItem(itemStack1: ItemStack| null):  void {
-		this.dropPlayerItemWithRandomChoice(itemStack1, false);
+	public async dropPlayerItem(itemStack1: ItemStack| null):  Promise<void> {
+		await this.dropPlayerItemWithRandomChoice(itemStack1, false);
 	}
 
-	public dropPlayerItemWithRandomChoice(itemStack1: ItemStack| null, z2: boolean):  void {
+	public async dropPlayerItemWithRandomChoice(itemStack1: ItemStack| null, z2: boolean):  Promise<void> {
 		if(itemStack1 !== null) {
 			let  entityItem3: EntityItem = new  EntityItem(this.worldObj, this.posX, this.posY - 0.3 as double + this.getEyeHeight() as double, this.posZ, itemStack1);
 			entityItem3.delayBeforeCanPickup = 40;
@@ -246,12 +247,12 @@ export abstract  class EntityPlayer extends EntityLiving {
 				entityItem3.motionZ += java.lang.Math.sin(f5 as double) * f4 as double;
 			}
 
-			this.joinEntityItemWithWorld(entityItem3);
+			await this.joinEntityItemWithWorld(entityItem3);
 		}
 	}
 
-	protected joinEntityItemWithWorld(entityItem1: EntityItem| null):  void {
-		this.worldObj.entityJoinedWorld(entityItem1);
+	protected async joinEntityItemWithWorld(entityItem1: EntityItem| null):  Promise<void> {
+		await this.worldObj.entityJoinedWorld(entityItem1);
 	}
 
 	public getCurrentPlayerStrVsBlock(block1: Block| null):  float {
@@ -338,14 +339,14 @@ export abstract  class EntityPlayer extends EntityLiving {
 	public displayGUIEditSign(tileEntitySign1: TileEntitySign| null):  void {
 	}
 
-	public useCurrentItemOnEntity(entity1: Entity| null):  void {
+	public async useCurrentItemOnEntity(entity1: Entity| null):  Promise<void> {
 		if(!entity1.interact(this)) {
 			let  itemStack2: ItemStack = this.getCurrentEquippedItem();
 			if(itemStack2 !== null && entity1 instanceof EntityLiving) {
 				itemStack2.useItemOnEntity(entity1 as EntityLiving);
 				if(itemStack2.stackSize <= 0) {
 					itemStack2.func_1097_a(this);
-					this.destroyCurrentEquippedItem();
+					await this.destroyCurrentEquippedItem();
 				}
 			}
 
@@ -356,8 +357,8 @@ export abstract  class EntityPlayer extends EntityLiving {
 		return this.inventory.getCurrentItem();
 	}
 
-	public destroyCurrentEquippedItem():  void {
-		this.inventory.setInventorySlotContents(this.inventory.currentItem, null as ItemStack);
+	public async destroyCurrentEquippedItem():  Promise<void> {
+		await this.inventory.setInventorySlotContents(this.inventory.currentItem, null as ItemStack);
 	}
 
 	public getYOffset():  double {
@@ -369,16 +370,16 @@ export abstract  class EntityPlayer extends EntityLiving {
 		this.isSwinging = true;
 	}
 
-	public attackTargetEntityWithCurrentItem(entity1: Entity| null):  void {
+	public async attackTargetEntityWithCurrentItem(entity1: Entity| null):  Promise<void> {
 		let  i2: int = this.inventory.getDamageVsEntity(entity1);
 		if(i2 > 0) {
-			entity1.attackEntityFrom(this, i2);
+			await entity1.attackEntityFrom(this, i2);
 			let  itemStack3: ItemStack = this.getCurrentEquippedItem();
 			if(itemStack3 !== null && entity1 instanceof EntityLiving) {
 				itemStack3.hitEntity(entity1 as EntityLiving);
 				if(itemStack3.stackSize <= 0) {
 					itemStack3.func_1097_a(this);
-					this.destroyCurrentEquippedItem();
+					await this.destroyCurrentEquippedItem();
 				}
 			}
 		}
@@ -391,11 +392,11 @@ export abstract  class EntityPlayer extends EntityLiving {
 	public onItemStackChanged(itemStack1: ItemStack| null):  void {
 	}
 
-	public setEntityDead():  void {
-		super.setEntityDead();
-		this.field_20069_g.onCraftGuiClosed(this);
+	public async setEntityDead():  Promise<void> {
+		await super.setEntityDead();
+		await this.field_20069_g.onCraftGuiClosed(this);
 		if(this.craftingInventory !== null) {
-			this.craftingInventory.onCraftGuiClosed(this);
+			await this.craftingInventory.onCraftGuiClosed(this);
 		}
 
 	}

@@ -6,7 +6,7 @@ import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { MapGenBase } from "./MapGenBase";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
 
 export  class MapGenCavesHell extends MapGenBase {
 	protected func_4129_a(i1: int, i2: int, b3: Int8Array, d4: double, d6: double, d8: double):  void {
@@ -107,7 +107,7 @@ export  class MapGenCavesHell extends MapGenBase {
 							for(let  i42: int = i36 + 1; !z55 && i42 >= i53 - 1; --i42) {
 								i43 = (i40 * 16 + i41) * 128 + i42;
 								if(i42 >= 0 && i42 < 128) {
-									if(b3[i43] === BlockRegistry.lavaStill.blockID || b3[i43] === BlockRegistry.lavaMoving.blockID) {
+									if(b3[i43] === Block.lavaStill.blockID || b3[i43] === Block.lavaMoving.blockID) {
 										z55 = true;
 									}
 
@@ -131,7 +131,7 @@ export  class MapGenCavesHell extends MapGenBase {
 									let  d48: double = (i47 as double + 0.5 - d6) / d29;
 									if(d48 > -0.7 && d56 * d56 + d48 * d48 + d44 * d44 < 1.0) {
 										let  b50: byte = b3[i46];
-										if(b50 === BlockRegistry.bloodStone.blockID || b50 === BlockRegistry.dirt.blockID || b50 === BlockRegistry.grass.blockID) {
+										if(b50 === Block.bloodStone.blockID || b50 === Block.dirt.blockID || b50 === Block.grass.blockID) {
 											b3[i46] = 0;
 										}
 									}

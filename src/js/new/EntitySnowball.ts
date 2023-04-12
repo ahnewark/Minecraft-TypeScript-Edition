@@ -13,7 +13,7 @@ import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntitySnowball extends Entity {
 	private xTileSnowball:  int = -1;
@@ -136,7 +136,7 @@ export  class EntitySnowball extends Entity {
 			if(i1 === this.inTileSnowball) {
 				++this.field_810_h;
 				if(this.field_810_h === 1200) {
-					this.setEntityDead();
+					await this.setEntityDead();
 				}
 
 				return;
@@ -196,7 +196,7 @@ export  class EntitySnowball extends Entity {
 				this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0, 0.0, 0.0);
 			}
 
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 		this.posX += this.motionX;
@@ -258,11 +258,11 @@ export  class EntitySnowball extends Entity {
 		this.inGroundSnowball = nBTTagCompound1.getByte("inGround") === 1;
 	}
 
-	public onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  void {
-		if(this.inGroundSnowball && this.field_811_g === entityPlayer1 && this.shakeSnowball <= 0 && entityPlayer1.inventory.addItemStackToInventory(new  ItemStack(ItemRegistry.arrow, 1))) {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  Promise<void> {
+		if(this.inGroundSnowball && this.field_811_g === entityPlayer1 && this.shakeSnowball <= 0 && entityPlayer1.inventory.addItemStackToInventory(new  ItemStack(Item.arrow, 1))) {
 			this.worldObj.playSoundAtEntity(this, "random.pop", 0.2, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7 + 1.0) * 2.0);
 			entityPlayer1.onItemPickup(this, 1);
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 	}

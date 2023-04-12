@@ -11,7 +11,7 @@ import { Item } from "./Item";
 import { EnumArt } from "./EnumArt";
 import { EntityItem } from "./EntityItem";
 import { Entity } from "./Entity";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 
 
@@ -173,8 +173,8 @@ export  class EntityPainting extends Entity {
 		if(this.field_695_c++ === 100 && !this.worldObj.multiplayerWorld) {
 			this.field_695_c = 0;
 			if(!await this.func_410_i()) {
-				this.setEntityDead();
-				await this.worldObj.entityJoinedWorld(new  EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new  ItemStack(ItemRegistry.painting)));
+				await this.setEntityDead();
+				await this.worldObj.entityJoinedWorld(new  EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new  ItemStack(Item.painting)));
 			}
 		}
 
@@ -241,9 +241,9 @@ export  class EntityPainting extends Entity {
 
 	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
 		if(!this.isDead && !this.worldObj.multiplayerWorld) {
-			this.setEntityDead();
+			await this.setEntityDead();
 			this.setBeenAttacked();
-			await this.worldObj.entityJoinedWorld(new  EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new  ItemStack(ItemRegistry.painting)));
+			await this.worldObj.entityJoinedWorld(new  EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new  ItemStack(Item.painting)));
 		}
 
 		return true;

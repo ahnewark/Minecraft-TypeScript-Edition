@@ -58,14 +58,14 @@ export  class EntityFallingSand extends Entity {
 
 	public async onUpdate():  Promise<void> {
 		if(this.blockID === 0) {
-			this.setEntityDead();
+			await this.setEntityDead();
 		} else {
 			this.prevPosX = this.posX;
 			this.prevPosY = this.posY;
 			this.prevPosZ = this.posZ;
 			++this.fallTime;
 			this.motionY -= 0.04 as double;
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.98 as double;
 			this.motionY *= 0.98 as double;
 			this.motionZ *= 0.98 as double;
@@ -80,13 +80,13 @@ export  class EntityFallingSand extends Entity {
 				this.motionX *= 0.7 as double;
 				this.motionZ *= 0.7 as double;
 				this.motionY *= -0.5;
-				this.setEntityDead();
+				await this.setEntityDead();
 				if((!await this.worldObj.canBlockBePlacedAt(this.blockID, i1, i2, i3, true) || !await this.worldObj.setBlockWithNotify(i1, i2, i3, this.blockID)) && !this.worldObj.multiplayerWorld) {
-					this.dropItem(this.blockID, 1);
+					await this.dropItem(this.blockID, 1);
 				}
 			} else if(this.fallTime > 100 && !this.worldObj.multiplayerWorld) {
-				this.dropItem(this.blockID, 1);
-				this.setEntityDead();
+				await this.dropItem(this.blockID, 1);
+				await this.setEntityDead();
 			}
 
 		}

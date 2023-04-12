@@ -35,13 +35,14 @@ import { IBlockAccess } from "./IBlockAccess";
 import { Random } from "../java/util/Random";
 import { DataOutputStream } from "../java/io/DataOutputStream";
 import { Block } from "./Block";
+
 import { DataInputStream } from "../java/io/DataInputStream";
 import { FileInputStream } from "../jree/java/io/FileInputStream";
 import { FileOutputStream } from "../jree/java/io/FileOutputStream";
 import { File } from "../jree/java/io/index";
 import { JavaString } from "../jree/index";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 
 export  class World implements IBlockAccess {
 	public scheduledUpdatesAreImmediate:  boolean;
@@ -191,7 +192,7 @@ export  class World implements IBlockAccess {
 					_this.sizeOnDisk = world1.sizeOnDisk;
 					_this.worldProvider = worldProvider2;
 					worldProvider2.registerWorld(_this);
-					_this.chunkProvider = _this.getChunkProvider(_this.savePath);
+					_this.chunkProvider = await _this.getChunkProvider(_this.savePath);
 					_this.calculateInitialSkylight();
 					break;
 				}
@@ -237,7 +238,7 @@ export  class World implements IBlockAccess {
 					_this.randomSeed = j3;
 					_this.worldProvider = worldProvider2;
 					worldProvider2.registerWorld(_this);
-					_this.chunkProvider = _this.getChunkProvider(_this.savePath);
+					_this.chunkProvider = await _this.getChunkProvider(_this.savePath);
 					_this.calculateInitialSkylight();
 					break;
 				}
@@ -339,7 +340,7 @@ export  class World implements IBlockAccess {
 
 				_this.worldProvider = object17 as WorldProvider;
 				_this.worldProvider.registerWorld(_this);
-				_this.chunkProvider = _this.getChunkProvider(_this.savePath);
+				_this.chunkProvider = await _this.getChunkProvider(_this.savePath);
 				if(z19) {
 					_this.field_9430_x = true;
 					_this.spawnX = 0;
@@ -364,8 +365,8 @@ export  class World implements IBlockAccess {
 	}
 
 
-	protected getChunkProvider(file1: File):  IChunkProvider {
-		return new  ChunkProviderLoadOrGenerate(this, this.worldProvider.getChunkLoader(file1), this.worldProvider.getChunkProvider());
+	protected async getChunkProvider(file1: File):  Promise<IChunkProvider> {
+		return new  ChunkProviderLoadOrGenerate(this, await this.worldProvider.getChunkLoader(file1), this.worldProvider.getChunkProvider());
 	}
 
 	public async setSpawnLocation():  Promise<void> {
@@ -391,7 +392,7 @@ export  class World implements IBlockAccess {
 	public func_6464_c():  void {
 	}
 
-	public func_608_a(entityPlayer1: EntityPlayer| null):  void {
+	public async func_608_a(entityPlayer1: EntityPlayer| null):  Promise<void> {
 		try {
 			if(this.nbtCompoundPlayer !== null) {
 				entityPlayer1.readFromNBT(this.nbtCompoundPlayer);
@@ -405,7 +406,7 @@ export  class World implements IBlockAccess {
 				chunkProviderLoadOrGenerate2.func_21110_c(i3, i4);
 			}
 
-			this.entityJoinedWorld(entityPlayer1);
+			await this.entityJoinedWorld(entityPlayer1);
 		} catch (exception5) {
 			if (exception5 instanceof java.lang.Exception) {
 				console.error(exception5)
@@ -690,7 +691,7 @@ export  class World implements IBlockAccess {
 		if(!this.field_1043_h && !this.multiplayerWorld) {
 			let  block5: Block = Block.blocksList[await this.getBlockId(i1, i2, i3)];
 			if(block5 !== null) {
-				block5.onNeighborBlockChange(this, i1, i2, i3, i4);
+				await block5.onNeighborBlockChange(this, i1, i2, i3, i4);
 			}
 
 		}
@@ -709,7 +710,7 @@ export  class World implements IBlockAccess {
 			let  i5: int;
 			if(z4) {
 				i5 = await this.getBlockId(i1, i2, i3);
-				if(i5 === BlockRegistry.stairSingle.blockID || i5 === BlockRegistry.tilledField.blockID) {
+				if(i5 === Block.stairSingle.blockID || i5 === Block.tilledField.blockID) {
 					let  i6: int = await this.getBlockLightValue_do(i1, i2 + 1, i3, false);
 					let  i7: int = await this.getBlockLightValue_do(i1 + 1, i2, i3, false);
 					let  i8: int = await this.getBlockLightValue_do(i1 - 1, i2, i3, false);
@@ -1057,7 +1058,7 @@ export  class World implements IBlockAccess {
 
 	}
 
-	public setEntityDead(entity1: Entity| null):  void {
+	public async setEntityDead(entity1: Entity| null):  Promise<void> {
 		if(entity1.riddenByEntity !== null) {
 			entity1.riddenByEntity.mountEntity(null as Entity);
 		}
@@ -1066,7 +1067,7 @@ export  class World implements IBlockAccess {
 			entity1.mountEntity(null as Entity);
 		}
 
-		entity1.setEntityDead();
+		await entity1.setEntityDead();
 		if(entity1 instanceof EntityPlayer) {
 			this.playerEntities = this.playerEntities.filter(entity => entity != entity1);
 		}
@@ -1096,7 +1097,7 @@ export  class World implements IBlockAccess {
 					for(let  i11: int = i5 - 1; i11 < i6; ++i11) {
 						let  block12: Block = Block.blocksList[await this.getBlockId(i9, i11, i10)];
 						if(block12 !== null) {
-							block12.getCollidingBoundingBoxes(this, i9, i11, i10, axisAlignedBB2, this.field_9428_I);
+							await block12.getCollidingBoundingBoxes(this, i9, i11, i10, axisAlignedBB2, this.field_9428_I);
 						}
 					}
 				}
@@ -1232,7 +1233,7 @@ export  class World implements IBlockAccess {
 			if(this.checkChunksExist(nextTickListEntry5.xCoord - b6, nextTickListEntry5.yCoord - b6, nextTickListEntry5.zCoord - b6, nextTickListEntry5.xCoord + b6, nextTickListEntry5.yCoord + b6, nextTickListEntry5.zCoord + b6)) {
 				let  i7: int = await this.getBlockId(nextTickListEntry5.xCoord, nextTickListEntry5.yCoord, nextTickListEntry5.zCoord);
 				if(i7 === nextTickListEntry5.blockID && i7 > 0) {
-					Block.blocksList[i7].updateTick(this, nextTickListEntry5.xCoord, nextTickListEntry5.yCoord, nextTickListEntry5.zCoord, this.rand);
+					await Block.blocksList[i7].updateTick(this, nextTickListEntry5.xCoord, nextTickListEntry5.yCoord, nextTickListEntry5.zCoord, this.rand);
 				}
 			}
 
@@ -1285,7 +1286,7 @@ export  class World implements IBlockAccess {
 			}
 
 			if(!entity2.isDead) {
-				this.updateEntity(entity2);
+				await this.updateEntity(entity2);
 			}
 
 			if(entity2.isDead) {
@@ -1307,8 +1308,8 @@ export  class World implements IBlockAccess {
 
 	}
 
-	public updateEntity(entity1: Entity| null):  void {
-		this.updateEntityWithOptionalForce(entity1, true);
+	public async updateEntity(entity1: Entity| null):  Promise<void> {
+		await this.updateEntityWithOptionalForce(entity1, true);
 	}
 
 	public async updateEntityWithOptionalForce(entity1: Entity| null, z2: boolean):  Promise<void> {
@@ -1323,9 +1324,9 @@ export  class World implements IBlockAccess {
 			entity1.prevRotationPitch = entity1.rotationPitch;
 			if(z2 && entity1.addedToChunk) {
 				if(entity1.ridingEntity !== null) {
-					entity1.updateRidden();
+					await entity1.updateRidden();
 				} else {
-					entity1.onUpdate();
+					await entity1.onUpdate();
 				}
 			}
 
@@ -1367,7 +1368,7 @@ export  class World implements IBlockAccess {
 
 			if(z2 && entity1.addedToChunk && entity1.riddenByEntity !== null) {
 				if(!entity1.riddenByEntity.isDead && entity1.riddenByEntity.ridingEntity === entity1) {
-					this.updateEntity(entity1.riddenByEntity);
+					await this.updateEntity(entity1.riddenByEntity);
 				} else {
 					entity1.riddenByEntity.ridingEntity = null;
 					entity1.riddenByEntity = null;
@@ -1435,7 +1436,7 @@ export  class World implements IBlockAccess {
 				for(let  i9: int = i4; i9 < i5; ++i9) {
 					for(let  i10: int = i6; i10 < i7; ++i10) {
 						let  i11: int = await this.getBlockId(i8, i9, i10);
-						if(i11 === BlockRegistry.fire.blockID || i11 === BlockRegistry.lavaStill.blockID || i11 === BlockRegistry.lavaMoving.blockID) {
+						if(i11 === Block.fire.blockID || i11 === Block.lavaStill.blockID || i11 === Block.lavaMoving.blockID) {
 							return true;
 						}
 					}
@@ -1538,15 +1539,15 @@ export  class World implements IBlockAccess {
 		return false;
 	}
 
-	public createExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Explosion | null {
+	public async createExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Promise<Explosion | null> {
 		return this.newExplosion(entity1, d2, d4, d6, f8, false);
 	}
 
-	public newExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float, z9: boolean):  Explosion | null {
+	public async newExplosion(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float, z9: boolean):  Promise<Explosion | null> {
 		let  explosion10: Explosion = new  Explosion(this, entity1, d2, d4, d6, f8);
 		explosion10.field_12257_a = z9;
-		explosion10.func_12248_a();
-		explosion10.func_12247_b();
+		await explosion10.func_12248_a();
+		await explosion10.func_12247_b();
 		return explosion10;
 	}
 
@@ -1600,9 +1601,9 @@ export  class World implements IBlockAccess {
 			++i1;
 		}
 
-		if(await this.getBlockId(i1, i2, i3) === BlockRegistry.fire.blockID) {
+		if(await this.getBlockId(i1, i2, i3) === Block.fire.blockID) {
 			this.playSoundEffect((i1 as float + 0.5) as double, (i2 as float + 0.5) as double, (i3 as float + 0.5) as double, "random.fizz", 0.5, 2.6 + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.8);
-			this.setBlockWithNotify(i1, i2, i3, 0);
+			await this.setBlockWithNotify(i1, i2, i3, 0);
 		}
 
 	}
@@ -1621,7 +1622,7 @@ export  class World implements IBlockAccess {
 
 	public async getBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity | null> {
 		let  chunk4: Chunk = await this.getChunkFromChunkCoords(i1 >> 4, i3 >> 4);
-		return chunk4 !== null ? chunk4.getChunkBlockTileEntity(i1 & 15, i2, i3 & 15) : null;
+		return chunk4 !== null ? await chunk4.getChunkBlockTileEntity(i1 & 15, i2, i3 & 15) : null;
 	}
 
 	public async setBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  Promise<void> {
@@ -1736,7 +1737,7 @@ export  class World implements IBlockAccess {
 	}
 
 	public async tick():  Promise<void> {
-		SpawnerAnimals.performSpawning(this, this.field_21121_K, this.field_21120_L);
+		await SpawnerAnimals.performSpawning(this, this.field_21121_K, this.field_21120_L);
 		this.chunkProvider.func_532_a();
 		let  i1: int = this.calculateSkylightSubtracted(1.0);
 		if(i1 !== this.skylightSubtracted) {
@@ -1814,7 +1815,7 @@ export  class World implements IBlockAccess {
 				i10 = i7 >> 16 & 127;
 				let  b15: byte = chunk14.blocks[i8 << 11 | i9 << 7 | i10];
 				if(Block.tickOnLoad[b15]) {
-					Block.blocksList[b15].updateTick(this, i8 + i3, i10, i9 + i4, this.rand);
+					await Block.blocksList[b15].updateTick(this, i8 + i3, i10, i9 + i4, this.rand);
 				}
 			}
 		})
@@ -1841,7 +1842,7 @@ export  class World implements IBlockAccess {
 				if(this.checkChunksExist(nextTickListEntry4.xCoord - b5, nextTickListEntry4.yCoord - b5, nextTickListEntry4.zCoord - b5, nextTickListEntry4.xCoord + b5, nextTickListEntry4.yCoord + b5, nextTickListEntry4.zCoord + b5)) {
 					let  i6: int = await this.getBlockId(nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord);
 					if(i6 === nextTickListEntry4.blockID && i6 > 0) {
-						Block.blocksList[i6].updateTick(this, nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord, this.rand);
+						await Block.blocksList[i6].updateTick(this, nextTickListEntry4.xCoord, nextTickListEntry4.yCoord, nextTickListEntry4.zCoord, this.rand);
 					}
 				}
 			}
@@ -1965,7 +1966,7 @@ export  class World implements IBlockAccess {
 			axisAlignedBB9 = null;
 		}
 
-		return axisAlignedBB9 !== null && !this.checkIfAABBIsClear(axisAlignedBB9) ? false : (block7 !== BlockRegistry.waterStill && block7 !== BlockRegistry.waterMoving && block7 !== BlockRegistry.lavaStill && block7 !== BlockRegistry.lavaMoving && block7 !== BlockRegistry.fire && block7 !== BlockRegistry.snow ? i1 > 0 && block7 === null && block8.canPlaceBlockAt(this, i2, i3, i4) : true);
+		return axisAlignedBB9 !== null && !this.checkIfAABBIsClear(axisAlignedBB9) ? false : (block7 !== Block.waterStill && block7 !== Block.waterMoving && block7 !== Block.lavaStill && block7 !== Block.lavaMoving && block7 !== Block.fire && block7 !== Block.snow ? i1 > 0 && block7 === null && block8.canPlaceBlockAt(this, i2, i3, i4) : true);
 	}
 
 	public async getPathToEntity(entity1: Entity| null, entity2: Entity| null, f3: float):  Promise<PathEntity | null> {
@@ -2115,14 +2116,14 @@ export  class World implements IBlockAccess {
 		this.worldTime = j1;
 	}
 
-	public func_705_f(entity1: Entity| null):  void {
+	public async func_705_f(entity1: Entity| null):  Promise<void> {
 		let  i2: int = MathHelper.floor_double(entity1.posX / 16.0);
 		let  i3: int = MathHelper.floor_double(entity1.posZ / 16.0);
 		let  b4: byte = 2;
 
 		for(let  i5: int = i2 - b4; i5 <= i2 + b4; ++i5) {
 			for(let  i6: int = i3 - b4; i6 <= i3 + b4; ++i6) {
-				this.getChunkFromChunkCoords(i5, i6);
+				await this.getChunkFromChunkCoords(i5, i6);
 			}
 		}
 

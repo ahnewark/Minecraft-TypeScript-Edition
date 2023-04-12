@@ -3,8 +3,9 @@ import { World } from "./World";
 import { IBlockAccess } from "./IBlockAccess";
 import { EntityPlayer } from "./EntityPlayer";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockLever extends Block {
 	public constructor(i1: int, i2: int) {
@@ -99,7 +100,7 @@ export  class BlockLever extends Block {
 			}
 
 			if(z7) {
-				this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+				await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 				await world1.setBlockWithNotify(i2, i3, i4, 0);
 			}
 		}
@@ -107,8 +108,8 @@ export  class BlockLever extends Block {
 	}
 
 	private async checkIfAttachedToBlock(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
-		if(!this.canPlaceBlockAt(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+		if(!await this.canPlaceBlockAt(world1, i2, i3, i4)) {
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 			return false;
 		} else {

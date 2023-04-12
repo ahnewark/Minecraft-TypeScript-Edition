@@ -6,12 +6,12 @@ import { Item } from "./Item";
 import { EntityZombie } from "./EntityZombie";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityPigZombie extends EntityZombie {
 	private angerLevel:  int = 0;
 	private randomSoundDelay:  int = 0;
-	private static readonly defaultHeldItem:  ItemStack | null = new  ItemStack(ItemRegistry.swordGold, 1);
+	private static readonly defaultHeldItem:  ItemStack | null = new  ItemStack(Item.swordGold, 1);
 
 	public override get type(): string {
 		return 'PigZombie';
@@ -53,7 +53,7 @@ export  class EntityPigZombie extends EntityZombie {
 	}
 
 	public async onLivingUpdate():  Promise<void> {
-		super.onLivingUpdate();
+		await super.onLivingUpdate();
 	}
 
 	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
@@ -93,7 +93,7 @@ export  class EntityPigZombie extends EntityZombie {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.porkCooked.shiftedIndex;
+		return Item.porkCooked.shiftedIndex;
 	}
 
 	public getHeldItem():  ItemStack | null {

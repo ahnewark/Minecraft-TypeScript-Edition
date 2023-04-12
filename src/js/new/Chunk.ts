@@ -5,6 +5,7 @@ import { java, long, S } from "../jree/index";
 import System from '../java/lang/System';
 import { World } from "./World";
 import { Block } from "./Block";
+
 import { TileEntity } from "./TileEntity";
 import { NibbleArray } from "./NibbleArray";
 import { MathHelper } from "./MathHelper";
@@ -321,7 +322,7 @@ export class Chunk {
 			let  i10: number = this.zPosition * 16 + i3;
 			this.blocks[i1 << 11 | i3 << 7 | i2] = b6;
 			if(i8 !== 0 && !this.worldObj.multiplayerWorld) {
-				Block.blocksList[i8].onBlockRemoval(this.worldObj, i9, i2, i10);
+				await Block.blocksList[i8].onBlockRemoval(this.worldObj, i9, i2, i10);
 			}
 
 			this.data.setNibble(i1, i2, i3, i5);
@@ -341,7 +342,7 @@ export class Chunk {
 			await this.func_996_c(i1, i3);
 			this.data.setNibble(i1, i2, i3, i5);
 			if(i4 !== 0) {
-			    Block.blocksList[i4].onBlockAdded(this.worldObj, i9, i2, i10);
+			    await Block.blocksList[i4].onBlockAdded(this.worldObj, i9, i2, i10);
 			}
 
 			this.isModified = true;
@@ -360,7 +361,7 @@ export class Chunk {
 			let  i9: number = this.zPosition * 16 + i3;
 			this.blocks[i1 << 11 | i3 << 7 | i2] = b5;
 			if(i7 !== 0) {
-				Block.blocksList[i7].onBlockRemoval(this.worldObj, i8, i2, i9);
+				await Block.blocksList[i7].onBlockRemoval(this.worldObj, i8, i2, i9);
 			}
 
 			this.data.setNibble(i1, i2, i3, 0);
@@ -376,7 +377,7 @@ export class Chunk {
 			await this.worldObj.func_616_a(EnumSkyBlock.Block, i8, i2, i9, i8, i2, i9);
 			await this.func_996_c(i1, i3);
 			if(i4 !== 0 && !this.worldObj.multiplayerWorld) {
-				Block.blocksList[i4].onBlockAdded(this.worldObj, i8, i2, i9);
+				await Block.blocksList[i4].onBlockAdded(this.worldObj, i8, i2, i9);
 			}
 
 			this.isModified = true;
@@ -471,7 +472,7 @@ export class Chunk {
 		return i2 >= (this.heightMap[i3 << 4 | i1] & 255);
 	}
 
-	public getChunkBlockTileEntity(i1: number, i2: number, i3: number):  TileEntity | null {
+	public async getChunkBlockTileEntity(i1: number, i2: number, i3: number):  Promise<TileEntity | null> {
 		let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
 		let  tileEntity5: TileEntity = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
 		if(tileEntity5 === null) {
@@ -481,7 +482,7 @@ export class Chunk {
 			}
 
 			let  blockContainer7: BlockContainer = Block.blocksList[i6] as BlockContainer;
-			blockContainer7.onBlockAdded(this.worldObj, this.xPosition * 16 + i1, i2, this.zPosition * 16 + i3);
+			await blockContainer7.onBlockAdded(this.worldObj, this.xPosition * 16 + i1, i2, this.zPosition * 16 + i3);
 			tileEntity5 = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
 		}
 

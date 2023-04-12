@@ -7,7 +7,8 @@ import { IInventory } from "./IInventory";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
-import { MaterialRegistry } from './moved/MaterialRegistry';
+
+import { MaterialRegistry } from './static/MaterialRegistry';
 import { ItemStack } from "./ItemStack";
 
 export  class InventoryPlayer implements IInventory {
@@ -156,7 +157,7 @@ export  class InventoryPlayer implements IInventory {
 		}
 	}
 
-	public decrStackSize(i1: int, i2: int):  ItemStack | null {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
 		let  itemStack3: ItemStack[] = this.mainInventory;
 		if(i1 >= this.mainInventory.length) {
 			itemStack3 = this.armorInventory;
@@ -182,7 +183,7 @@ export  class InventoryPlayer implements IInventory {
 		}
 	}
 
-	public setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  void {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
 		let  itemStack3: ItemStack[] = this.mainInventory;
 		if(i1 >= itemStack3.length) {
 			i1 -= itemStack3.length;
@@ -323,18 +324,18 @@ export  class InventoryPlayer implements IInventory {
 
 	}
 
-	public dropAllItems():  void {
+	public async dropAllItems():  Promise<void> {
 		let  i1: int;
 		for(i1 = 0; i1 < this.mainInventory.length; ++i1) {
 			if(this.mainInventory[i1] !== null) {
-				this.player.dropPlayerItemWithRandomChoice(this.mainInventory[i1], true);
+				await this.player.dropPlayerItemWithRandomChoice(this.mainInventory[i1], true);
 				this.mainInventory[i1] = null;
 			}
 		}
 
 		for(i1 = 0; i1 < this.armorInventory.length; ++i1) {
 			if(this.armorInventory[i1] !== null) {
-				this.player.dropPlayerItemWithRandomChoice(this.armorInventory[i1], true);
+				await this.player.dropPlayerItemWithRandomChoice(this.armorInventory[i1], true);
 				this.armorInventory[i1] = null;
 			}
 		}

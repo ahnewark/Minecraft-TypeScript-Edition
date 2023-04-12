@@ -9,9 +9,10 @@ import { IBlockAccess } from "./IBlockAccess";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export abstract  class BlockFluids extends Block {
 	protected constructor(i1: int, material2: Material| null) {
@@ -212,11 +213,11 @@ export abstract  class BlockFluids extends Block {
 	public static async func_293_a(iBlockAccess0: IBlockAccess| null, i1: int, i2: int, i3: int, material4: Material| null):  Promise<double> {
 		let  vec3D5: Vec3D = null;
 		if(material4 === MaterialRegistry.water) {
-			vec3D5 = await (BlockRegistry.waterStill as BlockFluids).func_291_e(iBlockAccess0, i1, i2, i3);
+			vec3D5 = await (Block.waterStill as BlockFluids).func_291_e(iBlockAccess0, i1, i2, i3);
 		}
 
 		if(material4 === MaterialRegistry.lava) {
-			vec3D5 = await (BlockRegistry.lavaStill as BlockFluids).func_291_e(iBlockAccess0, i1, i2, i3);
+			vec3D5 = await (Block.lavaStill as BlockFluids).func_291_e(iBlockAccess0, i1, i2, i3);
 		}
 
 		return vec3D5.xCoord === 0.0 && vec3D5.zCoord === 0.0 ? -1000.0 : java.lang.Math.atan2(vec3D5.zCoord, vec3D5.xCoord) - java.lang.Math.PI / 2;
@@ -257,9 +258,9 @@ export abstract  class BlockFluids extends Block {
 				if(z5) {
 					let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 					if(i6 === 0) {
-						world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.obsidian.blockID);
+						await world1.setBlockWithNotify(i2, i3, i4, Block.obsidian.blockID);
 					} else if(i6 <= 4) {
-						world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.cobblestone.blockID);
+						await world1.setBlockWithNotify(i2, i3, i4, Block.cobblestone.blockID);
 					}
 
 					this.func_292_i(world1, i2, i3, i4);

@@ -5,16 +5,17 @@ import { int } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
+
 
 export  class WorldGenLightStone1 extends WorldGenerator {
 	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
 		if(!world1.isAirBlock(i3, i4, i5)) {
 			return false;
-		} else if(await world1.getBlockId(i3, i4 + 1, i5) !== BlockRegistry.bloodStone.blockID) {
+		} else if(await world1.getBlockId(i3, i4 + 1, i5) !== Block.bloodStone.blockID) {
 			return false;
 		} else {
-			await world1.setBlockWithNotify(i3, i4, i5, BlockRegistry.lightStone.blockID);
+			await world1.setBlockWithNotify(i3, i4, i5, Block.lightStone.blockID);
 
 			for(let  i6: int = 0; i6 < 1500; ++i6) {
 				let  i7: int = i3 + random2.nextInt(8) - random2.nextInt(8);
@@ -49,13 +50,13 @@ export  class WorldGenLightStone1 extends WorldGenerator {
 							i12 = await world1.getBlockId(i7, i8, i9 + 1);
 						}
 
-						if(i12 === BlockRegistry.lightStone.blockID) {
+						if(i12 === Block.lightStone.blockID) {
 							++i10;
 						}
 					}
 
 					if(i10 === 1) {
-						await world1.setBlockWithNotify(i7, i8, i9, BlockRegistry.lightStone.blockID);
+						await world1.setBlockWithNotify(i7, i8, i9, Block.lightStone.blockID);
 					}
 				}
 			}

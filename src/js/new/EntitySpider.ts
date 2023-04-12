@@ -5,7 +5,7 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { MathHelper } from "./MathHelper";
 import { EntityMobs } from "./EntityMobs";
 import { Entity } from "./Entity";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntitySpider extends EntityMobs {
 	public constructor(world1: World| null) {
@@ -60,7 +60,7 @@ export  class EntitySpider extends EntityMobs {
 					this.motionY = 0.4 as double;
 				}
 			} else {
-				super.attackEntity(entity1, f2);
+				await super.attackEntity(entity1, f2);
 			}
 
 		}
@@ -75,7 +75,7 @@ export  class EntitySpider extends EntityMobs {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.silk.shiftedIndex;
+		return Item.silk.shiftedIndex;
 	}
 
 	public async isOnLadder():  Promise<boolean> {

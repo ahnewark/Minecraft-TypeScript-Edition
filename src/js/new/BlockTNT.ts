@@ -5,7 +5,8 @@ import { int, java, double, float } from "../jree/index";
 import { World } from "./World";
 import { EntityTNTPrimed } from "./EntityTNTPrimed";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./index";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockTNT extends Block {
@@ -19,7 +20,7 @@ export  class BlockTNT extends Block {
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(i5 > 0 && Block.blocksList[i5].canProvidePower() && await world1.isBlockIndirectlyGettingPowered(i2, i3, i4)) {
-			this.onBlockDestroyedByPlayer(world1, i2, i3, i4, 0);
+			await this.onBlockDestroyedByPlayer(world1, i2, i3, i4, 0);
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 

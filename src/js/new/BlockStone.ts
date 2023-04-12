@@ -3,9 +3,10 @@
 
 import { Material } from "./Material";
 import { Block } from "./Block";
+
 import { Random } from "../java/util/Random";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 
 export  class BlockStone extends Block {
 	public constructor(i1: number, i2: number) {
@@ -13,6 +14,6 @@ export  class BlockStone extends Block {
 	}
 
 	public idDropped(i1: number, random2: Random):  number {
-		return BlockRegistry.cobblestone.blockID;
+		return Block.cobblestone.blockID;
 	}
 }

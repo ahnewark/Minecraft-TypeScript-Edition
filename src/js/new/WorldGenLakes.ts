@@ -4,7 +4,8 @@ import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Random } from "../java/util/Random";
 import { Block } from "./Block";
-import { BlockRegistry, MaterialRegistry } from "./index";
+import { Block } from "./Block";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class WorldGenLakes extends WorldGenerator {
 	private field_15235_a:  number;
@@ -82,8 +83,8 @@ export  class WorldGenLakes extends WorldGenerator {
 		for(i8 = 0; i8 < 16; ++i8) {
 			for(i32 = 0; i32 < 16; ++i32) {
 				for(i10 = 4; i10 < 8; ++i10) {
-					if(z6[(i8 * 16 + i32) * 8 + i10] && await world1.getBlockId(i3 + i8, i4 + i10 - 1, i5 + i32) === BlockRegistry.dirt.blockID && await world1.getSavedLightValue(EnumSkyBlock.Sky, i3 + i8, i4 + i10, i5 + i32) > 0) {
-						await world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, BlockRegistry.grass.blockID);
+					if(z6[(i8 * 16 + i32) * 8 + i10] && await world1.getBlockId(i3 + i8, i4 + i10 - 1, i5 + i32) === Block.dirt.blockID && await world1.getSavedLightValue(EnumSkyBlock.Sky, i3 + i8, i4 + i10, i5 + i32) > 0) {
+						await world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, Block.grass.blockID);
 					}
 				}
 			}
@@ -95,7 +96,7 @@ export  class WorldGenLakes extends WorldGenerator {
 					for(i10 = 0; i10 < 8; ++i10) {
 						z33 = !z6[(i8 * 16 + i32) * 8 + i10] && (i8 < 15 && z6[((i8 + 1) * 16 + i32) * 8 + i10] || i8 > 0 && z6[((i8 - 1) * 16 + i32) * 8 + i10] || i32 < 15 && z6[(i8 * 16 + i32 + 1) * 8 + i10] || i32 > 0 && z6[(i8 * 16 + (i32 - 1)) * 8 + i10] || i10 < 7 && z6[(i8 * 16 + i32) * 8 + i10 + 1] || i10 > 0 && z6[(i8 * 16 + i32) * 8 + (i10 - 1)]);
 						if(z33 && (i10 < 4 || random2.nextInt(2) !== 0) && (await world1.getBlockMaterial(i3 + i8, i4 + i10, i5 + i32)).isSolid()) {
-							await world1.setBlock(i3 + i8, i4 + i10, i5 + i32, BlockRegistry.stone.blockID);
+							await world1.setBlock(i3 + i8, i4 + i10, i5 + i32, Block.stone.blockID);
 						}
 					}
 				}

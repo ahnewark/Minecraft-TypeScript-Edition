@@ -5,8 +5,9 @@ import { ItemStack } from "./ItemStack";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityItem } from "./EntityItem";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./index";
-import { ItemRegistry } from "./moved/ItemRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Item } from "./Item";
 
 export  class BlockJukeBox extends Block {
 	public constructor(i1: int, i2: int) {
@@ -20,7 +21,7 @@ export  class BlockJukeBox extends Block {
 	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		if(i6 > 0) {
-			this.ejectRecord(world1, i2, i3, i4, i6);
+			await this.ejectRecord(world1, i2, i3, i4, i6);
 			return true;
 		} else {
 			return false;
@@ -30,7 +31,7 @@ export  class BlockJukeBox extends Block {
 	public async ejectRecord(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		world1.playRecord(null, i2, i3, i4);
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, 0);
-		let  i6: int = ItemRegistry.record13.shiftedIndex + i5 - 1;
+		let  i6: int = Item.record13.shiftedIndex + i5 - 1;
 		let  f7: float = 0.7;
 		let  d8: double = (world1.rand.nextFloat() * f7) as double + (1.0 - f7) as double * 0.5;
 		let  d10: double = (world1.rand.nextFloat() * f7) as double + (1.0 - f7) as double * 0.2 + 0.6;
@@ -43,10 +44,10 @@ export  class BlockJukeBox extends Block {
 	public async dropBlockAsItemWithChance(world1: World| null, i2: int, i3: int, i4: int, i5: int, f6: float):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			if(i5 > 0) {
-				this.ejectRecord(world1, i2, i3, i4, i5);
+				await this.ejectRecord(world1, i2, i3, i4, i5);
 			}
 
-			super.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
+			await super.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
 		}
 	}
 }

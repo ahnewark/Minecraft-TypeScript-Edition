@@ -17,7 +17,7 @@ export  class Slot {
 		this.yDisplayPosition = i4;
 	}
 
-	public onPickupFromSlot():  void {
+	public async onPickupFromSlot():  Promise<void> {
 		this.onSlotChanged();
 	}
 
@@ -33,8 +33,8 @@ export  class Slot {
 		return this.getStack() !== null;
 	}
 
-	public putStack(itemStack1: ItemStack| null):  void {
-		this.inventory.setInventorySlotContents(this.slotIndex, itemStack1);
+	public async putStack(itemStack1: ItemStack| null):  Promise<void> {
+		await this.inventory.setInventorySlotContents(this.slotIndex, itemStack1);
 		this.onSlotChanged();
 	}
 
@@ -50,7 +50,7 @@ export  class Slot {
 		return -1;
 	}
 
-	public decrStackSize(i1: int):  ItemStack | null {
-		return this.inventory.decrStackSize(this.slotIndex, i1);
+	public async decrStackSize(i1: int):  Promise<ItemStack | null> {
+		return await this.inventory.decrStackSize(this.slotIndex, i1);
 	}
 }

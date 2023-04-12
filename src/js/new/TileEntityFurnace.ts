@@ -11,9 +11,9 @@ import { FurnaceRecipes } from "./FurnaceRecipes";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityPlayer } from "./EntityPlayer";
 import { BlockFurnace } from "./BlockFurnace";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { BlockRegistry } from './moved/BlockRegistry';
-import { MaterialRegistry } from './moved/MaterialRegistry';
+import { Item } from "./Item";
+import { BlockRegistry } from './static/BlockRegistry';
+import { MaterialRegistry } from './static/MaterialRegistry';
 import { Block } from './Block';
 
 export class TileEntityFurnace extends TileEntity implements IInventory {
@@ -34,7 +34,7 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		return this.furnaceItemStacks[i1];
 	}
 
-	public decrStackSize(i1: int, i2: int):  ItemStack | null {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
 		if(this.furnaceItemStacks[i1] !== null) {
 			let  itemStack3: ItemStack;
 			if(this.furnaceItemStacks[i1].stackSize <= i2) {
@@ -54,7 +54,7 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		}
 	}
 
-	public setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  void {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
 		this.furnaceItemStacks[i1] = itemStack2;
 		if(itemStack2 !== null && itemStack2.stackSize > this.getInventoryStackLimit()) {
 			itemStack2.stackSize = this.getInventoryStackLimit();
@@ -122,7 +122,7 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		return this.furnaceBurnTime > 0;
 	}
 
-	public updateEntity():  void {
+	public async updateEntity():  Promise<void> {
 		let  z1: boolean = this.furnaceBurnTime > 0;
 		let  z2: boolean = false;
 		if(this.furnaceBurnTime > 0) {
@@ -156,12 +156,12 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 
 			if(z1 !== this.furnaceBurnTime > 0) {
 				z2 = true;
-				BlockFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+				await BlockFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}
 		}
 
 		if(z2) {
-			this.onInventoryChanged();
+			await this.onInventoryChanged();
 		}
 
 	}
@@ -197,7 +197,7 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 			return 0;
 		} else {
 			let  i2: int = itemStack1.getItem().shiftedIndex;
-			return i2 < 256 && Block.blocksList[i2].blockMaterial === MaterialRegistry.wood ? 300 : (i2 === ItemRegistry.stick.shiftedIndex ? 100 : (i2 === ItemRegistry.coal.shiftedIndex ? 1600 : (i2 === ItemRegistry.bucketLava.shiftedIndex ? 20000 : 0)));
+			return i2 < 256 && Block.blocksList[i2].blockMaterial === MaterialRegistry.wood ? 300 : (i2 === Item.stick.shiftedIndex ? 100 : (i2 === Item.coal.shiftedIndex ? 1600 : (i2 === Item.bucketLava.shiftedIndex ? 20000 : 0)));
 		}
 	}
 

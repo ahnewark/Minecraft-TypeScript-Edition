@@ -10,20 +10,126 @@ import { StepSound } from "./StepSound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
 import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
-import { ItemLog } from "./ItemLog";
-import { ItemCloth } from "./ItemCloth";
-import { ItemBlock } from "./ItemBlock";
-import { Item } from "./Item";
+// import { ItemLog } from "./ItemLog";
+// import { ItemCloth } from "./ItemCloth";
+// import { ItemBlock } from "./ItemBlock";
+// import { Item } from "./Item";
 import { IBlockAccess } from "./IBlockAccess";
-import { EntityPlayer } from "./EntityPlayer";
-import { EntityLiving } from "./EntityLiving";
-import { EntityItem } from "./EntityItem";
-import { Entity } from "./Entity";
+import { IEntityPlayer } from "./interfaces/IEntityPlayer";
+// import { EntityLiving } from "./EntityLiving";
+// import { EntityItem } from "./EntityItem";
+// import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./index";
+import { IEntity } from "./interfaces/IEntity";
+import { IEntityLiving } from "./interfaces/IEntityLiving";
+import { IEntityItem } from "./interfaces/IEntityItem";
+import { IItemStack } from "./interfaces/IItemStack";
+import { BlockGrass } from "./BlockGrass";
+import { BlockLeaves } from "./BlockLeaves";
+import { BlockFlower } from "./BlockFlower";
+import { BlockFire } from "./BlockFire";
+import { BlockPortal } from "./BlockPortal";
+// import { Block } from "./Block";
 
 export class Block {
+	// circular dep crudeness.
+	public static entityItemCtor: (world: World, a2: number, a3: number, a4: number, itemStack: IItemStack) => IEntityItem;
+	public static itemStackCtor: (a1: number, a2: number, a3: number) => IItemStack;
+
+	public static stone:  Block;
+	public static grass:  BlockGrass;
+	public static dirt:  Block;
+	public static cobblestone:  Block;
+	public static planks:  Block;
+	public static sapling:  Block;
+	public static bedrock:  Block;
+	public static waterStill:  Block;
+	public static waterMoving:  Block;
+	public static lavaStill:  Block;
+	public static lavaMoving:  Block;
+	public static sand:  Block;
+	public static gravel:  Block;
+	public static oreGold:  Block;
+	public static oreIron:  Block;
+	public static oreCoal:  Block;
+	public static wood:  Block;
+	public static leaves:  BlockLeaves;
+	public static sponge:  Block;
+	public static glass:  Block;
+	public static oreLapis:  Block;
+	public static blockLapis:  Block;
+	public static dispenser:  Block;
+	public static sandStone:  Block;
+	public static musicBlock:  Block;
+	public static field_9262_S:  Block;
+	public static field_9261_T:  Block;
+	public static field_9260_U:  Block;
+	public static field_9259_V:  Block;
+	public static field_9258_W:  Block;
+	public static field_9257_X:  Block;
+	public static field_9256_Y:  Block;
+	public static field_9255_Z:  Block;
+	public static field_9269_aa:  Block;
+	public static cloth:  Block;
+	public static field_9268_ac:  Block;
+	public static plantYellow:  BlockFlower;
+	public static plantRed:  BlockFlower;
+	public static mushroomBrown:  BlockFlower;
+	public static mushroomRed:  BlockFlower;
+	public static blockGold:  Block;
+	public static blockSteel:  Block;
+	public static stairDouble:  Block;
+	public static stairSingle:  Block;
+	public static brick:  Block;
+	public static tnt:  Block;
+	public static bookShelf:  Block;
+	public static cobblestoneMossy:  Block;
+	public static obsidian:  Block;
+	public static torchWood:  Block;
+	public static fire:  BlockFire;
+	public static mobSpawner:  Block;
+	public static stairCompactPlanks:  Block;
+	public static crate:  Block;
+	public static redstoneWire:  Block;
+	public static oreDiamond:  Block;
+	public static blockDiamond:  Block;
+	public static workbench:  Block;
+	public static crops:  Block;
+	public static tilledField:  Block;
+	public static stoneOvenIdle:  Block;
+	public static stoneOvenActive:  Block;
+	public static signPost:  Block;
+	public static doorWood:  Block;
+	public static ladder:  Block;
+	public static minecartTrack:  Block;
+	public static stairCompactCobblestone:  Block;
+	public static signWall:  Block;
+	public static lever:  Block;
+	public static pressurePlateStone:  Block;
+	public static doorSteel:  Block;
+	public static pressurePlatePlanks:  Block;
+	public static oreRedstone:  Block;
+	public static oreRedstoneGlowing:  Block;
+	public static torchRedstoneIdle:  Block;
+	public static torchRedstoneActive:  Block;
+	public static button:  Block;
+	public static snow:  Block;
+	public static ice:  Block;
+	public static blockSnow:  Block;
+	public static cactus:  Block;
+	public static blockClay:  Block;
+	public static reed:  Block;
+	public static jukebox:  Block;
+	public static fence:  Block;
+	public static pumpkin:  Block;
+	public static bloodStone:  Block;
+	public static slowSand:  Block;
+	public static lightStone:  Block;
+	public static portal:  BlockPortal;
+	public static pumpkinLantern:  Block;
+	public static cake:  Block;
+
 	public blockIndexInTexture:  number;
 	public readonly blockID:  number;
 	public blockHardness:  number;
@@ -245,12 +351,12 @@ export class Block {
 		return this.blockID;
 	}
 
-	public blockStrength(entityPlayer1: EntityPlayer| null):  number {
+	public blockStrength(entityPlayer1: IEntityPlayer| null):  number {
 		return this.blockHardness < 0.0 ? 0.0 : (!entityPlayer1.canHarvestBlock(this) ? 1.0 / this.blockHardness / 100.0 : entityPlayer1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0);
 	}
 
 	public async dropBlockAsItem(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
-		this.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, 1.0);
+		await this.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, 1.0);
 	}
 
 	public async dropBlockAsItemWithChance(world1: World| null, i2: number, i3: number, i4: number, i5: number, f6: number):  Promise<void> {
@@ -265,9 +371,11 @@ export class Block {
 						let  d11: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
 						let  d13: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
 						let  d15: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
-						let  entityItem17: EntityItem = new  EntityItem(world1, i2 as number + d11, i3 as number + d13, i4 as number + d15, new  ItemStack(i9, 1, this.damageDropped(i5)));
+						let entityItem17 = Block.entityItemCtor(world1, i2 + d11, i3 + d13, i4 + d15, Block.itemStackCtor(i9, 1, this.damageDropped(i5)));
+						//let  entityItem17: EntityItem = new  EntityItem(world1, i2 as number + d11, i3 as number + d13, i4 as number + d15, new  ItemStack(i9, 1, this.damageDropped(i5)));
 						entityItem17.delayBeforeCanPickup = 10;
-						await world1.entityJoinedWorld(entityItem17);
+						//crude, due to circular deps.
+						await (world1 as any).entityJoinedWorld(entityItem17);
 					}
 				}
 			}
@@ -279,7 +387,7 @@ export class Block {
 		return 0;
 	}
 
-	public getExplosionResistance(entity1: Entity| null):  number {
+	public getExplosionResistance(entity1: IEntity | null):  number {
 		return this.blockResistance / 5.0;
 	}
 
@@ -398,20 +506,20 @@ export class Block {
 		return i5 === 0 || Block.blocksList[i5].blockMaterial.getIsLiquid();
 	}
 
-	public async blockActivated(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: IEntityPlayer| null):  Promise<boolean> {
 		return false;
 	}
 
-	public async onEntityWalking(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  Promise<void> {
+	public async onEntityWalking(world1: World| null, i2: number, i3: number, i4: number, entity5: IEntity | null):  Promise<void> {
 	}
 
 	public async onBlockPlaced(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 	}
 
-	public async onBlockClicked(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: EntityPlayer| null):  Promise<void> {
+	public async onBlockClicked(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: IEntityPlayer| null):  Promise<void> {
 	}
 
-	public velocityToAddToEntity(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null, vec3D6: Vec3D| null):  void {
+	public velocityToAddToEntity(world1: World| null, i2: number, i3: number, i4: number, entity5: IEntity | null, vec3D6: Vec3D| null):  void {
 	}
 
 	public setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number):  void {
@@ -429,7 +537,7 @@ export class Block {
 		return false;
 	}
 
-	public async onEntityCollidedWithBlock(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  Promise<void> {
+	public async onEntityCollidedWithBlock(world1: World| null, i2: number, i3: number, i4: number, entity5: IEntity | null):  Promise<void> {
 	}
 
 	public async isIndirectlyPoweringTo(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
@@ -440,14 +548,14 @@ export class Block {
 	}
 
 	public async harvestBlock(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
-        this.dropBlockAsItem(world1, i2, i3, i4, i5);
+        await this.dropBlockAsItem(world1, i2, i3, i4, i5);
 	}
 
 	public async canBlockStay(world1: World| null, i2: number, i3: number, i4: number):  Promise<boolean> {
 		return true;
 	}
 
-	public async onBlockPlacedBy(world1: World| null, i2: number, i3: number, i4: number, entityLiving5: EntityLiving| null):  Promise<void> {
+	public async onBlockPlacedBy(world1: World| null, i2: number, i3: number, i4: number, entityLiving5: IEntityLiving| null):  Promise<void> {
 	}
 
 	public setBlockName(string1: string):  Block {
@@ -462,14 +570,14 @@ export class Block {
 	public playBlock(world1: World| null, i2: number, i3: number, i4: number, i5: number, i6: number):  void {
 	}
 
-	static {
-		Item.itemsList[BlockRegistry.cloth.blockID] = (new  ItemCloth(BlockRegistry.cloth.blockID - 256)).setItemName("cloth");
-		Item.itemsList[BlockRegistry.wood.blockID] = (new  ItemLog(BlockRegistry.wood.blockID - 256)).setItemName("log");
+	// static {
+	// 	Item.itemsList[Block.cloth.blockID] = (new  ItemCloth(Block.cloth.blockID - 256)).setItemName("cloth");
+	// 	Item.itemsList[Block.wood.blockID] = (new  ItemLog(Block.wood.blockID - 256)).setItemName("log");
 
-		for(let  i0: number = 0; i0 < 256; ++i0) {
-			if(Block.blocksList[i0] !== null && Item.itemsList[i0] === null) {
-				Item.itemsList[i0] = new  ItemBlock(i0 - 256);
-			}
-		}
-	}
+	// 	for(let  i0: number = 0; i0 < 256; ++i0) {
+	// 		if(Block.blocksList[i0] !== null && Item.itemsList[i0] === null) {
+	// 			Item.itemsList[i0] = new  ItemBlock(i0 - 256);
+	// 		}
+	// 	}
+	// }
 }

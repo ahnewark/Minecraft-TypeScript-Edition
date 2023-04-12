@@ -27,13 +27,13 @@ export  class EntityMobs extends EntityCreature implements IMobs {
 			this.field_9344_ag += 2;
 		}
 
-		super.onLivingUpdate();
+		await super.onLivingUpdate();
 	}
 
 	public async onUpdate():  Promise<void> {
-		super.onUpdate();
+		await super.onUpdate();
 		if(this.worldObj.difficultySetting === 0) {
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 	}
 

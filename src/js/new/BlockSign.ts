@@ -6,10 +6,11 @@ import { Item } from "./Item";
 import { IBlockAccess } from "./IBlockAccess";
 import { BlockContainer } from "./BlockContainer";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class BlockSign extends BlockContainer {
 	private signEntityClass:  string;
@@ -30,7 +31,7 @@ export  class BlockSign extends BlockContainer {
 	}
 
 	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int): Promise<AxisAlignedBB | null> {
-		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
+		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.getSelectedBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
@@ -87,7 +88,7 @@ export  class BlockSign extends BlockContainer {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return ItemRegistry.sign.shiftedIndex;
+		return Item.sign.shiftedIndex;
 	}
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int): Promise<void> {
@@ -117,7 +118,7 @@ export  class BlockSign extends BlockContainer {
 		}
 
 		if(z6) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 

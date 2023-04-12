@@ -96,7 +96,7 @@ export class WorldChunkManager {
 	}
 
 	public loadBlockGeneratorData(mobSpawnerBase1: MobSpawnerBase[], i2: int, i3: int, i4: int, i5: int):  MobSpawnerBase[] {
-		if(mobSpawnerBase1 === null || mobSpawnerBase1.length < i4 * i5) {
+		if(!mobSpawnerBase1|| mobSpawnerBase1.length < i4 * i5) {
 			mobSpawnerBase1 = new   Array<MobSpawnerBase>(i4 * i5);
 		}
 

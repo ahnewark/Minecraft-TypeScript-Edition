@@ -3,6 +3,7 @@ import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { Block } from "./Block";
 
+
 export  class BlockLeavesBase extends Block {
 	protected graphicsLevel:  boolean;
 

@@ -1,9 +1,9 @@
 import { float, double, int } from "../jree/index";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
-import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityLiving } from "./EntityLiving";
-import { Block, BlockRegistry } from "./index";
+import { Block, } from "./Block";
+
 
 export  class EntityFlying extends EntityLiving {
 	public constructor(world1: World| null) {
@@ -51,7 +51,7 @@ export  class EntityFlying extends EntityLiving {
 				}
 			}
 
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= f3 as double;
 			this.motionY *= f3 as double;
 			this.motionZ *= f3 as double;

@@ -11,12 +11,8 @@ import { IChunkProvider } from "./IChunkProvider";
 import { IChunkLoader } from "./IChunkLoader";
 import { ChunkProviderGenerate } from "./ChunkProviderGenerate";
 import { ChunkLoader } from "./ChunkLoader";
-import { Block } from "./Block";
 import { File } from "../jree/java/io/index";
-import { BlockRegistry } from "./index";
-
-
-
+import { Block } from "./Block";
 
 export  class WorldProvider extends JavaObject {
 	public worldObj:  World;
@@ -52,7 +48,7 @@ export  class WorldProvider extends JavaObject {
 		return new  ChunkProviderGenerate(this.worldObj, this.worldObj.randomSeed);
 	}
 
-	public getChunkLoader(file1: File):  IChunkLoader {
+	public async getChunkLoader(file1: File):  Promise<IChunkLoader> {
 		return new  ChunkLoader(file1, true);
 	}
 
@@ -60,8 +56,8 @@ export  class WorldProvider extends JavaObject {
 		// return true;
 		let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
 		// // TODO: Fix
-		return i3 === BlockRegistry.sand.blockID;
-		// return i3 === BlockRegistry.stone.blockID;
+		return i3 === Block.sand.blockID;
+		// return i3 === Block.stone.blockID;
 
 	}
 

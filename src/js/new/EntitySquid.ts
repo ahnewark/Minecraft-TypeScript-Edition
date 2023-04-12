@@ -5,8 +5,8 @@ import { MathHelper } from "./MathHelper";
 import { ItemStack } from "./ItemStack";
 import { EntityWaterMob } from "./EntityWaterMob";
 import { EntityPlayer } from "./EntityPlayer";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { MaterialRegistry } from "./index";
+import { Item } from "./Item";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class EntitySquid extends EntityWaterMob {
 	public override get type(): string {
@@ -63,19 +63,19 @@ export  class EntitySquid extends EntityWaterMob {
 		return 0;
 	}
 
-	protected func_21066_o():  void {
+	protected async func_21066_o():  Promise<void> {
 		let  i1: int = this.rand.nextInt(3) + 1;
 
 		for(let  i2: int = 0; i2 < i1; ++i2) {
-			this.entityDropItem(new  ItemStack(ItemRegistry.dyePowder, 1, 0), 0.0);
+			await this.entityDropItem(new  ItemStack(Item.dyePowder, 1, 0), 0.0);
 		}
 
 	}
 
-	public interact(entityPlayer1: EntityPlayer| null):  boolean {
+	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
 		let  itemStack2: ItemStack = entityPlayer1.inventory.getCurrentItem();
-		if(itemStack2 !== null && itemStack2.itemID === ItemRegistry.bucketEmpty.shiftedIndex) {
-			entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, new  ItemStack(ItemRegistry.bucketMilk));
+		if(itemStack2 !== null && itemStack2.itemID === Item.bucketEmpty.shiftedIndex) {
+			await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, new  ItemStack(Item.bucketMilk));
 			return true;
 		} else {
 			return false;

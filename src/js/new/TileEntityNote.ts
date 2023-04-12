@@ -3,7 +3,7 @@ import { World } from "./World";
 import { TileEntity } from "./TileEntity";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { Material } from "./Material";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class TileEntityNote extends TileEntity {
 	public note:  byte = 0;
@@ -31,9 +31,9 @@ export  class TileEntityNote extends TileEntity {
 
 	}
 
-	public changePitch():  void {
+	public async changePitch():  Promise<void> {
 		this.note = ((this.note + 1) % 25) as byte;
-		this.onInventoryChanged();
+		await this.onInventoryChanged();
 	}
 
 	public async triggerNote(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {

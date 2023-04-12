@@ -3,7 +3,7 @@ import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export  class WorldGenCactus extends WorldGenerator {
 	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
@@ -15,8 +15,8 @@ export  class WorldGenCactus extends WorldGenerator {
 				let  i10: int = 1 + random2.nextInt(random2.nextInt(3) + 1);
 
 				for(let  i11: int = 0; i11 < i10; ++i11) {
-					if(await BlockRegistry.cactus.canBlockStay(world1, i7, i8 + i11, i9)) {
-						await world1.setBlock(i7, i8 + i11, i9, BlockRegistry.cactus.blockID);
+					if(await Block.cactus.canBlockStay(world1, i7, i8 + i11, i9)) {
+						await world1.setBlock(i7, i8 + i11, i9, Block.cactus.blockID);
 					}
 				}
 			}

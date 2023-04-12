@@ -3,8 +3,9 @@ import { World } from "./World";
 import { IBlockAccess } from "./IBlockAccess";
 import { EntityPlayer } from "./EntityPlayer";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockCake extends Block {
@@ -88,7 +89,7 @@ export  class BlockCake extends Block {
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(!await this.canBlockStay(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 

@@ -14,7 +14,7 @@ import { NBTTagByte } from "./NBTTagByte";
 import { NBTBase } from "./NBTBase";
 import { DataOutput } from "../java/io/DataOutput";
 import { DataInput } from "../java/io/DataInput";
-import { NBTRegistry } from "./index";
+import { NBTRegistry } from "./static/NBTRegistry";
 
 export  class NBTTagCompound extends NBTBase {
 	private tagMap: Map<string, NBTBase> = new Map();

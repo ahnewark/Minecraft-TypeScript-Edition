@@ -100,7 +100,7 @@ export  class EmptyChunk extends Chunk {
 		return false;
 	}
 
-	public getChunkBlockTileEntity(i1: int, i2: int, i3: int):  TileEntity | null {
+	public async getChunkBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity | null> {
 		return null;
 	}
 

@@ -9,7 +9,7 @@ import { EntityLiving } from "./EntityLiving";
 import { BlockSapling } from "./BlockSapling";
 import { BlockCrops } from "./BlockCrops";
 import { BlockCloth } from "./BlockCloth";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export  class ItemDye extends Item {
 	public static readonly dyeColors:  string[] | null =  ["black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"];
@@ -32,14 +32,14 @@ export  class ItemDye extends Item {
 	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
 		if(itemStack1.getItemDamage() === 15) {
 			let  i8: int = await world3.getBlockId(i4, i5, i6);
-			if(i8 === BlockRegistry.sapling.blockID) {
-				(BlockRegistry.sapling as BlockSapling).func_21028_c(world3, i4, i5, i6, world3.rand);
+			if(i8 === Block.sapling.blockID) {
+				await (Block.sapling as BlockSapling).func_21028_c(world3, i4, i5, i6, world3.rand);
 				--itemStack1.stackSize;
 				return true;
 			}
 
-			if(i8 === BlockRegistry.crops.blockID) {
-				(BlockRegistry.crops as BlockCrops).func_21027_c_(world3, i4, i5, i6);
+			if(i8 === Block.crops.blockID) {
+				await (Block.crops as BlockCrops).func_21027_c_(world3, i4, i5, i6);
 				--itemStack1.stackSize;
 				return true;
 			}

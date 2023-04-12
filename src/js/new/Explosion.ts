@@ -10,7 +10,8 @@ import { ChunkPosition } from "./ChunkPosition";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
 import { Block } from "./Block";
-import { BlockRegistry } from "./moved/BlockRegistry";
+
+import { Block } from "./Block";
 
 export  class Explosion {
 	public field_12257_a:  boolean = false;
@@ -103,7 +104,7 @@ export  class Explosion {
 				d19 /= d39;
 				let  d40: double = await this.worldObj.func_675_a(vec3D31, entity33.boundingBox);
 				let  d41: double = (1.0 - d13) * d40;
-				entity33.attackEntityFrom(this.exploder, ((d41 * d41 + d41) / 2.0 * 8.0 * this.explosionSize + 1.0) as int);
+				await entity33.attackEntityFrom(this.exploder, ((d41 * d41 + d41) / 2.0 * 8.0 * this.explosionSize + 1.0) as int);
 				entity33.motionX += d15 * d41;
 				entity33.motionY += d17 * d41;
 				entity33.motionZ += d19 * d41;
@@ -121,7 +122,7 @@ export  class Explosion {
 				let  i38: int = await this.worldObj.getBlockId(i36, i37, i16);
 				let  i18: int = await this.worldObj.getBlockId(i36, i37 - 1, i16);
 				if(i38 === 0 && Block.opaqueCubeLookup[i18] && this.ExplosionRNG.nextInt(3) === 0) {
-					await this.worldObj.setBlockWithNotify(i36, i37, i16, BlockRegistry.fire.blockID);
+					await this.worldObj.setBlockWithNotify(i36, i37, i16, Block.fire.blockID);
 				}
 			}
 		}

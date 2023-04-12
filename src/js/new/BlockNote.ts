@@ -5,8 +5,9 @@ import { TileEntityNote } from "./TileEntityNote";
 import { TileEntity } from "./TileEntity";
 import { EntityPlayer } from "./EntityPlayer";
 import { BlockContainer } from "./BlockContainer";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Block } from "./Block";
+
 
 export  class BlockNote extends BlockContainer {
 	public constructor(i1: int) {
@@ -37,7 +38,7 @@ export  class BlockNote extends BlockContainer {
 			return true;
 		} else {
 			let  tileEntityNote6: TileEntityNote = await world1.getBlockTileEntity(i2, i3, i4) as TileEntityNote;
-			tileEntityNote6.changePitch();
+			await tileEntityNote6.changePitch();
 			await tileEntityNote6.triggerNote(world1, i2, i3, i4);
 			return true;
 		}

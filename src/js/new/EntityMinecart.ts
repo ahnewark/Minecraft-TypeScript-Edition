@@ -14,8 +14,8 @@ import { EntityLiving } from "./EntityLiving";
 import { EntityItem } from "./EntityItem";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { BlockRegistry } from "./index";
+import { Item } from "./Item";
+import { Block } from "./Block";
 
 
 
@@ -111,14 +111,14 @@ export  class EntityMinecart extends Entity implements IInventory {
 			this.setBeenAttacked();
 			this.field_20910_a += i2 * 10;
 			if(this.field_20910_a > 40) {
-				this.dropItemWithOffset(ItemRegistry.minecartEmpty.shiftedIndex, 1, 0.0);
+				await this.dropItemWithOffset(Item.minecartEmpty.shiftedIndex, 1, 0.0);
 				if(this.minecartType === 1) {
-					this.dropItemWithOffset(BlockRegistry.crate.blockID, 1, 0.0);
+					await this.dropItemWithOffset(Block.crate.blockID, 1, 0.0);
 				} else if(this.minecartType === 2) {
-					this.dropItemWithOffset(BlockRegistry.stoneOvenIdle.blockID, 1, 0.0);
+					await this.dropItemWithOffset(Block.stoneOvenIdle.blockID, 1, 0.0);
 				}
 
-				this.setEntityDead();
+				await this.setEntityDead();
 			}
 
 			return true;
@@ -138,7 +138,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 		return !this.isDead;
 	}
 
-	public setEntityDead():  void {
+	public async setEntityDead():  Promise<void> {
 		for(let  i1: int = 0; i1 < this.getSizeInventory(); ++i1) {
 			let  itemStack2: ItemStack = this.getStackInSlot(i1);
 			if(itemStack2 !== null) {
@@ -158,12 +158,12 @@ export  class EntityMinecart extends Entity implements IInventory {
 					entityItem7.motionX = (this.rand.nextGaussian() as float * f8) as double;
 					entityItem7.motionY = (this.rand.nextGaussian() as float * f8 + 0.2) as double;
 					entityItem7.motionZ = (this.rand.nextGaussian() as float * f8) as double;
-					this.worldObj.entityJoinedWorld(entityItem7);
+					await this.worldObj.entityJoinedWorld(entityItem7);
 				}
 			}
 		}
 
-		super.setEntityDead();
+		await super.setEntityDead();
 	}
 
 	public async onUpdate(): Promise<void> {
@@ -207,14 +207,14 @@ export  class EntityMinecart extends Entity implements IInventory {
 			let  i1: int = MathHelper.floor_double(this.posX);
 			let  i2: int = MathHelper.floor_double(this.posY);
 			let  i3: int = MathHelper.floor_double(this.posZ);
-			if(await this.worldObj.getBlockId(i1, i2 - 1, i3) === BlockRegistry.minecartTrack.blockID) {
+			if(await this.worldObj.getBlockId(i1, i2 - 1, i3) === Block.minecartTrack.blockID) {
 				--i2;
 			}
 
 			let  d4: double = 0.4;
 			let  z6: boolean = false;
 			d7 = 2.0 / 256;
-			if(await this.worldObj.getBlockId(i1, i2, i3) === BlockRegistry.minecartTrack.blockID) {
+			if(await this.worldObj.getBlockId(i1, i2, i3) === Block.minecartTrack.blockID) {
 				let  vec3D9: Vec3D = await this.func_514_g(this.posX, this.posY, this.posZ);
 				let  i10: int = await this.worldObj.getBlockMetadata(i1, i2, i3);
 				this.posY = i2 as double;
@@ -300,7 +300,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 					d34 = d4;
 				}
 
-				this.moveEntity(d32, 0.0, d34);
+				await this.moveEntity(d32, 0.0, d34);
 				if(i11[0][1] !== 0 && MathHelper.floor_double(this.posX) - i1 === i11[0][0] && MathHelper.floor_double(this.posZ) - i3 === i11[0][2]) {
 					this.setPosition(this.posX, this.posY + i11[0][1] as double, this.posZ);
 				} else if(i11[1][1] !== 0 && MathHelper.floor_double(this.posX) - i1 === i11[1][0] && MathHelper.floor_double(this.posZ) - i3 === i11[1][2]) {
@@ -455,11 +455,11 @@ export  class EntityMinecart extends Entity implements IInventory {
 		let  i9: int = MathHelper.floor_double(d1);
 		let  i10: int = MathHelper.floor_double(d3);
 		let  i11: int = MathHelper.floor_double(d5);
-		if(await this.worldObj.getBlockId(i9, i10 - 1, i11) === BlockRegistry.minecartTrack.blockID) {
+		if(await this.worldObj.getBlockId(i9, i10 - 1, i11) === Block.minecartTrack.blockID) {
 			--i10;
 		}
 
-		if(await this.worldObj.getBlockId(i9, i10, i11) === BlockRegistry.minecartTrack.blockID) {
+		if(await this.worldObj.getBlockId(i9, i10, i11) === Block.minecartTrack.blockID) {
 			let  i12: int = await this.worldObj.getBlockMetadata(i9, i10, i11);
 			d3 = i10 as double;
 			if(i12 >= 2 && i12 <= 5) {
@@ -490,11 +490,11 @@ export  class EntityMinecart extends Entity implements IInventory {
 		let  i7: int = MathHelper.floor_double(d1);
 		let  i8: int = MathHelper.floor_double(d3);
 		let  i9: int = MathHelper.floor_double(d5);
-		if(await this.worldObj.getBlockId(i7, i8 - 1, i9) === BlockRegistry.minecartTrack.blockID) {
+		if(await this.worldObj.getBlockId(i7, i8 - 1, i9) === Block.minecartTrack.blockID) {
 			--i8;
 		}
 
-		if(await this.worldObj.getBlockId(i7, i8, i9) === BlockRegistry.minecartTrack.blockID) {
+		if(await this.worldObj.getBlockId(i7, i8, i9) === Block.minecartTrack.blockID) {
 			let  i10 = await this.worldObj.getBlockMetadata(i7, i8, i9);
 			d3 = i8;
 			if(i10 >= 2 && i10 <= 5) {
@@ -660,7 +660,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 		return this.cargoItems[i1];
 	}
 
-	public decrStackSize(i1: int, i2: int):  ItemStack | null {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
 		if(this.cargoItems[i1] !== null) {
 			let  itemStack3: ItemStack;
 			if(this.cargoItems[i1].stackSize <= i2) {
@@ -680,7 +680,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 		}
 	}
 
-	public setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  void {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
 		this.cargoItems[i1] = itemStack2;
 		if(itemStack2 !== null && itemStack2.stackSize > this.getInventoryStackLimit()) {
 			itemStack2.stackSize = this.getInventoryStackLimit();
@@ -699,7 +699,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 	public onInventoryChanged():  void {
 	}
 
-	public interact(entityPlayer1: EntityPlayer| null):  boolean {
+	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
 		if(this.minecartType === 0) {
 			if(this.riddenByEntity !== null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity !== entityPlayer1) {
 				return true;
@@ -714,9 +714,9 @@ export  class EntityMinecart extends Entity implements IInventory {
 			}
 		} else if(this.minecartType === 2) {
 			let  itemStack2: ItemStack = entityPlayer1.inventory.getCurrentItem();
-			if(itemStack2 !== null && itemStack2.itemID === ItemRegistry.coal.shiftedIndex) {
+			if(itemStack2 !== null && itemStack2.itemID === Item.coal.shiftedIndex) {
 				if(--itemStack2.stackSize === 0) {
-					entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, null as ItemStack);
+					await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, null as ItemStack);
 				}
 
 				this.fuel += 1200;

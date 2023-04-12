@@ -4,11 +4,12 @@
 import { int, float } from "../jree/index";
 import { World } from "./World";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class BlockReed extends Block {
 	public constructor(i1: int, i2: int) {
@@ -40,7 +41,7 @@ export  class BlockReed extends Block {
 
 	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  i5: int = await world1.getBlockId(i2, i3 - 1, i4);
-		return i5 === this.blockID ? true : (i5 !== BlockRegistry.grass.blockID && i5 !== BlockRegistry.dirt.blockID ? false : (await world1.getBlockMaterial(i2 - 1, i3 - 1, i4) === MaterialRegistry.water ? true : (await world1.getBlockMaterial(i2 + 1, i3 - 1, i4) === MaterialRegistry.water ? true : (await world1.getBlockMaterial(i2, i3 - 1, i4 - 1) === MaterialRegistry.water ? true : await world1.getBlockMaterial(i2, i3 - 1, i4 + 1) === MaterialRegistry.water))));
+		return i5 === this.blockID ? true : (i5 !== Block.grass.blockID && i5 !== Block.dirt.blockID ? false : (await world1.getBlockMaterial(i2 - 1, i3 - 1, i4) === MaterialRegistry.water ? true : (await world1.getBlockMaterial(i2 + 1, i3 - 1, i4) === MaterialRegistry.water ? true : (await world1.getBlockMaterial(i2, i3 - 1, i4 - 1) === MaterialRegistry.water ? true : await world1.getBlockMaterial(i2, i3 - 1, i4 + 1) === MaterialRegistry.water))));
 	}
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
@@ -49,7 +50,7 @@ export  class BlockReed extends Block {
 
 	protected async checkBlockCoordValid(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
 		if(!this.canBlockStay(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 
@@ -64,7 +65,7 @@ export  class BlockReed extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return ItemRegistry.reed.shiftedIndex;
+		return Item.reed.shiftedIndex;
 	}
 
 	public isOpaqueCube():  boolean {

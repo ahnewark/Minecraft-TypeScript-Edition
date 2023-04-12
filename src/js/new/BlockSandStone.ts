@@ -2,7 +2,8 @@
 import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockSandStone extends Block {
 	public constructor(i1: number) {

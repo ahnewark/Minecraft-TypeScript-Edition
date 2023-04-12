@@ -5,8 +5,7 @@ import { int, float, java } from "../jree/index";
 import { World } from "./World";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockFlower extends Block {
@@ -23,11 +22,11 @@ export  class BlockFlower extends Block {
 	}
 
 	protected canThisPlantGrowOnThisBlockID(i1: int):  boolean {
-		return i1 === BlockRegistry.grass.blockID || i1 === BlockRegistry.dirt.blockID || i1 === BlockRegistry.tilledField.blockID;
+		return i1 === Block.grass.blockID || i1 === Block.dirt.blockID || i1 === Block.tilledField.blockID;
 	}
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
-		super.onNeighborBlockChange(world1, i2, i3, i4, i5);
+		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 		await this.func_268_h(world1, i2, i3, i4);
 	}
 
@@ -36,8 +35,8 @@ export  class BlockFlower extends Block {
 	}
 
 	protected async func_268_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		if(!this.canBlockStay(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+		if(!await this.canBlockStay(world1, i2, i3, i4)) {
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 

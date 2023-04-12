@@ -5,12 +5,12 @@ import { int, java, float, double } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class WorldGenClay extends WorldGenerator {
-	private clayBlockId:  int = BlockRegistry.blockClay.blockID;
+	private clayBlockId:  int = Block.blockClay.blockID;
 	private numberOfBlocks:  int;
 
 	public constructor(i1: int) {
@@ -46,7 +46,7 @@ export  class WorldGenClay extends WorldGenerator {
 							let  d39: double = (i34 + 0.5 - d24) / (d28 / 2.0);
 							if(d35 * d35 + d37 * d37 + d39 * d39 < 1.0) {
 								let  i41: int = await world1.getBlockId(i32, i33, i34);
-								if(i41 === BlockRegistry.sand.blockID) {
+								if(i41 === Block.sand.blockID) {
 									await world1.setBlock(i32, i33, i34, this.clayBlockId);
 								}
 							}

@@ -26,13 +26,13 @@ export  class TileEntityDispenser extends TileEntity implements IInventory {
 		return this.dispenserContents[i1];
 	}
 
-	public decrStackSize(i1: int, i2: int):  ItemStack | null {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
 		if(this.dispenserContents[i1] !== null) {
 			let  itemStack3: ItemStack;
 			if(this.dispenserContents[i1].stackSize <= i2) {
 				itemStack3 = this.dispenserContents[i1];
 				this.dispenserContents[i1] = null;
-				this.onInventoryChanged();
+				await this.onInventoryChanged();
 				return itemStack3;
 			} else {
 				itemStack3 = this.dispenserContents[i1].splitStack(i2);
@@ -40,7 +40,7 @@ export  class TileEntityDispenser extends TileEntity implements IInventory {
 					this.dispenserContents[i1] = null;
 				}
 
-				this.onInventoryChanged();
+				await this.onInventoryChanged();
 				return itemStack3;
 			}
 		} else {
@@ -48,7 +48,7 @@ export  class TileEntityDispenser extends TileEntity implements IInventory {
 		}
 	}
 
-	public getRandomStackFromInventory():  ItemStack | null {
+	public async getRandomStackFromInventory():  Promise<ItemStack | null> {
 		let  i1: int = -1;
 		let  i2: int = 1;
 
@@ -60,19 +60,19 @@ export  class TileEntityDispenser extends TileEntity implements IInventory {
 		}
 
 		if(i1 >= 0) {
-			return this.decrStackSize(i1, 1);
+			return await this.decrStackSize(i1, 1);
 		} else {
 			return null;
 		}
 	}
 
-	public setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  void {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
 		this.dispenserContents[i1] = itemStack2;
 		if(itemStack2 !== null && itemStack2.stackSize > this.getInventoryStackLimit()) {
 			itemStack2.stackSize = this.getInventoryStackLimit();
 		}
 
-		this.onInventoryChanged();
+		await this.onInventoryChanged();
 	}
 
 	public getInvName(): string {

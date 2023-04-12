@@ -7,8 +7,9 @@ import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { Chunk } from "./Chunk";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 
 export  class ChunkCache implements IBlockAccess {
 	private chunkX:  int;
@@ -51,7 +52,7 @@ export  class ChunkCache implements IBlockAccess {
 	public async getBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity> {
 		let  i4: int = (i1 >> 4) - this.chunkX;
 		let  i5: int = (i3 >> 4) - this.chunkZ;
-		return this.chunkArray[i4][i5].getChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
+		return await this.chunkArray[i4][i5].getChunkBlockTileEntity(i1 & 15, i2, i3 & 15);
 	}
 
 	public async getLightBrightness(i1: int, i2: int, i3: int):  Promise<float> {
@@ -68,7 +69,7 @@ export  class ChunkCache implements IBlockAccess {
 			let  i6: int;
 			if(z4) {
 				i5 = await this.getBlockId(i1, i2, i3);
-				if(i5 === BlockRegistry.stairSingle.blockID || i5 === BlockRegistry.tilledField.blockID) {
+				if(i5 === Block.stairSingle.blockID || i5 === Block.tilledField.blockID) {
 					i6 = await this.func_716_a(i1, i2 + 1, i3, false);
 					let  i7: int = await this.func_716_a(i1 + 1, i2, i3, false);
 					let  i8: int = await this.func_716_a(i1 - 1, i2, i3, false);

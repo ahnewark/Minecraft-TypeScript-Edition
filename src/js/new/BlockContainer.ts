@@ -5,6 +5,7 @@ import { TileEntity } from "./TileEntity";
 import { Material } from "./Material";
 import { Block } from "./Block";
 
+
 export abstract  class BlockContainer extends Block {
 	protected constructor(i1: int, material2: Material| null);
 	protected constructor(i1: int, i2: int, material3: Material| null);

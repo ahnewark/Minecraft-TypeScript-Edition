@@ -4,7 +4,7 @@ import { World } from "./World";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { MathHelper } from "./MathHelper";
 import { EntityCreature } from "./EntityCreature";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export abstract  class EntityAnimals extends EntityCreature {
 	public constructor(world1: World| null) {
@@ -12,7 +12,7 @@ export abstract  class EntityAnimals extends EntityCreature {
 	}
 
 	protected async getBlockPathWeight(i1: int, i2: int, i3: int):  Promise<float> {
-		return await this.worldObj.getBlockId(i1, i2 - 1, i3) === BlockRegistry.grass.blockID ? 10.0 : await this.worldObj.getLightBrightness(i1, i2, i3) - 0.5;
+		return await this.worldObj.getBlockId(i1, i2 - 1, i3) === Block.grass.blockID ? 10.0 : await this.worldObj.getLightBrightness(i1, i2, i3) - 0.5;
 	}
 
 	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
@@ -27,7 +27,7 @@ export abstract  class EntityAnimals extends EntityCreature {
 		let  i1: int = MathHelper.floor_double(this.posX);
 		let  i2: int = MathHelper.floor_double(this.boundingBox.minY);
 		let  i3: int = MathHelper.floor_double(this.posZ);
-		return await this.worldObj.getBlockId(i1, i2 - 1, i3) === BlockRegistry.grass.blockID && await this.worldObj.getBlockLightValue(i1, i2, i3) > 8 && await super.getCanSpawnHere();
+		return await this.worldObj.getBlockId(i1, i2 - 1, i3) === Block.grass.blockID && await this.worldObj.getBlockLightValue(i1, i2, i3) > 8 && await super.getCanSpawnHere();
 	}
 
 	public func_421_b():  int {

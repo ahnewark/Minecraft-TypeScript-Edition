@@ -11,7 +11,7 @@ import { EntityItem } from "./EntityItem";
 import { EntityAnimals } from "./EntityAnimals";
 import { Entity } from "./Entity";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
 
 export  class EntitySheep extends EntityAnimals {
 	public static readonly field_21075_a = [[1.0, 1.0, 1.0], [0.95, 0.7, 0.2], [0.9, 0.5, 0.85], [0.6, 0.7, 0.95], [0.9, 0.9, 0.2], [0.5, 0.8, 0.1], [0.95, 0.7, 0.8], [0.3, 0.3, 0.3], [0.6, 0.6, 0.6], [0.3, 0.6, 0.7], [0.7, 0.4, 0.9], [0.2, 0.4, 0.8], [0.5, 0.4, 0.3], [0.4, 0.5, 0.2], [0.8, 0.3, 0.3], [0.1, 0.1, 0.1]];
@@ -37,7 +37,7 @@ export  class EntitySheep extends EntityAnimals {
 			let  i3: int = 1 + this.rand.nextInt(3);
 
 			for(let  i4: int = 0; i4 < i3; ++i4) {
-				let  entityItem5: EntityItem = this.entityDropItem(new  ItemStack(BlockRegistry.cloth.blockID, 1, this.getFleeceColor()), 1.0);
+				let  entityItem5: EntityItem = await this.entityDropItem(new  ItemStack(Block.cloth.blockID, 1, this.getFleeceColor()), 1.0);
 				entityItem5.motionY += (this.rand.nextFloat() * 0.05) as double;
 				entityItem5.motionX += ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1) as double;
 				entityItem5.motionZ += ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1) as double;

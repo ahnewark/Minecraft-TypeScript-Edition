@@ -12,11 +12,12 @@ import { EntityItem } from "./EntityItem";
 import { EntityEgg } from "./EntityEgg";
 import { EntityArrow } from "./EntityArrow";
 import { BlockContainer } from "./BlockContainer";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from './moved/BlockRegistry'
+import { BlockRegistry } from './static/BlockRegistry'
 import { Block } from "./Block";
-import { ItemRegistry } from "./moved/ItemRegistry";
+
+import { Item } from "./Item";
 
 export  class BlockDispenser extends BlockContainer {
 	public constructor(i1: int) {
@@ -29,7 +30,7 @@ export  class BlockDispenser extends BlockContainer {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.dispenser.blockID;
+		return Block.dispenser.blockID;
 	}
 
 	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
@@ -102,7 +103,7 @@ export  class BlockDispenser extends BlockContainer {
 		}
 
 		let  tileEntityDispenser11: TileEntityDispenser = await world1.getBlockTileEntity(i2, i3, i4) as TileEntityDispenser;
-		let  itemStack12: ItemStack = tileEntityDispenser11.getRandomStackFromInventory();
+		let  itemStack12: ItemStack = await tileEntityDispenser11.getRandomStackFromInventory();
 		let  d13: double = i2 as double + f9 as double * 0.5 + 0.5;
 		let  d15: double = i3 as double + 0.5;
 		let  d17: double = i4 as double + f10 as double * 0.5 + 0.5;
@@ -110,17 +111,17 @@ export  class BlockDispenser extends BlockContainer {
 			world1.playSoundEffect(i2 as double, i3 as double, i4 as double, "random.click", 1.0, 1.2);
 		} else {
 			let  d20: double;
-			if(itemStack12.itemID === ItemRegistry.arrow.shiftedIndex) {
+			if(itemStack12.itemID === Item.arrow.shiftedIndex) {
 				let  entityArrow19: EntityArrow = new  EntityArrow(world1, d13, d15, d17);
 				entityArrow19.setArrowHeading(f9 as double, 0.1 as double, f10 as double, 1.1, 6.0);
 				await world1.entityJoinedWorld(entityArrow19);
 				world1.playSoundEffect(i2 as double, i3 as double, i4 as double, "random.bow", 1.0, 1.2);
-			} else if(itemStack12.itemID === ItemRegistry.egg.shiftedIndex) {
+			} else if(itemStack12.itemID === Item.egg.shiftedIndex) {
 				let  entityEgg34: EntityEgg = new  EntityEgg(world1, d13, d15, d17);
 				entityEgg34.func_20048_a(f9 as double, 0.1 as double, f10 as double, 1.1, 6.0);
 				await world1.entityJoinedWorld(entityEgg34);
 				world1.playSoundEffect(i2 as double, i3 as double, i4 as double, "random.bow", 1.0, 1.2);
-			} else if(itemStack12.itemID === ItemRegistry.snowball.shiftedIndex) {
+			} else if(itemStack12.itemID === Item.snowball.shiftedIndex) {
 				let  entitySnowball35: EntitySnowball = new  EntitySnowball(world1, d13, d15, d17);
 				entitySnowball35.func_467_a(f9 as double, 0.1 as double, f10 as double, 1.1, 6.0);
 				await world1.entityJoinedWorld(entitySnowball35);

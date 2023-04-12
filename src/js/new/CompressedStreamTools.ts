@@ -8,7 +8,7 @@ import { DataOutput } from "../java/io/DataOutput";
 import { DataInput } from "../java/io/DataInput";
 import { DataOutputStream } from "../java/io/DataOutputStream";
 import { DataInputStream } from "../java/io/DataInputStream";
-import { NBTRegistry } from "./index";
+import { NBTRegistry } from "./static/NBTRegistry";
 
 export  class CompressedStreamTools extends JavaObject {
 	public static async func_1138_a(inputStream0: java.io.InputStream):  Promise<NBTTagCompound> {

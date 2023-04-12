@@ -8,12 +8,11 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
 import { MathHelper } from "./MathHelper";
 import { ItemStack } from "./ItemStack";
-import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityArrow extends Entity {
 	private xTile:  int = -1;
@@ -113,7 +112,7 @@ export  class EntityArrow extends Entity {
 	}
 
 	public async onUpdate():  Promise<void> {
-		super.onUpdate();
+		await super.onUpdate();
 		if(this.prevRotationPitch === 0.0 && this.prevRotationYaw === 0.0) {
 			let  f1: float = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.prevRotationYaw = this.rotationYaw = (java.lang.Math.atan2(this.motionX, this.motionZ) * 180.0 / java.lang.Math.PI as float as double) as float;
@@ -129,7 +128,7 @@ export  class EntityArrow extends Entity {
 			if(i15 === this.inTile) {
 				++this.field_681_h;
 				if(this.field_681_h === 1200) {
-					this.setEntityDead();
+					await this.setEntityDead();
 				}
 
 				return;
@@ -184,7 +183,7 @@ export  class EntityArrow extends Entity {
 			if(movingObjectPosition3.entityHit !== null) {
 				if(await movingObjectPosition3.entityHit.attackEntityFrom(this.field_682_g, 4)) {
 					this.worldObj.playSoundAtEntity(this, "random.drr", 1.0, 1.2 / (this.rand.nextFloat() * 0.2 + 0.9));
-					this.setEntityDead();
+					await this.setEntityDead();
 				} else {
 					this.motionX *= -0.10000000149011612;
 					this.motionY *= -0.10000000149011612;
@@ -270,12 +269,12 @@ export  class EntityArrow extends Entity {
 		this.inGround = nBTTagCompound1.getByte("inGround") === 1;
 	}
 
-	public onCollideWithPlayer(entityPlayer1: EntityPlayer):  void {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer):  Promise<void> {
 		if(!this.worldObj.multiplayerWorld) {
-			if(this.inGround && this.field_682_g === entityPlayer1 && this.arrowShake <= 0 && entityPlayer1.inventory.addItemStackToInventory(new  ItemStack(ItemRegistry.arrow, 1))) {
+			if(this.inGround && this.field_682_g === entityPlayer1 && this.arrowShake <= 0 && entityPlayer1.inventory.addItemStackToInventory(new  ItemStack(Item.arrow, 1))) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7 + 1.0) * 2.0);
 				entityPlayer1.onItemPickup(this, 1);
-				this.setEntityDead();
+				await this.setEntityDead();
 			}
 
 		}

@@ -22,8 +22,9 @@ import { Chunk } from "./Chunk";
 import { BlockSand } from "./BlockSand";
 import { Random } from "../java/util/Random";
 import { long } from "../jree/index";
-import { BlockRegistry, MaterialRegistry } from "./index";
-import { MobSpawnerRegistry } from "./moved/MobSpawnerRegistry";
+import { Block } from "./Block";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { MobSpawnerRegistry } from "./static/MobSpawnerRegistry";
 
 export  class ChunkProviderGenerate implements IChunkProvider {
 	private rand:  Random;
@@ -103,14 +104,14 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 								let  i55: number = 0;
 								if(i13 * 8 + i32 < b7) {
 									if(d53 < 0.5 && i13 * 8 + i32 >= b7 - 1) {
-										i55 = BlockRegistry.ice.blockID;
+										i55 = Block.ice.blockID;
 									} else {
-										i55 = BlockRegistry.waterMoving.blockID;
+										i55 = Block.waterMoving.blockID;
 									}
 								}
 
 								if(d48 > 0.0) {
-									i55 = BlockRegistry.stone.blockID;
+									i55 = Block.stone.blockID;
 								}
 
 								b3[i44] = i55 as number;
@@ -153,16 +154,16 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 				for(let  i17: number = 127; i17 >= 0; --i17) {
 					let  i18: number = (i8 * 16 + i9) * 128 + i17;
 					if(i17 <= 0 + this.rand.nextInt(5)) {
-						b3[i18] = BlockRegistry.bedrock.blockID as number;
+						b3[i18] = Block.bedrock.blockID as number;
 					} else {
 						let  b19: number = b3[i18];
 						if(b19 === 0) {
 							i14 = -1;
-						} else if(b19 === BlockRegistry.stone.blockID) {
+						} else if(b19 === Block.stone.blockID) {
 							if(i14 === -1) {
 								if(i13 <= 0) {
 									b15 = 0;
-									b16 = BlockRegistry.stone.blockID as number;
+									b16 = Block.stone.blockID as number;
 								} else if(i17 >= b5 - 4 && i17 <= b5 + 1) {
 									b15 = mobSpawnerBase10.topBlock;
 									b16 = mobSpawnerBase10.fillerBlock;
@@ -171,20 +172,20 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 									}
 
 									if(z12) {
-										b16 = BlockRegistry.gravel.blockID as number;
+										b16 = Block.gravel.blockID as number;
 									}
 
 									if(z11) {
-										b15 = BlockRegistry.sand.blockID as number;
+										b15 = Block.sand.blockID as number;
 									}
 
 									if(z11) {
-										b16 = BlockRegistry.sand.blockID as number;
+										b16 = Block.sand.blockID as number;
 									}
 								}
 
 								if(i17 < b5 && b15 === 0) {
-									b15 = BlockRegistry.waterMoving.blockID as number;
+									b15 = Block.waterMoving.blockID as number;
 								}
 
 								i14 = i13;
@@ -339,7 +340,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i13 = i4 + this.rand.nextInt(16) + 8;
 			i14 = this.rand.nextInt(128);
 			i15 = i5 + this.rand.nextInt(16) + 8;
-			await (new  WorldGenLakes(BlockRegistry.waterStill.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
+			await (new  WorldGenLakes(Block.waterStill.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
 		}
 
 		if(this.rand.nextInt(8) === 0) {
@@ -347,7 +348,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = this.rand.nextInt(this.rand.nextInt(120) + 8);
 			i15 = i5 + this.rand.nextInt(16) + 8;
 			if(i14 < 64 || this.rand.nextInt(10) === 0) {
-				await (new  WorldGenLakes(BlockRegistry.lavaStill.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
+				await (new  WorldGenLakes(Block.lavaStill.blockID)).generate(this.worldObj, this.rand, i13, i14, i15);
 			}
 		}
 
@@ -370,56 +371,56 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(128);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.dirt.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.dirt.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 10; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(128);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.cobblestone.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.cobblestone.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 20; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(128);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.oreCoal.blockID, 16)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.oreCoal.blockID, 16)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 20; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(64);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.blockSteel.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.blockSteel.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 2; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(32);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.blockGold.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.blockGold.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 8; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(16);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.oreRedstone.blockID, 7)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.oreRedstone.blockID, 7)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 1; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(16);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.oreDiamond.blockID, 7)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.oreDiamond.blockID, 7)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 1; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(16) + this.rand.nextInt(16);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(BlockRegistry.blockLapis.blockID, 6)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.blockLapis.blockID, 6)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		d11 = 0.5;
@@ -429,31 +430,31 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			++i14;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.forest) {
+		if(mobSpawnerBase6 === MobSpawnerBase.forest) {
 			i14 += i13 + 5;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.rainforest) {
+		if(mobSpawnerBase6 === MobSpawnerBase.rainforest) {
 			i14 += i13 + 5;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.seasonalForest) {
+		if(mobSpawnerBase6 === MobSpawnerBase.seasonalForest) {
 			i14 += i13 + 2;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.taiga) {
+		if(mobSpawnerBase6 === MobSpawnerBase.taiga) {
 			i14 += i13 + 5;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.desert) {
+		if(mobSpawnerBase6 === MobSpawnerBase.desert) {
 			i14 -= 20;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.tundra) {
+		if(mobSpawnerBase6 === MobSpawnerBase.tundra) {
 			i14 -= 20;
 		}
 
-		if(mobSpawnerBase6 === MobSpawnerRegistry.plains) {
+		if(mobSpawnerBase6 === MobSpawnerBase.plains) {
 			i14 -= 20;
 		}
 
@@ -463,7 +464,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i17 = i5 + this.rand.nextInt(16) + 8;
 			let  worldGenerator18: WorldGenerator = mobSpawnerBase6.getRandomWorldGenForTrees(this.rand);
 			worldGenerator18.func_517_a(1.0, 1.0, 1.0);
-			worldGenerator18.generate(this.worldObj, this.rand, i16, await this.worldObj.getHeightValue(i16, i17), i17);
+			await worldGenerator18.generate(this.worldObj, this.rand, i16, await this.worldObj.getHeightValue(i16, i17), i17);
 		}
 
 		let  i23: number;
@@ -471,28 +472,28 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i16 = i4 + this.rand.nextInt(16) + 8;
 			i17 = this.rand.nextInt(128);
 			i23 = i5 + this.rand.nextInt(16) + 8;
-			await (new  WorldGenFlowers(BlockRegistry.plantYellow.blockID)).generate(this.worldObj, this.rand, i16, i17, i23);
+			await (new  WorldGenFlowers(Block.plantYellow.blockID)).generate(this.worldObj, this.rand, i16, i17, i23);
 		}
 
 		if(this.rand.nextInt(2) === 0) {
 			i15 = i4 + this.rand.nextInt(16) + 8;
 			i16 = this.rand.nextInt(128);
 			i17 = i5 + this.rand.nextInt(16) + 8;
-			await (new  WorldGenFlowers(BlockRegistry.plantRed.blockID)).generate(this.worldObj, this.rand, i15, i16, i17);
+			await (new  WorldGenFlowers(Block.plantRed.blockID)).generate(this.worldObj, this.rand, i15, i16, i17);
 		}
 
 		if(this.rand.nextInt(4) === 0) {
 			i15 = i4 + this.rand.nextInt(16) + 8;
 			i16 = this.rand.nextInt(128);
 			i17 = i5 + this.rand.nextInt(16) + 8;
-			await (new  WorldGenFlowers(BlockRegistry.mushroomBrown.blockID)).generate(this.worldObj, this.rand, i15, i16, i17);
+			await (new  WorldGenFlowers(Block.mushroomBrown.blockID)).generate(this.worldObj, this.rand, i15, i16, i17);
 		}
 
 		if(this.rand.nextInt(8) === 0) {
 			i15 = i4 + this.rand.nextInt(16) + 8;
 			i16 = this.rand.nextInt(128);
 			i17 = i5 + this.rand.nextInt(16) + 8;
-			await (new  WorldGenFlowers(BlockRegistry.mushroomRed.blockID)).generate(this.worldObj, this.rand, i15, i16, i17);
+			await (new  WorldGenFlowers(Block.mushroomRed.blockID)).generate(this.worldObj, this.rand, i15, i16, i17);
 		}
 
 		for(i15 = 0; i15 < 10; ++i15) {
@@ -510,7 +511,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		}
 
 		i15 = 0;
-		if(mobSpawnerBase6 === MobSpawnerRegistry.desert) {
+		if(mobSpawnerBase6 === MobSpawnerBase.desert) {
 			i15 += 10;
 		}
 
@@ -526,14 +527,14 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i17 = i4 + this.rand.nextInt(16) + 8;
 			i23 = this.rand.nextInt(this.rand.nextInt(120) + 8);
 			i19 = i5 + this.rand.nextInt(16) + 8;
-			await (new  WorldGenLiquids(BlockRegistry.waterStill.blockID)).generate(this.worldObj, this.rand, i17, i23, i19);
+			await (new  WorldGenLiquids(Block.waterStill.blockID)).generate(this.worldObj, this.rand, i17, i23, i19);
 		}
 
 		for(i16 = 0; i16 < 20; ++i16) {
 			i17 = i4 + this.rand.nextInt(16) + 8;
 			i23 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(112) + 8) + 8);
 			i19 = i5 + this.rand.nextInt(16) + 8;
-			(new  WorldGenLiquids(BlockRegistry.lavaStill.blockID)).generate(this.worldObj, this.rand, i17, i23, i19);
+			await (new  WorldGenLiquids(Block.lavaStill.blockID)).generate(this.worldObj, this.rand, i17, i23, i19);
 		}
 
 		this.generatedTemperatures = this.worldObj.getWorldChunkManager().getTemperatures(this.generatedTemperatures, i4 + 8, i5 + 8, 16, 16);
@@ -545,7 +546,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 				let  i20: number = await this.worldObj.findTopSolidBlock(i16, i17);
 				let  d21: number = this.generatedTemperatures[i23 * 16 + i19] - (i20 - 64) as number / 64.0 * 0.3;
 				if(d21 < 0.5 && i20 > 0 && i20 < 128 && (await this.worldObj.isAirBlock(i16, i20, i17) && (await this.worldObj.getBlockMaterial(i16, i20 - 1, i17))).getIsSolid() && await this.worldObj.getBlockMaterial(i16, i20 - 1, i17) !== MaterialRegistry.ice) {
-					this.worldObj.setBlockWithNotify(i16, i20, i17, BlockRegistry.snow.blockID);
+					await this.worldObj.setBlockWithNotify(i16, i20, i17, Block.snow.blockID);
 				}
 			}
 		}

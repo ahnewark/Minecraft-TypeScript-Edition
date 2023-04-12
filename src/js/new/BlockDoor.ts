@@ -8,10 +8,11 @@ import { IBlockAccess } from "./IBlockAccess";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityPlayer } from "./EntityPlayer";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class BlockDoor extends Block {
 	public constructor(i1: int, material2: Material| null) {
@@ -60,12 +61,12 @@ export  class BlockDoor extends Block {
 	}
 
 	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
+		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.getSelectedBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
 	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
+		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
@@ -179,7 +180,7 @@ export  class BlockDoor extends Block {
 			}
 
 			if(z7) {
-				this.dropBlockAsItem(world1, i2, i3, i4, i6);
+				await this.dropBlockAsItem(world1, i2, i3, i4, i6);
 			} else if(i5 > 0 && Block.blocksList[i5].canProvidePower()) {
 				let  z8: boolean = await world1.isBlockIndirectlyGettingPowered(i2, i3, i4) || await world1.isBlockIndirectlyGettingPowered(i2, i3 + 1, i4);
 				await this.func_311_a(world1, i2, i3, i4, z8);
@@ -189,7 +190,7 @@ export  class BlockDoor extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return (i1 & 8) !== 0 ? 0 : (this.blockMaterial === MaterialRegistry.iron ? ItemRegistry.doorSteel.shiftedIndex : ItemRegistry.doorWood.shiftedIndex);
+		return (i1 & 8) !== 0 ? 0 : (this.blockMaterial === MaterialRegistry.iron ? Item.doorSteel.shiftedIndex : Item.doorWood.shiftedIndex);
 	}
 
 	public async collisionRayTrace(world1: World| null, i2: int, i3: int, i4: int, vec3D5: Vec3D| null, vec3D6: Vec3D| null):  Promise<MovingObjectPosition | null> {

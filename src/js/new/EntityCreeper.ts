@@ -6,7 +6,7 @@ import { Item } from "./Item";
 import { EntitySkeleton } from "./EntitySkeleton";
 import { EntityMobs } from "./EntityMobs";
 import { Entity } from "./Entity";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 
 
@@ -66,10 +66,10 @@ export  class EntityCreeper extends EntityMobs {
 		return "mob.creeperdeath";
 	}
 
-	public onDeath(entity1: Entity| null):  void {
-		super.onDeath(entity1);
+	public async onDeath(entity1: Entity| null):  Promise<void> {
+		await super.onDeath(entity1);
 		if(entity1 instanceof EntitySkeleton) {
-			this.dropItem(ItemRegistry.record13.shiftedIndex + this.rand.nextInt(2), 1);
+			await this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(2), 1);
 		}
 
 	}
@@ -84,8 +84,8 @@ export  class EntityCreeper extends EntityMobs {
 			this.func_21090_e(1);
 			++this.timeSinceIgnited;
 			if(this.timeSinceIgnited >= 30) {
-				this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0);
-				this.setEntityDead();
+				await this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0);
+				await this.setEntityDead();
 			}
 
 			this.hasAttacked = true;
@@ -104,7 +104,7 @@ export  class EntityCreeper extends EntityMobs {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.gunpowder.shiftedIndex;
+		return Item.gunpowder.shiftedIndex;
 	}
 
 	private func_21091_q():  int {

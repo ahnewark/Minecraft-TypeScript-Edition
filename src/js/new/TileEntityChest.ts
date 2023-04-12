@@ -22,13 +22,13 @@ export  class TileEntityChest extends TileEntity implements IInventory {
 		return this.chestContents[i1];
 	}
 
-	public decrStackSize(i1: int, i2: int):  ItemStack | null {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
 		if(this.chestContents[i1] !== null) {
 			let  itemStack3: ItemStack;
 			if(this.chestContents[i1].stackSize <= i2) {
 				itemStack3 = this.chestContents[i1];
 				this.chestContents[i1] = null;
-				this.onInventoryChanged();
+				await this.onInventoryChanged();
 				return itemStack3;
 			} else {
 				itemStack3 = this.chestContents[i1].splitStack(i2);
@@ -36,7 +36,7 @@ export  class TileEntityChest extends TileEntity implements IInventory {
 					this.chestContents[i1] = null;
 				}
 
-				this.onInventoryChanged();
+				await this.onInventoryChanged();
 				return itemStack3;
 			}
 		} else {
@@ -44,13 +44,13 @@ export  class TileEntityChest extends TileEntity implements IInventory {
 		}
 	}
 
-	public setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  void {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
 		this.chestContents[i1] = itemStack2;
 		if(itemStack2 !== null && itemStack2.stackSize > this.getInventoryStackLimit()) {
 			itemStack2.stackSize = this.getInventoryStackLimit();
 		}
 
-		this.onInventoryChanged();
+		await this.onInventoryChanged();
 	}
 
 	public getInvName(): string {

@@ -23,9 +23,9 @@ import UUID from "../util/UUID.js";
 import FocusStateType from "../util/FocusStateType.js";
 import Session from "../util/Session.js";
 import PlayerControllerMultiplayer from "./network/controller/PlayerControllerMultiplayer.js";
+import * as Foobert from '../../../new/index';
 import { World as NewWorld } from '../../../new/World';
 import {JavaFile} from "../../../jree/java/io/File";
-import * as Foobert from '../../../new/index';
 import { JavaString } from "../../../jree/index.js";
 
 console.log({Foobert})
@@ -49,8 +49,9 @@ export default class Minecraft {
         this.resources = resources;
 
         this.newWorld = NewWorld.Construct(new JavaFile(new JavaString('/saves/')), 'World1').then(world => {
-            world.saveLevel();
-            world.saveWorld(true)
+            // world.saveLevel();
+            // world.saveWorld(true)
+            console.log({world})
         })
 
         this.currentScreen = null;

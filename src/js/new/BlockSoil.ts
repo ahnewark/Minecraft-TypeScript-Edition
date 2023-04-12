@@ -3,9 +3,10 @@ import { World } from "./World";
 import { Material } from "./Material";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
 
 export  class BlockSoil extends Block {
@@ -17,7 +18,7 @@ export  class BlockSoil extends Block {
 		this.setLightOpacity(255);
 	}
 
-	public getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  AxisAlignedBB | null {
+	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
 		return AxisAlignedBB.getBoundingBoxFromPool((i2 + 0) as double, (i3 + 0) as double, (i4 + 0) as double, (i2 + 1) as double, (i3 + 1) as double, (i4 + 1) as double);
 	}
 
@@ -42,7 +43,7 @@ export  class BlockSoil extends Block {
 				if(i6 > 0) {
 					await world1.setBlockMetadataWithNotify(i2, i3, i4, i6 - 1);
 				} else if(!this.isCropsNearby(world1, i2, i3, i4)) {
-					await world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.dirt.blockID);
+					await world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
 				}
 			}
 		}
@@ -51,7 +52,7 @@ export  class BlockSoil extends Block {
 
 	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
 		if(world1.rand.nextInt(4) === 0) {
-			await world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.dirt.blockID);
+			await world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
 		}
 
 	}
@@ -61,7 +62,7 @@ export  class BlockSoil extends Block {
 
 		for(let  i6: int = i2 - b5; i6 <= i2 + b5; ++i6) {
 			for(let  i7: int = i4 - b5; i7 <= i4 + b5; ++i7) {
-				if(await world1.getBlockId(i6, i3 + 1, i7) === BlockRegistry.crops.blockID) {
+				if(await world1.getBlockId(i6, i3 + 1, i7) === Block.crops.blockID) {
 					return true;
 				}
 			}
@@ -85,15 +86,15 @@ export  class BlockSoil extends Block {
 	}
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
-		super.onNeighborBlockChange(world1, i2, i3, i4, i5);
+		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 		let  material6: Material = await world1.getBlockMaterial(i2, i3 + 1, i4);
 		if(material6.isSolid()) {
-			world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.dirt.blockID);
+			await world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
 		}
 
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.dirt.idDropped(0, random2);
+		return Block.dirt.idDropped(0, random2);
 	}
 }

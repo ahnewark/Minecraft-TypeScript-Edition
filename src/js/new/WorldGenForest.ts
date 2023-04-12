@@ -5,8 +5,9 @@ import { java, int, byte } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./moved/BlockRegistry";
 import { Block } from "./Block";
+import { Block } from "./Block";
+
 
 
 
@@ -34,7 +35,7 @@ export  class WorldGenForest extends WorldGenerator {
 					for(i11 = i5 - b9; i11 <= i5 + b9 && z7; ++i11) {
 						if(i8 >= 0 && i8 < 128) {
 							i12 = await world1.getBlockId(i10, i8, i11);
-							if(i12 !== 0 && i12 !== BlockRegistry.leaves.blockID) {
+							if(i12 !== 0 && i12 !== Block.leaves.blockID) {
 								z7 = false;
 							}
 						} else {
@@ -48,8 +49,8 @@ export  class WorldGenForest extends WorldGenerator {
 				return false;
 			} else {
 				i8 = await world1.getBlockId(i3, i4 - 1, i5);
-				if((i8 === BlockRegistry.grass.blockID || i8 === BlockRegistry.dirt.blockID) && i4 < 128 - i6 - 1) {
-					await world1.setBlock(i3, i4 - 1, i5, BlockRegistry.dirt.blockID);
+				if((i8 === Block.grass.blockID || i8 === Block.dirt.blockID) && i4 < 128 - i6 - 1) {
+					await world1.setBlock(i3, i4 - 1, i5, Block.dirt.blockID);
 
 					let  i16: int;
 					for(i16 = i4 - 3 + i6; i16 <= i4 + i6; ++i16) {
@@ -62,7 +63,7 @@ export  class WorldGenForest extends WorldGenerator {
 							for(let  i14: int = i5 - i11; i14 <= i5 + i11; ++i14) {
 								let  i15: int = i14 - i5;
 								if((java.lang.Math.abs(i13) !== i11 || java.lang.Math.abs(i15) !== i11 || random2.nextInt(2) !== 0 && i10 !== 0) && !Block.opaqueCubeLookup[await world1.getBlockId(i12, i16, i14)]) {
-									await world1.setBlockAndMetadata(i12, i16, i14, BlockRegistry.leaves.blockID, 2);
+									await world1.setBlockAndMetadata(i12, i16, i14, Block.leaves.blockID, 2);
 								}
 							}
 						}
@@ -70,8 +71,8 @@ export  class WorldGenForest extends WorldGenerator {
 
 					for(i16 = 0; i16 < i6; ++i16) {
 						i10 = await world1.getBlockId(i3, i4 + i16, i5);
-						if(i10 === 0 || i10 === BlockRegistry.leaves.blockID) {
-							await world1.setBlockAndMetadata(i3, i4 + i16, i5, BlockRegistry.wood.blockID, 2);
+						if(i10 === 0 || i10 === Block.leaves.blockID) {
+							await world1.setBlockAndMetadata(i3, i4 + i16, i5, Block.wood.blockID, 2);
 						}
 					}
 

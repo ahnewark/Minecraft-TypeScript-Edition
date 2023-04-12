@@ -9,13 +9,15 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
 import { MathHelper } from "./MathHelper";
 import { ItemStack } from "./ItemStack";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Block } from "./Block";
+import { IEntityLiving } from "./interfaces/IEntityLiving";
 
-export  class EntityLiving extends Entity {
+
+export  class EntityLiving extends Entity implements IEntityLiving {
 	public field_9366_o:  int = 20;
 	public field_9365_p:  float;
 	public field_9363_r:  float;
@@ -168,7 +170,7 @@ export  class EntityLiving extends Entity {
 			++this.deathTime;
 			if(this.deathTime > 20) {
 				this.func_6392_F();
-				this.setEntityDead();
+				await this.setEntityDead();
 
 				for(i8 = 0; i8 < 20; ++i8) {
 					let  d9: double = this.rand.nextGaussian() * 0.02;
@@ -196,8 +198,8 @@ export  class EntityLiving extends Entity {
 
 	}
 
-	public updateRidden():  void {
-		super.updateRidden();
+	public async updateRidden():  Promise<void> {
+		await super.updateRidden();
 		this.field_9362_u = this.field_9361_v;
 		this.field_9361_v = 0.0;
 	}
@@ -366,7 +368,7 @@ export  class EntityLiving extends Entity {
 						this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 					}
 
-					this.onDeath(entity1);
+					await this.onDeath(entity1);
 				} else if(z3) {
 					this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 				}
@@ -416,26 +418,26 @@ export  class EntityLiving extends Entity {
 
 	}
 
-	public onDeath(entity1: Entity| null):  void {
+	public async onDeath(entity1: Entity| null):  Promise<void> {
 		if(this.scoreValue > 0 && entity1 !== null) {
 			entity1.addToPlayerScore(this, this.scoreValue);
 		}
 
 		this.field_9327_S = true;
 		if(!this.worldObj.multiplayerWorld) {
-			this.func_21066_o();
+			await this.func_21066_o();
 		}
 
 		this.worldObj.func_9425_a(this, 3 as byte);
 	}
 
-	protected func_21066_o():  void {
+	protected async func_21066_o():  Promise<void> {
 		let  i1: int = this.getDropItemId();
 		if(i1 > 0) {
 			let  i2: int = this.rand.nextInt(3);
 
 			for(let  i3: int = 0; i3 < i2; ++i3) {
-				this.dropItem(i1, 1);
+				await this.dropItem(i1, 1);
 			}
 		}
 
@@ -463,7 +465,7 @@ export  class EntityLiving extends Entity {
 		if(this.handleWaterMovement()) {
 			d3 = this.posY;
 			this.moveFlying(f1, f2, 0.02);
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.8 as double;
 			this.motionY *= 0.8 as double;
 			this.motionZ *= 0.8 as double;
@@ -474,7 +476,7 @@ export  class EntityLiving extends Entity {
 		} else if(this.handleLavaMovement()) {
 			d3 = this.posY;
 			this.moveFlying(f1, f2, 0.02);
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.5;
 			this.motionY *= 0.5;
 			this.motionZ *= 0.5;
@@ -510,7 +512,7 @@ export  class EntityLiving extends Entity {
 				}
 			}
 
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			await this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			if(this.isCollidedHorizontally && await this.isOnLadder()) {
 				this.motionY = 0.2;
 			}
@@ -537,7 +539,7 @@ export  class EntityLiving extends Entity {
 		let  i1: int = MathHelper.floor_double(this.posX);
 		let  i2: int = MathHelper.floor_double(this.boundingBox.minY);
 		let  i3: int = MathHelper.floor_double(this.posZ);
-		return await this.worldObj.getBlockId(i1, i2, i3) === BlockRegistry.ladder.blockID || await this.worldObj.getBlockId(i1, i2 + 1, i3) === BlockRegistry.ladder.blockID;
+		return await this.worldObj.getBlockId(i1, i2, i3) === Block.ladder.blockID || await this.worldObj.getBlockId(i1, i2 + 1, i3) === Block.ladder.blockID;
 	}
 
 	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
@@ -637,14 +639,14 @@ export  class EntityLiving extends Entity {
 			let  d6: double = entityPlayer1.posZ - this.posZ;
 			let  d8: double = d2 * d2 + d4 * d4 + d6 * d6;
 			if(d8 > 16384.0) {
-				this.setEntityDead();
+				await this.setEntityDead();
 			}
 
 			if(this.field_9344_ag > 600 && this.rand.nextInt(800) === 0) {
 				if(d8 < 1024.0) {
 					this.field_9344_ag = 0;
 				} else {
-					this.setEntityDead();
+					await this.setEntityDead();
 				}
 			}
 		}
@@ -805,7 +807,7 @@ export  class EntityLiving extends Entity {
 		} else if(b1 === 3) {
 			this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 			this.health = 0;
-			this.onDeath(null as Entity);
+			await this.onDeath(null as Entity);
 		} else {
 			super.handleHealthUpdate(b1);
 		}

@@ -6,7 +6,7 @@ import { MathHelper } from "./MathHelper";
 import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 
 export  class ItemSign extends Item {
 	public constructor(i1: int) {
@@ -41,13 +41,13 @@ export  class ItemSign extends Item {
 				++i4;
 			}
 
-			if(!await BlockRegistry.signPost.canPlaceBlockAt(world3, i4, i5, i6)) {
+			if(!await Block.signPost.canPlaceBlockAt(world3, i4, i5, i6)) {
 				return false;
 			} else {
 				if(i7 === 1) {
-					await world3.setBlockAndMetadataWithNotify(i4, i5, i6, BlockRegistry.signPost.blockID, MathHelper.floor_double(((entityPlayer2.rotationYaw + 180.0) * 16.0 / 360.0) as double + 0.5) & 15);
+					await world3.setBlockAndMetadataWithNotify(i4, i5, i6, Block.signPost.blockID, MathHelper.floor_double(((entityPlayer2.rotationYaw + 180.0) * 16.0 / 360.0) as double + 0.5) & 15);
 				} else {
-					await world3.setBlockAndMetadataWithNotify(i4, i5, i6, BlockRegistry.signWall.blockID, i7);
+					await world3.setBlockAndMetadataWithNotify(i4, i5, i6, Block.signWall.blockID, i7);
 				}
 
 				--itemStack1.stackSize;

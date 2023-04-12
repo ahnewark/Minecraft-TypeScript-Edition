@@ -6,8 +6,9 @@ import { World } from "./World";
 import { IBlockAccess } from "./IBlockAccess";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
 
 export  class BlockFire extends Block {
@@ -16,12 +17,12 @@ export  class BlockFire extends Block {
 
 	public constructor(i1: int, i2: int) {
 		super(i1, i2, MaterialRegistry.fire);
-		this.setBurnRate(BlockRegistry.planks.blockID, 5, 20);
-		this.setBurnRate(BlockRegistry.wood.blockID, 5, 5);
-		this.setBurnRate(BlockRegistry.leaves.blockID, 30, 60);
-		this.setBurnRate(BlockRegistry.bookShelf.blockID, 30, 20);
-		this.setBurnRate(BlockRegistry.tnt.blockID, 15, 100);
-		this.setBurnRate(BlockRegistry.cloth.blockID, 30, 60);
+		this.setBurnRate(Block.planks.blockID, 5, 20);
+		this.setBurnRate(Block.wood.blockID, 5, 5);
+		this.setBurnRate(Block.leaves.blockID, 30, 60);
+		this.setBurnRate(Block.bookShelf.blockID, 30, 20);
+		this.setBurnRate(Block.tnt.blockID, 15, 100);
+		this.setBurnRate(Block.cloth.blockID, 30, 60);
 		this.setTickOnLoad(true);
 	}
 
@@ -55,7 +56,7 @@ export  class BlockFire extends Block {
 	}
 
 	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
-		let  z6: boolean = await world1.getBlockId(i2, i3 - 1, i4) === BlockRegistry.bloodStone.blockID;
+		let  z6: boolean = await world1.getBlockId(i2, i3 - 1, i4) === Block.bloodStone.blockID;
 		let  i7: int = await world1.getBlockMetadata(i2, i3, i4);
 		if(i7 < 15) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, i7 + 1);
@@ -103,7 +104,7 @@ export  class BlockFire extends Block {
 	private async tryToCatchBlockOnFire(world1: World| null, i2: int, i3: int, i4: int, i5: int, random6: Random| null):  Promise<void> {
 		let  i7: int = this.abilityToCatchFire[await world1.getBlockId(i2, i3, i4)];
 		if(random6.nextInt(i5) < i7) {
-			let  z8: boolean = await world1.getBlockId(i2, i3, i4) === BlockRegistry.tnt.blockID;
+			let  z8: boolean = await world1.getBlockId(i2, i3, i4) === Block.tnt.blockID;
 			if(random6.nextInt(2) === 0) {
 				await world1.setBlockWithNotify(i2, i3, i4, this.blockID);
 			} else {
@@ -111,7 +112,7 @@ export  class BlockFire extends Block {
 			}
 
 			if(z8) {
-				BlockRegistry.tnt.onBlockDestroyedByPlayer(world1, i2, i3, i4, 0);
+				await Block.tnt.onBlockDestroyedByPlayer(world1, i2, i3, i4, 0);
 			}
 		}
 
@@ -160,7 +161,7 @@ export  class BlockFire extends Block {
 	}
 
 	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		if(await world1.getBlockId(i2, i3 - 1, i4) !== BlockRegistry.obsidian.blockID || !BlockRegistry.portal.tryToCreatePortal(world1, i2, i3, i4)) {
+		if(await world1.getBlockId(i2, i3 - 1, i4) !== Block.obsidian.blockID || !Block.portal.tryToCreatePortal(world1, i2, i3, i4)) {
 			if(!await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await this.func_263_h(world1, i2, i3, i4)) {
 				await world1.setBlockWithNotify(i2, i3, i4, 0);
 			} else {
@@ -178,8 +179,8 @@ export  class BlockFire extends Block {
 		let  f7: float;
 		let  f8: float;
 		let  f9: float;
-		if(!await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await BlockRegistry.fire.canBlockCatchFire(world1, i2, i3 - 1, i4)) {
-			if(await BlockRegistry.fire.canBlockCatchFire(world1, i2 - 1, i3, i4)) {
+		if(!await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await Block.fire.canBlockCatchFire(world1, i2, i3 - 1, i4)) {
+			if(await Block.fire.canBlockCatchFire(world1, i2 - 1, i3, i4)) {
 				for(i6 = 0; i6 < 2; ++i6) {
 					f7 = i2 as float + random5.nextFloat() * 0.1;
 					f8 = i3 as float + random5.nextFloat();
@@ -188,7 +189,7 @@ export  class BlockFire extends Block {
 				}
 			}
 
-			if(await BlockRegistry.fire.canBlockCatchFire(world1, i2 + 1, i3, i4)) {
+			if(await Block.fire.canBlockCatchFire(world1, i2 + 1, i3, i4)) {
 				for(i6 = 0; i6 < 2; ++i6) {
 					f7 = (i2 + 1) as float - random5.nextFloat() * 0.1;
 					f8 = i3 as float + random5.nextFloat();
@@ -197,7 +198,7 @@ export  class BlockFire extends Block {
 				}
 			}
 
-			if(await BlockRegistry.fire.canBlockCatchFire(world1, i2, i3, i4 - 1)) {
+			if(await Block.fire.canBlockCatchFire(world1, i2, i3, i4 - 1)) {
 				for(i6 = 0; i6 < 2; ++i6) {
 					f7 = i2 as float + random5.nextFloat();
 					f8 = i3 as float + random5.nextFloat();
@@ -206,7 +207,7 @@ export  class BlockFire extends Block {
 				}
 			}
 
-			if(await BlockRegistry.fire.canBlockCatchFire(world1, i2, i3, i4 + 1)) {
+			if(await Block.fire.canBlockCatchFire(world1, i2, i3, i4 + 1)) {
 				for(i6 = 0; i6 < 2; ++i6) {
 					f7 = i2 as float + random5.nextFloat();
 					f8 = i3 as float + random5.nextFloat();
@@ -215,7 +216,7 @@ export  class BlockFire extends Block {
 				}
 			}
 
-			if(await BlockRegistry.fire.canBlockCatchFire(world1, i2, i3 + 1, i4)) {
+			if(await Block.fire.canBlockCatchFire(world1, i2, i3 + 1, i4)) {
 				for(i6 = 0; i6 < 2; ++i6) {
 					f7 = i2 as float + random5.nextFloat();
 					f8 = (i3 + 1) as float - random5.nextFloat() * 0.1;

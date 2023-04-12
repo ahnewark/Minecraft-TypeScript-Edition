@@ -1,6 +1,3 @@
-
-
-
 import { float, double, int, java, long, JavaString } from "../jree/index";
 import { WorldProvider } from "./WorldProvider";
 import { WorldChunkManagerHell } from "./WorldChunkManagerHell";
@@ -9,14 +6,14 @@ import { IChunkProvider } from "./IChunkProvider";
 import { IChunkLoader } from "./IChunkLoader";
 import { ChunkProviderHell } from "./ChunkProviderHell";
 import { ChunkLoader } from "./ChunkLoader";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { File } from "../jree/java/io/index";
-import { Block } from "./index";
-import { MobSpawnerRegistry } from "./moved/MobSpawnerRegistry";
+
+import { MobSpawnerBase } from "./MobSpawnerBase";
 
 export  class WorldProviderHell extends WorldProvider {
 	public registerWorldChunkManager():  void {
-		this.worldChunkMgr = new  WorldChunkManagerHell(MobSpawnerRegistry.hell, 1.0, 0.0);
+		this.worldChunkMgr = new  WorldChunkManagerHell(MobSpawnerBase.hell, 1.0, 0.0);
 		this.field_4220_c = true;
 		this.isHellWorld = true;
 		this.field_6478_e = true;
@@ -40,15 +37,15 @@ export  class WorldProviderHell extends WorldProvider {
 		return new  ChunkProviderHell(this.worldObj, this.worldObj.randomSeed);
 	}
 
-	public getChunkLoader(file1: java.io.File| null):  IChunkLoader | null {
+	public async getChunkLoader(file1: java.io.File| null):  Promise<IChunkLoader | null> {
 		let  file2: java.io.File = new File(file1, new JavaString("DIM-1"));
-		file2.mkdirs();
+		await file2.mkdirs();
 		return new  ChunkLoader(file2, true);
 	}
 
 	public async canCoordinateBeSpawn(i1: int, i2: int):  Promise<boolean> {
 		let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
-		return i3 === BlockRegistry.bedrock.blockID ? false : (i3 === 0 ? false : Block.opaqueCubeLookup[i3]);
+		return i3 === Block.bedrock.blockID ? false : (i3 === 0 ? false : Block.opaqueCubeLookup[i3]);
 	}
 
 	public calculateCelestialAngle(j1: long, f3: float):  float {

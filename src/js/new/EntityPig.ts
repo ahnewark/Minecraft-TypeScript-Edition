@@ -5,7 +5,7 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityAnimals } from "./EntityAnimals";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityPig extends EntityAnimals {
 	public constructor(world1: World| null) {
@@ -44,7 +44,7 @@ export  class EntityPig extends EntityAnimals {
 		return "mob.pigdeath";
 	}
 
-	public interact(entityPlayer1: EntityPlayer| null):  boolean {
+	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
 		if(!this.func_21068_q() || this.worldObj.multiplayerWorld || this.riddenByEntity !== null && this.riddenByEntity !== entityPlayer1) {
 			return false;
 		} else {
@@ -54,7 +54,7 @@ export  class EntityPig extends EntityAnimals {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.porkRaw.shiftedIndex;
+		return Item.porkRaw.shiftedIndex;
 	}
 
 	public func_21068_q():  boolean {

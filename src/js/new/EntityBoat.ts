@@ -1,18 +1,12 @@
-
-
-
 import { int, double, float, byte, java, S } from "../jree/index";
 import { World } from "./World";
 import { NBTTagCompound } from "./NBTTagCompound";
-import { Material } from "./Material";
-import { Item } from "./Item";
-import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { BlockRegistry } from "./moved/BlockRegistry";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { Block } from "./Block";
+import { Item } from "./Item";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class EntityBoat extends Entity {
 	public field_807_a:  int;
@@ -98,14 +92,14 @@ export  class EntityBoat extends Entity {
 			if(this.field_807_a > 40) {
 				let  i3: int;
 				for(i3 = 0; i3 < 3; ++i3) {
-					this.dropItemWithOffset(BlockRegistry.planks.blockID, 1, 0.0);
+					await this.dropItemWithOffset(Block.planks.blockID, 1, 0.0);
 				}
 
 				for(i3 = 0; i3 < 2; ++i3) {
-					this.dropItemWithOffset(ItemRegistry.stick.shiftedIndex, 1, 0.0);
+					await this.dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0);
 				}
 
-				this.setEntityDead();
+				await this.setEntityDead();
 			}
 
 			return true;
@@ -262,15 +256,15 @@ export  class EntityBoat extends Entity {
 
 			if(this.isCollidedHorizontally && d8 > 0.15) {
 				if(!this.worldObj.multiplayerWorld) {
-					this.setEntityDead();
+					await this.setEntityDead();
 
 					let  i24: int;
 					for(i24 = 0; i24 < 3; ++i24) {
-						this.dropItemWithOffset(BlockRegistry.planks.blockID, 1, 0.0);
+						await this.dropItemWithOffset(Block.planks.blockID, 1, 0.0);
 					}
 
 					for(i24 = 0; i24 < 2; ++i24) {
-						this.dropItemWithOffset(ItemRegistry.stick.shiftedIndex, 1, 0.0);
+						await this.dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0);
 					}
 				}
 			} else {
@@ -305,7 +299,7 @@ export  class EntityBoat extends Entity {
 
 			this.rotationYaw = (this.rotationYaw as double + d16) as float;
 			this.setRotation(this.rotationYaw, this.rotationPitch);
-			let  list18 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
+			let  list18 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
 			if(list18 !== null && (await list18).length > 0) {
 				for(let  i26: int = 0; i26 < (await list18).length; ++i26) {
 					let  entity20: Entity = list18[i26];
@@ -340,7 +334,7 @@ export  class EntityBoat extends Entity {
 		return 0.0;
 	}
 
-	public interact(entityPlayer1: EntityPlayer| null):  boolean {
+	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
 		if(this.riddenByEntity !== null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity !== entityPlayer1) {
 			return true;
 		} else {

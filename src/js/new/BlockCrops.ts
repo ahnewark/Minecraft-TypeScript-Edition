@@ -6,9 +6,9 @@ import { World } from "./World";
 import { ItemStack } from "./ItemStack";
 import { EntityItem } from "./EntityItem";
 import { BlockFlower } from "./BlockFlower";
-import { BlockRegistry } from "./index";
+import { Block } from "./Block";
 import { Random } from "../java/util/Random";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class BlockCrops extends BlockFlower {
 	public constructor(i1: int, i2: int) {
@@ -20,11 +20,11 @@ export  class BlockCrops extends BlockFlower {
 	}
 
 	protected canThisPlantGrowOnThisBlockID(i1: int):  boolean {
-		return i1 === BlockRegistry.tilledField.blockID;
+		return i1 === Block.tilledField.blockID;
 	}
 
 	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null): Promise<void> {
-		super.updateTick(world1, i2, i3, i4, random5);
+		await super.updateTick(world1, i2, i3, i4, random5);
 		if(await world1.getBlockLightValue(i2, i3 + 1, i4) >= 9) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			if(i6 < 7) {
@@ -60,7 +60,7 @@ export  class BlockCrops extends BlockFlower {
 			for(let  i18: int = i4 - 1; i18 <= i4 + 1; ++i18) {
 				let  i19: int = await world1.getBlockId(i17, i3 - 1, i18);
 				let  f20: float = 0.0;
-				if(i19 === BlockRegistry.tilledField.blockID) {
+				if(i19 === Block.tilledField.blockID) {
 					f20 = 1.0;
 					if(await world1.getBlockMetadata(i17, i3 - 1, i18) > 0) {
 						f20 = 3.0;
@@ -103,7 +103,7 @@ export  class BlockCrops extends BlockFlower {
 					let  f8: float = world1.rand.nextFloat() * f7 + (1.0 - f7) * 0.5;
 					let  f9: float = world1.rand.nextFloat() * f7 + (1.0 - f7) * 0.5;
 					let  f10: float = world1.rand.nextFloat() * f7 + (1.0 - f7) * 0.5;
-					let  entityItem11: EntityItem = new  EntityItem(world1, (i2 as float + f8) as double, (i3 as float + f9) as double, (i4 as float + f10) as double, new  ItemStack(ItemRegistry.seeds));
+					let  entityItem11: EntityItem = new  EntityItem(world1, (i2 as float + f8) as double, (i3 as float + f9) as double, (i4 as float + f10) as double, new  ItemStack(Item.seeds));
 					entityItem11.delayBeforeCanPickup = 10;
 					await world1.entityJoinedWorld(entityItem11);
 				}
@@ -113,7 +113,7 @@ export  class BlockCrops extends BlockFlower {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return i1 === 7 ? ItemRegistry.wheat.shiftedIndex : -1;
+		return i1 === 7 ? Item.wheat.shiftedIndex : -1;
 	}
 
 	public quantityDropped(random1: Random| null):  int {

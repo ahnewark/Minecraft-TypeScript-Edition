@@ -8,7 +8,7 @@ import { IMobs } from "./IMobs";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Chunk } from "./Chunk";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntitySlime extends EntityLiving implements IMobs {
 	public field_768_a:  float;
@@ -98,7 +98,7 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 
 	}
 
-	public setEntityDead():  void {
+	public async setEntityDead():  Promise<void> {
 		if(this.slimeSize > 1 && this.health === 0) {
 			for(let  i1: int = 0; i1 < 4; ++i1) {
 				let  f2: float = ((i1 % 2) as float - 0.5) * this.slimeSize as float / 4.0;
@@ -106,15 +106,15 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 				let  entitySlime4: EntitySlime = new  EntitySlime(this.worldObj);
 				entitySlime4.setSlimeSize(this.slimeSize / 2);
 				entitySlime4.setLocationAndAngles(this.posX + f2 as double, this.posY + 0.5, this.posZ + f3 as double, this.rand.nextFloat() * 360.0, 0.0);
-				this.worldObj.entityJoinedWorld(entitySlime4);
+				await this.worldObj.entityJoinedWorld(entitySlime4);
 			}
 		}
 
-		super.setEntityDead();
+		await super.setEntityDead();
 	}
 
-	public onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  void {
-		if(this.slimeSize > 1 && this.canEntityBeSeen(entityPlayer1) && this.getDistanceToEntity(entityPlayer1) < 0.6 * this.slimeSize && entityPlayer1.attackEntityFrom(this, this.slimeSize)) {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  Promise<void> {
+		if(this.slimeSize > 1 && this.canEntityBeSeen(entityPlayer1) && this.getDistanceToEntity(entityPlayer1) < 0.6 * this.slimeSize && await entityPlayer1.attackEntityFrom(this, this.slimeSize)) {
 			this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 		}
 
@@ -129,7 +129,7 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 	}
 
 	protected getDropItemId():  int {
-		return this.slimeSize === 1 ? ItemRegistry.slimeBall.shiftedIndex : 0;
+		return this.slimeSize === 1 ? Item.slimeBall.shiftedIndex : 0;
 	}
 
 	public async getCanSpawnHere():  Promise<boolean> {

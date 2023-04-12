@@ -1,13 +1,14 @@
 import { int, java, double, float } from "../jree/index";
 import { World } from "./World";
 import { Item } from "./Item";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Block } from "./Block";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./index";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class BlockRedstoneOre extends Block {
 	private field_468_a:  boolean;
@@ -36,27 +37,27 @@ export  class BlockRedstoneOre extends Block {
 	}
 
 	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
-		this.func_320_h(world1, i2, i3, i4);
+		await this.func_320_h(world1, i2, i3, i4);
 		return super.blockActivated(world1, i2, i3, i4, entityPlayer5);
 	}
 
 	private async func_320_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.func_319_i(world1, i2, i3, i4);
-		if(this.blockID === BlockRegistry.oreRedstone.blockID) {
-			await world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.oreRedstoneGlowing.blockID);
+		if(this.blockID === Block.oreRedstone.blockID) {
+			await world1.setBlockWithNotify(i2, i3, i4, Block.oreRedstoneGlowing.blockID);
 		}
 
 	}
 
 	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
-		if(this.blockID === BlockRegistry.oreRedstoneGlowing.blockID) {
-			await world1.setBlockWithNotify(i2, i3, i4, BlockRegistry.oreRedstone.blockID);
+		if(this.blockID === Block.oreRedstoneGlowing.blockID) {
+			await world1.setBlockWithNotify(i2, i3, i4, Block.oreRedstone.blockID);
 		}
 
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return ItemRegistry.redstone.shiftedIndex;
+		return Item.redstone.shiftedIndex;
 	}
 
 	public quantityDropped(random1: Random| null):  int {

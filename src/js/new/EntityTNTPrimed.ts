@@ -73,17 +73,17 @@ export  class EntityTNTPrimed extends Entity {
 		}
 
 		if(this.fuse-- <= 0) {
-			this.setEntityDead();
-			this.explode();
+			await this.setEntityDead();
+			await this.explode();
 		} else {
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5, this.posZ, 0.0, 0.0, 0.0);
 		}
 
 	}
 
-	private explode():  void {
+	private async explode():  Promise<void> {
 		let  f1: float = 4.0;
-		this.worldObj.createExplosion(null as Entity, this.posX, this.posY, this.posZ, f1);
+		await this.worldObj.createExplosion(null as Entity, this.posX, this.posY, this.posZ, f1);
 	}
 
 	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {

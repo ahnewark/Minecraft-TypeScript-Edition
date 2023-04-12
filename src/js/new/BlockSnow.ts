@@ -6,9 +6,10 @@ import { IBlockAccess } from "./IBlockAccess";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { EntityItem } from "./EntityItem";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Item } from "./Item";
 import { Random } from "../java/util/Random";
 
 export  class BlockSnow extends Block {
@@ -41,7 +42,7 @@ export  class BlockSnow extends Block {
 
 	private async func_314_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
 		if(!this.canPlaceBlockAt(world1, i2, i3, i4)) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 			return false;
 		} else {
@@ -50,19 +51,19 @@ export  class BlockSnow extends Block {
 	}
 
 	public async harvestBlock(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
-		let  i6: int = ItemRegistry.snowball.shiftedIndex;
+		let  i6: int = Item.snowball.shiftedIndex;
 		let  f7: float = 0.7;
 		let  d8: double = (world1.rand.nextFloat() * f7) as double + (1.0 - f7) as double * 0.5;
 		let  d10: double = (world1.rand.nextFloat() * f7) as double + (1.0 - f7) as double * 0.5;
 		let  d12: double = (world1.rand.nextFloat() * f7) as double + (1.0 - f7) as double * 0.5;
 		let  entityItem14: EntityItem = new  EntityItem(world1, i2 as double + d8, i3 as double + d10, i4 as double + d12, new  ItemStack(i6, 1, 0));
 		entityItem14.delayBeforeCanPickup = 10;
-		world1.entityJoinedWorld(entityItem14);
-		world1.setBlockWithNotify(i2, i3, i4, 0);
+		await world1.entityJoinedWorld(entityItem14);
+		await world1.setBlockWithNotify(i2, i3, i4, 0);
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return ItemRegistry.snowball.shiftedIndex;
+		return Item.snowball.shiftedIndex;
 	}
 
 	public quantityDropped(random1: Random| null):  int {
@@ -71,7 +72,7 @@ export  class BlockSnow extends Block {
 
 	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
 		if(await world1.getSavedLightValue(EnumSkyBlock.Block, i2, i3, i4) > 11) {
-			this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 

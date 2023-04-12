@@ -1,9 +1,10 @@
 import { int } from "../jree/index";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./index";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { BlockRegistry} from './moved/BlockRegistry'
+import { Item } from "./Item";
+import { BlockRegistry} from './static/BlockRegistry'
 
 export  class BlockOre extends Block {
 	public constructor(i1: int, i2: int) {
@@ -11,14 +12,14 @@ export  class BlockOre extends Block {
 	}
 
 	public idDropped(i1: int, random2: Random | null):  int {
-		return this.blockID === BlockRegistry.oreCoal.blockID ? ItemRegistry.coal.shiftedIndex : (this.blockID === BlockRegistry.oreDiamond.blockID ? ItemRegistry.diamond.shiftedIndex : (this.blockID === BlockRegistry.oreLapis.blockID ? ItemRegistry.dyePowder.shiftedIndex : this.blockID));
+		return this.blockID === Block.oreCoal.blockID ? Item.coal.shiftedIndex : (this.blockID === Block.oreDiamond.blockID ? Item.diamond.shiftedIndex : (this.blockID === Block.oreLapis.blockID ? Item.dyePowder.shiftedIndex : this.blockID));
 	}
 
 	public quantityDropped(random1: Random| null):  int {
-		return this.blockID === BlockRegistry.oreLapis.blockID ? 4 + random1.nextInt(5) : 1;
+		return this.blockID === Block.oreLapis.blockID ? 4 + random1.nextInt(5) : 1;
 	}
 
 	protected damageDropped(i1: int):  int {
-		return this.blockID === BlockRegistry.oreLapis.blockID ? 4 : 0;
+		return this.blockID === Block.oreLapis.blockID ? 4 : 0;
 	}
 }

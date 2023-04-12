@@ -3,8 +3,9 @@ import { int, float, double } from "../jree/index";
 import { World } from "./World";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockSlowSand extends Block {
 	public constructor(i1: int, i2: int) {

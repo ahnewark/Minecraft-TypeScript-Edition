@@ -27,7 +27,7 @@ export  class NoiseGeneratorOctaves2 extends NoiseGenerator {
 	public func_4111_a(d1: Float64Array, d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number, d14: number):  Float64Array {
 		d8 /= 1.5;
 		d10 /= 1.5;
-		if(d1 !== null && d1.length >= i6 * i7) {
+		if(d1 && d1.length >= i6 * i7) {
 			for(let  i16: number = 0; i16 < d1.length; ++i16) {
 				d1[i16] = 0.0;
 			}

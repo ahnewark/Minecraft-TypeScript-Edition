@@ -3,8 +3,9 @@
 
 import { Material } from "./Material";
 import { Block } from "./Block";
+
 import { Random } from "../java/util/Random";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockBookshelf extends Block {
 	public constructor(i1: number, i2: number) {

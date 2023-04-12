@@ -6,8 +6,9 @@ import { MinecartTrackLogic } from "./MinecartTrackLogic";
 import { IBlockAccess } from "./IBlockAccess";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Block } from "./Block";
+
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockMinecartTrack extends Block {
@@ -25,7 +26,7 @@ export  class BlockMinecartTrack extends Block {
 	}
 
 	public async collisionRayTrace(world1: World| null, i2: int, i3: int, i4: int, vec3D5: Vec3D| null, vec3D6: Vec3D| null):  Promise<MovingObjectPosition | null> {
-		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
+		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.collisionRayTrace(world1, i2, i3, i4, vec3D5, vec3D6);
 	}
 
@@ -92,7 +93,7 @@ export  class BlockMinecartTrack extends Block {
 			}
 
 			if(z7) {
-				this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+				await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 				await world1.setBlockWithNotify(i2, i3, i4, 0);
 			} else if(i5 > 0 && Block.blocksList[i5].canProvidePower() && MinecartTrackLogic.getNAdjacentTracks(await  MinecartTrackLogic.Construct(this, world1, i2, i3, i4)) === 3) {
 				await this.func_4031_h(world1, i2, i3, i4);
@@ -103,7 +104,7 @@ export  class BlockMinecartTrack extends Block {
 
 	private async func_4031_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
 		if(!world1.multiplayerWorld) {
-			(await  MinecartTrackLogic.Construct(this, world1, i2, i3, i4)).func_792_a(await world1.isBlockIndirectlyGettingPowered(i2, i3, i4));
+			await (await  MinecartTrackLogic.Construct(this, world1, i2, i3, i4)).func_792_a(await world1.isBlockIndirectlyGettingPowered(i2, i3, i4));
 		}
 	}
 }

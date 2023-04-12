@@ -2,7 +2,8 @@
 import { int, float } from "../jree/index";
 import { World } from "./World";
 import { BlockFlower } from "./BlockFlower";
-import { Block } from "./index";
+import { Block } from "./Block";
+
 
 export  class BlockMushroom extends BlockFlower {
 	public constructor(i1: int, i2: int) {

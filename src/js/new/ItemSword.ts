@@ -7,6 +7,7 @@ import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
 
+
 export  class ItemSword extends Item {
 	private weaponDamage:  int;
 

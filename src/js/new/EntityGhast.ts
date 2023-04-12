@@ -9,7 +9,7 @@ import { EntityFlying } from "./EntityFlying";
 import { EntityFireball } from "./EntityFireball";
 import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityGhast extends EntityFlying implements IMobs {
 	public courseChangeCooldown:  int = 0;
@@ -34,7 +34,7 @@ export  class EntityGhast extends EntityFlying implements IMobs {
 
 	protected async updatePlayerActionState():  Promise<void> {
 		if(this.worldObj.difficultySetting === 0) {
-			this.setEntityDead();
+			await this.setEntityDead();
 		}
 
 		this.prevAttackCounter = this.attackCounter;
@@ -137,7 +137,7 @@ export  class EntityGhast extends EntityFlying implements IMobs {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.gunpowder.shiftedIndex;
+		return Item.gunpowder.shiftedIndex;
 	}
 
 	protected getSoundVolume():  float {

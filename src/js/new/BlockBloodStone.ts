@@ -1,7 +1,8 @@
 
 import { Material } from "./Material";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockBloodStone extends Block {
 	public constructor(i1: number, i2: number) {

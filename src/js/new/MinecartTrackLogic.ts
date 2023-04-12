@@ -192,7 +192,7 @@ export class MinecartTrackLogic {
 			b6 = 0;
 		}
 
-		this.worldObj.setBlockMetadataWithNotify(this.trackX, this.trackY, this.trackZ, b6);
+		await this.worldObj.setBlockMetadataWithNotify(this.trackX, this.trackY, this.trackZ, b6);
 	}
 
 	private async func_786_c(i1: int, i2: int, i3: int):  Promise<boolean> {
@@ -200,7 +200,7 @@ export class MinecartTrackLogic {
 		if(minecartTrackLogic4 === null) {
 			return false;
 		} else {
-			minecartTrackLogic4.func_785_b();
+			await minecartTrackLogic4.func_785_b();
 			return minecartTrackLogic4.handleKeyPress(this);
 		}
 	}
@@ -305,14 +305,14 @@ export class MinecartTrackLogic {
 
 		this.trackMetadata = b6;
 		this.calculateConnectedTracks();
-		this.worldObj.setBlockMetadataWithNotify(this.trackX, this.trackY, this.trackZ, b6);
+		await this.worldObj.setBlockMetadataWithNotify(this.trackX, this.trackY, this.trackZ, b6);
 
 		for(let  i7: int = 0; i7 < this.connectedTracks.length; ++i7) {
 			let  minecartTrackLogic8: MinecartTrackLogic = await this.getMinecartTrackLogic(this.connectedTracks[i7] as ChunkPosition);
 			if(minecartTrackLogic8 !== null) {
-				minecartTrackLogic8.func_785_b();
+				await minecartTrackLogic8.func_785_b();
 				if(minecartTrackLogic8.handleKeyPress(this)) {
-					minecartTrackLogic8.func_788_d(this);
+					await minecartTrackLogic8.func_788_d(this);
 				}
 			}
 		}

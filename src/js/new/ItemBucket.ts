@@ -9,9 +9,9 @@ import { Item } from "./Item";
 import { EnumMovingObjectType } from "./EnumMovingObjectType";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityCow } from "./EntityCow";
-import { ItemRegistry } from "./moved/ItemRegistry";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from "./moved/BlockRegistry";
+import { Item } from "./Item";
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Block } from "./Block";
 
 export  class ItemBucket extends Item {
 	private isFull:  int;
@@ -54,16 +54,16 @@ export  class ItemBucket extends Item {
 				if(this.isFull === 0) {
 					if(await world2.getBlockMaterial(i25, i26, i27) === MaterialRegistry.water && await world2.getBlockMetadata(i25, i26, i27) === 0) {
 						await world2.setBlockWithNotify(i25, i26, i27, 0);
-						return new  ItemStack(ItemRegistry.bucketWater);
+						return new  ItemStack(Item.bucketWater);
 					}
 
 					if(await world2.getBlockMaterial(i25, i26, i27) === MaterialRegistry.lava && await world2.getBlockMetadata(i25, i26, i27) === 0) {
 						await world2.setBlockWithNotify(i25, i26, i27, 0);
-						return new  ItemStack(ItemRegistry.bucketLava);
+						return new  ItemStack(Item.bucketLava);
 					}
 				} else {
 					if(this.isFull < 0) {
-						return new  ItemStack(ItemRegistry.bucketEmpty);
+						return new  ItemStack(Item.bucketEmpty);
 					}
 
 					if(movingObjectPosition24.sideHit === 0) {
@@ -91,21 +91,21 @@ export  class ItemBucket extends Item {
 					}
 
 					if(await world2.isAirBlock(i25, i26, i27) || !(await world2.getBlockMaterial(i25, i26, i27)).isSolid()) {
-						if(world2.worldProvider.isHellWorld && this.isFull === BlockRegistry.waterStill.blockID) {
+						if(world2.worldProvider.isHellWorld && this.isFull === Block.waterStill.blockID) {
 							world2.playSoundEffect(d7 + 0.5, d9 + 0.5, d11 + 0.5, "random.fizz", 0.5, 2.6 + (world2.rand.nextFloat() - world2.rand.nextFloat()) * 0.8);
 
 							for(let  i28: int = 0; i28 < 8; ++i28) {
 								world2.spawnParticle("largesmoke", i25 as double + java.lang.Math.random(), i26 as double + java.lang.Math.random(), i27 as double + java.lang.Math.random(), 0.0, 0.0, 0.0);
 							}
 						} else {
-							world2.setBlockAndMetadataWithNotify(i25, i26, i27, this.isFull, 0);
+							await world2.setBlockAndMetadataWithNotify(i25, i26, i27, this.isFull, 0);
 						}
 
-						return new  ItemStack(ItemRegistry.bucketEmpty);
+						return new  ItemStack(Item.bucketEmpty);
 					}
 				}
 			} else if(this.isFull === 0 && movingObjectPosition24.entityHit instanceof EntityCow) {
-				return new  ItemStack(ItemRegistry.bucketMilk);
+				return new  ItemStack(Item.bucketMilk);
 			}
 
 			return itemStack1;

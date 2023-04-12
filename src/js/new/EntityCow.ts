@@ -5,7 +5,7 @@ import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityAnimals } from "./EntityAnimals";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntityCow extends EntityAnimals {
 	public constructor(world1: World| null) {
@@ -43,13 +43,13 @@ export  class EntityCow extends EntityAnimals {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.leather.shiftedIndex;
+		return Item.leather.shiftedIndex;
 	}
 
-	public interact(entityPlayer1: EntityPlayer| null):  boolean {
+	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
 		let  itemStack2: ItemStack = entityPlayer1.inventory.getCurrentItem();
-		if(itemStack2 !== null && itemStack2.itemID === ItemRegistry.bucketEmpty.shiftedIndex) {
-			entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, new  ItemStack(ItemRegistry.bucketMilk));
+		if(itemStack2 !== null && itemStack2.itemID === Item.bucketEmpty.shiftedIndex) {
+			await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, new  ItemStack(Item.bucketMilk));
 			return true;
 		} else {
 			return false;

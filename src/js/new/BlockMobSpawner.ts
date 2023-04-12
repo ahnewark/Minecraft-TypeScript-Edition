@@ -2,7 +2,7 @@ import { int, java } from "../jree/index";
 import { TileEntityMobSpawner } from "./TileEntityMobSpawner";
 import { TileEntity } from "./TileEntity";
 import { BlockContainer } from "./BlockContainer";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockMobSpawner extends BlockContainer {

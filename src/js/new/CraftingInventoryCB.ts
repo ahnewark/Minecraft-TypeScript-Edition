@@ -40,19 +40,19 @@ export abstract  class CraftingInventoryCB {
 		return this.field_20122_e[i1] as Slot;
 	}
 
-	public func_20116_a(i1: int, i2: int, entityPlayer3: EntityPlayer| null):  ItemStack | null {
+	public async func_20116_a(i1: int, i2: int, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
 		let  itemStack4: ItemStack = null;
 		if(i2 === 0 || i2 === 1) {
 			let  inventoryPlayer5: InventoryPlayer = entityPlayer3.inventory;
 			if(i1 === -999) {
 				if(inventoryPlayer5.getItemStack() !== null && i1 === -999) {
 					if(i2 === 0) {
-						entityPlayer3.dropPlayerItem(inventoryPlayer5.getItemStack());
+						await entityPlayer3.dropPlayerItem(inventoryPlayer5.getItemStack());
 						inventoryPlayer5.setItemStack(null as ItemStack);
 					}
 
 					if(i2 === 1) {
-						entityPlayer3.dropPlayerItem(inventoryPlayer5.getItemStack().splitStack(1));
+						await entityPlayer3.dropPlayerItem(inventoryPlayer5.getItemStack().splitStack(1));
 						if(inventoryPlayer5.getItemStack().stackSize === 0) {
 							inventoryPlayer5.setItemStack(null as ItemStack);
 						}
@@ -71,19 +71,19 @@ export abstract  class CraftingInventoryCB {
 						let  i8: int;
 						if(itemStack7 !== null && inventoryPlayer5.getItemStack() === null) {
 							i8 = i2 === 0 ? itemStack7.stackSize : (itemStack7.stackSize + 1) / 2;
-							inventoryPlayer5.setItemStack(slot6.decrStackSize(i8));
+							inventoryPlayer5.setItemStack(await slot6.decrStackSize(i8));
 							if(itemStack7.stackSize === 0) {
-								slot6.putStack(null as ItemStack);
+								await slot6.putStack(null as ItemStack);
 							}
 
-							slot6.onPickupFromSlot();
+							await slot6.onPickupFromSlot();
 						} else if(itemStack7 === null && inventoryPlayer5.getItemStack() !== null && slot6.isItemValid(inventoryPlayer5.getItemStack())) {
 							i8 = i2 === 0 ? inventoryPlayer5.getItemStack().stackSize : 1;
 							if(i8 > slot6.getSlotStackLimit()) {
 								i8 = slot6.getSlotStackLimit();
 							}
 
-							slot6.putStack(inventoryPlayer5.getItemStack().splitStack(i8));
+							await slot6.putStack(inventoryPlayer5.getItemStack().splitStack(i8));
 							if(inventoryPlayer5.getItemStack().stackSize === 0) {
 								inventoryPlayer5.setItemStack(null as ItemStack);
 							}
@@ -91,7 +91,7 @@ export abstract  class CraftingInventoryCB {
 							if(slot6.isItemValid(inventoryPlayer5.getItemStack())) {
 								if(itemStack7.itemID !== inventoryPlayer5.getItemStack().itemID || itemStack7.getHasSubtypes() && itemStack7.getItemDamage() !== inventoryPlayer5.getItemStack().getItemDamage()) {
 									if(inventoryPlayer5.getItemStack().stackSize <= slot6.getSlotStackLimit()) {
-										slot6.putStack(inventoryPlayer5.getItemStack());
+										await slot6.putStack(inventoryPlayer5.getItemStack());
 										inventoryPlayer5.setItemStack(itemStack7);
 									}
 								} else if(itemStack7.itemID === inventoryPlayer5.getItemStack().itemID) {
@@ -137,10 +137,10 @@ export abstract  class CraftingInventoryCB {
 										itemStack10.stackSize += i9;
 										itemStack7.splitStack(i9);
 										if(itemStack7.stackSize === 0) {
-											slot6.putStack(null as ItemStack);
+											await slot6.putStack(null as ItemStack);
 										}
 
-										slot6.onPickupFromSlot();
+										await slot6.onPickupFromSlot();
 									}
 								}
 							}
@@ -153,10 +153,10 @@ export abstract  class CraftingInventoryCB {
 		return itemStack4;
 	}
 
-	public onCraftGuiClosed(entityPlayer1: EntityPlayer| null):  void {
+	public async onCraftGuiClosed(entityPlayer1: EntityPlayer| null): Promise<void> {
 		let  inventoryPlayer2: InventoryPlayer = entityPlayer1.inventory;
 		if(inventoryPlayer2.getItemStack() !== null) {
-			entityPlayer1.dropPlayerItem(inventoryPlayer2.getItemStack());
+			await entityPlayer1.dropPlayerItem(inventoryPlayer2.getItemStack());
 			inventoryPlayer2.setItemStack(null as ItemStack);
 		}
 
@@ -166,13 +166,13 @@ export abstract  class CraftingInventoryCB {
 		this.func_20114_a();
 	}
 
-	public func_20119_a(i1: int, itemStack2: ItemStack| null):  void {
-		this.func_20118_a(i1).putStack(itemStack2);
+	public async func_20119_a(i1: int, itemStack2: ItemStack| null):  Promise<void> {
+		await this.func_20118_a(i1).putStack(itemStack2);
 	}
 
-	public func_20115_a(itemStack1: ItemStack[]| null):  void {
+	public async func_20115_a(itemStack1: ItemStack[]| null):  Promise<void> {
 		for(let  i2: int = 0; i2 < itemStack1.length; ++i2) {
-			this.func_20118_a(i2).putStack(itemStack1[i2]);
+			await this.func_20118_a(i2).putStack(itemStack1[i2]);
 		}
 
 	}

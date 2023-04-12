@@ -3,21 +3,34 @@ import { WorldGenerator } from "./WorldGenerator";
 import { WorldGenTrees } from "./WorldGenTrees";
 import { WorldGenBigTree } from "./WorldGenBigTree";
 import { EnumCreatureType } from "./EnumCreatureType";
-import { BlockRegistry } from "./index";
-import { MobSpawnerRegistry } from "./moved/MobSpawnerRegistry";
+import { Block } from "./Block";
+
 import { Color } from "../jree/java/util/Color";
 import { Random } from "../java/util/Random";
 
 export  class MobSpawnerBase extends JavaObject {
 	public biomeName:  string;
 	public color:  int;
-	public topBlock:  byte = BlockRegistry.grass.blockID as byte;
-	public fillerBlock:  byte = BlockRegistry.dirt.blockID as byte;
+	public topBlock:  byte = Block.grass.blockID as byte;
+	public fillerBlock:  byte = Block.dirt.blockID as byte;
 	public field_6502_q:  int = 5169201;
 	protected biomeMonsters:  string[] =  ['Spider', 'Zombie', 'Skeleton', 'Creeper'];
 	protected biomeCreatures:  string[] =  ['Sheep', 'Pig', 'Chicken', 'Cow'];
 	protected biomeWaterCreatures:  string[] =  ['Squid'];
 	private static biomeLookupTable:  MobSpawnerBase[] = new   Array<MobSpawnerBase>(4096);
+
+	public static rainforest:  MobSpawnerBase;
+	public static swampland:  MobSpawnerBase;
+	public static seasonalForest:  MobSpawnerBase;
+	public static forest:  MobSpawnerBase;
+	public static savanna:  MobSpawnerBase;
+	public static shrubland:  MobSpawnerBase;
+	public static taiga:  MobSpawnerBase;
+	public static desert:  MobSpawnerBase;
+	public static plains:  MobSpawnerBase;
+	public static iceDesert:  MobSpawnerBase;
+	public static tundra:  MobSpawnerBase;
+	public static hell:  MobSpawnerBase;
 
 	public static generateBiomeLookup():  void {
 		for(let  i0: int = 0; i0 < 64; ++i0) {
@@ -26,8 +39,8 @@ export  class MobSpawnerBase extends JavaObject {
 			}
 		}
 
-		MobSpawnerRegistry.desert.topBlock = MobSpawnerRegistry.desert.fillerBlock = BlockRegistry.sand.blockID as byte;
-		MobSpawnerRegistry.iceDesert.topBlock = MobSpawnerRegistry.iceDesert.fillerBlock = BlockRegistry.sand.blockID as byte;
+		MobSpawnerBase.desert.topBlock = MobSpawnerBase.desert.fillerBlock = Block.sand.blockID as byte;
+		MobSpawnerBase.iceDesert.topBlock = MobSpawnerBase.iceDesert.fillerBlock = Block.sand.blockID as byte;
 	}
 
 	public getRandomWorldGenForTrees(random1: Random| null):  WorldGenerator | null {
@@ -61,7 +74,7 @@ export  class MobSpawnerBase extends JavaObject {
 
 	public static getBiome(f0: float, f1: float):  MobSpawnerBase | null {
 		f1 *= f0;
-		return f0 < 0.1 ? MobSpawnerRegistry.tundra : (f1 < 0.2 ? (f0 < 0.5 ? MobSpawnerRegistry.tundra : (f0 < 0.95 ? MobSpawnerRegistry.savanna : MobSpawnerRegistry.desert)) : (f1 > 0.5 && f0 < 0.7 ? MobSpawnerRegistry.swampland : (f0 < 0.5 ? MobSpawnerRegistry.taiga : (f0 < 0.97 ? (f1 < 0.35 ? MobSpawnerRegistry.shrubland : MobSpawnerRegistry.forest) : (f1 < 0.45 ? MobSpawnerRegistry.plains : (f1 < 0.9 ? MobSpawnerRegistry.seasonalForest : MobSpawnerRegistry.rainforest))))));
+		return f0 < 0.1 ? MobSpawnerBase.tundra : (f1 < 0.2 ? (f0 < 0.5 ? MobSpawnerBase.tundra : (f0 < 0.95 ? MobSpawnerBase.savanna : MobSpawnerBase.desert)) : (f1 > 0.5 && f0 < 0.7 ? MobSpawnerBase.swampland : (f0 < 0.5 ? MobSpawnerBase.taiga : (f0 < 0.97 ? (f1 < 0.35 ? MobSpawnerBase.shrubland : MobSpawnerBase.forest) : (f1 < 0.45 ? MobSpawnerBase.plains : (f1 < 0.9 ? MobSpawnerBase.seasonalForest : MobSpawnerBase.rainforest))))));
 	}
 
 	public getSkyColorByTemp(f1: float):  int {
@@ -79,9 +92,5 @@ export  class MobSpawnerBase extends JavaObject {
 
 	public getEntitiesForType(enumCreatureType1: EnumCreatureType):  string[] | null {
 		return enumCreatureType1 === EnumCreatureType.monster ? this.biomeMonsters : (enumCreatureType1 === EnumCreatureType.creature ? this.biomeCreatures : (enumCreatureType1 === EnumCreatureType.waterCreature ? this.biomeWaterCreatures : null));
-	}
-
-	static {
-		MobSpawnerBase.generateBiomeLookup();
 	}
 }

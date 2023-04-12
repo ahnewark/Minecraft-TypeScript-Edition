@@ -6,8 +6,8 @@ import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Entity } from "./Entity";
 import { ColorizerFoliage } from "./ColorizerFoliage";
 import { BlockLeavesBase } from "./BlockLeavesBase";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from './moved/BlockRegistry';
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { BlockRegistry } from './static/BlockRegistry';
 import { Random } from "../java/util/Random";
 
 export  class BlockLeaves extends BlockLeavesBase {
@@ -42,7 +42,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 				for(let  i8: int = -b5; i8 <= b5; ++i8) {
 					for(let  i9: int = -b5; i9 <= b5; ++i9) {
 						let  i10: int = await world1.getBlockId(i2 + i7, i3 + i8, i4 + i9);
-						if(i10 === BlockRegistry.leaves.blockID) {
+						if(i10 === Block.leaves.blockID) {
 							let  i11: int = await world1.getBlockMetadata(i2 + i7, i3 + i8, i4 + i9);
 							await world1.setBlockMetadata(i2 + i7, i3 + i8, i4 + i9, i11 | 4);
 						}
@@ -122,9 +122,9 @@ export  class BlockLeaves extends BlockLeavesBase {
 						for(i13 = -b7; i13 <= b7; ++i13) {
 							for(i14 = -b7; i14 <= b7; ++i14) {
 								i15 = await world1.getBlockId(i2 + i12, i3 + i13, i4 + i14);
-								if(i15 === BlockRegistry.wood.blockID) {
+								if(i15 === Block.wood.blockID) {
 									this.adjacentTreeBlocks[(i12 + i11) * i10 + (i13 + i11) * b9 + i14 + i11] = 0;
-								} else if(i15 === BlockRegistry.leaves.blockID) {
+								} else if(i15 === Block.leaves.blockID) {
 									this.adjacentTreeBlocks[(i12 + i11) * i10 + (i13 + i11) * b9 + i14 + i11] = -2;
 								} else {
 									this.adjacentTreeBlocks[(i12 + i11) * i10 + (i13 + i11) * b9 + i14 + i11] = -1;
@@ -148,7 +148,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 	}
 
 	private async removeLeaves(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
+		await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 		await world1.setBlockWithNotify(i2, i3, i4, 0);
 	}
 
@@ -157,7 +157,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 	}
 
 	public idDropped(i1: int, random2: Random| null):  int {
-		return BlockRegistry.sapling.blockID;
+		return Block.sapling.blockID;
 	}
 
 	public isOpaqueCube():  boolean {

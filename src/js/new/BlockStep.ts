@@ -2,8 +2,9 @@ import { int, java } from "../jree/index";
 import { World } from "./World";
 import { IBlockAccess } from "./IBlockAccess";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./moved/MaterialRegistry";
-import { BlockRegistry } from './moved/BlockRegistry'
+
+import { MaterialRegistry } from "./static/MaterialRegistry";
+import { BlockRegistry } from './static/BlockRegistry'
 import { Random } from "../java/util/Random";
 
 export  class BlockStep extends Block {
@@ -28,26 +29,26 @@ export  class BlockStep extends Block {
 	}
 
 	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
-		if(this === BlockRegistry.stairSingle) {
+		if(this === Block.stairSingle) {
 			;
 		}
 	}
 
 	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
-		if(this !== BlockRegistry.stairSingle) {
-			super.onBlockAdded(world1, i2, i3, i4);
+		if(this !== Block.stairSingle) {
+			await super.onBlockAdded(world1, i2, i3, i4);
 		}
 
 		let  i5: int = await world1.getBlockId(i2, i3 - 1, i4);
-		if(i5 === BlockRegistry.stairSingle.blockID) {
-			world1.setBlockWithNotify(i2, i3, i4, 0);
-			world1.setBlockWithNotify(i2, i3 - 1, i4, BlockRegistry.stairDouble.blockID);
+		if(i5 === Block.stairSingle.blockID) {
+			await world1.setBlockWithNotify(i2, i3, i4, 0);
+			await world1.setBlockWithNotify(i2, i3 - 1, i4, Block.stairDouble.blockID);
 		}
 
 	}
 
 	public idDropped(i1: int, random2: Random | null):  int {
-		return BlockRegistry.stairSingle.blockID;
+		return Block.stairSingle.blockID;
 	}
 
 	public renderAsNormalBlock():  boolean {
@@ -55,7 +56,7 @@ export  class BlockStep extends Block {
 	}
 
 	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
-		if(this !== BlockRegistry.stairSingle) {
+		if(this !== Block.stairSingle) {
 			await super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5);
 		}
 

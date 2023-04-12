@@ -7,10 +7,10 @@ import { ItemStack } from "./ItemStack";
 import { EntityMobs } from "./EntityMobs";
 import { EntityArrow } from "./EntityArrow";
 import { Entity } from "./Entity";
-import { ItemRegistry } from "./moved/ItemRegistry";
+import { Item } from "./Item";
 
 export  class EntitySkeleton extends EntityMobs {
-	private static readonly defaultHeldItem:  ItemStack | null = new  ItemStack(ItemRegistry.bow, 1);
+	private static readonly defaultHeldItem:  ItemStack | null = new  ItemStack(Item.bow, 1);
 
 	public override get type(): string {
 		return 'Skeleton';
@@ -74,21 +74,21 @@ export  class EntitySkeleton extends EntityMobs {
 	}
 
 	protected getDropItemId():  int {
-		return ItemRegistry.arrow.shiftedIndex;
+		return Item.arrow.shiftedIndex;
 	}
 
-	protected func_21066_o():  void {
+	protected async func_21066_o():  Promise<void> {
 		let  i1: int = this.rand.nextInt(3);
 
 		let  i2: int;
 		for(i2 = 0; i2 < i1; ++i2) {
-			this.dropItem(ItemRegistry.arrow.shiftedIndex, 1);
+			await this.dropItem(Item.arrow.shiftedIndex, 1);
 		}
 
 		i1 = this.rand.nextInt(3);
 
 		for(i2 = 0; i2 < i1; ++i2) {
-			this.dropItem(ItemRegistry.bone.shiftedIndex, 1);
+			await this.dropItem(Item.bone.shiftedIndex, 1);
 		}
 
 	}

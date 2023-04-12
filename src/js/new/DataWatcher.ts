@@ -40,22 +40,22 @@ export  class DataWatcher extends JavaObject {
 
 	}
 
-	public static writeObjectsInListToStream(list0: WatchableObject[], dataOutputStream1: DataOutputStream| null):  void {
+	public static async writeObjectsInListToStream(list0: WatchableObject[], dataOutputStream1: DataOutputStream| null):  Promise<void> {
 		if(list0 !== null) {
-			list0.forEach(watchableObject => {
-				DataWatcher.writeWatchableObject(dataOutputStream1, watchableObject);
-			})
+			await Promise.all(list0.map(async watchableObject => {
+				return DataWatcher.writeWatchableObject(dataOutputStream1, watchableObject);
+			}))
 		}
 
-		dataOutputStream1.writeByte(127);
+		await dataOutputStream1.writeByte(127);
 	}
 
-	public writeWatchableObjects(dataOutputStream1: DataOutputStream):  void {
-		Object.values(this.watchedObjects).forEach(watchedObject => {
-			DataWatcher.writeWatchableObject(dataOutputStream1, watchedObject);
-		})
+	public async writeWatchableObjects(dataOutputStream1: DataOutputStream):  Promise<void> {
+		await Promise.all(Object.values(this.watchedObjects).map(watchedObject => {
+			return DataWatcher.writeWatchableObject(dataOutputStream1, watchedObject);
+		}));
 
-		dataOutputStream1.writeByte(127);
+		await dataOutputStream1.writeByte(127);
 	}
 
 	private static async writeWatchableObject(dataOutputStream0: DataOutputStream| null, watchableObject1: WatchableObject| null):  Promise<void> {

@@ -4,8 +4,8 @@ import { World } from "./World";
 import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Random } from "../java/util/Random";
-import { BlockRegistry } from "./moved/BlockRegistry";
-import { MaterialRegistry } from './moved/MaterialRegistry'
+import { Block } from "./Block";
+import { MaterialRegistry } from './static/MaterialRegistry'
 
 export  class WorldGenReed extends WorldGenerator {
 	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
@@ -17,8 +17,8 @@ export  class WorldGenReed extends WorldGenerator {
 				let  i10: int = 2 + random2.nextInt(random2.nextInt(3) + 1);
 
 				for(let  i11: int = 0; i11 < i10; ++i11) {
-					if(BlockRegistry.reed.canBlockStay(world1, i7, i8 + i11, i9)) {
-						world1.setBlock(i7, i8 + i11, i9, BlockRegistry.reed.blockID);
+					if(Block.reed.canBlockStay(world1, i7, i8 + i11, i9)) {
+						await world1.setBlock(i7, i8 + i11, i9, Block.reed.blockID);
 					}
 				}
 			}
