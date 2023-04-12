@@ -1295,7 +1295,7 @@ export  class World implements IBlockAccess {
 					(await this.getChunkFromChunkCoords(i3, i4)).func_1015_b(entity2);
 				}
 
-				this.loadedEntityList = this.loadedEntityList.splice(i1--, 1);
+				this.loadedEntityList.splice(i1--, 1);
 				this.releaseEntitySkin(entity2);
 			}
 		}
@@ -2179,7 +2179,7 @@ export  class World implements IBlockAccess {
 					(await this.getChunkFromChunkCoords(i3, i4)).func_1015_b(entity2);
 				}
 
-				this.loadedEntityList = this.loadedEntityList.splice(i1--, 1);
+				this.loadedEntityList.splice(i1--, 1);
 				this.releaseEntitySkin(entity2);
 			}
 		}

@@ -98,16 +98,16 @@ export class ItemStack {
 		return this.getItem().getIconIndex(this);
 	}
 
-	public useItem(entityPlayer1: EntityPlayer| null, world2: World| null, i3: int, i4: int, i5: int, i6: int):  boolean {
-		return this.getItem().onItemUse(this, entityPlayer1, world2, i3, i4, i5, i6);
+	public async useItem(entityPlayer1: EntityPlayer| null, world2: World| null, i3: int, i4: int, i5: int, i6: int):  Promise<boolean> {
+		return await this.getItem().onItemUse(this, entityPlayer1, world2, i3, i4, i5, i6);
 	}
 
 	public getStrVsBlock(block1: Block| null):  float {
 		return this.getItem().getStrVsBlock(this, block1);
 	}
 
-	public useItemRightClick(world1: World| null, entityPlayer2: EntityPlayer| null):  ItemStack | null {
-		return this.getItem().onItemRightClick(this, world1, entityPlayer2);
+	public async useItemRightClick(world1: World| null, entityPlayer2: EntityPlayer| null):  Promise<ItemStack | null> {
+		return await this.getItem().onItemRightClick(this, world1, entityPlayer2);
 	}
 
 	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  NBTTagCompound | null {

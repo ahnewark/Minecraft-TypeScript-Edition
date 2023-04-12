@@ -149,12 +149,12 @@ export  class BlockStairs extends Block {
 		this.modelBlock.onBlockRemoval(world1, i2, i3, i4);
 	}
 
-	public dropBlockAsItemWithChance(world1: World| null, i2: int, i3: int, i4: int, i5: int, f6: float):  void {
-		this.modelBlock.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
+	public async dropBlockAsItemWithChance(world1: World| null, i2: int, i3: int, i4: int, i5: int, f6: float):  Promise<void> {
+		await this.modelBlock.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
 	}
 
-	public dropBlockAsItem(world1: World| null, i2: int, i3: int, i4: int, i5: int):  void {
-		this.modelBlock.dropBlockAsItem(world1, i2, i3, i4, i5);
+	public async dropBlockAsItem(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+		await this.modelBlock.dropBlockAsItem(world1, i2, i3, i4, i5);
 	}
 
 	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {

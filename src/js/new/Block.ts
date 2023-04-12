@@ -249,11 +249,11 @@ export class Block {
 		return this.blockHardness < 0.0 ? 0.0 : (!entityPlayer1.canHarvestBlock(this) ? 1.0 / this.blockHardness / 100.0 : entityPlayer1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0);
 	}
 
-	public dropBlockAsItem(world1: World| null, i2: number, i3: number, i4: number, i5: number):  void {
+	public async dropBlockAsItem(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 		this.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, 1.0);
 	}
 
-	public dropBlockAsItemWithChance(world1: World| null, i2: number, i3: number, i4: number, i5: number, f6: number):  void {
+	public async dropBlockAsItemWithChance(world1: World| null, i2: number, i3: number, i4: number, i5: number, f6: number):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			let  i7: number = this.quantityDropped(world1.rand);
 
@@ -267,7 +267,7 @@ export class Block {
 						let  d15: number = (world1.rand.nextFloat() * f10) as number + (1.0 - f10) as number * 0.5;
 						let  entityItem17: EntityItem = new  EntityItem(world1, i2 as number + d11, i3 as number + d13, i4 as number + d15, new  ItemStack(i9, 1, this.damageDropped(i5)));
 						entityItem17.delayBeforeCanPickup = 10;
-						world1.entityJoinedWorld(entityItem17);
+						await world1.entityJoinedWorld(entityItem17);
 					}
 				}
 			}
@@ -421,7 +421,7 @@ export class Block {
 		return 0xFFFFFF;
 	}
 
-	public isPoweringTo(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number, i5: number):  boolean {
+	public async isPoweringTo(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
 		return false;
 	}
 
@@ -432,7 +432,7 @@ export class Block {
 	public async onEntityCollidedWithBlock(world1: World| null, i2: number, i3: number, i4: number, entity5: Entity| null):  Promise<void> {
 	}
 
-	public isIndirectlyPoweringTo(world1: World| null, i2: number, i3: number, i4: number, i5: number):  boolean {
+	public async isIndirectlyPoweringTo(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
 		return false;
 	}
 

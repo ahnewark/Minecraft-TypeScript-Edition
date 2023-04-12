@@ -2,14 +2,13 @@
 
 
 import { JavaObject, int, float, java, long, double } from "../jree/index";
-// import { WorldProviderHell } from "./WorldProviderHell";
+import { WorldProviderHell } from "./WorldProviderHell";
 import { WorldChunkManager } from "./WorldChunkManager";
 import { World } from "./World";
 import { Vec3D } from "./Vec3D";
 import { MathHelper } from "./MathHelper";
 import { IChunkProvider } from "./IChunkProvider";
 import { IChunkLoader } from "./IChunkLoader";
-import { EnumSkyBlock } from "./EnumSkyBlock";
 import { ChunkProviderGenerate } from "./ChunkProviderGenerate";
 import { ChunkLoader } from "./ChunkLoader";
 import { Block } from "./Block";
@@ -58,11 +57,11 @@ export  class WorldProvider extends JavaObject {
 	}
 
 	public async canCoordinateBeSpawn(i1: int, i2: int):  Promise<boolean> {
-		return true;
+		// return true;
 		let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
 		// // TODO: Fix
-		// // return i3 === Block.sand.blockID;
-		return i3 === BlockRegistry.stone.blockID;
+		return i3 === BlockRegistry.sand.blockID;
+		// return i3 === BlockRegistry.stone.blockID;
 
 	}
 
@@ -125,7 +124,6 @@ export  class WorldProvider extends JavaObject {
 	}
 
 	public static func_4101_a(i0: int):  WorldProvider | null {
-		// return (i0 === 0 ? new  WorldProvider() : (i0 === -1 ? new  WorldProviderHell() : null)) as WorldProvider;
-		return new  WorldProvider() as WorldProvider;
+		return (i0 === 0 ? new  WorldProvider() : (i0 === -1 ? new  WorldProviderHell() : null)) as WorldProvider;
 	}
 }

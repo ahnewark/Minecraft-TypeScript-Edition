@@ -7,7 +7,8 @@ import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { Chunk } from "./Chunk";
 import { Block } from "./Block";
-import { MaterialRegistry } from "./index";
+import { MaterialRegistry } from "./moved/MaterialRegistry";
+import { BlockRegistry } from "./moved/BlockRegistry";
 
 export  class ChunkCache implements IBlockAccess {
 	private chunkX:  int;
@@ -65,33 +66,33 @@ export  class ChunkCache implements IBlockAccess {
 		if(i1 >= -32000000 && i3 >= -32000000 && i1 < 32000000 && i3 <= 32000000) {
 			let  i5: int;
 			let  i6: int;
-			// if(z4) {
-			// 	i5 = await this.getBlockId(i1, i2, i3);
-			// 	if(i5 === Block.stairSingle.blockID || i5 === Block.tilledField.blockID) {
-			// 		i6 = this.func_716_a(i1, i2 + 1, i3, false);
-			// 		let  i7: int = this.func_716_a(i1 + 1, i2, i3, false);
-			// 		let  i8: int = this.func_716_a(i1 - 1, i2, i3, false);
-			// 		let  i9: int = this.func_716_a(i1, i2, i3 + 1, false);
-			// 		let  i10: int = this.func_716_a(i1, i2, i3 - 1, false);
-			// 		if(i7 > i6) {
-			// 			i6 = i7;
-			// 		}
+			if(z4) {
+				i5 = await this.getBlockId(i1, i2, i3);
+				if(i5 === BlockRegistry.stairSingle.blockID || i5 === BlockRegistry.tilledField.blockID) {
+					i6 = await this.func_716_a(i1, i2 + 1, i3, false);
+					let  i7: int = await this.func_716_a(i1 + 1, i2, i3, false);
+					let  i8: int = await this.func_716_a(i1 - 1, i2, i3, false);
+					let  i9: int = await this.func_716_a(i1, i2, i3 + 1, false);
+					let  i10: int = await this.func_716_a(i1, i2, i3 - 1, false);
+					if(i7 > i6) {
+						i6 = i7;
+					}
 
-			// 		if(i8 > i6) {
-			// 			i6 = i8;
-			// 		}
+					if(i8 > i6) {
+						i6 = i8;
+					}
 
-			// 		if(i9 > i6) {
-			// 			i6 = i9;
-			// 		}
+					if(i9 > i6) {
+						i6 = i9;
+					}
 
-			// 		if(i10 > i6) {
-			// 			i6 = i10;
-			// 		}
+					if(i10 > i6) {
+						i6 = i10;
+					}
 
-			// 		return i6;
-			// 	}
-			// }
+					return i6;
+				}
+			}
 
 			if(i2 < 0) {
 				return 0;

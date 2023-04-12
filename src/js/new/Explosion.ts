@@ -160,9 +160,9 @@ export  class Explosion {
 			}
 
 			if(i7 > 0) {
-				Block.blocksList[i7].dropBlockAsItemWithChance(this.worldObj, i4, i5, i6, await this.worldObj.getBlockMetadata(i4, i5, i6), 0.3);
+				await Block.blocksList[i7].dropBlockAsItemWithChance(this.worldObj, i4, i5, i6, await this.worldObj.getBlockMetadata(i4, i5, i6), 0.3);
 				await this.worldObj.setBlockWithNotify(i4, i5, i6, 0);
-				Block.blocksList[i7].onBlockDestroyedByExplosion(this.worldObj, i4, i5, i6);
+				await Block.blocksList[i7].onBlockDestroyedByExplosion(this.worldObj, i4, i5, i6);
 			}
 		}
 

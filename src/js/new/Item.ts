@@ -1,16 +1,17 @@
 
 
 
-import { JavaObject, java, int, float } from "jree";
+import { JavaObject, java, int, float } from "../jree/index";
 import { World } from "./World";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
 import { ItemStack } from "./ItemStack";
+import { Random } from "../java/util/Random";
 
 export  class Item extends JavaObject {
-	protected static itemRand:  java.util.Random | null = new  java.util.Random();
+	protected static itemRand:  Random | null = new  Random();
     public static itemsList:  Item[] | null = new   Array<Item>(32000);
     public readonly shiftedIndex:  int;
 	protected maxStackSize:  int = 64;
@@ -19,13 +20,13 @@ export  class Item extends JavaObject {
 	protected bFull3D:  boolean = false;
 	protected hasSubtypes:  boolean = false;
 	private containerItem:  Item | null = null;
-	private itemName:  java.lang.String | null;
+	private itemName:  string;
 
 	public constructor(i1: int) {
 		super();
         this.shiftedIndex = 256 + i1;
 		if(Item.itemsList[256 + i1] !== null) {
-			java.lang.System.out.println("CONFLICT @ " + i1);
+			console.log("CONFLICT @ " + i1);
 		}
 
 		Item.itemsList[256 + i1] = this;
@@ -58,7 +59,7 @@ export  class Item extends JavaObject {
 		return 1.0;
 	}
 
-	public onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  ItemStack | null {
+	public async onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
 		return itemStack1;
 	}
 
@@ -118,16 +119,16 @@ export  class Item extends JavaObject {
 		return false;
 	}
 
-	public setItemName(string1: java.lang.String| null):  Item | null {
+	public setItemName(string1: string):  Item | null {
 		this.itemName = "item." + string1;
 		return this;
 	}
 
-	public getItemName():  java.lang.String | null {
+	public getItemName():  string {
 		return this.itemName;
 	}
 
-	public getItemNameIS(itemStack1: ItemStack| null):  java.lang.String | null {
+	public getItemNameIS(itemStack1: ItemStack| null):  string {
 		return this.itemName;
 	}
 

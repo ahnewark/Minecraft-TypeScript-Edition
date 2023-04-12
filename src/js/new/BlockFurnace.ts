@@ -1,12 +1,11 @@
 
 
 
-import { int, java, byte, float, double } from "../jree/index";
+import { int, byte, float, double } from "../jree/index";
 import { World } from "./World";
 import { TileEntityFurnace } from "./TileEntityFurnace";
 import { TileEntity } from "./TileEntity";
 import { MathHelper } from "./MathHelper";
-import { Material } from "./Material";
 import { IBlockAccess } from "./IBlockAccess";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
@@ -15,9 +14,6 @@ import { MaterialRegistry } from "./moved/MaterialRegistry";
 import { BlockRegistry } from "./moved/BlockRegistry";
 import { Block } from "./index";
 import { Random } from "../java/util/Random";
-
-
-
 
 export  class BlockFurnace extends BlockContainer {
 	private readonly isActive:  boolean;

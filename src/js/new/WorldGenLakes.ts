@@ -83,8 +83,7 @@ export  class WorldGenLakes extends WorldGenerator {
 			for(i32 = 0; i32 < 16; ++i32) {
 				for(i10 = 4; i10 < 8; ++i10) {
 					if(z6[(i8 * 16 + i32) * 8 + i10] && await world1.getBlockId(i3 + i8, i4 + i10 - 1, i5 + i32) === BlockRegistry.dirt.blockID && await world1.getSavedLightValue(EnumSkyBlock.Sky, i3 + i8, i4 + i10, i5 + i32) > 0) {
-						// TODO: This should be grass
-						await world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, BlockRegistry.dirt.blockID);
+						await world1.setBlock(i3 + i8, i4 + i10 - 1, i5 + i32, BlockRegistry.grass.blockID);
 					}
 				}
 			}
