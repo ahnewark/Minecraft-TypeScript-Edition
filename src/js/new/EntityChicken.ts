@@ -17,7 +17,7 @@ export  class EntityChicken extends EntityAnimals {
 		return 'Chicken';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/chicken.png";
 		this.setSize(0.3, 0.4);
@@ -59,11 +59,11 @@ export  class EntityChicken extends EntityAnimals {
 	protected async fall(f1: float):  Promise<void> {
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 

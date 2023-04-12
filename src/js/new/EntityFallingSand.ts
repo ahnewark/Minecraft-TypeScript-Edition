@@ -13,9 +13,9 @@ export  class EntityFallingSand extends Entity {
 		return 'FallingSand';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double, i8: int);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double, i8: int);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -92,11 +92,11 @@ export  class EntityFallingSand extends Entity {
 		}
 	}
 
-	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setByte("Tile", this.blockID as byte);
 	}
 
-	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.blockID = nBTTagCompound1.getByte("Tile") & 255;
 	}
 
@@ -104,7 +104,7 @@ export  class EntityFallingSand extends Entity {
 		return 0.0;
 	}
 
-	public func_465_i():  World | null {
+	public func_465_i():  World | undefined {
 		return this.worldObj;
 	}
 }

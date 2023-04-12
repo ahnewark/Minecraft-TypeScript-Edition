@@ -16,18 +16,18 @@ export  class BlockFlowing extends BlockFluids {
 	protected field_459_b: boolean[] = new   Array<boolean>(4);
 	protected field_461_c: number[] = new   Array<number>(4);
 
-	public constructor(i1: int, material2: Material| null) {
+	public constructor(i1: int, material2: Material| undefined) {
 		super(i1, material2);
 	}
 
-	private async func_20015_j(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async func_20015_j(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		await world1.setBlockAndMetadata(i2, i3, i4, this.blockID + 1, i5);
 		world1.markBlocksDirty(i2, i3, i4, i2, i3, i4);
 		world1.markBlockNeedsUpdate(i2, i3, i4);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		let  i6: int = await this.func_290_h(world1, i2, i3, i4);
 		let  b7: byte = 1;
 		if(this.blockMaterial === MaterialRegistry.lava && !world1.worldProvider.isHellWorld) {
@@ -122,7 +122,7 @@ export  class BlockFlowing extends BlockFluids {
 
 	}
 
-	private async func_299_g(world1: World| null, i2: int, i3: int, i4: int, i5: int): Promise<void> {
+	private async func_299_g(world1: World| undefined, i2: int, i3: int, i4: int, i5: int): Promise<void> {
 		if(this.func_298_m(world1, i2, i3, i4)) {
 			let  i6: int = await world1.getBlockId(i2, i3, i4);
 			if(i6 > 0) {
@@ -138,7 +138,7 @@ export  class BlockFlowing extends BlockFluids {
 
 	}
 
-	private async func_300_a(world1: World| null, i2: int, i3: int, i4: int, i5: int, i6: int):  Promise<int> {
+	private async func_300_a(world1: World| undefined, i2: int, i3: int, i4: int, i5: int, i6: int):  Promise<int> {
 		let  i7: int = 1000;
 
 		for(let  i8: int = 0; i8 < 4; ++i8) {
@@ -179,7 +179,7 @@ export  class BlockFlowing extends BlockFluids {
 		return i7;
 	}
 
-	private async func_297_k(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean[]> {
+	private async func_297_k(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean[]> {
 		let  i5: int;
 		let  i6: int;
 		for(i5 = 0; i5 < 4; ++i5) {
@@ -226,7 +226,7 @@ export  class BlockFlowing extends BlockFluids {
 		return this.field_459_b;
 	}
 
-	private async func_295_l(world1: World| null, i2: int, i3: int, i4: int): Promise<boolean> {
+	private async func_295_l(world1: World| undefined, i2: int, i3: int, i4: int): Promise<boolean> {
 		// let  i5: int = await world1.getBlockId(i2, i3, i4);
 		// if(i5 !== Block.doorWood.blockID && i5 !== Block.doorSteel.blockID && i5 !== Block.signPost.blockID && i5 !== Block.ladder.blockID && i5 !== Block.reed.blockID) {
 		// 	if(i5 === 0) {
@@ -240,7 +240,7 @@ export  class BlockFlowing extends BlockFluids {
 		// }
 	}
 
-	protected async func_296_f(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
+	protected async func_296_f(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
 		let  i6: int = await this.func_290_h(world1, i2, i3, i4);
 		if(i6 < 0) {
 			return i5;
@@ -257,12 +257,12 @@ export  class BlockFlowing extends BlockFluids {
 		}
 	}
 
-	private async func_298_m(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async func_298_m(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  material5: Material = await world1.getBlockMaterial(i2, i3, i4);
 		return material5 === this.blockMaterial ? false : (material5 === MaterialRegistry.lava ? false : !await this.func_295_l(world1, i2, i3, i4));
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await super.onBlockAdded(world1, i2, i3, i4);
 		if(await world1.getBlockId(i2, i3, i4) === this.blockID) {
 			await world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);

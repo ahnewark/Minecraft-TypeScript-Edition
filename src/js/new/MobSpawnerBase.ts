@@ -43,36 +43,36 @@ export  class MobSpawnerBase extends JavaObject {
 		MobSpawnerBase.iceDesert.topBlock = MobSpawnerBase.iceDesert.fillerBlock = Block.sand.blockID as byte;
 	}
 
-	public getRandomWorldGenForTrees(random1: Random| null):  WorldGenerator | null {
+	public getRandomWorldGenForTrees(random1: Random| undefined):  WorldGenerator | undefined {
 		return (random1.nextInt(10) === 0 ? new  WorldGenBigTree() : new  WorldGenTrees()) as WorldGenerator;
 	}
 
-	public doesNothingForMobSpawnerBase():  MobSpawnerBase | null {
+	public doesNothingForMobSpawnerBase():  MobSpawnerBase | undefined {
 		return this;
 	}
 
-	public setBiomeName(string1: string):  MobSpawnerBase | null {
+	public setBiomeName(string1: string):  MobSpawnerBase | undefined {
 		this.biomeName = string1;
 		return this;
 	}
 
-	public func_4124_a(i1: int):  MobSpawnerBase | null {
+	public func_4124_a(i1: int):  MobSpawnerBase | undefined {
 		this.field_6502_q = i1;
 		return this;
 	}
 
-	public setColor(i1: int):  MobSpawnerBase | null {
+	public setColor(i1: int):  MobSpawnerBase | undefined {
 		this.color = i1;
 		return this;
 	}
 
-	public static getBiomeFromLookup(d0: double, d2: double):  MobSpawnerBase | null {
+	public static getBiomeFromLookup(d0: double, d2: double):  MobSpawnerBase | undefined {
 		let  i4: int = (d0 * 63.0) as int;
 		let  i5: int = (d2 * 63.0) as int;
 		return MobSpawnerBase.biomeLookupTable[i4 + i5 * 64];
 	}
 
-	public static getBiome(f0: float, f1: float):  MobSpawnerBase | null {
+	public static getBiome(f0: float, f1: float):  MobSpawnerBase | undefined {
 		f1 *= f0;
 		return f0 < 0.1 ? MobSpawnerBase.tundra : (f1 < 0.2 ? (f0 < 0.5 ? MobSpawnerBase.tundra : (f0 < 0.95 ? MobSpawnerBase.savanna : MobSpawnerBase.desert)) : (f1 > 0.5 && f0 < 0.7 ? MobSpawnerBase.swampland : (f0 < 0.5 ? MobSpawnerBase.taiga : (f0 < 0.97 ? (f1 < 0.35 ? MobSpawnerBase.shrubland : MobSpawnerBase.forest) : (f1 < 0.45 ? MobSpawnerBase.plains : (f1 < 0.9 ? MobSpawnerBase.seasonalForest : MobSpawnerBase.rainforest))))));
 	}
@@ -90,7 +90,7 @@ export  class MobSpawnerBase extends JavaObject {
 		return Color.getHSBColor(0.62222224 - f1 * 0.05, 0.5 + f1 * 0.1, 1.0).getRGB();
 	}
 
-	public getEntitiesForType(enumCreatureType1: EnumCreatureType):  string[] | null {
-		return enumCreatureType1 === EnumCreatureType.monster ? this.biomeMonsters : (enumCreatureType1 === EnumCreatureType.creature ? this.biomeCreatures : (enumCreatureType1 === EnumCreatureType.waterCreature ? this.biomeWaterCreatures : null));
+	public getEntitiesForType(enumCreatureType1: EnumCreatureType):  string[] | undefined {
+		return enumCreatureType1 === EnumCreatureType.monster ? this.biomeMonsters : (enumCreatureType1 === EnumCreatureType.creature ? this.biomeCreatures : (enumCreatureType1 === EnumCreatureType.waterCreature ? this.biomeWaterCreatures : undefined));
 	}
 }

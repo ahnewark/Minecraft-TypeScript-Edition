@@ -76,7 +76,7 @@ export class Vec3D {
 		return MathHelper.sqrt_double(d2 * d2 + d4 * d4 + d6 * d6) as number;
 	}
 
-	public squareDistanceTo(vec3D1: Vec3D| null):  number;
+	public squareDistanceTo(vec3D1: Vec3D| undefined):  number;
 
 	public squareDistanceTo(d1: number, d3: number, d5: number):  number;
 public squareDistanceTo(...args: unknown[]):  number {
@@ -110,39 +110,39 @@ public squareDistanceTo(...args: unknown[]):  number {
 		return MathHelper.sqrt_double(this.xCoord * this.xCoord + this.yCoord * this.yCoord + this.zCoord * this.zCoord) as number;
 	}
 
-	public getIntermediateWithXValue(vec3D1: Vec3D, d2: number):  Vec3D | null {
+	public getIntermediateWithXValue(vec3D1: Vec3D, d2: number):  Vec3D | undefined {
 		let  d4: number = vec3D1.xCoord - this.xCoord;
 		let  d6: number = vec3D1.yCoord - this.yCoord;
 		let  d8: number = vec3D1.zCoord - this.zCoord;
 		if(d4 * d4 < 1.0000000116860974E-7) {
-			return null;
+			return undefined;
 		} else {
 			let  d10: number = (d2 - this.xCoord) / d4;
-			return d10 >= 0.0 && d10 <= 1.0 ? Vec3D.createVector(this.xCoord + d4 * d10, this.yCoord + d6 * d10, this.zCoord + d8 * d10) : null;
+			return d10 >= 0.0 && d10 <= 1.0 ? Vec3D.createVector(this.xCoord + d4 * d10, this.yCoord + d6 * d10, this.zCoord + d8 * d10) : undefined;
 		}
 	}
 
-	public getIntermediateWithYValue(vec3D1: Vec3D, d2: number):  Vec3D | null {
+	public getIntermediateWithYValue(vec3D1: Vec3D, d2: number):  Vec3D | undefined {
 		let  d4: number = vec3D1.xCoord - this.xCoord;
 		let  d6: number = vec3D1.yCoord - this.yCoord;
 		let  d8: number = vec3D1.zCoord - this.zCoord;
 		if(d6 * d6 < 1.0000000116860974E-7) {
-			return null;
+			return undefined;
 		} else {
 			let  d10: number = (d2 - this.yCoord) / d6;
-			return d10 >= 0.0 && d10 <= 1.0 ? Vec3D.createVector(this.xCoord + d4 * d10, this.yCoord + d6 * d10, this.zCoord + d8 * d10) : null;
+			return d10 >= 0.0 && d10 <= 1.0 ? Vec3D.createVector(this.xCoord + d4 * d10, this.yCoord + d6 * d10, this.zCoord + d8 * d10) : undefined;
 		}
 	}
 
-	public getIntermediateWithZValue(vec3D1: Vec3D, d2: number):  Vec3D | null {
+	public getIntermediateWithZValue(vec3D1: Vec3D, d2: number):  Vec3D | undefined {
 		let  d4: number = vec3D1.xCoord - this.xCoord;
 		let  d6: number = vec3D1.yCoord - this.yCoord;
 		let  d8: number = vec3D1.zCoord - this.zCoord;
 		if(d8 * d8 < 1.0000000116860974E-7) {
-			return null;
+			return undefined;
 		} else {
 			let  d10: number = (d2 - this.zCoord) / d8;
-			return d10 >= 0.0 && d10 <= 1.0 ? Vec3D.createVector(this.xCoord + d4 * d10, this.yCoord + d6 * d10, this.zCoord + d8 * d10) : null;
+			return d10 >= 0.0 && d10 <= 1.0 ? Vec3D.createVector(this.xCoord + d4 * d10, this.yCoord + d6 * d10, this.zCoord + d8 * d10) : undefined;
 		}
 	}
 

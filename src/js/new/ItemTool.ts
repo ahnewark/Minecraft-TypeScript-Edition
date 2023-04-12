@@ -9,12 +9,12 @@ import { Block } from "./Block";
 
 
 export  class ItemTool extends Item {
-	private blocksEffectiveAgainst:  Block[] | null;
+	private blocksEffectiveAgainst:  Block[] | undefined;
 	private efficiencyOnProperMaterial:  float = 4.0;
 	private damageVsEntity:  int;
-	protected toolMaterial:  EnumToolMaterial | null;
+	protected toolMaterial:  EnumToolMaterial | undefined;
 
-	protected constructor(i1: int, i2: int, enumToolMaterial3: EnumToolMaterial| null, block4: Block[]| null) {
+	protected constructor(i1: int, i2: int, enumToolMaterial3: EnumToolMaterial| undefined, block4: Block[]| undefined) {
 		super(i1);
 		this.toolMaterial = enumToolMaterial3;
 		this.blocksEffectiveAgainst = block4;
@@ -24,7 +24,7 @@ export  class ItemTool extends Item {
 		this.damageVsEntity = i2 + enumToolMaterial3.getDamageVsEntity();
 	}
 
-	public getStrVsBlock(itemStack1: ItemStack| null, block2: Block| null):  float {
+	public getStrVsBlock(itemStack1: ItemStack| undefined, block2: Block| undefined):  float {
 		for(let  i3: int = 0; i3 < this.blocksEffectiveAgainst.length; ++i3) {
 			if(this.blocksEffectiveAgainst[i3] === block2) {
 				return this.efficiencyOnProperMaterial;
@@ -34,15 +34,15 @@ export  class ItemTool extends Item {
 		return 1.0;
 	}
 
-	public hitEntity(itemStack1: ItemStack| null, entityLiving2: EntityLiving| null):  void {
+	public hitEntity(itemStack1: ItemStack| undefined, entityLiving2: EntityLiving| undefined):  void {
 		itemStack1.damageItem(2);
 	}
 
-	public hitBlock(itemStack1: ItemStack| null, i2: int, i3: int, i4: int, i5: int):  void {
+	public hitBlock(itemStack1: ItemStack| undefined, i2: int, i3: int, i4: int, i5: int):  void {
 		itemStack1.damageItem(1);
 	}
 
-	public getDamageVsEntity(entity1: Entity| null):  int {
+	public getDamageVsEntity(entity1: Entity| undefined):  int {
 		return this.damageVsEntity;
 	}
 

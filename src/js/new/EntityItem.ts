@@ -11,7 +11,7 @@ import { Block } from "./Block";
 import { IEntityItem } from "./interfaces/IEntityItem";
 
 export  class EntityItem extends Entity implements IEntityItem {
-	public item:  ItemStack | null;
+	public item:  ItemStack | undefined;
 	private field_803_e:  int;
 	public age:  int = 0;
 	public delayBeforeCanPickup:  int;
@@ -22,9 +22,9 @@ export  class EntityItem extends Entity implements IEntityItem {
 		return 'Item';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double, itemStack8: ItemStack| null);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double, itemStack8: ItemStack| undefined);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -183,10 +183,10 @@ export  class EntityItem extends Entity implements IEntityItem {
 	}
 
 	protected async dealFireDamage(i1: int):  Promise<void> {
-		await this.attackEntityFrom(null as Entity, i1);
+		await this.attackEntityFrom(undefined as Entity, i1);
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int):  Promise<boolean> {
 		this.setBeenAttacked();
 		this.health -= i2;
 		if(this.health <= 0) {
@@ -196,20 +196,20 @@ export  class EntityItem extends Entity implements IEntityItem {
 		return false;
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setShort("Health", (this.health as byte) as short);
 		nBTTagCompound1.setShort("Age", this.age as short);
 		nBTTagCompound1.setCompoundTag("Item", this.item.writeToNBT(new  NBTTagCompound()));
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.health = nBTTagCompound1.getShort("Health") & 255;
 		this.age = nBTTagCompound1.getShort("Age");
 		let  nBTTagCompound2: NBTTagCompound = nBTTagCompound1.getCompoundTag("Item");
 		this.item = new  ItemStack(nBTTagCompound2);
 	}
 
-	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  Promise<void> {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| undefined):  Promise<void> {
 		if(!this.worldObj.multiplayerWorld) {
 			let  i2: int = this.item.stackSize;
 			if(this.delayBeforeCanPickup === 0 && entityPlayer1.inventory.addItemStackToInventory(this.item)) {

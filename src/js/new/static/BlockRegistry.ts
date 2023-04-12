@@ -92,17 +92,17 @@ export class BlockRegistry {
 		Block.dispenser = (new  BlockDispenser(23)).setHardness(3.5).setStepSound(Block.soundStoneFootstep).setBlockName("dispenser");
 		Block.sandStone = (new  BlockSandStone(24)).setStepSound(Block.soundStoneFootstep).setHardness(0.8).setBlockName("sandStone");
 		Block.musicBlock = (new  BlockNote(25)).setHardness(0.8).setBlockName("musicBlock");
-		Block.field_9262_S = null;
-		Block.field_9261_T = null;
-		Block.field_9260_U = null;
-		Block.field_9259_V = null;
-		Block.field_9258_W = null;
-		Block.field_9257_X = null;
-		Block.field_9256_Y = null;
-		Block.field_9255_Z = null;
-		Block.field_9269_aa = null;
+		Block.field_9262_S = undefined;
+		Block.field_9261_T = undefined;
+		Block.field_9260_U = undefined;
+		Block.field_9259_V = undefined;
+		Block.field_9258_W = undefined;
+		Block.field_9257_X = undefined;
+		Block.field_9256_Y = undefined;
+		Block.field_9255_Z = undefined;
+		Block.field_9269_aa = undefined;
 		Block.cloth = (new  BlockCloth()).setHardness(0.8).setStepSound(Block.soundClothFootstep).setBlockName("cloth");
-		Block.field_9268_ac = null;
+		Block.field_9268_ac = undefined;
 		Block.plantYellow = (new  BlockFlower(37, 13)).setHardness(0.0).setStepSound(Block.soundGrassFootstep).setBlockName("flower") as BlockFlower;
 		Block.plantRed = (new  BlockFlower(38, 12)).setHardness(0.0).setStepSound(Block.soundGrassFootstep).setBlockName("rose") as BlockFlower;
 		Block.mushroomBrown = (new  BlockMushroom(39, 29)).setHardness(0.0).setStepSound(Block.soundGrassFootstep).setLightValue(0.125).setBlockName("mushroom") as BlockFlower;
@@ -165,7 +165,7 @@ export class BlockRegistry {
 		Item.itemsList[Block.wood.blockID] = (new  ItemLog(Block.wood.blockID - 256)).setItemName("log");
 
 		for(let  i0: number = 0; i0 < 256; ++i0) {
-			if(Block.blocksList[i0] !== null && Item.itemsList[i0] === null) {
+			if(Block.blocksList[i0] !== undefined && Item.itemsList[i0] === undefined) {
 				Item.itemsList[i0] = new  ItemBlock(i0 - 256);
 			}
 		}

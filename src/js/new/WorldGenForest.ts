@@ -13,7 +13,7 @@ import { Block } from "./Block";
 
 
 export  class WorldGenForest extends WorldGenerator {
-	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {
 		let  i6: int = random2.nextInt(3) + 5;
 		let  z7: boolean = true;
 		if(i4 >= 1 && i4 + i6 + 1 <= 128) {

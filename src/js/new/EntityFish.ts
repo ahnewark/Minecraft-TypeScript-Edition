@@ -24,11 +24,11 @@ export  class EntityFish extends Entity {
 	private field_4092_g:  int;
 	private field_4091_h:  boolean;
 	public field_4098_a:  int;
-	public angler:  EntityPlayer | null;
+	public angler:  EntityPlayer | undefined;
 	private field_4090_i:  int;
 	private field_4089_j:  int;
 	private field_4088_k:  int;
-	public field_4096_c:  Entity | null;
+	public field_4096_c:  Entity | undefined;
 	private field_6388_l:  int;
 	private field_6387_m:  double;
 	private field_6386_n:  double;
@@ -43,11 +43,11 @@ export  class EntityFish extends Entity {
 		return 'Fish';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, entityPlayer2: EntityPlayer| null);
+	public constructor(world1: World| undefined, entityPlayer2: EntityPlayer| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -62,7 +62,7 @@ export  class EntityFish extends Entity {
 				this.field_4098_a = 0;
 				this.field_4089_j = 0;
 				this.field_4088_k = 0;
-				this.field_4096_c = null;
+				this.field_4096_c = undefined;
 				this.setSize(0.25, 0.25);
 				break;
 			}
@@ -77,7 +77,7 @@ export  class EntityFish extends Entity {
 				this.field_4098_a = 0;
 				this.field_4089_j = 0;
 				this.field_4088_k = 0;
-				this.field_4096_c = null;
+				this.field_4096_c = undefined;
 				this.angler = entityPlayer2;
 				this.angler.fishEntity = this;
 				this.setSize(0.25, 0.25);
@@ -178,13 +178,13 @@ export  class EntityFish extends Entity {
 		} else {
 			if(!this.worldObj.multiplayerWorld) {
 				let  itemStack1: ItemStack = this.angler.getCurrentEquippedItem();
-				if(this.angler.isDead || !this.angler.isEntityAlive() || itemStack1 === null || itemStack1.getItem() !== Item.fishingRod || this.getDistanceSqToEntity(this.angler) > 1024.0) {
+				if(this.angler.isDead || !this.angler.isEntityAlive() || itemStack1 === undefined || itemStack1.getItem() !== Item.fishingRod || this.getDistanceSqToEntity(this.angler) > 1024.0) {
 					await this.setEntityDead();
-					this.angler.fishEntity = null;
+					this.angler.fishEntity = undefined;
 					return;
 				}
 
-				if(this.field_4096_c !== null) {
+				if(this.field_4096_c !== undefined) {
 					if(!this.field_4096_c.isDead) {
 						this.posX = this.field_4096_c.posX;
 						this.posY = this.field_4096_c.boundingBox.minY + this.field_4096_c.height as double * 0.8;
@@ -192,7 +192,7 @@ export  class EntityFish extends Entity {
 						return;
 					}
 
-					this.field_4096_c = null;
+					this.field_4096_c = undefined;
 				}
 			}
 
@@ -226,11 +226,11 @@ export  class EntityFish extends Entity {
 			let  movingObjectPosition3: MovingObjectPosition = await this.worldObj.rayTraceBlocks(vec3D20, vec3D2);
 			vec3D20 = Vec3D.createVector(this.posX, this.posY, this.posZ);
 			vec3D2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			if(movingObjectPosition3 !== null) {
+			if(movingObjectPosition3 !== undefined) {
 				vec3D2 = Vec3D.createVector(movingObjectPosition3.hitVec.xCoord, movingObjectPosition3.hitVec.yCoord, movingObjectPosition3.hitVec.zCoord);
 			}
 
-			let  entity4: Entity = null;
+			let  entity4: Entity = undefined;
 			let  list5 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0, 1.0, 1.0));
 			let  d6: double = 0.0;
 
@@ -241,7 +241,7 @@ export  class EntityFish extends Entity {
 					let  f10: float = 0.3;
 					let  axisAlignedBB11: AxisAlignedBB = entity9.boundingBox.expand(f10 as double, f10 as double, f10 as double);
 					let  movingObjectPosition12: MovingObjectPosition = axisAlignedBB11.func_1169_a(vec3D20, vec3D2);
-					if(movingObjectPosition12 !== null) {
+					if(movingObjectPosition12 !== undefined) {
 						d13 = vec3D20.distanceTo(movingObjectPosition12.hitVec);
 						if(d13 < d6 || d6 === 0.0) {
 							entity4 = entity9;
@@ -251,12 +251,12 @@ export  class EntityFish extends Entity {
 				}
 			}
 
-			if(entity4 !== null) {
+			if(entity4 !== undefined) {
 				movingObjectPosition3 = new  MovingObjectPosition(entity4);
 			}
 
-			if(movingObjectPosition3 !== null) {
-				if(movingObjectPosition3.entityHit !== null) {
+			if(movingObjectPosition3 !== undefined) {
+				if(movingObjectPosition3.entityHit !== undefined) {
 					if(await movingObjectPosition3.entityHit.attackEntityFrom(this.angler, 0)) {
 						this.field_4096_c = movingObjectPosition3.entityHit;
 					}
@@ -349,7 +349,7 @@ export  class EntityFish extends Entity {
 		}
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setShort("xTile", this.tileX as short);
 		nBTTagCompound1.setShort("yTile", this.tileY as short);
 		nBTTagCompound1.setShort("zTile", this.tileZ as short);
@@ -358,7 +358,7 @@ export  class EntityFish extends Entity {
 		nBTTagCompound1.setByte("inGround", (this.field_4091_h ? 1 : 0) as byte);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.tileX = nBTTagCompound1.getShort("xTile");
 		this.tileY = nBTTagCompound1.getShort("yTile");
 		this.tileZ = nBTTagCompound1.getShort("zTile");
@@ -373,7 +373,7 @@ export  class EntityFish extends Entity {
 
 	public async func_4043_i():  Promise<int> {
 		let  b1: byte = 0;
-		if(this.field_4096_c !== null) {
+		if(this.field_4096_c !== undefined) {
 			let  d2: double = this.angler.posX - this.posX;
 			let  d4: double = this.angler.posY - this.posY;
 			let  d6: double = this.angler.posZ - this.posZ;
@@ -402,7 +402,7 @@ export  class EntityFish extends Entity {
 		}
 
 		await this.setEntityDead();
-		this.angler.fishEntity = null;
+		this.angler.fishEntity = undefined;
 		return b1;
 	}
 }

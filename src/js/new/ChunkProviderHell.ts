@@ -19,27 +19,27 @@ import { Random } from "../java/util/Random";
 import { Block } from "./Block";
 
 export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
-	private hellRNG:  Random | null;
-	private field_4169_i:  NoiseGeneratorOctaves | null;
-	private field_4168_j:  NoiseGeneratorOctaves | null;
-	private field_4167_k:  NoiseGeneratorOctaves | null;
-	private field_4166_l:  NoiseGeneratorOctaves | null;
-	private field_4165_m:  NoiseGeneratorOctaves | null;
-	public field_4177_a:  NoiseGeneratorOctaves | null;
-	public field_4176_b:  NoiseGeneratorOctaves | null;
-	private field_4164_n:  World | null;
+	private hellRNG:  Random | undefined;
+	private field_4169_i:  NoiseGeneratorOctaves | undefined;
+	private field_4168_j:  NoiseGeneratorOctaves | undefined;
+	private field_4167_k:  NoiseGeneratorOctaves | undefined;
+	private field_4166_l:  NoiseGeneratorOctaves | undefined;
+	private field_4165_m:  NoiseGeneratorOctaves | undefined;
+	public field_4177_a:  NoiseGeneratorOctaves | undefined;
+	public field_4176_b:  NoiseGeneratorOctaves | undefined;
+	private field_4164_n:  World | undefined;
 	private field_4163_o:  Float64Array;
 	private field_4162_p:  Float64Array = new  Float64Array(256);
 	private field_4161_q:  Float64Array = new   Float64Array(256);
 	private field_4160_r:  Float64Array = new   Float64Array(256);
-	private field_4159_s:  MapGenBase | null = new  MapGenCavesHell();
+	private field_4159_s:  MapGenBase | undefined = new  MapGenCavesHell();
 	protected field_4175_c: Float64Array;
 	protected field_4174_d: Float64Array;
 	protected field_4173_e: Float64Array;
 	protected field_4172_f: Float64Array;
 	protected field_4171_g: Float64Array;
 
-	public constructor(world1: World| null, j2: long) {
+	public constructor(world1: World| undefined, j2: long) {
 		super();
 		this.field_4164_n = world1;
 		this.hellRNG = new  Random(j2);
@@ -190,7 +190,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 
 	}
 
-	public async provideChunk(i1: int, i2: int):  Promise<Chunk | null> {
+	public async provideChunk(i1: int, i2: int):  Promise<Chunk | undefined> {
 		this.hellRNG.setSeed(BigInt(i1) * 341873128712n + BigInt(i2) * 132897987541n);
 		let  b3: Int8Array = new  Int8Array(32768);
 		this.func_4059_a(i1, i2, b3);
@@ -312,7 +312,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 		return true;
 	}
 
-	public async populate(iChunkProvider1: IChunkProvider| null, i2: int, i3: int):  Promise<void> {
+	public async populate(iChunkProvider1: IChunkProvider| undefined, i2: int, i3: int):  Promise<void> {
 		BlockSand.fallInstantly = true;
 		let  i4: int = i2 * 16;
 		let  i5: int = i3 * 16;
@@ -371,7 +371,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 		BlockSand.fallInstantly = false;
 	}
 
-	public async saveChunks(z1: boolean, iProgressUpdate2: IProgressUpdate| null):  Promise<boolean> {
+	public async saveChunks(z1: boolean, iProgressUpdate2: IProgressUpdate| undefined):  Promise<boolean> {
 		return true;
 	}
 

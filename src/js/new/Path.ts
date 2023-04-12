@@ -3,10 +3,10 @@ import { JavaObject, int, java, float } from "../jree/index";
 import { PathPoint } from "./PathPoint";
 
 export  class Path extends JavaObject {
-	private pathPoints:  PathPoint[] | null = new   Array<PathPoint>(1024);
+	private pathPoints:  PathPoint[] | undefined = new   Array<PathPoint>(1024);
 	private count:  int = 0;
 
-	public addPoint(pathPoint1: PathPoint| null):  PathPoint | null {
+	public addPoint(pathPoint1: PathPoint| undefined):  PathPoint | undefined {
 		if(pathPoint1.index >= 0) {
 			throw new  java.lang.IllegalStateException("OW KNOWS!");
 		} else {
@@ -27,10 +27,10 @@ export  class Path extends JavaObject {
 		this.count = 0;
 	}
 
-	public dequeue():  PathPoint | null {
+	public dequeue():  PathPoint | undefined {
 		let  pathPoint1: PathPoint = this.pathPoints[0];
 		this.pathPoints[0] = this.pathPoints[--this.count];
-		this.pathPoints[this.count] = null;
+		this.pathPoints[this.count] = undefined;
 		if(this.count > 0) {
 			this.sortForward(0);
 		}
@@ -39,7 +39,7 @@ export  class Path extends JavaObject {
 		return pathPoint1;
 	}
 
-	public changeDistance(pathPoint1: PathPoint| null, f2: float):  void {
+	public changeDistance(pathPoint1: PathPoint| undefined, f2: float):  void {
 		let  f3: float = pathPoint1.distanceToTarget;
 		pathPoint1.distanceToTarget = f2;
 		if(f2 < f3) {
@@ -85,7 +85,7 @@ export  class Path extends JavaObject {
 			let  pathPoint8: PathPoint;
 			let  f9: float;
 			if(i5 >= this.count) {
-				pathPoint8 = null;
+				pathPoint8 = undefined;
 				f9 = 0x7f800000
 			} else {
 				pathPoint8 = this.pathPoints[i5];

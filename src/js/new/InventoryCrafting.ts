@@ -6,11 +6,11 @@ import { EntityPlayer } from "./EntityPlayer";
 import { CraftingInventoryCB } from "./CraftingInventoryCB";
 
 export  class InventoryCrafting implements IInventory {
-	private stackList:  ItemStack[] | null;
+	private stackList:  ItemStack[] | undefined;
 	private field_21104_b:  int;
-	private eventHandler:  CraftingInventoryCB | null;
+	private eventHandler:  CraftingInventoryCB | undefined;
 
-	public constructor(craftingInventoryCB1: CraftingInventoryCB| null, i2: int, i3: int) {
+	public constructor(craftingInventoryCB1: CraftingInventoryCB| undefined, i2: int, i3: int) {
 		let  i4: int = i2 * i3;
 		this.stackList = new   Array<ItemStack>(i4);
 		this.eventHandler = craftingInventoryCB1;
@@ -21,16 +21,16 @@ export  class InventoryCrafting implements IInventory {
 		return this.stackList.length;
 	}
 
-	public getStackInSlot(i1: int):  ItemStack | null {
-		return i1 >= this.getSizeInventory() ? null : this.stackList[i1];
+	public getStackInSlot(i1: int):  ItemStack | undefined {
+		return i1 >= this.getSizeInventory() ? undefined : this.stackList[i1];
 	}
 
-	public func_21103_b(i1: int, i2: int):  ItemStack | null {
+	public func_21103_b(i1: int, i2: int):  ItemStack | undefined {
 		if(i1 >= 0 && i1 < this.field_21104_b) {
 			let  i3: int = i1 + i2 * this.field_21104_b;
 			return this.getStackInSlot(i3);
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
@@ -38,29 +38,29 @@ export  class InventoryCrafting implements IInventory {
 		return "Crafting";
 	}
 
-	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
-		if(this.stackList[i1] !== null) {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | undefined> {
+		if(this.stackList[i1] !== undefined) {
 			let  itemStack3: ItemStack;
 			if(this.stackList[i1].stackSize <= i2) {
 				itemStack3 = this.stackList[i1];
-				this.stackList[i1] = null;
+				this.stackList[i1] = undefined;
 				this.eventHandler.onCraftMatrixChanged(this);
 				return itemStack3;
 			} else {
 				itemStack3 = this.stackList[i1].splitStack(i2);
 				if(this.stackList[i1].stackSize === 0) {
-					this.stackList[i1] = null;
+					this.stackList[i1] = undefined;
 				}
 
 				this.eventHandler.onCraftMatrixChanged(this);
 				return itemStack3;
 			}
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
-	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| undefined):  Promise<void> {
 		this.stackList[i1] = itemStack2;
 		this.eventHandler.onCraftMatrixChanged(this);
 	}
@@ -72,7 +72,7 @@ export  class InventoryCrafting implements IInventory {
 	public onInventoryChanged():  void {
 	}
 
-	public async canInteractWith(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async canInteractWith(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		return true;
 	}
 }

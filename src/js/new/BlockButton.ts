@@ -19,8 +19,8 @@ export  class BlockButton extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public tickRate():  int {
@@ -35,11 +35,11 @@ export  class BlockButton extends Block {
 		return false;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.isBlockOpaqueCube(i2 - 1, i3, i4) ? true : (await world1.isBlockOpaqueCube(i2 + 1, i3, i4) ? true : (await world1.isBlockOpaqueCube(i2, i3, i4 - 1) ? true : await world1.isBlockOpaqueCube(i2, i3, i4 + 1)));
 	}
 
-	public async onBlockPlaced(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onBlockPlaced(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  i7: int = i6 & 8;
 		i6 &= 7;
@@ -62,7 +62,7 @@ export  class BlockButton extends Block {
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, i6 + i7);
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(await world1.isBlockOpaqueCube(i2 - 1, i3, i4)) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 1);
 		} else if(await world1.isBlockOpaqueCube(i2 + 1, i3, i4)) {
@@ -76,7 +76,7 @@ export  class BlockButton extends Block {
 		await this.func_305_h(world1, i2, i3, i4);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(await this.func_305_h(world1, i2, i3, i4)) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4) & 7;
 			let  z7: boolean = false;
@@ -104,7 +104,7 @@ export  class BlockButton extends Block {
 
 	}
 
-	private async func_305_h(world1: World| null, i2: int, i3: int, i4: int): Promise<boolean> {
+	private async func_305_h(world1: World| undefined, i2: int, i3: int, i4: int): Promise<boolean> {
 		if(!await this.canPlaceBlockAt(world1, i2, i3, i4)) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
@@ -114,7 +114,7 @@ export  class BlockButton extends Block {
 		}
 	}
 
-	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await iBlockAccess1.getBlockMetadata(i2, i3, i4);
 		let  i6: int = i5 & 7;
 		let  z7: boolean = (i5 & 8) > 0;
@@ -138,11 +138,11 @@ export  class BlockButton extends Block {
 
 	}
 
-	public async onBlockClicked(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<void> {
+	public async onBlockClicked(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<void> {
 		await this.blockActivated(world1, i2, i3, i4, entityPlayer5);
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<boolean> {
 		if(world1.multiplayerWorld) {
 			return true;
 		} else {
@@ -174,7 +174,7 @@ export  class BlockButton extends Block {
 		}
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		if((i5 & 8) > 0) {
 			await world1.notifyBlocksOfNeighborChange(i2, i3, i4, this.blockID);
@@ -195,11 +195,11 @@ export  class BlockButton extends Block {
 		await super.onBlockRemoval(world1, i2, i3, i4);
 	}
 
-	public async isPoweringTo(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async isPoweringTo(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		return (await iBlockAccess1.getBlockMetadata(i2, i3, i4) & 8) > 0;
 	}
 
-	public async isIndirectlyPoweringTo(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async isIndirectlyPoweringTo(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		if((i6 & 8) === 0) {
 			return false;
@@ -213,7 +213,7 @@ export  class BlockButton extends Block {
 		return true;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			if((i6 & 8) !== 0) {

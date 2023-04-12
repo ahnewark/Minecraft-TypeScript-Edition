@@ -15,7 +15,7 @@ import { Random } from "../java/util/Random";
 import { Block } from "./Block";
 
 export abstract  class BlockFluids extends Block {
-	protected constructor(i1: int, material2: Material| null) {
+	protected constructor(i1: int, material2: Material| undefined) {
 		super(i1, (material2 === MaterialRegistry.lava ? 14 : 12) * 16 + 13, material2);
 		let  f3: float = 0.0;
 		let  f4: float = 0.0;
@@ -36,11 +36,11 @@ export abstract  class BlockFluids extends Block {
 		return i1 !== 0 && i1 !== 1 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture;
 	}
 
-	protected async  func_290_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<int> {
+	protected async  func_290_h(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<int> {
 		return await world1.getBlockMaterial(i2, i3, i4) !== this.blockMaterial ? -1 : await world1.getBlockMetadata(i2, i3, i4);
 	}
 
-	protected async func_289_b(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int): Promise<int> {
+	protected async func_289_b(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int): Promise<int> {
 		if(await iBlockAccess1.getBlockMaterial(i2, i3, i4) !== this.blockMaterial) {
 			return -1;
 		} else {
@@ -65,28 +65,28 @@ export abstract  class BlockFluids extends Block {
 		return z2 && i1 === 0;
 	}
 
-	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		let  material6: Material = await iBlockAccess1.getBlockMaterial(i2, i3, i4);
 		return material6 === this.blockMaterial ? false : (material6 === MaterialRegistry.ice ? false : (i5 === 1 ? true : await super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5)));
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public getRenderType():  int {
 		return 4;
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return 0;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 0;
 	}
 
-	private async func_291_e(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<Vec3D | null> {
+	private async func_291_e(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<Vec3D | undefined> {
 		let  vec3D5: Vec3D = Vec3D.createVector(0.0, 0.0, 0.0);
 		let  i6: int = await this.func_289_b(iBlockAccess1, i2, i3, i4);
 
@@ -168,7 +168,7 @@ export abstract  class BlockFluids extends Block {
 		return vec3D5;
 	}
 
-	public async velocityToAddToEntity(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null, vec3D6: Vec3D| null):  Promise<void> {
+	public async velocityToAddToEntity(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined, vec3D6: Vec3D| undefined):  Promise<void> {
 		let  vec3D7: Vec3D = await this.func_291_e(world1, i2, i3, i4);
 		vec3D6.xCoord += vec3D7.xCoord;
 		vec3D6.yCoord += vec3D7.yCoord;
@@ -179,13 +179,13 @@ export abstract  class BlockFluids extends Block {
 		return this.blockMaterial === MaterialRegistry.water ? 5 : (this.blockMaterial === MaterialRegistry.lava ? 30 : 0);
 	}
 
-	public async getBlockBrightness(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<float> {
+	public async getBlockBrightness(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<float> {
 		let  f5: float = await iBlockAccess1.getLightBrightness(i2, i3, i4);
 		let  f6: float = await iBlockAccess1.getLightBrightness(i2, i3 + 1, i4);
 		return f5 > f6 ? f5 : f6;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		await super.updateTick(world1, i2, i3, i4, random5);
 	}
 
@@ -193,7 +193,7 @@ export abstract  class BlockFluids extends Block {
 		return this.blockMaterial === MaterialRegistry.water ? 1 : 0;
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null): Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined): Promise<void> {
 		if(this.blockMaterial === MaterialRegistry.water && random5.nextInt(64) === 0) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			if(i6 > 0 && i6 < 8) {
@@ -210,8 +210,8 @@ export abstract  class BlockFluids extends Block {
 
 	}
 
-	public static async func_293_a(iBlockAccess0: IBlockAccess| null, i1: int, i2: int, i3: int, material4: Material| null):  Promise<double> {
-		let  vec3D5: Vec3D = null;
+	public static async func_293_a(iBlockAccess0: IBlockAccess| undefined, i1: int, i2: int, i3: int, material4: Material| undefined):  Promise<double> {
+		let  vec3D5: Vec3D = undefined;
 		if(material4 === MaterialRegistry.water) {
 			vec3D5 = await (Block.waterStill as BlockFluids).func_291_e(iBlockAccess0, i1, i2, i3);
 		}
@@ -223,15 +223,15 @@ export abstract  class BlockFluids extends Block {
 		return vec3D5.xCoord === 0.0 && vec3D5.zCoord === 0.0 ? -1000.0 : java.lang.Math.atan2(vec3D5.zCoord, vec3D5.xCoord) - java.lang.Math.PI / 2;
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.checkForHarden(world1, i2, i3, i4);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await this.checkForHarden(world1, i2, i3, i4);
 	}
 
-	private async checkForHarden(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
+	private async checkForHarden(world1: World| undefined, i2: int, i3: int, i4: int): Promise<void> {
 		if(await world1.getBlockId(i2, i3, i4) === this.blockID) {
 			if(this.blockMaterial === MaterialRegistry.lava) {
 				let  z5: boolean = false;
@@ -270,7 +270,7 @@ export abstract  class BlockFluids extends Block {
 		}
 	}
 
-	protected func_292_i(world1: World| null, i2: int, i3: int, i4: int):  void {
+	protected func_292_i(world1: World| undefined, i2: int, i3: int, i4: int):  void {
 		world1.playSoundEffect((i2 as float + 0.5) as double, (i3 as float + 0.5) as double, (i4 as float + 0.5) as double, "random.fizz", 0.5, 2.6 + (world1.rand.nextFloat() - world1.rand.nextFloat()) * 0.8);
 
 		for(let  i5: int = 0; i5 < 8; ++i5) {

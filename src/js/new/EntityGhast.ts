@@ -16,7 +16,7 @@ export  class EntityGhast extends EntityFlying implements IMobs {
 	public waypointX:  double;
 	public waypointY:  double;
 	public waypointZ:  double;
-	private targetedEntity:  Entity | null = null;
+	private targetedEntity:  Entity | undefined = undefined;
 	private aggroCooldown:  int = 0;
 	public prevAttackCounter:  int = 0;
 	public attackCounter:  int = 0;
@@ -25,7 +25,7 @@ export  class EntityGhast extends EntityFlying implements IMobs {
 		return 'Ghast';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/ghast.png";
 		this.setSize(4.0, 4.0);
@@ -61,19 +61,19 @@ export  class EntityGhast extends EntityFlying implements IMobs {
 			}
 		}
 
-		if(this.targetedEntity !== null && this.targetedEntity.isDead) {
-			this.targetedEntity = null;
+		if(this.targetedEntity !== undefined && this.targetedEntity.isDead) {
+			this.targetedEntity = undefined;
 		}
 
-		if(this.targetedEntity === null || this.aggroCooldown-- <= 0) {
+		if(this.targetedEntity === undefined || this.aggroCooldown-- <= 0) {
 			this.targetedEntity = this.worldObj.getClosestPlayerToEntity(this, 100.0);
-			if(this.targetedEntity !== null) {
+			if(this.targetedEntity !== undefined) {
 				this.aggroCooldown = 20;
 			}
 		}
 
 		let  d9: double = 64.0;
-		if(this.targetedEntity !== null && this.targetedEntity.getDistanceSqToEntity(this) < d9 * d9) {
+		if(this.targetedEntity !== undefined && this.targetedEntity.getDistanceSqToEntity(this) < d9 * d9) {
 			let  d11: double = this.targetedEntity.posX - this.posX;
 			let  d13: double = this.targetedEntity.boundingBox.minY + (this.targetedEntity.height / 2.0) as double - (this.posY + (this.height / 2.0) as double);
 			let  d15: double = this.targetedEntity.posZ - this.posZ;

@@ -16,8 +16,8 @@ export  class BlockTorch extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public isOpaqueCube():  boolean {
@@ -32,11 +32,11 @@ export  class BlockTorch extends Block {
 		return 2;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.isBlockOpaqueCube(i2 - 1, i3, i4) ? true : (await world1.isBlockOpaqueCube(i2 + 1, i3, i4) ? true : (await world1.isBlockOpaqueCube(i2, i3, i4 - 1) ? true : (await world1.isBlockOpaqueCube(i2, i3, i4 + 1) ? true : await world1.isBlockOpaqueCube(i2, i3 - 1, i4))));
 	}
 
-	public async onBlockPlaced(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onBlockPlaced(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		if(i5 === 1 && await world1.isBlockOpaqueCube(i2, i3 - 1, i4)) {
 			i6 = 5;
@@ -61,7 +61,7 @@ export  class BlockTorch extends Block {
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		await super.updateTick(world1, i2, i3, i4, random5);
 		if(await world1.getBlockMetadata(i2, i3, i4) === 0) {
 			await this.onBlockAdded(world1, i2, i3, i4);
@@ -69,7 +69,7 @@ export  class BlockTorch extends Block {
 
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(await world1.isBlockOpaqueCube(i2 - 1, i3, i4)) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 1);
 		} else if(await world1.isBlockOpaqueCube(i2 + 1, i3, i4)) {
@@ -85,7 +85,7 @@ export  class BlockTorch extends Block {
 	    await this.dropTorchIfCantStay(world1, i2, i3, i4);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(this.dropTorchIfCantStay(world1, i2, i3, i4)) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			let  z7: boolean = false;
@@ -117,7 +117,7 @@ export  class BlockTorch extends Block {
 
 	}
 
-	private async dropTorchIfCantStay(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async dropTorchIfCantStay(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		if(!await this.canPlaceBlockAt(world1, i2, i3, i4)) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
@@ -127,7 +127,7 @@ export  class BlockTorch extends Block {
 		}
 	}
 
-	public async collisionRayTrace(world1: World| null, i2: int, i3: int, i4: int, vec3D5: Vec3D| null, vec3D6: Vec3D| null):  Promise<MovingObjectPosition | null> {
+	public async collisionRayTrace(world1: World| undefined, i2: int, i3: int, i4: int, vec3D5: Vec3D| undefined, vec3D6: Vec3D| undefined):  Promise<MovingObjectPosition | undefined> {
 		let  i7: int = await world1.getBlockMetadata(i2, i3, i4) & 7;
 		let  f8: float = 0.15;
 		if(i7 === 1) {
@@ -146,7 +146,7 @@ export  class BlockTorch extends Block {
 		return await super.collisionRayTrace(world1, i2, i3, i4, vec3D5, vec3D6);
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random | null):  Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random | undefined):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  d7: double = (i2 as float + 0.5) as double;
 		let  d9: double = (i3 as float + 0.7) as double;

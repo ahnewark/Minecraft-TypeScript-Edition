@@ -11,9 +11,9 @@ export  class EntityTNTPrimed extends Entity {
 		return 'TNTPrimed';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -83,14 +83,14 @@ export  class EntityTNTPrimed extends Entity {
 
 	private async explode():  Promise<void> {
 		let  f1: float = 4.0;
-		await this.worldObj.createExplosion(null as Entity, this.posX, this.posY, this.posZ, f1);
+		await this.worldObj.createExplosion(undefined as Entity, this.posX, this.posY, this.posZ, f1);
 	}
 
-	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setByte("Fuse", this.fuse as byte);
 	}
 
-	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.fuse = nBTTagCompound1.getByte("Fuse");
 	}
 

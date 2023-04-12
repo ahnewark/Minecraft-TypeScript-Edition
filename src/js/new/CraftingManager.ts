@@ -21,7 +21,7 @@ export  class CraftingManager extends JavaObject {
 	public static instance:  CraftingManager;
 	private recipes: List<IRecipe> = new ArrayList<IRecipe>();
 
-	public static getInstance():  CraftingManager | null {
+	public static getInstance():  CraftingManager | undefined {
 		return CraftingManager.instance;
 	}
 
@@ -84,7 +84,7 @@ export  class CraftingManager extends JavaObject {
 		console.log(this.recipes.size() + " recipes");
 	}
 
-	public addRecipe(result: ItemStack| null, object2: (string | Block | Item | ItemStack)[],): void {
+	public addRecipe(result: ItemStack| undefined, object2: (string | Block | Item | ItemStack)[],): void {
 		let i = 0;
 		let width = 0;
 		let height = 0;
@@ -133,7 +133,7 @@ export  class CraftingManager extends JavaObject {
 		height = craftingString.length;
 
 		const recipeItems: ItemStack[] = new Array(width * height);
-		recipeItems.fill(null);
+		recipeItems.fill(undefined);
 
 		craftingString.forEach((line, lineIndex) => {
 			for (let charIndex = 0; charIndex < line.length; charIndex++) {
@@ -170,7 +170,7 @@ export  class CraftingManager extends JavaObject {
 		this.recipes.add(new  ShapelessRecipes(itemStack1, arrayList3));
 	}
 
-	public findMatchingRecipe(inventoryCrafting1: InventoryCrafting| null):  ItemStack | null {
+	public findMatchingRecipe(inventoryCrafting1: InventoryCrafting| undefined):  ItemStack | undefined {
 		for(let  i2: int = 0; i2 < this.recipes.size(); ++i2) {
 			let  iRecipe3: IRecipe = this.recipes[i2] as IRecipe;
 			if(iRecipe3.func_21135_a(inventoryCrafting1)) {
@@ -178,6 +178,6 @@ export  class CraftingManager extends JavaObject {
 			}
 		}
 
-		return null;
+		return undefined;
 	}
 }

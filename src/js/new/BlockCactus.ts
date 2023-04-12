@@ -17,7 +17,7 @@ export  class BlockCactus extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(world1.isAirBlock(i2, i3 + 1, i4)) {
 			let  i6: int;
 			for(i6 = 1; await world1.getBlockId(i2, i3 - i6, i4) === this.blockID; ++i6) {
@@ -36,12 +36,12 @@ export  class BlockCactus extends Block {
 
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		let  f5: float = 0.0625;
 		return AxisAlignedBB.getBoundingBoxFromPool((i2 as float + f5) as double, i3 as double, (i4 as float + f5) as double, ((i2 + 1) as float - f5) as double, ((i3 + 1) as float - f5) as double, ((i4 + 1) as float - f5) as double);
 	}
 
-	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getSelectedBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		let  f5: float = 0.0625;
 		return AxisAlignedBB.getBoundingBoxFromPool((i2 as float + f5) as double, i3 as double, (i4 as float + f5) as double, ((i2 + 1) as float - f5) as double, (i3 + 1) as double, ((i4 + 1) as float - f5) as double);
 	}
@@ -62,11 +62,11 @@ export  class BlockCactus extends Block {
 		return 13;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return !await super.canPlaceBlockAt(world1, i2, i3, i4) ? false : await this.canBlockStay(world1, i2, i3, i4);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(!await this.canBlockStay(world1, i2, i3, i4)) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
@@ -74,7 +74,7 @@ export  class BlockCactus extends Block {
 
 	}
 
-	public async canBlockStay(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canBlockStay(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		if((await world1.getBlockMaterial(i2 - 1, i3, i4)).isSolid()) {
 			return false;
 		} else if((await world1.getBlockMaterial(i2 + 1, i3, i4)).isSolid()) {
@@ -89,7 +89,7 @@ export  class BlockCactus extends Block {
 		}
 	}
 
-	public async onEntityCollidedWithBlock(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
-		await entity5.attackEntityFrom(null as Entity, 1);
+	public async onEntityCollidedWithBlock(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined):  Promise<void> {
+		await entity5.attackEntityFrom(undefined as Entity, 1);
 	}
 }

@@ -7,22 +7,22 @@ import { MobSpawnerBase } from "./MobSpawnerBase";
 import { ChunkCoordIntPair } from "./ChunkCoordIntPair";
 
 export  class WorldChunkManagerHell extends WorldChunkManager {
-	private field_4201_e:  MobSpawnerBase | null;
+	private field_4201_e:  MobSpawnerBase | undefined;
 	private field_4200_f:  double;
 	private field_4199_g:  double;
 
-	public constructor(mobSpawnerBase1: MobSpawnerBase| null, d2: double, d4: double) {
+	public constructor(mobSpawnerBase1: MobSpawnerBase| undefined, d2: double, d4: double) {
 		super();
 		this.field_4201_e = mobSpawnerBase1;
 		this.field_4200_f = d2;
 		this.field_4199_g = d4;
 	}
 
-	public func_4074_a(chunkCoordIntPair1: ChunkCoordIntPair| null):  MobSpawnerBase | null {
+	public func_4074_a(chunkCoordIntPair1: ChunkCoordIntPair| undefined):  MobSpawnerBase | undefined {
 		return this.field_4201_e;
 	}
 
-	public func_4073_a(i1: int, i2: int):  MobSpawnerBase | null {
+	public func_4073_a(i1: int, i2: int):  MobSpawnerBase | undefined {
 		return this.field_4201_e;
 	}
 
@@ -30,13 +30,13 @@ export  class WorldChunkManagerHell extends WorldChunkManager {
 		return this.field_4200_f;
 	}
 
-	public func_4069_a(i1: int, i2: int, i3: int, i4: int):  MobSpawnerBase[] | null {
+	public func_4069_a(i1: int, i2: int, i3: int, i4: int):  MobSpawnerBase[] | undefined {
 		this.field_4195_d = this.loadBlockGeneratorData(this.field_4195_d, i1, i2, i3, i4);
 		return this.field_4195_d;
 	}
 
 	public getTemperatures(d1: Float64Array, i2: int, i3: int, i4: int, i5: int):  Float64Array {
-		if(d1 === null || d1.length < i4 * i5) {
+		if(d1 === undefined || d1.length < i4 * i5) {
 			d1 = new  Float64Array(i4 * i5);
 		}
 
@@ -44,8 +44,8 @@ export  class WorldChunkManagerHell extends WorldChunkManager {
 		return d1;
 	}
 
-	public loadBlockGeneratorData(mobSpawnerBase1: MobSpawnerBase[]| null, i2: int, i3: int, i4: int, i5: int):  MobSpawnerBase[] | null {
-		if(mobSpawnerBase1 === null || mobSpawnerBase1.length < i4 * i5) {
+	public loadBlockGeneratorData(mobSpawnerBase1: MobSpawnerBase[]| undefined, i2: int, i3: int, i4: int, i5: int):  MobSpawnerBase[] | undefined {
+		if(mobSpawnerBase1 === undefined || mobSpawnerBase1.length < i4 * i5) {
 			mobSpawnerBase1 = new   Array<MobSpawnerBase>(i4 * i5);
 			this.temperature = new  Float64Array(i4 * i5);
 			this.humidity = new  Float64Array(i4 * i5);

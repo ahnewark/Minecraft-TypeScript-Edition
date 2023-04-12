@@ -17,7 +17,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 		return i1 === 1 ? Block.redstoneWire.getBlockTextureFromSideAndMetadata(i1, i2) : super.getBlockTextureFromSideAndMetadata(i1, i2);
 	}
 
-	private checkForBurnout(world1: World| null, i2: int, i3: int, i4: int, z5: boolean):  boolean {
+	private checkForBurnout(world1: World| undefined, i2: int, i3: int, i4: int, z5: boolean):  boolean {
 		if(z5) {
 			BlockRedstoneTorch.torchUpdates.push(new  RedstoneUpdateInfo(i2, i3, i4, world1.worldTime));
 		}
@@ -47,7 +47,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 		return 2;
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(await world1.getBlockMetadata(i2, i3, i4) === 0) {
 			await super.onBlockAdded(world1, i2, i3, i4);
 		}
@@ -63,7 +63,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(this.torchActive) {
 			await world1.notifyBlocksOfNeighborChange(i2, i3 - 1, i4, this.blockID);
 			await world1.notifyBlocksOfNeighborChange(i2, i3 + 1, i4, this.blockID);
@@ -75,7 +75,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 
 	}
 
-	public async isPoweringTo(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async isPoweringTo(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		if(!this.torchActive) {
 			return false;
 		} else {
@@ -84,12 +84,12 @@ export  class BlockRedstoneTorch extends BlockTorch {
 		}
 	}
 
-	private async isGettingPoweredFromSide(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async isGettingPoweredFromSide(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		return i5 === 5 && world1.isBlockIndirectlyProvidingPowerTo(i2, i3 - 1, i4, 0) ? true : (i5 === 3 && world1.isBlockIndirectlyProvidingPowerTo(i2, i3, i4 - 1, 2) ? true : (i5 === 4 && world1.isBlockIndirectlyProvidingPowerTo(i2, i3, i4 + 1, 3) ? true : (i5 === 1 && world1.isBlockIndirectlyProvidingPowerTo(i2 - 1, i3, i4, 4) ? true : i5 === 2 && world1.isBlockIndirectlyProvidingPowerTo(i2 + 1, i3, i4, 5))));
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		let  z6: boolean = await this.isGettingPoweredFromSide(world1, i2, i3, i4);
 
 		while(BlockRedstoneTorch.torchUpdates.length > 0 && world1.worldTime - (BlockRedstoneTorch.torchUpdates[0] as RedstoneUpdateInfo).updateTime > 100n) {
@@ -116,16 +116,16 @@ export  class BlockRedstoneTorch extends BlockTorch {
 
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int): Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int): Promise<void> {
 		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 		await world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);
 	}
 
-	public async isIndirectlyPoweringTo(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async isIndirectlyPoweringTo(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		return i5 === 0 ? await this.isPoweringTo(world1, i2, i3, i4, i5) : false;
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.torchRedstoneActive.blockID;
 	}
 
@@ -133,7 +133,7 @@ export  class BlockRedstoneTorch extends BlockTorch {
 		return true;
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(this.torchActive) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			let  d7: double = (i2 as float + 0.5) as double + (random5.nextFloat() - 0.5) as double * 0.2;

@@ -17,7 +17,7 @@ import { MaterialRegistry } from './static/MaterialRegistry';
 import { Block } from './Block';
 
 export class TileEntityFurnace extends TileEntity implements IInventory {
-	private furnaceItemStacks:  ItemStack[] | null = new   Array<ItemStack>(3);
+	private furnaceItemStacks:  ItemStack[] | undefined = new   Array<ItemStack>(3);
 	public furnaceBurnTime:  int = 0;
 	public currentItemBurnTime:  int = 0;
 	public furnaceCookTime:  int = 0;
@@ -30,33 +30,33 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		return this.furnaceItemStacks.length;
 	}
 
-	public getStackInSlot(i1: int):  ItemStack | null {
+	public getStackInSlot(i1: int):  ItemStack | undefined {
 		return this.furnaceItemStacks[i1];
 	}
 
-	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
-		if(this.furnaceItemStacks[i1] !== null) {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | undefined> {
+		if(this.furnaceItemStacks[i1] !== undefined) {
 			let  itemStack3: ItemStack;
 			if(this.furnaceItemStacks[i1].stackSize <= i2) {
 				itemStack3 = this.furnaceItemStacks[i1];
-				this.furnaceItemStacks[i1] = null;
+				this.furnaceItemStacks[i1] = undefined;
 				return itemStack3;
 			} else {
 				itemStack3 = this.furnaceItemStacks[i1].splitStack(i2);
 				if(this.furnaceItemStacks[i1].stackSize === 0) {
-					this.furnaceItemStacks[i1] = null;
+					this.furnaceItemStacks[i1] = undefined;
 				}
 
 				return itemStack3;
 			}
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
-	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| undefined):  Promise<void> {
 		this.furnaceItemStacks[i1] = itemStack2;
-		if(itemStack2 !== null && itemStack2.stackSize > this.getInventoryStackLimit()) {
+		if(itemStack2 !== undefined && itemStack2.stackSize > this.getInventoryStackLimit()) {
 			itemStack2.stackSize = this.getInventoryStackLimit();
 		}
 
@@ -66,7 +66,7 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		return "Furnace";
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readFromNBT(nBTTagCompound1);
 		let  nBTTagList2: NBTTagList = nBTTagCompound1.getTagList("Items");
 		this.furnaceItemStacks = new   Array<ItemStack>(this.getSizeInventory());
@@ -84,14 +84,14 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		this.currentItemBurnTime = this.getItemBurnTime(this.furnaceItemStacks[1]);
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeToNBT(nBTTagCompound1);
 		nBTTagCompound1.setShort("BurnTime", this.furnaceBurnTime as short);
 		nBTTagCompound1.setShort("CookTime", this.furnaceCookTime as short);
 		let  nBTTagList2: NBTTagList = new  NBTTagList();
 
 		for(let  i3: int = 0; i3 < this.furnaceItemStacks.length; ++i3) {
-			if(this.furnaceItemStacks[i3] !== null) {
+			if(this.furnaceItemStacks[i3] !== undefined) {
 				let  nBTTagCompound4: NBTTagCompound = new  NBTTagCompound();
 				nBTTagCompound4.setByte("Slot", i3 as byte);
 				this.furnaceItemStacks[i3].writeToNBT(nBTTagCompound4);
@@ -134,10 +134,10 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 				this.currentItemBurnTime = this.furnaceBurnTime = this.getItemBurnTime(this.furnaceItemStacks[1]);
 				if(this.furnaceBurnTime > 0) {
 					z2 = true;
-					if(this.furnaceItemStacks[1] !== null) {
+					if(this.furnaceItemStacks[1] !== undefined) {
 						--this.furnaceItemStacks[1].stackSize;
 						if(this.furnaceItemStacks[1].stackSize === 0) {
-							this.furnaceItemStacks[1] = null;
+							this.furnaceItemStacks[1] = undefined;
 						}
 					}
 				}
@@ -167,18 +167,18 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 	}
 
 	private canSmelt():  boolean {
-		if(this.furnaceItemStacks[0] === null) {
+		if(this.furnaceItemStacks[0] === undefined) {
 			return false;
 		} else {
 			let  itemStack1: ItemStack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0].getItem().shiftedIndex);
-			return itemStack1 === null ? false : (this.furnaceItemStacks[2] === null ? true : (!this.furnaceItemStacks[2].isItemEqual(itemStack1) ? false : (this.furnaceItemStacks[2].stackSize < this.getInventoryStackLimit() && this.furnaceItemStacks[2].stackSize < this.furnaceItemStacks[2].getMaxStackSize() ? true : this.furnaceItemStacks[2].stackSize < itemStack1.getMaxStackSize())));
+			return itemStack1 === undefined ? false : (this.furnaceItemStacks[2] === undefined ? true : (!this.furnaceItemStacks[2].isItemEqual(itemStack1) ? false : (this.furnaceItemStacks[2].stackSize < this.getInventoryStackLimit() && this.furnaceItemStacks[2].stackSize < this.furnaceItemStacks[2].getMaxStackSize() ? true : this.furnaceItemStacks[2].stackSize < itemStack1.getMaxStackSize())));
 		}
 	}
 
 	public smeltItem():  void {
 		if(this.canSmelt()) {
 			let  itemStack1: ItemStack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0].getItem().shiftedIndex);
-			if(this.furnaceItemStacks[2] === null) {
+			if(this.furnaceItemStacks[2] === undefined) {
 				this.furnaceItemStacks[2] = itemStack1.copy();
 			} else if(this.furnaceItemStacks[2].itemID === itemStack1.itemID) {
 				++this.furnaceItemStacks[2].stackSize;
@@ -186,14 +186,14 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 
 			--this.furnaceItemStacks[0].stackSize;
 			if(this.furnaceItemStacks[0].stackSize <= 0) {
-				this.furnaceItemStacks[0] = null;
+				this.furnaceItemStacks[0] = undefined;
 			}
 
 		}
 	}
 
-	private getItemBurnTime(itemStack1: ItemStack| null):  int {
-		if(itemStack1 === null) {
+	private getItemBurnTime(itemStack1: ItemStack| undefined):  int {
+		if(itemStack1 === undefined) {
 			return 0;
 		} else {
 			let  i2: int = itemStack1.getItem().shiftedIndex;
@@ -201,7 +201,7 @@ export class TileEntityFurnace extends TileEntity implements IInventory {
 		}
 	}
 
-	public async canInteractWith(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async canInteractWith(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		return await this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) !== this ? false : entityPlayer1.getDistanceSq(this.xCoord as double + 0.5, this.yCoord as double + 0.5, this.zCoord as double + 0.5) <= 64.0;
 	}
 }

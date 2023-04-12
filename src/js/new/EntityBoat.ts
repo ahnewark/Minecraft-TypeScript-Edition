@@ -26,9 +26,9 @@ export  class EntityBoat extends Entity {
 		return 'Boat';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -67,11 +67,11 @@ export  class EntityBoat extends Entity {
 	protected entityInit():  void {
 	}
 
-	public func_383_b_(entity1: Entity| null):  AxisAlignedBB | null {
+	public func_383_b_(entity1: Entity| undefined):  AxisAlignedBB | undefined {
 		return entity1.boundingBox;
 	}
 
-	public getBoundingBox():  AxisAlignedBB | null {
+	public getBoundingBox():  AxisAlignedBB | undefined {
 		return this.boundingBox;
 	}
 
@@ -83,7 +83,7 @@ export  class EntityBoat extends Entity {
 		return this.height as double * 0.0 - 0.3 as double;
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int): Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int): Promise<boolean> {
 		if(!this.worldObj.multiplayerWorld && !this.isDead) {
 			this.field_808_c = -this.field_808_c;
 			this.field_806_b = 10;
@@ -202,7 +202,7 @@ export  class EntityBoat extends Entity {
 		} else {
 			d23 = d2 * 2.0 - 1.0;
 			this.motionY += 0.04 as double * d23;
-			if(this.riddenByEntity !== null) {
+			if(this.riddenByEntity !== undefined) {
 				this.motionX += this.riddenByEntity.motionX * 0.2;
 				this.motionZ += this.riddenByEntity.motionZ * 0.2;
 			}
@@ -300,7 +300,7 @@ export  class EntityBoat extends Entity {
 			this.rotationYaw = (this.rotationYaw as double + d16) as float;
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 			let  list18 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
-			if(list18 !== null && (await list18).length > 0) {
+			if(list18 !== undefined && (await list18).length > 0) {
 				for(let  i26: int = 0; i26 < (await list18).length; ++i26) {
 					let  entity20: Entity = list18[i26];
 					if(entity20 !== this.riddenByEntity && entity20.canBePushed() && entity20 instanceof EntityBoat) {
@@ -309,33 +309,33 @@ export  class EntityBoat extends Entity {
 				}
 			}
 
-			if(this.riddenByEntity !== null && this.riddenByEntity.isDead) {
-				this.riddenByEntity = null;
+			if(this.riddenByEntity !== undefined && this.riddenByEntity.isDead) {
+				this.riddenByEntity = undefined;
 			}
 
 		}
 	}
 
 	public updateRiderPosition():  void {
-		if(this.riddenByEntity !== null) {
+		if(this.riddenByEntity !== undefined) {
 			let  d1: double = java.lang.Math.cos(this.rotationYaw as double * java.lang.Math.PI / 180.0) * 0.4;
 			let  d3: double = java.lang.Math.sin(this.rotationYaw as double * java.lang.Math.PI / 180.0) * 0.4;
 			this.riddenByEntity.setPosition(this.posX + d1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + d3);
 		}
 	}
 
-	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 	}
 
-	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 	}
 
 	public getShadowSize():  float {
 		return 0.0;
 	}
 
-	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
-		if(this.riddenByEntity !== null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity !== entityPlayer1) {
+	public async interact(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
+		if(this.riddenByEntity !== undefined && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity !== entityPlayer1) {
 			return true;
 		} else {
 			if(!this.worldObj.multiplayerWorld) {

@@ -6,10 +6,10 @@ import { Block } from "./Block";
 import { CraftingManager } from "./CraftingManager";
 
 export  class RecipesWeapons extends JavaObject {
-	private recipePatterns:  string[][] | null =  [["X", "X", "#"]];
-	private recipeItems:  any[][] | null =  [[Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold], [Item.swordWood, Item.swordStone, Item.swordSteel, Item.swordDiamond, Item.swordGold]];
+	private recipePatterns:  string[][] | undefined =  [["X", "X", "#"]];
+	private recipeItems:  any[][] | undefined =  [[Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold], [Item.swordWood, Item.swordStone, Item.swordSteel, Item.swordDiamond, Item.swordGold]];
 
-	public addRecipes(craftingManager1: CraftingManager| null):  void {
+	public addRecipes(craftingManager1: CraftingManager| undefined):  void {
 		for(let  i2: int = 0; i2 < this.recipeItems[0].length; ++i2) {
 			let  object3: any = this.recipeItems[0][i2];
 

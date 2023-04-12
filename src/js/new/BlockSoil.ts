@@ -18,7 +18,7 @@ export  class BlockSoil extends Block {
 		this.setLightOpacity(255);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		return AxisAlignedBB.getBoundingBoxFromPool((i2 + 0) as double, (i3 + 0) as double, (i4 + 0) as double, (i2 + 1) as double, (i3 + 1) as double, (i4 + 1) as double);
 	}
 
@@ -34,7 +34,7 @@ export  class BlockSoil extends Block {
 		return i1 === 1 && i2 > 0 ? this.blockIndexInTexture - 1 : (i1 === 1 ? this.blockIndexInTexture : 2);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(random5.nextInt(5) === 0) {
 			if(await this.isWaterNearby(world1, i2, i3, i4)) {
 				await world1.setBlockMetadataWithNotify(i2, i3, i4, 7);
@@ -50,14 +50,14 @@ export  class BlockSoil extends Block {
 
 	}
 
-	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
+	public async onEntityWalking(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined):  Promise<void> {
 		if(world1.rand.nextInt(4) === 0) {
 			await world1.setBlockWithNotify(i2, i3, i4, Block.dirt.blockID);
 		}
 
 	}
 
-	private async isCropsNearby(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async isCropsNearby(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  b5: byte = 0;
 
 		for(let  i6: int = i2 - b5; i6 <= i2 + b5; ++i6) {
@@ -71,7 +71,7 @@ export  class BlockSoil extends Block {
 		return false;
 	}
 
-	private async isWaterNearby(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async isWaterNearby(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		for(let  i5: int = i2 - 4; i5 <= i2 + 4; ++i5) {
 			for(let  i6: int = i3; i6 <= i3 + 1; ++i6) {
 				for(let  i7: int = i4 - 4; i7 <= i4 + 4; ++i7) {
@@ -85,7 +85,7 @@ export  class BlockSoil extends Block {
 		return false;
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 		let  material6: Material = await world1.getBlockMaterial(i2, i3 + 1, i4);
 		if(material6.isSolid()) {
@@ -94,7 +94,7 @@ export  class BlockSoil extends Block {
 
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.dirt.idDropped(0, random2);
 	}
 }

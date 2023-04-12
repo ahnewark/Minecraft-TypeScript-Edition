@@ -11,9 +11,9 @@ import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
 
 export  class EmptyChunk extends Chunk {
-	public constructor(world1: World| null, i2: int, i3: int);
+	public constructor(world1: World| undefined, i2: int, i3: int);
 
-	public constructor(world1: World| null, b2: Int8Array, i3: int, i4: int);
+	public constructor(world1: World| undefined, b2: Int8Array, i3: int, i4: int);
     public constructor(...args: unknown[]) {
 		switch (args.length) {
 			case 3: {
@@ -76,38 +76,38 @@ export  class EmptyChunk extends Chunk {
 	public setBlockMetadata(i1: int, i2: int, i3: int, i4: int):  void {
 	}
 
-	public getSavedLightValue(enumSkyBlock1: EnumSkyBlock| null, i2: int, i3: int, i4: int):  int {
+	public getSavedLightValue(enumSkyBlock1: EnumSkyBlock| undefined, i2: int, i3: int, i4: int):  int {
 		return 0;
 	}
 
-	public setLightValue(enumSkyBlock1: EnumSkyBlock| null, i2: int, i3: int, i4: int, i5: int):  void {
+	public setLightValue(enumSkyBlock1: EnumSkyBlock| undefined, i2: int, i3: int, i4: int, i5: int):  void {
 	}
 
 	public getBlockLightValue(i1: int, i2: int, i3: int, i4: int):  int {
 		return 0;
 	}
 
-	public addEntity(entity1: Entity| null):  void {
+	public addEntity(entity1: Entity| undefined):  void {
 	}
 
-	public func_1015_b(entity1: Entity| null):  void {
+	public func_1015_b(entity1: Entity| undefined):  void {
 	}
 
-	public func_1016_a(entity1: Entity| null, i2: int):  void {
+	public func_1016_a(entity1: Entity| undefined, i2: int):  void {
 	}
 
 	public canBlockSeeTheSky(i1: int, i2: int, i3: int):  boolean {
 		return false;
 	}
 
-	public async getChunkBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity | null> {
-		return null;
+	public async getChunkBlockTileEntity(i1: int, i2: int, i3: int):  Promise<TileEntity | undefined> {
+		return undefined;
 	}
 
-	public func_1001_a(tileEntity1: TileEntity| null):  void {
+	public func_1001_a(tileEntity1: TileEntity| undefined):  void {
 	}
 
-	public setChunkBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| null):  void {
+	public setChunkBlockTileEntity(i1: int, i2: int, i3: int, tileEntity4: TileEntity| undefined):  void {
 	}
 
 	public removeChunkBlockTileEntity(i1: int, i2: int, i3: int):  void {
@@ -122,10 +122,10 @@ export  class EmptyChunk extends Chunk {
 	public setChunkModified():  void {
 	}
 
-	public getEntitiesWithinAABBForEntity(entity1: Entity| null, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+	public getEntitiesWithinAABBForEntity(entity1: Entity| undefined, axisAlignedBB2: AxisAlignedBB| undefined, list3: Entity[]):  void {
 	}
 
-	public getEntitiesOfTypeWithinAAAB(type: string, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+	public getEntitiesOfTypeWithinAAAB(type: string, axisAlignedBB2: AxisAlignedBB| undefined, list3: Entity[]):  void {
 	}
 
 	public needsSaving(z1: boolean):  boolean {

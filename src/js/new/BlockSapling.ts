@@ -16,7 +16,7 @@ export  class BlockSapling extends BlockFlower {
 		this.setBlockBounds(0.5 - f3, 0.0, 0.5 - f3, 0.5 + f3, f3 * 2.0, 0.5 + f3);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		await super.updateTick(world1, i2, i3, i4, random5);
 		if(await world1.getBlockLightValue(i2, i3 + 1, i4) >= 9 && random5.nextInt(5) === 0) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
@@ -29,7 +29,7 @@ export  class BlockSapling extends BlockFlower {
 
 	}
 
-	public async func_21028_c(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async func_21028_c(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		await world1.setBlock(i2, i3, i4, 0);
 		let  object6 = new  WorldGenTrees();
 		if(random5.nextInt(10) === 0) {

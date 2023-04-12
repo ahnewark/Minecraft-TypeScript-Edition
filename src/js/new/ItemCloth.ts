@@ -13,7 +13,7 @@ export  class ItemCloth extends ItemBlock {
 		this.setHasSubtypes(true);
 	}
 
-	public getIconIndex(itemStack1: ItemStack| null):  int {
+	public getIconIndex(itemStack1: ItemStack| undefined):  int {
 		return Block.cloth.getBlockTextureFromSideAndMetadata(2, BlockCloth.func_21034_c(itemStack1.getItemDamage()));
 	}
 
@@ -21,7 +21,7 @@ export  class ItemCloth extends ItemBlock {
 		return i1;
 	}
 
-	public getItemNameIS(itemStack1: ItemStack| null):  string {
+	public getItemNameIS(itemStack1: ItemStack| undefined):  string {
 		return super.getItemName() + "." + ItemDye.dyeColors[BlockCloth.func_21034_c(itemStack1.getItemDamage())];
 	}
 }

@@ -5,12 +5,12 @@ import { IInventory } from "./IInventory";
 
 export  class Slot {
 	private readonly slotIndex:  int;
-	private readonly inventory:  IInventory | null;
+	private readonly inventory:  IInventory | undefined;
 	public field_20007_a:  int;
 	public xDisplayPosition:  int;
 	public yDisplayPosition:  int;
 
-	public constructor(iInventory1: IInventory| null, i2: int, i3: int, i4: int) {
+	public constructor(iInventory1: IInventory| undefined, i2: int, i3: int, i4: int) {
 		this.inventory = iInventory1;
 		this.slotIndex = i2;
 		this.xDisplayPosition = i3;
@@ -21,19 +21,19 @@ export  class Slot {
 		this.onSlotChanged();
 	}
 
-	public isItemValid(itemStack1: ItemStack| null):  boolean {
+	public isItemValid(itemStack1: ItemStack| undefined):  boolean {
 		return true;
 	}
 
-	public getStack():  ItemStack | null {
+	public getStack():  ItemStack | undefined {
 		return this.inventory.getStackInSlot(this.slotIndex);
 	}
 
 	public func_20005_c():  boolean {
-		return this.getStack() !== null;
+		return this.getStack() !== undefined;
 	}
 
-	public async putStack(itemStack1: ItemStack| null):  Promise<void> {
+	public async putStack(itemStack1: ItemStack| undefined):  Promise<void> {
 		await this.inventory.setInventorySlotContents(this.slotIndex, itemStack1);
 		this.onSlotChanged();
 	}
@@ -50,7 +50,7 @@ export  class Slot {
 		return -1;
 	}
 
-	public async decrStackSize(i1: int):  Promise<ItemStack | null> {
+	public async decrStackSize(i1: int):  Promise<ItemStack | undefined> {
 		return await this.inventory.decrStackSize(this.slotIndex, i1);
 	}
 }

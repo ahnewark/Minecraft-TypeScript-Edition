@@ -12,9 +12,9 @@ import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Random } from "../java/util/Random";
 
 export  class BlockStairs extends Block {
-	private modelBlock:  Block | null;
+	private modelBlock:  Block | undefined;
 
-	public constructor(i1: int, block2: Block| null) {
+	public constructor(i1: int, block2: Block| undefined) {
 		super(i1, block2.blockIndexInTexture, block2.blockMaterial);
 		this.modelBlock = block2;
 		this.setHardness(block2.blockHardness);
@@ -22,11 +22,11 @@ export  class BlockStairs extends Block {
 		this.setStepSound(block2.stepSound);
 	}
 
-	public setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  void {
+	public setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  void {
 		this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		return await super.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
@@ -42,11 +42,11 @@ export  class BlockStairs extends Block {
 		return 10;
 	}
 
-	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		return await super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5);
 	}
 
-	public async getCollidingBoundingBoxes(world1: World| null, i2: int, i3: int, i4: int, axisAlignedBB5: AxisAlignedBB| null, arrayList6: AxisAlignedBB[]):  Promise<void> {
+	public async getCollidingBoundingBoxes(world1: World| undefined, i2: int, i3: int, i4: int, axisAlignedBB5: AxisAlignedBB| undefined, arrayList6: AxisAlignedBB[]):  Promise<void> {
 		let  i7: int = await world1.getBlockMetadata(i2, i3, i4);
 		if(i7 === 0) {
 			this.setBlockBounds(0.0, 0.0, 0.0, 0.5, 0.5, 1.0);
@@ -73,23 +73,23 @@ export  class BlockStairs extends Block {
 		this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 	}
 
-	public randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random | null):  void {
+	public randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random | undefined):  void {
 		this.modelBlock.randomDisplayTick(world1, i2, i3, i4, random5);
 	}
 
-	public async onBlockClicked(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<void> {
+	public async onBlockClicked(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<void> {
 		await this.modelBlock.onBlockClicked(world1, i2, i3, i4, entityPlayer5);
 	}
 
-	public async onBlockDestroyedByPlayer(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onBlockDestroyedByPlayer(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await this.modelBlock.onBlockDestroyedByPlayer(world1, i2, i3, i4, i5);
 	}
 
-	public async getBlockBrightness(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<float> {
+	public async getBlockBrightness(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<float> {
 		return await this.modelBlock.getBlockBrightness(iBlockAccess1, i2, i3, i4);
 	}
 
-	public getExplosionResistance(entity1: Entity| null):  float {
+	public getExplosionResistance(entity1: Entity| undefined):  float {
 		return this.modelBlock.getExplosionResistance(entity1);
 	}
 
@@ -97,11 +97,11 @@ export  class BlockStairs extends Block {
 		return this.modelBlock.getRenderBlockPass();
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return this.modelBlock.idDropped(i1, random2);
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return this.modelBlock.quantityDropped(random1);
 	}
 
@@ -113,7 +113,7 @@ export  class BlockStairs extends Block {
 		return this.modelBlock.getBlockTextureFromSide(i1);
 	}
 
-	public async getBlockTexture(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
+	public async getBlockTexture(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
 		return await this.modelBlock.getBlockTexture(iBlockAccess1, i2, i3, i4, i5);
 	}
 
@@ -121,11 +121,11 @@ export  class BlockStairs extends Block {
 		return this.modelBlock.tickRate();
 	}
 
-	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getSelectedBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		return await this.modelBlock.getSelectedBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
-	public velocityToAddToEntity(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null, vec3D6: Vec3D| null):  void {
+	public velocityToAddToEntity(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined, vec3D6: Vec3D| undefined):  void {
 		this.modelBlock.velocityToAddToEntity(world1, i2, i3, i4, entity5, vec3D6);
 	}
 
@@ -137,44 +137,44 @@ export  class BlockStairs extends Block {
 		return this.modelBlock.canCollideCheck(i1, z2);
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await this.modelBlock.canPlaceBlockAt(world1, i2, i3, i4);
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.onNeighborBlockChange(world1, i2, i3, i4, 0);
 		await this.modelBlock.onBlockAdded(world1, i2, i3, i4);
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.modelBlock.onBlockRemoval(world1, i2, i3, i4);
 	}
 
-	public async dropBlockAsItemWithChance(world1: World| null, i2: int, i3: int, i4: int, i5: int, f6: float):  Promise<void> {
+	public async dropBlockAsItemWithChance(world1: World| undefined, i2: int, i3: int, i4: int, i5: int, f6: float):  Promise<void> {
 		await this.modelBlock.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, f6);
 	}
 
-	public async dropBlockAsItem(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async dropBlockAsItem(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await this.modelBlock.dropBlockAsItem(world1, i2, i3, i4, i5);
 	}
 
-	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
+	public async onEntityWalking(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined):  Promise<void> {
 		await this.modelBlock.onEntityWalking(world1, i2, i3, i4, entity5);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		await this.modelBlock.updateTick(world1, i2, i3, i4, random5);
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<boolean> {
 		return this.modelBlock.blockActivated(world1, i2, i3, i4, entityPlayer5);
 	}
 
-	public async onBlockDestroyedByExplosion(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockDestroyedByExplosion(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.modelBlock.onBlockDestroyedByExplosion(world1, i2, i3, i4);
 	}
 
-	public async onBlockPlacedBy(world1: World| null, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| null):  Promise<void> {
+	public async onBlockPlacedBy(world1: World| undefined, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| undefined):  Promise<void> {
 		let  i6: int = MathHelper.floor_double((entityLiving5.rotationYaw * 4.0 / 360.0) as double + 0.5) & 3;
 		if(i6 === 0) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 2);

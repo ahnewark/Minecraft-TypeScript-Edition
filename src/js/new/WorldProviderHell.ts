@@ -20,7 +20,7 @@ export  class WorldProviderHell extends WorldProvider {
 		this.worldType = -1;
 	}
 
-	public func_4096_a(f1: float, f2: float):  Vec3D | null {
+	public func_4096_a(f1: float, f2: float):  Vec3D | undefined {
 		return Vec3D.createVector(0.2 as double, 0.03 as double, 0.03 as double);
 	}
 
@@ -33,11 +33,11 @@ export  class WorldProviderHell extends WorldProvider {
 		}
 	}
 
-	public getChunkProvider():  IChunkProvider | null {
+	public getChunkProvider():  IChunkProvider | undefined {
 		return new  ChunkProviderHell(this.worldObj, this.worldObj.randomSeed);
 	}
 
-	public async getChunkLoader(file1: java.io.File| null):  Promise<IChunkLoader | null> {
+	public async getChunkLoader(file1: java.io.File| undefined):  Promise<IChunkLoader | undefined> {
 		let  file2: java.io.File = new File(file1, new JavaString("DIM-1"));
 		await file2.mkdirs();
 		return new  ChunkLoader(file2, true);

@@ -11,7 +11,7 @@ import { Block } from "./Block";
 // - a name getter has been added in place of the class to name map.
 export abstract class TileEntity {
 	private static nameToClassMap: { [name: string]: () => TileEntity } = {}
-	public worldObj:  World | null;
+	public worldObj:  World | undefined;
 	public xCoord:  int;
 	public yCoord:  int;
 	public zCoord:  int;
@@ -28,13 +28,13 @@ export abstract class TileEntity {
 		// }
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.xCoord = nBTTagCompound1.getInteger("x");
 		this.yCoord = nBTTagCompound1.getInteger("y");
 		this.zCoord = nBTTagCompound1.getInteger("z");
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setString("id", this.name);
 		nBTTagCompound1.setInteger("x", this.xCoord);
 		nBTTagCompound1.setInteger("y", this.yCoord);
@@ -44,8 +44,8 @@ export abstract class TileEntity {
 	public updateEntity():  void {
 	}
 
-	public static createAndLoadEntity(nBTTagCompound0: NBTTagCompound| null):  TileEntity | null {
-		let  tileEntity1: TileEntity = null;
+	public static createAndLoadEntity(nBTTagCompound0: NBTTagCompound| undefined):  TileEntity | undefined {
+		let  tileEntity1: TileEntity = undefined;
 
 		try {
 			let makeTileEntity = TileEntity.nameToClassMap[nBTTagCompound0.getString("id")];
@@ -60,7 +60,7 @@ export abstract class TileEntity {
 			}
 		}
 
-		if(tileEntity1 !== null) {
+		if(tileEntity1 !== undefined) {
 			tileEntity1.readFromNBT(nBTTagCompound0);
 		} else {
 			console.log("Skipping TileEntity with id " + nBTTagCompound0.getString("id"));
@@ -74,7 +74,7 @@ export abstract class TileEntity {
 	}
 
 	public async onInventoryChanged(): Promise<void> {
-		if(this.worldObj !== null) {
+		if(this.worldObj !== undefined) {
 			await this.worldObj.func_698_b(this.xCoord, this.yCoord, this.zCoord, this);
 		}
 	}

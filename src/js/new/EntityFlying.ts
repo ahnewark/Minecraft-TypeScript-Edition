@@ -6,7 +6,7 @@ import { Block, } from "./Block";
 
 
 export  class EntityFlying extends EntityLiving {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 	}
 

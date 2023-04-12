@@ -12,7 +12,7 @@ import { ItemStack } from "./ItemStack";
 import { Random } from "../java/util/Random";
 
 export  class Item extends JavaObject {
-	protected static itemRand:  Random | null = new  Random();
+	protected static itemRand:  Random | undefined = new  Random();
     public static itemsList:  Item[] = new  Array<Item>(32000);
 	public static shovelSteel:  Item;
 	public static pickaxeSteel:  Item;
@@ -121,7 +121,7 @@ export  class Item extends JavaObject {
 	protected iconIndex:  int;
 	protected bFull3D:  boolean = false;
 	protected hasSubtypes:  boolean = false;
-	private containerItem:  Item | null = null;
+	private containerItem:  Item | undefined = undefined;
 	private itemName:  string;
 
 	public constructor(i1: int) {
@@ -134,34 +134,34 @@ export  class Item extends JavaObject {
 		Item.itemsList[256 + i1] = this;
 	}
 
-	public setIconIndex(i1: int):  Item | null {
+	public setIconIndex(i1: int):  Item | undefined {
 		this.iconIndex = i1;
 		return this;
 	}
 
-	public setMaxStackSize(i1: int):  Item | null {
+	public setMaxStackSize(i1: int):  Item | undefined {
 		this.maxStackSize = i1;
 		return this;
 	}
 
-	public setIconCoord(i1: int, i2: int):  Item | null {
+	public setIconCoord(i1: int, i2: int):  Item | undefined {
 		this.iconIndex = i1 + i2 * 16;
 		return this;
 	}
 
-	public getIconIndex(itemStack1: ItemStack| null):  int {
+	public getIconIndex(itemStack1: ItemStack| undefined):  int {
 		return this.iconIndex;
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer| undefined, world3: World| undefined, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
 		return false;
 	}
 
-	public getStrVsBlock(itemStack1: ItemStack| null, block2: Block| null):  float {
+	public getStrVsBlock(itemStack1: ItemStack| undefined, block2: Block| undefined):  float {
 		return 1.0;
 	}
 
-	public async onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
+	public async onItemRightClick(itemStack1: ItemStack| undefined, world2: World| undefined, entityPlayer3: EntityPlayer| undefined):  Promise<ItemStack | undefined> {
 		return itemStack1;
 	}
 
@@ -177,7 +177,7 @@ export  class Item extends JavaObject {
 		return this.hasSubtypes;
 	}
 
-	protected setHasSubtypes(z1: boolean):  Item | null {
+	protected setHasSubtypes(z1: boolean):  Item | undefined {
 		this.hasSubtypes = z1;
 		return this;
 	}
@@ -186,29 +186,29 @@ export  class Item extends JavaObject {
 		return this.maxDamage;
 	}
 
-	protected setMaxDamage(i1: int):  Item | null {
+	protected setMaxDamage(i1: int):  Item | undefined {
 		this.maxDamage = i1;
 		return this;
 	}
 
-	public hitEntity(itemStack1: ItemStack| null, entityLiving2: EntityLiving| null):  void {
+	public hitEntity(itemStack1: ItemStack| undefined, entityLiving2: EntityLiving| undefined):  void {
 	}
 
-	public hitBlock(itemStack1: ItemStack| null, i2: int, i3: int, i4: int, i5: int):  void {
+	public hitBlock(itemStack1: ItemStack| undefined, i2: int, i3: int, i4: int, i5: int):  void {
 	}
 
-	public getDamageVsEntity(entity1: Entity| null):  int {
+	public getDamageVsEntity(entity1: Entity| undefined):  int {
 		return 1;
 	}
 
-	public canHarvestBlock(block1: Block| null):  boolean {
+	public canHarvestBlock(block1: Block| undefined):  boolean {
 		return false;
 	}
 
-	public saddleEntity(itemStack1: ItemStack| null, entityLiving2: EntityLiving| null):  void {
+	public saddleEntity(itemStack1: ItemStack| undefined, entityLiving2: EntityLiving| undefined):  void {
 	}
 
-	public setFull3D():  Item | null {
+	public setFull3D():  Item | undefined {
 		this.bFull3D = true;
 		return this;
 	}
@@ -221,7 +221,7 @@ export  class Item extends JavaObject {
 		return false;
 	}
 
-	public setItemName(string1: string):  Item | null {
+	public setItemName(string1: string):  Item | undefined {
 		this.itemName = "item." + string1;
 		return this;
 	}
@@ -230,11 +230,11 @@ export  class Item extends JavaObject {
 		return this.itemName;
 	}
 
-	public getItemNameIS(itemStack1: ItemStack| null):  string {
+	public getItemNameIS(itemStack1: ItemStack| undefined):  string {
 		return this.itemName;
 	}
 
-	public setContainerItem(item1: Item| null):  Item | null {
+	public setContainerItem(item1: Item| undefined):  Item | undefined {
 		if(this.maxStackSize > 1) {
 			throw new  java.lang.IllegalArgumentException("Max stack size must be 1 for items with crafting results");
 		} else {
@@ -243,11 +243,11 @@ export  class Item extends JavaObject {
 		}
 	}
 
-	public getContainerItem():  Item | null {
+	public getContainerItem():  Item | undefined {
 		return this.containerItem;
 	}
 
 	public func_21014_i():  boolean {
-		return this.containerItem !== null;
+		return this.containerItem !== undefined;
 	}
 }

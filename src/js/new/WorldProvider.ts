@@ -78,7 +78,7 @@ export  class WorldProvider extends JavaObject {
 		return f5;
 	}
 
-	public func_4097_b(f1: float, f2: float):  Float64Array | null {
+	public func_4097_b(f1: float, f2: float):  Float64Array | undefined {
 		let  f3: float = 0.4;
 		let  f4: float = MathHelper.cos(f1 * java.lang.Math.PI as float * 2.0) - 0.0;
 		let  f5: float = -0.0;
@@ -92,11 +92,11 @@ export  class WorldProvider extends JavaObject {
 			this.field_4217_f[3] = f7;
 			return this.field_4217_f;
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
-	public func_4096_a(f1: float, f2: float):  Vec3D | null {
+	public func_4096_a(f1: float, f2: float):  Vec3D | undefined {
 		let  f3: float = MathHelper.cos(f1 * java.lang.Math.PI as float * 2.0) * 2.0 + 0.5;
 		if(f3 < 0.0) {
 			f3 = 0.0;
@@ -119,7 +119,7 @@ export  class WorldProvider extends JavaObject {
 		return true;
 	}
 
-	public static func_4101_a(i0: int):  WorldProvider | null {
-		return (i0 === 0 ? new  WorldProvider() : (i0 === -1 ? new  WorldProviderHell() : null)) as WorldProvider;
+	public static func_4101_a(i0: int):  WorldProvider | undefined {
+		return (i0 === 0 ? new  WorldProvider() : (i0 === -1 ? new  WorldProviderHell() : undefined)) as WorldProvider;
 	}
 }

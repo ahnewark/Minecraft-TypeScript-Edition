@@ -20,7 +20,7 @@ export  class EntitySheep extends EntityAnimals {
 		return 'Sheep';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/sheep.png";
 		this.setSize(0.9, 1.3);
@@ -31,7 +31,7 @@ export  class EntitySheep extends EntityAnimals {
 		this.dataWatcher.addObject(16, 0, 'Byte');
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int): Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int): Promise<boolean> {
 		if(!this.worldObj.multiplayerWorld && !this.func_21072_p() && entity1 instanceof EntityLiving) {
 			this.setSheared(true);
 			let  i3: int = 1 + this.rand.nextInt(3);
@@ -47,13 +47,13 @@ export  class EntitySheep extends EntityAnimals {
 		return await super.attackEntityFrom(entity1, i2);
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 		nBTTagCompound1.setBoolean("Sheared", this.func_21072_p());
 		nBTTagCompound1.setByte("Color", this.getFleeceColor() as byte);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 		this.setSheared(nBTTagCompound1.getBoolean("Sheared"));
 		this.setFleeceColor(nBTTagCompound1.getByte("Color"));
@@ -94,7 +94,7 @@ export  class EntitySheep extends EntityAnimals {
 
 	}
 
-	public static func_21070_a(random0: Random | null):  int {
+	public static func_21070_a(random0: Random | undefined):  int {
 		let  i1: int = random0.nextInt(100);
 		return i1 < 5 ? 15 : (i1 < 10 ? 7 : (i1 < 15 ? 8 : 0));
 	}

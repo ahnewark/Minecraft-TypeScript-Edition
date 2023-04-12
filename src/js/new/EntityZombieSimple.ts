@@ -8,7 +8,7 @@ import { EntityCreature } from "./EntityCreature";
 import { Entity } from "./Entity";
 
 export  class EntityZombieSimple extends EntityMobs {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/zombie.png";
 		this.moveSpeed = 0.5;

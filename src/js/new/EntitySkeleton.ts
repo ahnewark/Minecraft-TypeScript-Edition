@@ -10,13 +10,13 @@ import { Entity } from "./Entity";
 import { Item } from "./Item";
 
 export  class EntitySkeleton extends EntityMobs {
-	private static readonly defaultHeldItem:  ItemStack | null = new  ItemStack(Item.bow, 1);
+	private static readonly defaultHeldItem:  ItemStack | undefined = new  ItemStack(Item.bow, 1);
 
 	public override get type(): string {
 		return 'Skeleton';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/skeleton.png";
 	}
@@ -44,7 +44,7 @@ export  class EntitySkeleton extends EntityMobs {
 		await super.onLivingUpdate();
 	}
 
-	protected async attackEntity(entity1: Entity| null, f2: float):  Promise<void> {
+	protected async attackEntity(entity1: Entity| undefined, f2: float):  Promise<void> {
 		if(f2 < 10.0) {
 			let  d3: double = entity1.posX - this.posX;
 			let  d5: double = entity1.posZ - this.posZ;
@@ -65,11 +65,11 @@ export  class EntitySkeleton extends EntityMobs {
 
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 
@@ -93,7 +93,7 @@ export  class EntitySkeleton extends EntityMobs {
 
 	}
 
-	public getHeldItem():  ItemStack | null {
+	public getHeldItem():  ItemStack | undefined {
 		return EntitySkeleton.defaultHeldItem;
 	}
 }

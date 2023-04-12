@@ -17,7 +17,7 @@ export  class ItemBlock extends Item {
 		this.setIconIndex(Block.blocksList[i1 + 256].getBlockTextureFromSide(2));
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer, world3: World| null, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer, world3: World| undefined, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
 		if(await world3.getBlockId(i4, i5, i6) === Block.snow.blockID) {
 			i7 = 0;
 		} else {
@@ -63,7 +63,7 @@ export  class ItemBlock extends Item {
 		}
 	}
 
-	public getItemNameIS(itemStack1: ItemStack| null): string {
+	public getItemNameIS(itemStack1: ItemStack| undefined): string {
 		return Block.blocksList[this.blockID].getBlockName();
 	}
 

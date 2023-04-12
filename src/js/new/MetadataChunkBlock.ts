@@ -10,7 +10,7 @@ import { EnumSkyBlock } from "./EnumSkyBlock";
 
 
 export  class MetadataChunkBlock extends JavaObject {
-	public readonly field_1299_a:  EnumSkyBlock | null;
+	public readonly field_1299_a:  EnumSkyBlock | undefined;
 	public field_1298_b:  int;
 	public field_1304_c:  int;
 	public field_1303_d:  int;
@@ -18,7 +18,7 @@ export  class MetadataChunkBlock extends JavaObject {
 	public field_1301_f:  int;
 	public field_1300_g:  int;
 
-	public constructor(enumSkyBlock1: EnumSkyBlock| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int) {
+	public constructor(enumSkyBlock1: EnumSkyBlock| undefined, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int) {
 		super();
 		this.field_1299_a = enumSkyBlock1;
 		this.field_1298_b = i2;
@@ -29,7 +29,7 @@ export  class MetadataChunkBlock extends JavaObject {
 		this.field_1300_g = i7;
 	}
 
-	public async func_4127_a(world1: World| null):  Promise<void> {
+	public async func_4127_a(world1: World| undefined):  Promise<void> {
 		let  i2: int = this.field_1302_e - this.field_1298_b + 1;
 		let  i3: int = this.field_1301_f - this.field_1304_c + 1;
 		let  i4: int = this.field_1300_g - this.field_1303_d + 1;

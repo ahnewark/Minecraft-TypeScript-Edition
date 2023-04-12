@@ -11,7 +11,7 @@ export  class PathPoint extends JavaObject {
 	public totalPathDistance: float;
 	public distanceToNext: float;
 	public distanceToTarget: float;
-	public previous: PathPoint | null;
+	public previous: PathPoint | undefined;
 	public isFirst:  boolean = false;
 
 	public constructor(i1: int, i2: int, i3: int) {
@@ -22,14 +22,14 @@ export  class PathPoint extends JavaObject {
 		this.hash = i1 | i2 << 10 | i3 << 20;
 	}
 
-	public distanceTo(pathPoint1: PathPoint| null):  float {
+	public distanceTo(pathPoint1: PathPoint| undefined):  float {
 		let  f2: float = (pathPoint1.xCoord - this.xCoord) as float;
 		let  f3: float = (pathPoint1.yCoord - this.yCoord) as float;
 		let  f4: float = (pathPoint1.zCoord - this.zCoord) as float;
 		return MathHelper.sqrt_float(f2 * f2 + f3 * f3 + f4 * f4);
 	}
 
-	public equals(object1: java.lang.Object| null):  boolean {
+	public equals(object1: java.lang.Object| undefined):  boolean {
 		return (object1 as PathPoint).hash === this.hash;
 	}
 

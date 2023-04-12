@@ -10,7 +10,7 @@ import { Block } from "./Block";
 import { BlockRegistry } from './static/BlockRegistry'
 
 export  class WorldGenTaiga2 extends WorldGenerator {
-	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {
 		let  i6: int = random2.nextInt(4) + 6;
 		let  i7: int = 1 + random2.nextInt(2);
 		let  i8: int = i6 - i7;

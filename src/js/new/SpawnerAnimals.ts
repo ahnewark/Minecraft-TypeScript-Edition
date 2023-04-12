@@ -19,14 +19,14 @@ import { MaterialRegistry } from "./static/MaterialRegistry";
 export  class SpawnerAnimals extends JavaObject {
 	private static eligibleChunksForSpawning: Set<ChunkCoordIntPair> = new Set();
 
-	protected static getRandomSpawningPointInChunk(world0: World| null, i1: int, i2: int):  ChunkPosition | null {
+	protected static getRandomSpawningPointInChunk(world0: World| undefined, i1: int, i2: int):  ChunkPosition | undefined {
 		let  i3: int = i1 + world0.rand.nextInt(16);
 		let  i4: int = world0.rand.nextInt(128);
 		let  i5: int = i2 + world0.rand.nextInt(16);
 		return new  ChunkPosition(i3, i4, i5);
 	}
 
-	public static async performSpawning(world0: World| null, z1: boolean, z2: boolean):  Promise<int> {
+	public static async performSpawning(world0: World| undefined, z1: boolean, z2: boolean):  Promise<int> {
 		if(!z1 && !z2) {
 			return 0;
 		} else {
@@ -78,7 +78,7 @@ export  class SpawnerAnimals extends JavaObject {
 										chunkCoordIntPair35 = eligibleChunks[index];
 										let  mobSpawnerBase10: MobSpawnerBase = world0.getWorldChunkManager().func_4074_a(chunkCoordIntPair35);
 										class11 = mobSpawnerBase10.getEntitiesForType(enumCreatureType33);
-									} while(class11 === null);
+									} while(class11 === undefined);
 								} while(class11.length === 0);
 
 								i12 = world0.rand.nextInt(class11.length);
@@ -105,7 +105,7 @@ export  class SpawnerAnimals extends JavaObject {
 									let  f24: float = i19 as float + 0.5;
 									let  f25: float = i20 as float;
 									let  f26: float = i21 as float + 0.5;
-									if(world0.getClosestPlayer(f24 as double, f25 as double, f26 as double, 24.0) === null) {
+									if(world0.getClosestPlayer(f24 as double, f25 as double, f26 as double, 24.0) === undefined) {
 										let  f27: float = f24 - world0.spawnX as float;
 										let  f28: float = f25 - world0.spawnY as float;
 										let  f29: float = f26 - world0.spawnZ as float;
@@ -148,11 +148,11 @@ export  class SpawnerAnimals extends JavaObject {
 		}
 	}
 
-	private static async func_21203_a(enumCreatureType0: EnumCreatureType| null, world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private static async func_21203_a(enumCreatureType0: EnumCreatureType| undefined, world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return enumCreatureType0.getCreatureMaterial() === MaterialRegistry.water ? (await world1.getBlockMaterial(i2, i3, i4)).getIsLiquid() && !await world1.isBlockOpaqueCube(i2, i3 + 1, i4) : await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await world1.isBlockOpaqueCube(i2, i3, i4) && !(await world1.getBlockMaterial(i2, i3, i4)).getIsLiquid() && !await world1.isBlockOpaqueCube(i2, i3 + 1, i4);
 	}
 
-	private static async func_21204_a(entityLiving0: EntityLiving| null, world1: World| null, f2: float, f3: float, f4: float):  Promise<void> {
+	private static async func_21204_a(entityLiving0: EntityLiving| undefined, world1: World| undefined, f2: float, f3: float, f4: float):  Promise<void> {
 		if(entityLiving0 instanceof EntitySpider && world1.rand.nextInt(100) === 0) {
 			let  entitySkeleton5: EntitySkeleton = new  EntitySkeleton(world1);
 			entitySkeleton5.setLocationAndAngles(f2 as double, f3 as double, f4 as double, entityLiving0.rotationYaw, 0.0);

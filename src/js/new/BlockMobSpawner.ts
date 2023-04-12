@@ -10,15 +10,15 @@ export  class BlockMobSpawner extends BlockContainer {
 		super(i1, i2, MaterialRegistry.rock);
 	}
 
-	protected getBlockEntity():  TileEntity | null {
+	protected getBlockEntity():  TileEntity | undefined {
 		return new  TileEntityMobSpawner();
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return 0;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 0;
 	}
 

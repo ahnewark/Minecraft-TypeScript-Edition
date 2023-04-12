@@ -6,11 +6,11 @@ import { Item } from "./Item";
 import { Random } from "../java/util/Random";
 
 export  class BlockLightStone extends Block {
-	public constructor(i1: int, i2: int, material3: Material| null) {
+	public constructor(i1: int, i2: int, material3: Material| undefined) {
 		super(i1, i2, material3);
 	}
 
-	public idDropped(i1: int, random2: Random | null):  int {
+	public idDropped(i1: int, random2: Random | undefined):  int {
 		return Item.lightStoneDust.shiftedIndex;
 	}
 }

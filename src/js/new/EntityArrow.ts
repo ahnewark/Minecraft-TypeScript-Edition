@@ -21,7 +21,7 @@ export  class EntityArrow extends Entity {
 	private inTile:  int = 0;
 	private inGround:  boolean = false;
 	public arrowShake:  int = 0;
-	public field_682_g:  EntityLiving | null;
+	public field_682_g:  EntityLiving | undefined;
 	private field_681_h:  int;
 	private field_680_i:  int = 0;
 
@@ -29,11 +29,11 @@ export  class EntityArrow extends Entity {
 		return 'Arrow';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, entityLiving2: EntityLiving| null);
+	public constructor(world1: World| undefined, entityLiving2: EntityLiving| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -149,11 +149,11 @@ export  class EntityArrow extends Entity {
 		let  movingObjectPosition3: MovingObjectPosition = await this.worldObj.rayTraceBlocks(vec3D16, vec3D2);
 		vec3D16 = Vec3D.createVector(this.posX, this.posY, this.posZ);
 		vec3D2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		if(movingObjectPosition3 !== null) {
+		if(movingObjectPosition3 !== undefined) {
 			vec3D2 = Vec3D.createVector(movingObjectPosition3.hitVec.xCoord, movingObjectPosition3.hitVec.yCoord, movingObjectPosition3.hitVec.zCoord);
 		}
 
-		let  entity4: Entity = null;
+		let  entity4: Entity = undefined;
 		let  list5 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0, 1.0, 1.0));
 		let  d6: double = 0.0;
 
@@ -164,7 +164,7 @@ export  class EntityArrow extends Entity {
 				f10 = 0.3;
 				let  axisAlignedBB11: AxisAlignedBB = entity9.boundingBox.expand(f10 as double, f10 as double, f10 as double);
 				let  movingObjectPosition12: MovingObjectPosition = axisAlignedBB11.func_1169_a(vec3D16, vec3D2);
-				if(movingObjectPosition12 !== null) {
+				if(movingObjectPosition12 !== undefined) {
 					let  d13: double = vec3D16.distanceTo(movingObjectPosition12.hitVec);
 					if(d13 < d6 || d6 === 0.0) {
 						entity4 = entity9;
@@ -174,13 +174,13 @@ export  class EntityArrow extends Entity {
 			}
 		}
 
-		if(entity4 !== null) {
+		if(entity4 !== undefined) {
 			movingObjectPosition3 = new  MovingObjectPosition(entity4);
 		}
 
 		let  f17: float;
-		if(movingObjectPosition3 !== null) {
-			if(movingObjectPosition3.entityHit !== null) {
+		if(movingObjectPosition3 !== undefined) {
+			if(movingObjectPosition3.entityHit !== undefined) {
 				if(await movingObjectPosition3.entityHit.attackEntityFrom(this.field_682_g, 4)) {
 					this.worldObj.playSoundAtEntity(this, "random.drr", 1.0, 1.2 / (this.rand.nextFloat() * 0.2 + 0.9));
 					await this.setEntityDead();
@@ -251,7 +251,7 @@ export  class EntityArrow extends Entity {
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setShort("xTile", this.xTile as short);
 		nBTTagCompound1.setShort("yTile", this.yTile as short);
 		nBTTagCompound1.setShort("zTile", this.zTile as short);
@@ -260,7 +260,7 @@ export  class EntityArrow extends Entity {
 		nBTTagCompound1.setByte("inGround", (this.inGround ? 1 : 0) as byte);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.xTile = nBTTagCompound1.getShort("xTile");
 		this.yTile = nBTTagCompound1.getShort("yTile");
 		this.zTile = nBTTagCompound1.getShort("zTile");

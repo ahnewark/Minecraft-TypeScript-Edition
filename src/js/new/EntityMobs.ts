@@ -16,7 +16,7 @@ export  class EntityMobs extends EntityCreature implements IMobs {
 		return 'Mobs';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.health = 20;
 	}
@@ -37,12 +37,12 @@ export  class EntityMobs extends EntityCreature implements IMobs {
 		}
 	}
 
-	protected async findPlayerToAttack():  Promise<Entity | null> {
+	protected async findPlayerToAttack():  Promise<Entity | undefined> {
 		let  entityPlayer1: EntityPlayer = this.worldObj.getClosestPlayerToEntity(this, 16.0);
-		return entityPlayer1 !== null && this.canEntityBeSeen(entityPlayer1) ? entityPlayer1 : null;
+		return entityPlayer1 !== undefined && this.canEntityBeSeen(entityPlayer1) ? entityPlayer1 : undefined;
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int):  Promise<boolean> {
 		if(await super.attackEntityFrom(entity1, i2)) {
 			if(this.riddenByEntity !== entity1 && this.ridingEntity !== entity1) {
 				if(entity1 !== this) {
@@ -58,7 +58,7 @@ export  class EntityMobs extends EntityCreature implements IMobs {
 		}
 	}
 
-	protected async attackEntity(entity1: Entity| null, f2: float):  Promise<void> {
+	protected async attackEntity(entity1: Entity| undefined, f2: float):  Promise<void> {
 		if(f2 < 2.5 && entity1.boundingBox.maxY > this.boundingBox.minY && entity1.boundingBox.minY < this.boundingBox.maxY) {
 			this.attackTime = 20;
 			await entity1.attackEntityFrom(this, this.attackStrength);
@@ -70,11 +70,11 @@ export  class EntityMobs extends EntityCreature implements IMobs {
 		return 0.5 - await this.worldObj.getLightBrightness(i1, i2, i3);
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 

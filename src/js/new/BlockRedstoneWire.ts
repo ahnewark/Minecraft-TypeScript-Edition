@@ -23,8 +23,8 @@ export  class BlockRedstoneWire extends Block {
 		return this.blockIndexInTexture + (i2 > 0 ? 16 : 0);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public isOpaqueCube():  boolean {
@@ -39,11 +39,11 @@ export  class BlockRedstoneWire extends Block {
 		return 5;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.isBlockOpaqueCube(i2, i3 - 1, i4);
 	}
 
-	private async updateAndPropagateCurrentStrength(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async updateAndPropagateCurrentStrength(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.func_21030_a(world1, i2, i3, i4, i2, i3, i4);
 		let  arrayList5 = Array.from(this.field_21031_b);
 		this.field_21031_b.clear();
@@ -55,7 +55,7 @@ export  class BlockRedstoneWire extends Block {
 
 	}
 
-	private async func_21030_a(world1: World| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  Promise<void> {
+	private async func_21030_a(world1: World| undefined, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  Promise<void> {
 		let  i8: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  i9: int = 0;
 		this.wiresProvidePower = false;
@@ -171,7 +171,7 @@ export  class BlockRedstoneWire extends Block {
 
 	}
 
-	private async notifyWireNeighborsOfNeighborChange(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async notifyWireNeighborsOfNeighborChange(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(await world1.getBlockId(i2, i3, i4) === this.blockID) {
 			await world1.notifyBlocksOfNeighborChange(i2, i3, i4, this.blockID);
 			await world1.notifyBlocksOfNeighborChange(i2 - 1, i3, i4, this.blockID);
@@ -183,7 +183,7 @@ export  class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await super.onBlockAdded(world1, i2, i3, i4);
 		if(!world1.multiplayerWorld) {
 			await this.updateAndPropagateCurrentStrength(world1, i2, i3, i4);
@@ -220,7 +220,7 @@ export  class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await super.onBlockRemoval(world1, i2, i3, i4);
 		if(!world1.multiplayerWorld) {
 			await world1.notifyBlocksOfNeighborChange(i2, i3 + 1, i4, this.blockID);
@@ -257,7 +257,7 @@ export  class BlockRedstoneWire extends Block {
 		}
 	}
 
-	private async getMaxCurrentStrength(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
+	private async getMaxCurrentStrength(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
 		if(await world1.getBlockId(i2, i3, i4) !== this.blockID) {
 			return i5;
 		} else {
@@ -266,7 +266,7 @@ export  class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			let  z7: boolean = await this.canPlaceBlockAt(world1, i2, i3, i4);
@@ -281,15 +281,15 @@ export  class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public idDropped(i1: int, random2: Random | null):  int {
+	public idDropped(i1: int, random2: Random | undefined):  int {
 		return Item.redstone.shiftedIndex;
 	}
 
-	public async isIndirectlyPoweringTo(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async isIndirectlyPoweringTo(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		return !this.wiresProvidePower ? false : await this.isPoweringTo(world1, i2, i3, i4, i5);
 	}
 
-	public async isPoweringTo(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async isPoweringTo(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		if(!this.wiresProvidePower) {
 			return false;
 		} else if(await iBlockAccess1.getBlockMetadata(i2, i3, i4) === 0) {
@@ -327,7 +327,7 @@ export  class BlockRedstoneWire extends Block {
 		return this.wiresProvidePower;
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(await world1.getBlockMetadata(i2, i3, i4) > 0) {
 			let  d6: double = i2 as double + 0.5 + (random5.nextFloat() as double - 0.5) * 0.2;
 			let  d8: double = (i3 as float + 0.0625) as double;
@@ -337,7 +337,7 @@ export  class BlockRedstoneWire extends Block {
 
 	}
 
-	public static async isPowerProviderOrWire(iBlockAccess0: IBlockAccess| null, i1: int, i2: int, i3: int):  Promise<boolean> {
+	public static async isPowerProviderOrWire(iBlockAccess0: IBlockAccess| undefined, i1: int, i2: int, i3: int):  Promise<boolean> {
 		let  i4: int = await iBlockAccess0.getBlockId(i1, i2, i3);
 		return i4 === Block.redstoneWire.blockID ? true : (i4 === 0 ? false : await Block.blocksList[i4].canProvidePower());
 	}

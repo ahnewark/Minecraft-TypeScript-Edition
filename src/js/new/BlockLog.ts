@@ -12,15 +12,15 @@ export  class BlockLog extends Block {
 		this.blockIndexInTexture = 20;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 1;
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.wood.blockID;
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  b5: byte = 4;
 		let  i6: int = b5 + 1;
 		if(world1.checkChunksExist(i2 - i6, i3 - i6, i4 - i6, i2 + i6, i3 + i6, i4 + i6)) {

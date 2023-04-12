@@ -22,17 +22,17 @@ export  class EntityPainting extends Entity {
 	public xPosition:  int;
 	public yPosition:  int;
 	public zPosition:  int;
-	public art:  EnumArt | null;
+	public art:  EnumArt | undefined;
 
 	public override get type(): string {
 		return 'Painting';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, i2: int, i3: int, i4: int, i5: int);
+	public constructor(world1: World| undefined, i2: int, i3: int, i4: int, i5: int);
 
-	public constructor(world1: World| null, i2: int, i3: int, i4: int, i5: int, string6: string);
+	public constructor(world1: World| undefined, i2: int, i3: int, i4: int, i5: int, string6: string);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -239,7 +239,7 @@ export  class EntityPainting extends Entity {
 		return true;
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int):  Promise<boolean> {
 		if(!this.isDead && !this.worldObj.multiplayerWorld) {
 			await this.setEntityDead();
 			this.setBeenAttacked();
@@ -249,7 +249,7 @@ export  class EntityPainting extends Entity {
 		return true;
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setByte("Dir", this.direction as byte);
 		nBTTagCompound1.setString("Motive", this.art.title);
 		nBTTagCompound1.setInteger("TileX", this.xPosition);
@@ -257,7 +257,7 @@ export  class EntityPainting extends Entity {
 		nBTTagCompound1.setInteger("TileZ", this.zPosition);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.direction = nBTTagCompound1.getByte("Dir");
 		this.xPosition = nBTTagCompound1.getInteger("TileX");
 		this.yPosition = nBTTagCompound1.getInteger("TileY");
@@ -273,7 +273,7 @@ export  class EntityPainting extends Entity {
 			}
 		}
 
-		if(this.art === null) {
+		if(this.art === undefined) {
 			this.art = EnumArt.Kebab;
 		}
 

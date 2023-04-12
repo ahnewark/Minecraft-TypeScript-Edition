@@ -25,6 +25,6 @@ export  class MapGenBase {
 
 	}
 
-	protected func_868_a(world1: World| null, i2: number, i3: number, i4: number, i5: number, b6: Int8Array):  void {
+	protected func_868_a(world1: World| undefined, i2: number, i3: number, i4: number, i5: number, b6: Int8Array):  void {
 	}
 }

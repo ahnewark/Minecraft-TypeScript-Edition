@@ -11,7 +11,7 @@ export  class BlockGravel extends BlockSand {
 		super(i1, i2);
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return random2.nextInt(10) === 0 ? Item.flint.shiftedIndex : this.blockID;
 	}
 }

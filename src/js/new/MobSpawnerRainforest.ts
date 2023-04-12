@@ -9,7 +9,7 @@ import { MobSpawnerBase } from "./MobSpawnerBase";
 import { Random } from "../java/util/Random";
 
 export  class MobSpawnerRainforest extends MobSpawnerBase {
-	public getRandomWorldGenForTrees(random1: Random| null):  WorldGenerator | null {
+	public getRandomWorldGenForTrees(random1: Random| undefined):  WorldGenerator | undefined {
 		return (random1.nextInt(3) === 0 ? new  WorldGenBigTree() : new  WorldGenTrees()) as WorldGenerator;
 	}
 }

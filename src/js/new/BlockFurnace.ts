@@ -25,16 +25,16 @@ export  class BlockFurnace extends BlockContainer {
 		this.blockIndexInTexture = 45;
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.stoneOvenIdle.blockID;
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await super.onBlockAdded(world1, i2, i3, i4);
 		await this.setDefaultDirection(world1, i2, i3, i4);
 	}
 
-	private async setDefaultDirection(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async setDefaultDirection(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await world1.getBlockId(i2, i3, i4 - 1);
 		let  i6: int = await world1.getBlockId(i2, i3, i4 + 1);
 		let  i7: int = await world1.getBlockId(i2 - 1, i3, i4);
@@ -59,7 +59,7 @@ export  class BlockFurnace extends BlockContainer {
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, b9);
 	}
 
-	public async getBlockTexture(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int): Promise<int> {
+	public async getBlockTexture(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int): Promise<int> {
 		if(i5 === 1) {
 			return this.blockIndexInTexture + 17;
 		} else if(i5 === 0) {
@@ -70,7 +70,7 @@ export  class BlockFurnace extends BlockContainer {
 		}
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null): Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined): Promise<void> {
 		if(this.isActive) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			let  f7: float = i2 as float + 0.5;
@@ -99,7 +99,7 @@ export  class BlockFurnace extends BlockContainer {
 		return i1 === 1 ? this.blockIndexInTexture + 17 : (i1 === 0 ? this.blockIndexInTexture + 17 : (i1 === 3 ? this.blockIndexInTexture - 1 : this.blockIndexInTexture));
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null): Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined): Promise<boolean> {
 		if(world1.multiplayerWorld) {
 			return true;
 		} else {
@@ -109,7 +109,7 @@ export  class BlockFurnace extends BlockContainer {
 		}
 	}
 
-	public static async updateFurnaceBlockState(z0: boolean, world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public static async updateFurnaceBlockState(z0: boolean, world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  tileEntity6: TileEntity = await world1.getBlockTileEntity(i2, i3, i4);
 		if(z0) {
@@ -122,11 +122,11 @@ export  class BlockFurnace extends BlockContainer {
 		await world1.setBlockTileEntity(i2, i3, i4, tileEntity6);
 	}
 
-	protected getBlockEntity():  TileEntity | null {
+	protected getBlockEntity():  TileEntity | undefined {
 		return new  TileEntityFurnace();
 	}
 
-	public async onBlockPlacedBy(world1: World| null, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| null):  Promise<void> {
+	public async onBlockPlacedBy(world1: World| undefined, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| undefined):  Promise<void> {
 		let  i6: int = MathHelper.floor_double((entityLiving5.rotationYaw * 4.0 / 360.0) as double + 0.5) & 3;
 		if(i6 === 0) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 2);

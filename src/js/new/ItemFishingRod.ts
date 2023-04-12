@@ -20,8 +20,8 @@ export  class ItemFishingRod extends Item {
 		return true;
 	}
 
-	public async onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
-		if(entityPlayer3.fishEntity !== null) {
+	public async onItemRightClick(itemStack1: ItemStack| undefined, world2: World| undefined, entityPlayer3: EntityPlayer| undefined):  Promise<ItemStack | undefined> {
+		if(entityPlayer3.fishEntity !== undefined) {
 			let  i4: int = await entityPlayer3.fishEntity.func_4043_i();
 			itemStack1.damageItem(i4);
 			entityPlayer3.swingItem();

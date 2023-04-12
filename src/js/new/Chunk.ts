@@ -394,11 +394,11 @@ export class Chunk {
 		this.data.setNibble(i1, i2, i3, i4);
 	}
 
-	public getSavedLightValue(enumSkyBlock1: EnumSkyBlock| null, i2: number, i3: number, i4: number):  number {
+	public getSavedLightValue(enumSkyBlock1: EnumSkyBlock| undefined, i2: number, i3: number, i4: number):  number {
 		return enumSkyBlock1 === EnumSkyBlock.Sky ? this.skylightMap.getNibble(i2, i3, i4) : (enumSkyBlock1 === EnumSkyBlock.Block ? this.blocklightMap.getNibble(i2, i3, i4) : 0);
 	}
 
-	public setLightValue(enumSkyBlock1: EnumSkyBlock| null, i2: number, i3: number, i4: number, i5: number):  void {
+	public setLightValue(enumSkyBlock1: EnumSkyBlock| undefined, i2: number, i3: number, i4: number, i5: number):  void {
 		this.isModified = true;
 		if(enumSkyBlock1 === EnumSkyBlock.Sky) {
 			this.skylightMap.setNibble(i2, i3, i4, i5);
@@ -427,7 +427,7 @@ export class Chunk {
 		return i5;
 	}
 
-	public addEntity(entity1: Entity| null):  void {
+	public addEntity(entity1: Entity| undefined):  void {
 		this.hasEntities = true;
 		let  i2: number = MathHelper.floor_double(entity1.posX / 16.0);
 		let  i3: number = MathHelper.floor_double(entity1.posZ / 16.0);
@@ -452,11 +452,11 @@ export class Chunk {
 		this.entities[i4].push(entity1);
 	}
 
-	public func_1015_b(entity1: Entity| null):  void {
+	public func_1015_b(entity1: Entity| undefined):  void {
 		this.func_1016_a(entity1, entity1.chunkCoordY);
 	}
 
-	public func_1016_a(entity1: Entity| null, i2: number):  void {
+	public func_1016_a(entity1: Entity| undefined, i2: number):  void {
 		if(i2 < 0) {
 			i2 = 0;
 		}
@@ -472,13 +472,13 @@ export class Chunk {
 		return i2 >= (this.heightMap[i3 << 4 | i1] & 255);
 	}
 
-	public async getChunkBlockTileEntity(i1: number, i2: number, i3: number):  Promise<TileEntity | null> {
+	public async getChunkBlockTileEntity(i1: number, i2: number, i3: number):  Promise<TileEntity | undefined> {
 		let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
 		let  tileEntity5: TileEntity = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
-		if(tileEntity5 === null) {
+		if(tileEntity5 === undefined) {
 			let  i6: number = this.getBlockID(i1, i2, i3);
 			if(!Block.isBlockContainer[i6]) {
-				return null;
+				return undefined;
 			}
 
 			let  blockContainer7: BlockContainer = Block.blocksList[i6] as BlockContainer;
@@ -489,14 +489,14 @@ export class Chunk {
 		return tileEntity5;
 	}
 
-	public func_1001_a(tileEntity1: TileEntity| null):  void {
+	public func_1001_a(tileEntity1: TileEntity| undefined):  void {
 		let  i2: number = tileEntity1.xCoord - this.xPosition * 16;
 		let  i3: number = tileEntity1.yCoord;
 		let  i4: number = tileEntity1.zCoord - this.zPosition * 16;
 		this.setChunkBlockTileEntity(i2, i3, i4, tileEntity1);
 	}
 
-	public setChunkBlockTileEntity(i1: number, i2: number, i3: number, tileEntity4: TileEntity| null):  void {
+	public setChunkBlockTileEntity(i1: number, i2: number, i3: number, tileEntity4: TileEntity| undefined):  void {
 		let  chunkPosition5: ChunkPosition = new  ChunkPosition(i1, i2, i3);
 		tileEntity4.worldObj = this.worldObj;
 		tileEntity4.xCoord = this.xPosition * 16 + i1;
@@ -504,7 +504,7 @@ export class Chunk {
 		tileEntity4.zCoord = this.zPosition * 16 + i3;
 		if(this.getBlockID(i1, i2, i3) !== 0 && Block.blocksList[this.getBlockID(i1, i2, i3)] instanceof BlockContainer) {
 			if(this.isChunkLoaded) {
-				if(this.chunkTileEntityMap.get(chunkPosition5) !== null) {
+				if(this.chunkTileEntityMap.get(chunkPosition5) !== undefined) {
 					const tileEntity = this.chunkTileEntityMap.get(chunkPosition5);
 					this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(loadedTileEntity => loadedTileEntity !== tileEntity);
 				}
@@ -558,7 +558,7 @@ export class Chunk {
 	}
 
     // TODO: Entities
-	public getEntitiesWithinAABBForEntity(entity1: Entity | null, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+	public getEntitiesWithinAABBForEntity(entity1: Entity | undefined, axisAlignedBB2: AxisAlignedBB| undefined, list3: Entity[]):  void {
 		let  i4: number = MathHelper.floor_double((axisAlignedBB2.minY - 2.0) / 16.0);
 		let  i5: number = MathHelper.floor_double((axisAlignedBB2.maxY + 2.0) / 16.0);
 		if(i4 < 0) {
@@ -582,7 +582,7 @@ export class Chunk {
 
 	}
 
-	public getEntitiesOfTypeWithinAAAB(type: string, axisAlignedBB2: AxisAlignedBB| null, list3: Entity[]):  void {
+	public getEntitiesOfTypeWithinAAAB(type: string, axisAlignedBB2: AxisAlignedBB| undefined, list3: Entity[]):  void {
 		let  i4: number = MathHelper.floor_double((axisAlignedBB2.minY - 2.0) / 16.0);
 		let  i5: number = MathHelper.floor_double((axisAlignedBB2.maxY + 2.0) / 16.0);
 		if(i4 < 0) {

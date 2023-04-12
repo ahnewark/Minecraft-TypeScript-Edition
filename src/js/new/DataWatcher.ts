@@ -40,8 +40,8 @@ export  class DataWatcher extends JavaObject {
 
 	}
 
-	public static async writeObjectsInListToStream(list0: WatchableObject[], dataOutputStream1: DataOutputStream| null):  Promise<void> {
-		if(list0 !== null) {
+	public static async writeObjectsInListToStream(list0: WatchableObject[], dataOutputStream1: DataOutputStream| undefined):  Promise<void> {
+		if(list0 !== undefined) {
 			await Promise.all(list0.map(async watchableObject => {
 				return DataWatcher.writeWatchableObject(dataOutputStream1, watchableObject);
 			}))
@@ -58,7 +58,7 @@ export  class DataWatcher extends JavaObject {
 		await dataOutputStream1.writeByte(127);
 	}
 
-	private static async writeWatchableObject(dataOutputStream0: DataOutputStream| null, watchableObject1: WatchableObject| null):  Promise<void> {
+	private static async writeWatchableObject(dataOutputStream0: DataOutputStream| undefined, watchableObject1: WatchableObject| undefined):  Promise<void> {
 		let  i2: int = (watchableObject1.getObjectType() << 5 | watchableObject1.getDataValueId() & 31) & 255;
 		await dataOutputStream0.writeByte(i2);
 		switch(watchableObject1.getObjectType()) {
@@ -89,11 +89,11 @@ export  class DataWatcher extends JavaObject {
 
 	}
 
-	public static async readWatchableObjects(dataInputStream0: DataInputStream| null):  Promise<WatchableObject[]> {
+	public static async readWatchableObjects(dataInputStream0: DataInputStream| undefined):  Promise<WatchableObject[]> {
 		let  arrayList1: WatchableObject[];
 
 		for(let  b2: byte = await dataInputStream0.readByte(); b2 !== 127; b2 = await dataInputStream0.readByte()) {
-			if(arrayList1 === null) {
+			if(arrayList1 === undefined) {
 				arrayList1 = [];
 			}
 
@@ -135,7 +135,7 @@ export  class DataWatcher extends JavaObject {
 	public updateWatchedObjectsFromList(list1: WatchableObject[]):  void {
 		list1.forEach(watchableObject => {
 			let  watchableObject4: WatchableObject = this.watchedObjects[watchableObject.getDataValueId()];
-			if(watchableObject4 !== null) {
+			if(watchableObject4 !== undefined) {
 				watchableObject4.setObject(watchableObject.getObject());
 			}
 		})

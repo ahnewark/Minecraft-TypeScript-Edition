@@ -37,8 +37,8 @@ export class EntityList {
 		EntityList.classToIDMapping[string1] = i2;
 	}
 
-	public static createEntityInWorld(string0: string, world1: World| null):  Entity | null {
-		let  entity2: Entity = null;
+	public static createEntityInWorld(string0: string, world1: World| undefined):  Entity | undefined {
+		let  entity2: Entity = undefined;
 
 		try {
 			let makeEntity = EntityList.stringToClassMapping[string0];
@@ -57,8 +57,8 @@ export class EntityList {
 		return entity2;
 	}
 
-	public static createEntityFromNBT(nBTTagCompound0: NBTTagCompound| null, world1: World| null):  Entity | null {
-		let  entity2: Entity = null;
+	public static createEntityFromNBT(nBTTagCompound0: NBTTagCompound| undefined, world1: World| undefined):  Entity | undefined {
+		let  entity2: Entity = undefined;
 
 		try {
 			let  makeEntity = EntityList.stringToClassMapping[nBTTagCompound0.getString("id")];
@@ -74,7 +74,7 @@ export class EntityList {
 			}
 		}
 
-		if(entity2 !== null) {
+		if(entity2 !== undefined) {
 			entity2.readFromNBT(nBTTagCompound0);
 		} else {
 			console.log("Skipping Entity with id " + nBTTagCompound0.getString("id"));
@@ -83,8 +83,8 @@ export class EntityList {
 		return entity2;
 	}
 
-	public static createEntity(i0: int, world1: World| null):  Entity | null {
-		let  entity2: Entity = null;
+	public static createEntity(i0: int, world1: World| undefined):  Entity | undefined {
+		let  entity2: Entity = undefined;
 
 		try {
 			let makeEntity = EntityList.IDtoClassMapping[i0];
@@ -100,18 +100,18 @@ export class EntityList {
 			}
 		}
 
-		if(entity2 === null) {
+		if(entity2 === undefined) {
 			console.log("Skipping Entity with id " + i0);
 		}
 
 		return entity2;
 	}
 
-	public static getEntityID(entity0: Entity| null):  int {
+	public static getEntityID(entity0: Entity| undefined):  int {
 		return EntityList.classToIDMapping[entity0.type];
 	}
 
-	public static getEntityString(entity0: Entity| null): string {
+	public static getEntityString(entity0: Entity| undefined): string {
 		return entity0.type;
 	}
 

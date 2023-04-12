@@ -12,7 +12,7 @@ export  class ItemSaddle extends Item {
 		this.maxDamage = 64;
 	}
 
-	public saddleEntity(itemStack1: ItemStack| null, entityLiving2: EntityLiving| null):  void {
+	public saddleEntity(itemStack1: ItemStack| undefined, entityLiving2: EntityLiving| undefined):  void {
 		if(entityLiving2 instanceof EntityPig) {
 			let  entityPig3: EntityPig = entityLiving2 as EntityPig;
 			if(!entityPig3.func_21068_q()) {
@@ -23,7 +23,7 @@ export  class ItemSaddle extends Item {
 
 	}
 
-	public hitEntity(itemStack1: ItemStack| null, entityLiving2: EntityLiving| null):  void {
+	public hitEntity(itemStack1: ItemStack| undefined, entityLiving2: EntityLiving| undefined):  void {
 		this.saddleEntity(itemStack1, entityLiving2);
 	}
 }

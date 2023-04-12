@@ -164,7 +164,7 @@ export  class MapGenCaves extends MapGenBase {
 
 	}
 
-	protected func_868_a(world1: World| null, i2: number, i3: number, i4: number, i5: number, b6: Int8Array):  void {
+	protected func_868_a(world1: World| undefined, i2: number, i3: number, i4: number, i5: number, b6: Int8Array):  void {
 		let  i7: number = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
 		if(this.rand.nextInt(15) !== 0) {
 			i7 = 0;

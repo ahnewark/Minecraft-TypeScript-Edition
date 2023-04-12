@@ -12,13 +12,13 @@ import { Block } from "./Block";
 import { Item } from "./Item";
 
 export  class ItemHoe extends Item {
-	public constructor(i1: int, enumToolMaterial2: EnumToolMaterial| null) {
+	public constructor(i1: int, enumToolMaterial2: EnumToolMaterial| undefined) {
 		super(i1);
 		this.maxStackSize = 1;
 		this.maxDamage = enumToolMaterial2.getMaxUses();
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer| undefined, world3: World| undefined, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
 		let  i8: int = await world3.getBlockId(i4, i5, i6);
 		let  material9: Material = await world3.getBlockMaterial(i4, i5 + 1, i6);
 		if((material9.isSolid() || i8 !== Block.grass.blockID) && i8 !== Block.dirt.blockID) {

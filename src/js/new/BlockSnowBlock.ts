@@ -13,15 +13,15 @@ export  class BlockSnowBlock extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Item.snowball.shiftedIndex;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 4;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(await world1.getSavedLightValue(EnumSkyBlock.Block, i2, i3, i4) > 11) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);

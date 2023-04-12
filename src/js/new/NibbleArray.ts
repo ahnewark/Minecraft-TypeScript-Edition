@@ -48,6 +48,6 @@ export  class NibbleArray {
 	}
 
 	public isValid():  boolean {
-		return this.data !== null;
+		return this.data !== undefined;
 	}
 }

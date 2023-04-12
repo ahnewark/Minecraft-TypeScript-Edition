@@ -16,7 +16,7 @@ export  class ItemBoat extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public async onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
+	public async onItemRightClick(itemStack1: ItemStack| undefined, world2: World| undefined, entityPlayer3: EntityPlayer| undefined):  Promise<ItemStack | undefined> {
 		let  f4: float = 1.0;
 		let  f5: float = entityPlayer3.prevRotationPitch + (entityPlayer3.rotationPitch - entityPlayer3.prevRotationPitch) * f4;
 		let  f6: float = entityPlayer3.prevRotationYaw + (entityPlayer3.rotationYaw - entityPlayer3.prevRotationYaw) * f4;
@@ -33,7 +33,7 @@ export  class ItemBoat extends Item {
 		let  d21: double = 5.0;
 		let  vec3D23: Vec3D = vec3D13.addVector(f18 as double * d21, f17 as double * d21, f20 as double * d21);
 		let  movingObjectPosition24: MovingObjectPosition = await world2.rayTraceBlocks_do(vec3D13, vec3D23, true);
-		if(movingObjectPosition24 === null) {
+		if(movingObjectPosition24 === undefined) {
 			return itemStack1;
 		} else {
 			if(movingObjectPosition24.typeOfHit === EnumMovingObjectType.TILE) {

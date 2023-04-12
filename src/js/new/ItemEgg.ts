@@ -12,7 +12,7 @@ export  class ItemEgg extends Item {
 		this.maxStackSize = 16;
 	}
 
-	public async onItemRightClick(itemStack1: ItemStack| null, world2: World| null, entityPlayer3: EntityPlayer| null):  Promise<ItemStack | null> {
+	public async onItemRightClick(itemStack1: ItemStack| undefined, world2: World| undefined, entityPlayer3: EntityPlayer| undefined):  Promise<ItemStack | undefined> {
 		--itemStack1.stackSize;
 		world2.playSoundAtEntity(entityPlayer3, "random.bow", 0.5, 0.4 / (Item.itemRand.nextFloat() * 0.4 + 0.8));
 		if(!world2.multiplayerWorld) {

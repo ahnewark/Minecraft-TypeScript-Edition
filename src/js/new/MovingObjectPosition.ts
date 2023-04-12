@@ -5,17 +5,17 @@ import { EnumMovingObjectType } from "./EnumMovingObjectType";
 import { Entity } from "./Entity";
 
 export  class MovingObjectPosition extends JavaObject {
-	public typeOfHit:  EnumMovingObjectType | null;
+	public typeOfHit:  EnumMovingObjectType | undefined;
 	public blockX:  int;
 	public blockY:  int;
 	public blockZ:  int;
 	public sideHit:  int;
-	public hitVec:  Vec3D | null;
-	public entityHit:  Entity | null;
+	public hitVec:  Vec3D | undefined;
+	public entityHit:  Entity | undefined;
 
 	public constructor(entity1: Entity);
 
-	public constructor(i1: int, i2: int, i3: int, i4: int, vec3D5: Vec3D| null);
+	public constructor(i1: int, i2: int, i3: int, i4: int, vec3D5: Vec3D| undefined);
     public constructor(...args: unknown[]) {
 		switch (args.length) {
 			case 1: {

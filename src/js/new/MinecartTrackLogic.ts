@@ -4,15 +4,15 @@ import { ChunkPosition } from "./ChunkPosition";
 import { BlockMinecartTrack } from "./BlockMinecartTrack";
 
 export class MinecartTrackLogic {
-	private worldObj:  World | null;
+	private worldObj:  World | undefined;
 	private trackX:  int;
 	private trackY:  int;
 	private trackZ:  int;
 	private trackMetadata:  int;
 	private connectedTracks:  ChunkPosition[] = [];
-	protected minecartTrack:  BlockMinecartTrack | null;
+	protected minecartTrack:  BlockMinecartTrack | undefined;
 
-	public static async Construct(blockMinecartTrack1: BlockMinecartTrack| null, world2: World| null, i3: int, i4: int, i5: int) {
+	public static async Construct(blockMinecartTrack1: BlockMinecartTrack| undefined, world2: World| undefined, i3: int, i4: int, i5: int) {
 		const _this = new MinecartTrackLogic();
 		_this.minecartTrack = blockMinecartTrack1;
 		_this.connectedTracks = [];
@@ -64,7 +64,7 @@ export class MinecartTrackLogic {
 	private async func_785_b():  Promise<void> {
 		for(let  i1: int = 0; i1 < this.connectedTracks.length; ++i1) {
 			let  minecartTrackLogic2: MinecartTrackLogic = await this.getMinecartTrackLogic(this.connectedTracks[i1] as ChunkPosition);
-			if(minecartTrackLogic2 !== null && minecartTrackLogic2.isConnectedTo(this)) {
+			if(minecartTrackLogic2 !== undefined && minecartTrackLogic2.isConnectedTo(this)) {
 				this.connectedTracks[i1] = new  ChunkPosition(minecartTrackLogic2.trackX, minecartTrackLogic2.trackY, minecartTrackLogic2.trackZ);
 			} else {
 				this.connectedTracks.splice(i1--, 1);
@@ -77,11 +77,11 @@ export class MinecartTrackLogic {
 		return await this.worldObj.getBlockId(i1, i2, i3) === this.minecartTrack.blockID ? true : (await this.worldObj.getBlockId(i1, i2 + 1, i3) === this.minecartTrack.blockID ? true : await this.worldObj.getBlockId(i1, i2 - 1, i3) === this.minecartTrack.blockID);
 	}
 
-	private async getMinecartTrackLogic(chunkPosition1: ChunkPosition| null):  Promise<MinecartTrackLogic | null> {
-		return (await this.worldObj.getBlockId(chunkPosition1.x, chunkPosition1.y, chunkPosition1.z)) === this.minecartTrack.blockID ?  await MinecartTrackLogic.Construct(this.minecartTrack, this.worldObj, chunkPosition1.x, chunkPosition1.y, chunkPosition1.z) : (await this.worldObj.getBlockId(chunkPosition1.x, chunkPosition1.y + 1, chunkPosition1.z) === this.minecartTrack.blockID ?  await MinecartTrackLogic.Construct(this.minecartTrack, this.worldObj, chunkPosition1.x, chunkPosition1.y + 1, chunkPosition1.z) : (await this.worldObj.getBlockId(chunkPosition1.x, chunkPosition1.y - 1, chunkPosition1.z) === this.minecartTrack.blockID ?  await MinecartTrackLogic.Construct(this.minecartTrack, this.worldObj, chunkPosition1.x, chunkPosition1.y - 1, chunkPosition1.z) : null));
+	private async getMinecartTrackLogic(chunkPosition1: ChunkPosition| undefined):  Promise<MinecartTrackLogic | undefined> {
+		return (await this.worldObj.getBlockId(chunkPosition1.x, chunkPosition1.y, chunkPosition1.z)) === this.minecartTrack.blockID ?  await MinecartTrackLogic.Construct(this.minecartTrack, this.worldObj, chunkPosition1.x, chunkPosition1.y, chunkPosition1.z) : (await this.worldObj.getBlockId(chunkPosition1.x, chunkPosition1.y + 1, chunkPosition1.z) === this.minecartTrack.blockID ?  await MinecartTrackLogic.Construct(this.minecartTrack, this.worldObj, chunkPosition1.x, chunkPosition1.y + 1, chunkPosition1.z) : (await this.worldObj.getBlockId(chunkPosition1.x, chunkPosition1.y - 1, chunkPosition1.z) === this.minecartTrack.blockID ?  await MinecartTrackLogic.Construct(this.minecartTrack, this.worldObj, chunkPosition1.x, chunkPosition1.y - 1, chunkPosition1.z) : undefined));
 	}
 
-	private isConnectedTo(minecartTrackLogic1: MinecartTrackLogic| null):  boolean {
+	private isConnectedTo(minecartTrackLogic1: MinecartTrackLogic| undefined):  boolean {
 		for(let  i2: int = 0; i2 < this.connectedTracks.length; ++i2) {
 			let  chunkPosition3: ChunkPosition = this.connectedTracks[i2] as ChunkPosition;
 			if(chunkPosition3.x === minecartTrackLogic1.trackX && chunkPosition3.z === minecartTrackLogic1.trackZ) {
@@ -124,7 +124,7 @@ export class MinecartTrackLogic {
 		return i1;
 	}
 
-	private handleKeyPress(minecartTrackLogic1: MinecartTrackLogic| null):  boolean {
+	private handleKeyPress(minecartTrackLogic1: MinecartTrackLogic| undefined):  boolean {
 		if(this.isConnectedTo(minecartTrackLogic1)) {
 			return true;
 		} else if(this.connectedTracks.length === 2) {
@@ -137,7 +137,7 @@ export class MinecartTrackLogic {
 		}
 	}
 
-	private async func_788_d(minecartTrackLogic1: MinecartTrackLogic| null): Promise<void> {
+	private async func_788_d(minecartTrackLogic1: MinecartTrackLogic| undefined): Promise<void> {
 		this.connectedTracks.push(new  ChunkPosition(minecartTrackLogic1.trackX, minecartTrackLogic1.trackY, minecartTrackLogic1.trackZ));
 		let  z2: boolean = this.func_794_b(this.trackX, this.trackY, this.trackZ - 1);
 		let  z3: boolean = this.func_794_b(this.trackX, this.trackY, this.trackZ + 1);
@@ -197,7 +197,7 @@ export class MinecartTrackLogic {
 
 	private async func_786_c(i1: int, i2: int, i3: int):  Promise<boolean> {
 		let  minecartTrackLogic4: MinecartTrackLogic = await this.getMinecartTrackLogic(new  ChunkPosition(i1, i2, i3));
-		if(minecartTrackLogic4 === null) {
+		if(minecartTrackLogic4 === undefined) {
 			return false;
 		} else {
 			await minecartTrackLogic4.func_785_b();
@@ -309,7 +309,7 @@ export class MinecartTrackLogic {
 
 		for(let  i7: int = 0; i7 < this.connectedTracks.length; ++i7) {
 			let  minecartTrackLogic8: MinecartTrackLogic = await this.getMinecartTrackLogic(this.connectedTracks[i7] as ChunkPosition);
-			if(minecartTrackLogic8 !== null) {
+			if(minecartTrackLogic8 !== undefined) {
 				await minecartTrackLogic8.func_785_b();
 				if(minecartTrackLogic8.handleKeyPress(this)) {
 					await minecartTrackLogic8.func_788_d(this);
@@ -319,7 +319,7 @@ export class MinecartTrackLogic {
 
 	}
 
-	public static getNAdjacentTracks(minecartTrackLogic0: MinecartTrackLogic| null):  int {
+	public static getNAdjacentTracks(minecartTrackLogic0: MinecartTrackLogic| undefined):  int {
 		return minecartTrackLogic0.getAdjacentTracks();
 	}
 }

@@ -10,7 +10,7 @@ export  class ItemCoal extends Item {
 		this.setMaxDamage(0);
 	}
 
-	public getItemNameIS(itemStack1: ItemStack| null):  string {
+	public getItemNameIS(itemStack1: ItemStack| undefined):  string {
 		return itemStack1.getItemDamage() === 1 ? "item.charcoal" : "item.coal";
 	}
 }

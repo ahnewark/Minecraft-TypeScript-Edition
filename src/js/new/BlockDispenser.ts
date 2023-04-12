@@ -29,16 +29,16 @@ export  class BlockDispenser extends BlockContainer {
 		return 4;
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.dispenser.blockID;
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int): Promise<void> {
 		await super.onBlockAdded(world1, i2, i3, i4);
 		await this.setDispenserDefaultDirection(world1, i2, i3, i4);
 	}
 
-	private async setDispenserDefaultDirection(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
+	private async setDispenserDefaultDirection(world1: World| undefined, i2: int, i3: int, i4: int): Promise<void> {
 		let  i5: int = await world1.getBlockId(i2, i3, i4 - 1);
 		let  i6: int = await world1.getBlockId(i2, i3, i4 + 1);
 		let  i7: int = await world1.getBlockId(i2 - 1, i3, i4);
@@ -63,7 +63,7 @@ export  class BlockDispenser extends BlockContainer {
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, b9);
 	}
 
-	public async getBlockTexture(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int): Promise<int> {
+	public async getBlockTexture(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int): Promise<int> {
 		if(i5 === 1) {
 			return this.blockIndexInTexture + 17;
 		} else if(i5 === 0) {
@@ -78,7 +78,7 @@ export  class BlockDispenser extends BlockContainer {
 		return i1 === 1 ? this.blockIndexInTexture + 17 : (i1 === 0 ? this.blockIndexInTexture + 17 : (i1 === 3 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture));
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<boolean> {
 		if(world1.multiplayerWorld) {
 			return true;
 		} else {
@@ -88,7 +88,7 @@ export  class BlockDispenser extends BlockContainer {
 		}
 	}
 
-	private async dispenseItem(world1: World| null, i2: int, i3: int, i4: int, random5: Random | null): Promise<void> {
+	private async dispenseItem(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random | undefined): Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  f9: float = 0.0;
 		let  f10: float = 0.0;
@@ -107,7 +107,7 @@ export  class BlockDispenser extends BlockContainer {
 		let  d13: double = i2 as double + f9 as double * 0.5 + 0.5;
 		let  d15: double = i3 as double + 0.5;
 		let  d17: double = i4 as double + f10 as double * 0.5 + 0.5;
-		if(itemStack12 === null) {
+		if(itemStack12 === undefined) {
 			world1.playSoundEffect(i2 as double, i3 as double, i4 as double, "random.click", 1.0, 1.2);
 		} else {
 			let  d20: double;
@@ -153,7 +153,7 @@ export  class BlockDispenser extends BlockContainer {
 
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(i5 > 0 && Block.blocksList[i5].canProvidePower()) {
 			let  z6: boolean = await world1.isBlockIndirectlyGettingPowered(i2, i3, i4) || await world1.isBlockIndirectlyGettingPowered(i2, i3 + 1, i4);
 			if(z6) {
@@ -163,18 +163,18 @@ export  class BlockDispenser extends BlockContainer {
 
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(await world1.isBlockIndirectlyGettingPowered(i2, i3, i4) || await world1.isBlockIndirectlyGettingPowered(i2, i3 + 1, i4)) {
 			await this.dispenseItem(world1, i2, i3, i4, random5);
 		}
 
 	}
 
-	protected getBlockEntity():  TileEntity | null {
+	protected getBlockEntity():  TileEntity | undefined {
 		return new  TileEntityDispenser();
 	}
 
-	public async onBlockPlacedBy(world1: World| null, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| null):  Promise<void> {
+	public async onBlockPlacedBy(world1: World| undefined, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| undefined):  Promise<void> {
 		let  i6: int = MathHelper.floor_double((entityLiving5.rotationYaw * 4.0 / 360.0) as double + 0.5) & 3;
 		if(i6 === 0) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 2);

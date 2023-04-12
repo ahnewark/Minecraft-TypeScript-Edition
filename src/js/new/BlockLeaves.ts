@@ -20,7 +20,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 		this.setTickOnLoad(true);
 	}
 
-	public async colorMultiplier(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<int> {
+	public async colorMultiplier(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<int> {
 		let  i5: int = await iBlockAccess1.getBlockMetadata(i2, i3, i4);
 		if((i5 & 1) === 1) {
 			return ColorizerFoliage.func_21175_a();
@@ -34,7 +34,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  b5: byte = 1;
 		let  i6: int = b5 + 1;
 		if(world1.checkChunksExist(i2 - i6, i3 - i6, i4 - i6, i2 + i6, i3 + i6, i4 + i6)) {
@@ -53,7 +53,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			if((i6 & 4) !== 0) {
@@ -62,7 +62,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 				let  b9: byte = 32;
 				let  i10: int = b9 * b9;
 				let  i11: int = b9 / 2;
-				if(this.adjacentTreeBlocks === null) {
+				if(this.adjacentTreeBlocks === undefined) {
 					this.adjacentTreeBlocks = new   Array<number>(b9 * b9 * b9);
 				}
 
@@ -147,16 +147,16 @@ export  class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
-	private async removeLeaves(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async removeLeaves(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 		await world1.setBlockWithNotify(i2, i3, i4, 0);
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return random1.nextInt(16) === 0 ? 1 : 0;
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.sapling.blockID;
 	}
 
@@ -173,7 +173,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 		this.blockIndexInTexture = this.baseIndexInPNG + (z1 ? 0 : 1);
 	}
 
-	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
+	public async onEntityWalking(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined):  Promise<void> {
 		await super.onEntityWalking(world1, i2, i3, i4, entity5);
 	}
 }

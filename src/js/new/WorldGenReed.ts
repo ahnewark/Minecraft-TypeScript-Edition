@@ -8,7 +8,7 @@ import { Block } from "./Block";
 import { MaterialRegistry } from './static/MaterialRegistry'
 
 export  class WorldGenReed extends WorldGenerator {
-	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {
 		for(let  i6: int = 0; i6 < 20; ++i6) {
 			let  i7: int = i3 + random2.nextInt(4) - random2.nextInt(4);
 			let  i8: int = i4;

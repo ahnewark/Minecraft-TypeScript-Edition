@@ -5,7 +5,7 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { EntityCreature } from "./EntityCreature";
 
 export  class EntityWaterMob extends EntityCreature {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 	}
 
@@ -17,11 +17,11 @@ export  class EntityWaterMob extends EntityCreature {
 		return true;
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 

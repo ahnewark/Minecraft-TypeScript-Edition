@@ -11,11 +11,11 @@ export  class BlockOre extends Block {
 		super(i1, i2, MaterialRegistry.rock);
 	}
 
-	public idDropped(i1: int, random2: Random | null):  int {
+	public idDropped(i1: int, random2: Random | undefined):  int {
 		return this.blockID === Block.oreCoal.blockID ? Item.coal.shiftedIndex : (this.blockID === Block.oreDiamond.blockID ? Item.diamond.shiftedIndex : (this.blockID === Block.oreLapis.blockID ? Item.dyePowder.shiftedIndex : this.blockID));
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return this.blockID === Block.oreLapis.blockID ? 4 + random1.nextInt(5) : 1;
 	}
 

@@ -26,16 +26,16 @@ export  class BlockSign extends BlockContainer {
 		this.setBlockBounds(0.5 - f4, 0.0, 0.5 - f4, 0.5 + f4, f5, 0.5 + f4);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
-	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int): Promise<AxisAlignedBB | null> {
+	public async getSelectedBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int): Promise<AxisAlignedBB | undefined> {
 		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.getSelectedBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
-	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(!this.isFreestanding) {
 			let  i5: int = await iBlockAccess1.getBlockMetadata(i2, i3, i4);
 			let  f6: float = 0.28125;
@@ -75,7 +75,7 @@ export  class BlockSign extends BlockContainer {
 		return false;
 	}
 
-	protected getBlockEntity():  TileEntity | null {
+	protected getBlockEntity():  TileEntity | undefined {
 		try {
 			return TileEntity.getCtor(this.signEntityClass)();
 		} catch (exception2) {
@@ -87,11 +87,11 @@ export  class BlockSign extends BlockContainer {
 		}
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Item.sign.shiftedIndex;
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int): Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int): Promise<void> {
 		let  z6: boolean = false;
 		if(this.isFreestanding) {
 			if(!(await world1.getBlockMaterial(i2, i3 - 1, i4)).isSolid()) {

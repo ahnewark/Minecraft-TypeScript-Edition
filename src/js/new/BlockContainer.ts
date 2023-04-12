@@ -7,8 +7,8 @@ import { Block } from "./Block";
 
 
 export abstract  class BlockContainer extends Block {
-	protected constructor(i1: int, material2: Material| null);
-	protected constructor(i1: int, i2: int, material3: Material| null);
+	protected constructor(i1: int, material2: Material| undefined);
+	protected constructor(i1: int, i2: int, material3: Material| undefined);
     protected constructor(...args: unknown[]) {
 		switch (args.length) {
 			case 2: {
@@ -32,15 +32,15 @@ export abstract  class BlockContainer extends Block {
 	}
 
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await super.onBlockAdded(world1, i2, i3, i4);
 		await world1.setBlockTileEntity(i2, i3, i4, this.getBlockEntity());
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await super.onBlockRemoval(world1, i2, i3, i4);
 		await world1.removeBlockTileEntity(i2, i3, i4);
 	}
 
-	protected abstract getBlockEntity():  TileEntity | null;
+	protected abstract getBlockEntity():  TileEntity | undefined;
 }

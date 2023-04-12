@@ -30,7 +30,7 @@ export  class TileEntityMobSpawner extends TileEntity {
 	}
 
 	public anyPlayerInRange():  boolean {
-		return this.worldObj.getClosestPlayer(this.xCoord as double + 0.5, this.yCoord as double + 0.5, this.zCoord as double + 0.5, 16.0) !== null;
+		return this.worldObj.getClosestPlayer(this.xCoord as double + 0.5, this.yCoord as double + 0.5, this.zCoord as double + 0.5, 16.0) !== undefined;
 	}
 
 	public async updateEntity(): Promise<void> {
@@ -57,7 +57,7 @@ export  class TileEntityMobSpawner extends TileEntity {
 
 				for(let  i8: int = 0; i8 < b7; ++i8) {
 					let  entityLiving9: EntityLiving = (EntityList.createEntityInWorld(this.mobID, this.worldObj) as EntityLiving) as EntityLiving;
-					if(entityLiving9 === null) {
+					if(entityLiving9 === undefined) {
 						return;
 					}
 
@@ -67,7 +67,7 @@ export  class TileEntityMobSpawner extends TileEntity {
 						return;
 					}
 
-					if(entityLiving9 !== null) {
+					if(entityLiving9 !== undefined) {
 						let  d11: double = this.xCoord as double + (this.worldObj.rand.nextDouble() - this.worldObj.rand.nextDouble()) * 4.0;
 						let  d13: double = (this.yCoord + this.worldObj.rand.nextInt(3) - 1) as double;
 						let  d15: double = this.zCoord as double + (this.worldObj.rand.nextDouble() - this.worldObj.rand.nextDouble()) * 4.0;
@@ -98,13 +98,13 @@ export  class TileEntityMobSpawner extends TileEntity {
 		this.delay = 200 + this.worldObj.rand.nextInt(600);
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readFromNBT(nBTTagCompound1);
 		this.mobID = nBTTagCompound1.getString("EntityId");
 		this.delay = nBTTagCompound1.getShort("Delay");
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeToNBT(nBTTagCompound1);
 		nBTTagCompound1.setString("EntityId", this.mobID);
 		nBTTagCompound1.setShort("Delay", this.delay as short);

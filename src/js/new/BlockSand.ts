@@ -18,19 +18,19 @@ export  class BlockSand extends Block {
 		super(i1, i2, MaterialRegistry.sand);
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await world1.scheduleBlockUpdate(i2, i3, i4, this.blockID);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		await this.tryToFall(world1, i2, i3, i4);
 	}
 
-	private async tryToFall(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
+	private async tryToFall(world1: World| undefined, i2: int, i3: int, i4: int): Promise<void> {
 		if(await BlockSand.canFallBelow(world1, i2, i3 - 1, i4) && i3 >= 0) {
 			let  b8: byte = 32;
 			if(!BlockSand.fallInstantly && world1.checkChunksExist(i2 - b8, i3 - b8, i4 - b8, i2 + b8, i3 + b8, i4 + b8)) {
@@ -55,7 +55,7 @@ export  class BlockSand extends Block {
 		return 3;
 	}
 
-	public static async canFallBelow(world0: World| null, i1: int, i2: int, i3: int):  Promise<boolean> {
+	public static async canFallBelow(world0: World| undefined, i1: int, i2: int, i3: int):  Promise<boolean> {
 		let  i4: int = await world0.getBlockId(i1, i2, i3);
 		if(i4 === 0) {
 			return true;

@@ -9,8 +9,8 @@ import { Random } from "../java/util/Random";
 
 export class WorldGenBigTree extends WorldGenerator {
 	protected static readonly field_882_a   = Int8Array.from([2, 0, 0, 1, 2, 1]);
-	protected field_881_b: Random | null = new  Random();
-	protected worldObj: World | null;
+	protected field_881_b: Random | undefined = new  Random();
+	protected worldObj: World | undefined;
 	protected basePos = [0,0,0];
 	protected field_878_e: int = 0;
 	protected height: int;
@@ -329,7 +329,7 @@ export class WorldGenBigTree extends WorldGenerator {
 		this.field_872_k = d5;
 	}
 
-	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {
 		this.worldObj = world1;
 		let  j6: long = random2.nextLong();
 		this.field_881_b.setSeed(j6);

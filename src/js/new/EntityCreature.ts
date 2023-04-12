@@ -8,11 +8,11 @@ import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 
 export  class EntityCreature extends EntityLiving {
-	private pathToEntity:  PathEntity | null;
-	protected playerToAttack:  Entity | null;
+	private pathToEntity:  PathEntity | undefined;
+	protected playerToAttack:  Entity | undefined;
 	protected hasAttacked:  boolean = false;
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 	}
 
@@ -23,13 +23,13 @@ export  class EntityCreature extends EntityLiving {
 	protected async updatePlayerActionState():  Promise<void> {
 		this.hasAttacked = false;
 		let  f1: float = 16.0;
-		if(this.playerToAttack === null) {
+		if(this.playerToAttack === undefined) {
 			this.playerToAttack = await this.findPlayerToAttack();
-			if(this.playerToAttack !== null) {
+			if(this.playerToAttack !== undefined) {
 				this.pathToEntity = await this.worldObj.getPathToEntity(this, this.playerToAttack, f1);
 			}
 		} else if(!this.playerToAttack.isEntityAlive()) {
-			this.playerToAttack = null;
+			this.playerToAttack = undefined;
 		} else {
 			let  f2: float = this.playerToAttack.getDistanceToEntity(this);
 			if(this.canEntityBeSeen(this.playerToAttack)) {
@@ -37,9 +37,9 @@ export  class EntityCreature extends EntityLiving {
 			}
 		}
 
-		if(!this.hasAttacked && this.playerToAttack !== null && (this.pathToEntity === null || this.rand.nextInt(20) === 0)) {
+		if(!this.hasAttacked && this.playerToAttack !== undefined && (this.pathToEntity === undefined || this.rand.nextInt(20) === 0)) {
 			this.pathToEntity = await this.worldObj.getPathToEntity(this, this.playerToAttack, f1);
-		} else if(this.pathToEntity === null && this.rand.nextInt(80) === 0 || this.rand.nextInt(80) === 0) {
+		} else if(this.pathToEntity === undefined && this.rand.nextInt(80) === 0 || this.rand.nextInt(80) === 0) {
 			let  z21: boolean = false;
 			let  i3: int = -1;
 			let  i4: int = -1;
@@ -69,22 +69,22 @@ export  class EntityCreature extends EntityLiving {
 		let  z23: boolean = await this.handleWaterMovement();
 		let  z24: boolean = await this.handleLavaMovement();
 		this.rotationPitch = 0.0;
-		if(this.pathToEntity !== null && this.rand.nextInt(100) !== 0) {
+		if(this.pathToEntity !== undefined && this.rand.nextInt(100) !== 0) {
 			let  vec3D25: Vec3D = this.pathToEntity.getPosition(this);
 			let  d26: double = (this.width * 2.0) as double;
 
-			while(vec3D25 !== null && vec3D25.squareDistanceTo(this.posX, vec3D25.yCoord, this.posZ) < d26 * d26) {
+			while(vec3D25 !== undefined && vec3D25.squareDistanceTo(this.posX, vec3D25.yCoord, this.posZ) < d26 * d26) {
 				this.pathToEntity.incrementPathIndex();
 				if(this.pathToEntity.isFinished()) {
-					vec3D25 = null;
-					this.pathToEntity = null;
+					vec3D25 = undefined;
+					this.pathToEntity = undefined;
 				} else {
 					vec3D25 = this.pathToEntity.getPosition(this);
 				}
 			}
 
 			this.isJumping = false;
-			if(vec3D25 !== null) {
+			if(vec3D25 !== undefined) {
 				let  d27: double = vec3D25.xCoord - this.posX;
 				let  d28: double = vec3D25.zCoord - this.posZ;
 				let  d12: double = vec3D25.yCoord - i22 as double;
@@ -107,7 +107,7 @@ export  class EntityCreature extends EntityLiving {
 				}
 
 				this.rotationYaw += f15;
-				if(this.hasAttacked && this.playerToAttack !== null) {
+				if(this.hasAttacked && this.playerToAttack !== undefined) {
 					let  d16: double = this.playerToAttack.posX - this.posX;
 					let  d18: double = this.playerToAttack.posZ - this.posZ;
 					let  f20: float = this.rotationYaw;
@@ -122,7 +122,7 @@ export  class EntityCreature extends EntityLiving {
 				}
 			}
 
-			if(this.playerToAttack !== null) {
+			if(this.playerToAttack !== undefined) {
 				this.faceEntity(this.playerToAttack, 30.0);
 			}
 
@@ -136,19 +136,19 @@ export  class EntityCreature extends EntityLiving {
 
 		} else {
 			await super.updatePlayerActionState();
-			this.pathToEntity = null;
+			this.pathToEntity = undefined;
 		}
 	}
 
-	protected attackEntity(entity1: Entity| null, f2: float):  void {
+	protected attackEntity(entity1: Entity| undefined, f2: float):  void {
 	}
 
 	protected async getBlockPathWeight(i1: int, i2: int, i3: int):  Promise<float> {
 		return 0.0;
 	}
 
-	protected async findPlayerToAttack():  Promise<Entity | null> {
-		return null;
+	protected async findPlayerToAttack():  Promise<Entity | undefined> {
+		return undefined;
 	}
 
 	public async getCanSpawnHere():  Promise<boolean> {

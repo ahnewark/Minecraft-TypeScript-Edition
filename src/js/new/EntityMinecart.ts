@@ -21,7 +21,7 @@ import { Block } from "./Block";
 
 
 export  class EntityMinecart extends Entity implements IInventory {
-	private cargoItems:  ItemStack[] | null;
+	private cargoItems:  ItemStack[] | undefined;
 	public field_20910_a:  int;
 	public field_20911_b:  int;
 	public field_20912_c:  int;
@@ -45,9 +45,9 @@ export  class EntityMinecart extends Entity implements IInventory {
 		return 'Minecart';
 	}
 
-	public constructor(world1: World| null);
+	public constructor(world1: World| undefined);
 
-	public constructor(world1: World| null, d2: double, d4: double, d6: double, i8: int);
+	public constructor(world1: World| undefined, d2: double, d4: double, d6: double, i8: int);
     public constructor(...args: unknown[]) {
 		const [world1] = args as [World];
 		super(world1);
@@ -88,12 +88,12 @@ export  class EntityMinecart extends Entity implements IInventory {
 	protected entityInit():  void {
 	}
 
-	public func_383_b_(entity1: Entity| null):  AxisAlignedBB | null {
+	public func_383_b_(entity1: Entity| undefined):  AxisAlignedBB | undefined {
 		return entity1.boundingBox;
 	}
 
-	public getBoundingBox():  AxisAlignedBB | null {
-		return null;
+	public getBoundingBox():  AxisAlignedBB | undefined {
+		return undefined;
 	}
 
 	public canBePushed():  boolean {
@@ -104,7 +104,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 		return this.height as double * 0.0 - 0.3 as double;
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int):  Promise<boolean> {
 		if(!this.worldObj.multiplayerWorld && !this.isDead) {
 			this.field_20912_c = -this.field_20912_c;
 			this.field_20911_b = 10;
@@ -141,7 +141,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 	public async setEntityDead():  Promise<void> {
 		for(let  i1: int = 0; i1 < this.getSizeInventory(); ++i1) {
 			let  itemStack2: ItemStack = this.getStackInSlot(i1);
-			if(itemStack2 !== null) {
+			if(itemStack2 !== undefined) {
 				let  f3: float = this.rand.nextFloat() * 0.8 + 0.1;
 				let  f4: float = this.rand.nextFloat() * 0.8 + 0.1;
 				let  f5: float = this.rand.nextFloat() * 0.8 + 0.1;
@@ -279,7 +279,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 				this.setPosition(this.posX, this.posY + this.yOffset as double, this.posZ);
 				d32 = this.motionX;
 				d34 = this.motionZ;
-				if(this.riddenByEntity !== null) {
+				if(this.riddenByEntity !== undefined) {
 					d32 *= 0.75;
 					d34 *= 0.75;
 				}
@@ -307,7 +307,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 					this.setPosition(this.posX, this.posY + i11[1][1] as double, this.posZ);
 				}
 
-				if(this.riddenByEntity !== null) {
+				if(this.riddenByEntity !== undefined) {
 					this.motionX *= 0.997 as double;
 					this.motionY *= 0.0;
 					this.motionZ *= 0.997 as double;
@@ -337,7 +337,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 				}
 
 				let  vec3D46: Vec3D = await this.func_514_g(this.posX, this.posY, this.posZ);
-				if(vec3D46 !== null && vec3D9 !== null) {
+				if(vec3D46 !== undefined && vec3D9 !== undefined) {
 					let  d37: double = (vec3D9.yCoord - vec3D46.yCoord) * 0.05;
 					d20 = java.lang.Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 					if(d20 > 0.0) {
@@ -426,7 +426,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 			let  list15 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
-			if(list15 !== null && list15.length > 0) {
+			if(list15 !== undefined && list15.length > 0) {
 				for(let  i45: int = 0; i45 < list15.length; ++i45) {
 					let  entity17: Entity = list15[i45] as Entity;
 					if(entity17 !== this.riddenByEntity && entity17.canBePushed() && entity17 instanceof EntityMinecart) {
@@ -435,8 +435,8 @@ export  class EntityMinecart extends Entity implements IInventory {
 				}
 			}
 
-			if(this.riddenByEntity !== null && this.riddenByEntity.isDead) {
-				this.riddenByEntity = null;
+			if(this.riddenByEntity !== undefined && this.riddenByEntity.isDead) {
+				this.riddenByEntity = undefined;
 			}
 
 			if(z6 && this.rand.nextInt(4) === 0) {
@@ -451,7 +451,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 		}
 	}
 
-	public async func_515_a(d1: double, d3: double, d5: double, d7: double):  Promise<Vec3D | null> {
+	public async func_515_a(d1: double, d3: double, d5: double, d7: double):  Promise<Vec3D | undefined> {
 		let  i9: int = MathHelper.floor_double(d1);
 		let  i10: int = MathHelper.floor_double(d3);
 		let  i11: int = MathHelper.floor_double(d5);
@@ -482,11 +482,11 @@ export  class EntityMinecart extends Entity implements IInventory {
 
 			return await this.func_514_g(d1, d3, d5);
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
-	public async func_514_g(d1: double, d3: double, d5: double):  Promise<Vec3D | null> {
+	public async func_514_g(d1: double, d3: double, d5: double):  Promise<Vec3D | undefined> {
 		let  i7: int = MathHelper.floor_double(d1);
 		let  i8: int = MathHelper.floor_double(d3);
 		let  i9: int = MathHelper.floor_double(d5);
@@ -538,11 +538,11 @@ export  class EntityMinecart extends Entity implements IInventory {
 
 			return Vec3D.createVector(d1, d3, d5);
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
-	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setInteger("Type", this.minecartType);
 		if(this.minecartType === 2) {
 			nBTTagCompound1.setDouble("PushX", this.pushX);
@@ -552,7 +552,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 			let  nBTTagList2: NBTTagList = new  NBTTagList();
 
 			for(let  i3: int = 0; i3 < this.cargoItems.length; ++i3) {
-				if(this.cargoItems[i3] !== null) {
+				if(this.cargoItems[i3] !== undefined) {
 					let  nBTTagCompound4: NBTTagCompound = new  NBTTagCompound();
 					nBTTagCompound4.setByte("Slot", i3 as byte);
 					this.cargoItems[i3].writeToNBT(nBTTagCompound4);
@@ -565,7 +565,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 
 	}
 
-	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	protected readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.minecartType = nBTTagCompound1.getInteger("Type");
 		if(this.minecartType === 2) {
 			this.pushX = nBTTagCompound1.getDouble("PushX");
@@ -590,10 +590,10 @@ export  class EntityMinecart extends Entity implements IInventory {
 		return 0.0;
 	}
 
-	public applyEntityCollision(entity1: Entity| null):  void {
+	public applyEntityCollision(entity1: Entity| undefined):  void {
 		if(!this.worldObj.multiplayerWorld) {
 			if(entity1 !== this.riddenByEntity) {
-				if(entity1 instanceof EntityLiving && !(entity1 instanceof EntityPlayer) && this.minecartType === 0 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01 && this.riddenByEntity === null && entity1.ridingEntity === null) {
+				if(entity1 instanceof EntityLiving && !(entity1 instanceof EntityPlayer) && this.minecartType === 0 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01 && this.riddenByEntity === undefined && entity1.ridingEntity === undefined) {
 					entity1.mountEntity(this);
 				}
 
@@ -656,33 +656,33 @@ export  class EntityMinecart extends Entity implements IInventory {
 		return 27;
 	}
 
-	public getStackInSlot(i1: int):  ItemStack | null {
+	public getStackInSlot(i1: int):  ItemStack | undefined {
 		return this.cargoItems[i1];
 	}
 
-	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
-		if(this.cargoItems[i1] !== null) {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | undefined> {
+		if(this.cargoItems[i1] !== undefined) {
 			let  itemStack3: ItemStack;
 			if(this.cargoItems[i1].stackSize <= i2) {
 				itemStack3 = this.cargoItems[i1];
-				this.cargoItems[i1] = null;
+				this.cargoItems[i1] = undefined;
 				return itemStack3;
 			} else {
 				itemStack3 = this.cargoItems[i1].splitStack(i2);
 				if(this.cargoItems[i1].stackSize === 0) {
-					this.cargoItems[i1] = null;
+					this.cargoItems[i1] = undefined;
 				}
 
 				return itemStack3;
 			}
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
-	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| undefined):  Promise<void> {
 		this.cargoItems[i1] = itemStack2;
-		if(itemStack2 !== null && itemStack2.stackSize > this.getInventoryStackLimit()) {
+		if(itemStack2 !== undefined && itemStack2.stackSize > this.getInventoryStackLimit()) {
 			itemStack2.stackSize = this.getInventoryStackLimit();
 		}
 
@@ -699,9 +699,9 @@ export  class EntityMinecart extends Entity implements IInventory {
 	public onInventoryChanged():  void {
 	}
 
-	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async interact(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		if(this.minecartType === 0) {
-			if(this.riddenByEntity !== null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity !== entityPlayer1) {
+			if(this.riddenByEntity !== undefined && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity !== entityPlayer1) {
 				return true;
 			}
 
@@ -714,9 +714,9 @@ export  class EntityMinecart extends Entity implements IInventory {
 			}
 		} else if(this.minecartType === 2) {
 			let  itemStack2: ItemStack = entityPlayer1.inventory.getCurrentItem();
-			if(itemStack2 !== null && itemStack2.itemID === Item.coal.shiftedIndex) {
+			if(itemStack2 !== undefined && itemStack2.itemID === Item.coal.shiftedIndex) {
 				if(--itemStack2.stackSize === 0) {
-					await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, null as ItemStack);
+					await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, undefined as ItemStack);
 				}
 
 				this.fuel += 1200;
@@ -747,7 +747,7 @@ export  class EntityMinecart extends Entity implements IInventory {
 		this.field_9407_s = this.motionZ = d5;
 	}
 
-	public async canInteractWith(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async canInteractWith(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		return this.isDead ? false : entityPlayer1.getDistanceSqToEntity(this) <= 64.0;
 	}
 }

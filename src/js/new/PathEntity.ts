@@ -5,11 +5,11 @@ import { PathPoint } from "./PathPoint";
 import { Entity } from "./Entity";
 
 export  class PathEntity extends JavaObject {
-	private readonly points:  PathPoint[] | null;
+	private readonly points:  PathPoint[] | undefined;
 	public readonly pathLength:  int;
 	private pathIndex:  int;
 
-	public constructor(pathPoint1: PathPoint[]| null) {
+	public constructor(pathPoint1: PathPoint[]| undefined) {
 		super();
 		this.points = pathPoint1;
 		this.pathLength = pathPoint1.length;
@@ -23,7 +23,7 @@ export  class PathEntity extends JavaObject {
 		return this.pathIndex >= this.points.length;
 	}
 
-	public getPosition(entity1: Entity| null):  Vec3D | null {
+	public getPosition(entity1: Entity| undefined):  Vec3D | undefined {
 		let  d2: double = this.points[this.pathIndex].xCoord as double + ((entity1.width + 1.0) as int) as double * 0.5;
 		let  d4: double = this.points[this.pathIndex].yCoord as double;
 		let  d6: double = this.points[this.pathIndex].zCoord as double + ((entity1.width + 1.0) as int) as double * 0.5;

@@ -26,22 +26,22 @@ export  class BlockRedstoneOre extends Block {
 		return 30;
 	}
 
-	public async onBlockClicked(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<void> {
+	public async onBlockClicked(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<void> {
 		await this.func_320_h(world1, i2, i3, i4);
 		await super.onBlockClicked(world1, i2, i3, i4, entityPlayer5);
 	}
 
-	public async onEntityWalking(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
+	public async onEntityWalking(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined):  Promise<void> {
 		await this.func_320_h(world1, i2, i3, i4);
 		await super.onEntityWalking(world1, i2, i3, i4, entity5);
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<boolean> {
 		await this.func_320_h(world1, i2, i3, i4);
 		return super.blockActivated(world1, i2, i3, i4, entityPlayer5);
 	}
 
-	private async func_320_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async func_320_h(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await this.func_319_i(world1, i2, i3, i4);
 		if(this.blockID === Block.oreRedstone.blockID) {
 			await world1.setBlockWithNotify(i2, i3, i4, Block.oreRedstoneGlowing.blockID);
@@ -49,29 +49,29 @@ export  class BlockRedstoneOre extends Block {
 
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(this.blockID === Block.oreRedstoneGlowing.blockID) {
 			await world1.setBlockWithNotify(i2, i3, i4, Block.oreRedstone.blockID);
 		}
 
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Item.redstone.shiftedIndex;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 4 + random1.nextInt(2);
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(this.field_468_a) {
 			await this.func_319_i(world1, i2, i3, i4);
 		}
 
 	}
 
-	private async func_319_i(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async func_319_i(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  random5: Random = world1.rand;
 		let  d6: double = 0.0625;
 

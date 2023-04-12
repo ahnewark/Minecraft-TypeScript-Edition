@@ -13,7 +13,7 @@ export  class ChunkPosition extends JavaObject {
 		this.z = i3;
 	}
 
-	public equals(object1: java.lang.Object| null):  boolean {
+	public equals(object1: java.lang.Object| undefined):  boolean {
 		if(!(object1 instanceof ChunkPosition)) {
 			return false;
 		} else {

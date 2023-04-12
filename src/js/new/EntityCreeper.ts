@@ -19,7 +19,7 @@ export  class EntityCreeper extends EntityMobs {
 		return 'Creeper';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/creeper.png";
 	}
@@ -29,11 +29,11 @@ export  class EntityCreeper extends EntityMobs {
 		this.dataWatcher.addObject(16, -1, 'Byte');
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 
@@ -66,7 +66,7 @@ export  class EntityCreeper extends EntityMobs {
 		return "mob.creeperdeath";
 	}
 
-	public async onDeath(entity1: Entity| null):  Promise<void> {
+	public async onDeath(entity1: Entity| undefined):  Promise<void> {
 		await super.onDeath(entity1);
 		if(entity1 instanceof EntitySkeleton) {
 			await this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(2), 1);
@@ -74,7 +74,7 @@ export  class EntityCreeper extends EntityMobs {
 
 	}
 
-	protected async attackEntity(entity1: Entity| null, f2: float):  Promise<void> {
+	protected async attackEntity(entity1: Entity| undefined, f2: float):  Promise<void> {
 		let  i3: int = this.func_21091_q();
 		if(i3 <= 0 && f2 < 3.0 || i3 > 0 && f2 < 7.0) {
 			if(this.timeSinceIgnited === 0) {

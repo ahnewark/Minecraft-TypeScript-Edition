@@ -12,7 +12,7 @@ import { BlockCloth } from "./BlockCloth";
 import { Block } from "./Block";
 
 export  class ItemDye extends Item {
-	public static readonly dyeColors:  string[] | null =  ["black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"];
+	public static readonly dyeColors:  string[] | undefined =  ["black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"];
 
 	public constructor(i1: int) {
 		super(i1);
@@ -20,16 +20,16 @@ export  class ItemDye extends Item {
 		this.setMaxDamage(0);
 	}
 
-	public getIconIndex(itemStack1: ItemStack| null):  int {
+	public getIconIndex(itemStack1: ItemStack| undefined):  int {
 		let  i2: int = itemStack1.getItemDamage();
 		return this.iconIndex + i2 % 8 * 16 + i2 / 8;
 	}
 
-	public getItemNameIS(itemStack1: ItemStack| null): string {
+	public getItemNameIS(itemStack1: ItemStack| undefined): string {
 		return super.getItemName() + "." + ItemDye.dyeColors[itemStack1.getItemDamage()];
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer| undefined, world3: World| undefined, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
 		if(itemStack1.getItemDamage() === 15) {
 			let  i8: int = await world3.getBlockId(i4, i5, i6);
 			if(i8 === Block.sapling.blockID) {
@@ -48,7 +48,7 @@ export  class ItemDye extends Item {
 		return false;
 	}
 
-	public saddleEntity(itemStack1: ItemStack| null, entityLiving2: EntityLiving| null):  void {
+	public saddleEntity(itemStack1: ItemStack| undefined, entityLiving2: EntityLiving| undefined):  void {
 		if(entityLiving2 instanceof EntitySheep) {
 			let  entitySheep3: EntitySheep = entityLiving2 as EntitySheep;
 			let  i4: int = BlockCloth.func_21034_c(itemStack1.getItemDamage());

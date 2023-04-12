@@ -15,7 +15,7 @@ export  class ItemSign extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer| undefined, world3: World| undefined, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
 		if(i7 === 0) {
 			return false;
 		} else if(!(await world3.getBlockMaterial(i4, i5, i6)).isSolid()) {
@@ -52,7 +52,7 @@ export  class ItemSign extends Item {
 
 				--itemStack1.stackSize;
 				let  tileEntitySign8: TileEntitySign = await world3.getBlockTileEntity(i4, i5, i6) as TileEntitySign;
-				if(tileEntitySign8 !== null) {
+				if(tileEntitySign8 !== undefined) {
 					entityPlayer2.displayGUIEditSign(tileEntitySign8);
 				}
 

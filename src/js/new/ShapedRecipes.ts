@@ -7,11 +7,11 @@ import { IRecipe } from "./IRecipe";
 export  class ShapedRecipes extends IRecipe {
 	private field_21138_b:  int;
 	private field_21142_c:  int;
-	private field_21141_d:  ItemStack[] | null;
-	private field_21140_e:  ItemStack | null;
+	private field_21141_d:  ItemStack[] | undefined;
+	private field_21140_e:  ItemStack | undefined;
 	public readonly field_21139_a:  int;
 
-	public constructor(i1: int, i2: int, itemStack3: ItemStack[]| null, itemStack4: ItemStack| null) {
+	public constructor(i1: int, i2: int, itemStack3: ItemStack[]| undefined, itemStack4: ItemStack| undefined) {
 		super();
 		this.field_21139_a = itemStack4.itemID;
 		this.field_21138_b = i1;
@@ -20,7 +20,7 @@ export  class ShapedRecipes extends IRecipe {
 		this.field_21140_e = itemStack4;
 	}
 
-	public func_21135_a(inventoryCrafting1: InventoryCrafting| null):  boolean {
+	public func_21135_a(inventoryCrafting1: InventoryCrafting| undefined):  boolean {
 		for(let  i2: int = 0; i2 <= 3 - this.field_21138_b; ++i2) {
 			for(let  i3: int = 0; i3 <= 3 - this.field_21142_c; ++i3) {
 				if(this.func_21137_a(inventoryCrafting1, i2, i3, true)) {
@@ -36,12 +36,12 @@ export  class ShapedRecipes extends IRecipe {
 		return false;
 	}
 
-	private func_21137_a(inventoryCrafting1: InventoryCrafting| null, i2: int, i3: int, z4: boolean):  boolean {
+	private func_21137_a(inventoryCrafting1: InventoryCrafting| undefined, i2: int, i3: int, z4: boolean):  boolean {
 		for(let  i5: int = 0; i5 < 3; ++i5) {
 			for(let  i6: int = 0; i6 < 3; ++i6) {
 				let  i7: int = i5 - i2;
 				let  i8: int = i6 - i3;
-				let  itemStack9: ItemStack = null;
+				let  itemStack9: ItemStack = undefined;
 				if(i7 >= 0 && i8 >= 0 && i7 < this.field_21138_b && i8 < this.field_21142_c) {
 					if(z4) {
 						itemStack9 = this.field_21141_d[this.field_21138_b - i7 - 1 + i8 * this.field_21138_b];
@@ -51,8 +51,8 @@ export  class ShapedRecipes extends IRecipe {
 				}
 
 				let  itemStack10: ItemStack = inventoryCrafting1.func_21103_b(i5, i6);
-				if(itemStack10 !== null || itemStack9 !== null) {
-					if(itemStack10 === null && itemStack9 !== null || itemStack10 !== null && itemStack9 === null) {
+				if(itemStack10 !== undefined || itemStack9 !== undefined) {
+					if(itemStack10 === undefined && itemStack9 !== undefined || itemStack10 !== undefined && itemStack9 === undefined) {
 						return false;
 					}
 
@@ -70,7 +70,7 @@ export  class ShapedRecipes extends IRecipe {
 		return true;
 	}
 
-	public func_21136_b(inventoryCrafting1: InventoryCrafting| null):  ItemStack | null {
+	public func_21136_b(inventoryCrafting1: InventoryCrafting| undefined):  ItemStack | undefined {
 		return new  ItemStack(this.field_21140_e.itemID, this.field_21140_e.stackSize, this.field_21140_e.getItemDamage());
 	}
 

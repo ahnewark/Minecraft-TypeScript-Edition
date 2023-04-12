@@ -17,20 +17,20 @@ export  class BlockMinecartTrack extends Block {
 		this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 0.125, 1.0);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public isOpaqueCube():  boolean {
 		return false;
 	}
 
-	public async collisionRayTrace(world1: World| null, i2: int, i3: int, i4: int, vec3D5: Vec3D| null, vec3D6: Vec3D| null):  Promise<MovingObjectPosition | null> {
+	public async collisionRayTrace(world1: World| undefined, i2: int, i3: int, i4: int, vec3D5: Vec3D| undefined, vec3D6: Vec3D| undefined):  Promise<MovingObjectPosition | undefined> {
 		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.collisionRayTrace(world1, i2, i3, i4, vec3D5, vec3D6);
 	}
 
-	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await iBlockAccess1.getBlockMetadata(i2, i3, i4);
 		if(i5 >= 2 && i5 <= 5) {
 			this.setBlockBounds(0.0, 0.0, 0.0, 1.0, 0.625, 1.0);
@@ -52,15 +52,15 @@ export  class BlockMinecartTrack extends Block {
 		return 9;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 1;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.isBlockOpaqueCube(i2, i3 - 1, i4);
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			await world1.setBlockMetadataWithNotify(i2, i3, i4, 15);
 			await this.func_4031_h(world1, i2, i3, i4);
@@ -68,7 +68,7 @@ export  class BlockMinecartTrack extends Block {
 
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			let  z7: boolean = false;
@@ -102,7 +102,7 @@ export  class BlockMinecartTrack extends Block {
 		}
 	}
 
-	private async func_4031_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async func_4031_h(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			await (await  MinecartTrackLogic.Construct(this, world1, i2, i3, i4)).func_792_a(await world1.isBlockIndirectlyGettingPowered(i2, i3, i4));
 		}

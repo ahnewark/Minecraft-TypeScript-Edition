@@ -8,7 +8,7 @@ import { Entity } from "./Entity";
 import { Item } from "./Item";
 
 export  class EntitySpider extends EntityMobs {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/spider.png";
 		this.setSize(1.4, 0.9);
@@ -23,13 +23,13 @@ export  class EntitySpider extends EntityMobs {
 		return this.height as double * 0.75 - 0.5;
 	}
 
-	protected async findPlayerToAttack():  Promise<Entity | null> {
+	protected async findPlayerToAttack():  Promise<Entity | undefined> {
 		let  f1: float = await this.getEntityBrightness(1.0);
 		if(f1 < 0.5) {
 			let  d2: double = 16.0;
 			return this.worldObj.getClosestPlayerToEntity(this, d2);
 		} else {
-			return null;
+			return undefined;
 		}
 	}
 
@@ -45,10 +45,10 @@ export  class EntitySpider extends EntityMobs {
 		return "mob.spiderdeath";
 	}
 
-	protected async attackEntity(entity1: Entity| null, f2: float):  Promise<void> {
+	protected async attackEntity(entity1: Entity| undefined, f2: float):  Promise<void> {
 		let  f3: float = await this.getEntityBrightness(1.0);
 		if(f3 > 0.5 && this.rand.nextInt(100) === 0) {
-			this.playerToAttack = null;
+			this.playerToAttack = undefined;
 		} else {
 			if(f2 > 2.0 && f2 < 6.0 && this.rand.nextInt(10) === 0) {
 				if(this.onGround) {
@@ -66,11 +66,11 @@ export  class EntitySpider extends EntityMobs {
 		}
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 

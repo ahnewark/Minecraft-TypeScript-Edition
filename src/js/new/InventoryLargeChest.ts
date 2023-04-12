@@ -5,10 +5,10 @@ import { EntityPlayer } from "./EntityPlayer";
 
 export  class InventoryLargeChest implements IInventory {
 	private name:  string;
-	private upperChest:  IInventory | null;
-	private lowerChest:  IInventory | null;
+	private upperChest:  IInventory | undefined;
+	private lowerChest:  IInventory | undefined;
 
-	public constructor(string1: string, iInventory2: IInventory| null, iInventory3: IInventory| null) {
+	public constructor(string1: string, iInventory2: IInventory| undefined, iInventory3: IInventory| undefined) {
 		this.name = string1;
 		this.upperChest = iInventory2;
 		this.lowerChest = iInventory3;
@@ -22,15 +22,15 @@ export  class InventoryLargeChest implements IInventory {
 		return this.name;
 	}
 
-	public getStackInSlot(i1: int):  ItemStack | null {
+	public getStackInSlot(i1: int):  ItemStack | undefined {
 		return i1 >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(i1 - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(i1);
 	}
 
-	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | null> {
+	public async decrStackSize(i1: int, i2: int):  Promise<ItemStack | undefined> {
 		return i1 >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(i1 - this.upperChest.getSizeInventory(), i2) : this.upperChest.decrStackSize(i1, i2);
 	}
 
-	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| null):  Promise<void> {
+	public async setInventorySlotContents(i1: int, itemStack2: ItemStack| undefined):  Promise<void> {
 		if(i1 >= this.upperChest.getSizeInventory()) {
 			await this.lowerChest.setInventorySlotContents(i1 - this.upperChest.getSizeInventory(), itemStack2);
 		} else {
@@ -48,7 +48,7 @@ export  class InventoryLargeChest implements IInventory {
 		this.lowerChest.onInventoryChanged();
 	}
 
-	public async canInteractWith(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async canInteractWith(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		return await this.upperChest.canInteractWith(entityPlayer1) && await this.lowerChest.canInteractWith(entityPlayer1);
 	}
 }

@@ -14,11 +14,11 @@ export  class BlockClay extends Block {
 		super(i1, i2, MaterialRegistry.clay);
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Item.clay.shiftedIndex;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 4;
 	}
 }

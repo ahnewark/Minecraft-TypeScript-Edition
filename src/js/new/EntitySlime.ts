@@ -20,7 +20,7 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 		return 'Slime';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/slime.png";
 		this.slimeSize = 1 << this.rand.nextInt(3);
@@ -36,12 +36,12 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 		nBTTagCompound1.setInteger("Size", this.slimeSize - 1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 		this.slimeSize = nBTTagCompound1.getInteger("Size") + 1;
 	}
@@ -71,13 +71,13 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 
 	protected async updatePlayerActionState():  Promise<void> {
 		let  entityPlayer1: EntityPlayer = this.worldObj.getClosestPlayerToEntity(this, 16.0);
-		if(entityPlayer1 !== null) {
+		if(entityPlayer1 !== undefined) {
 			this.faceEntity(entityPlayer1, 10.0);
 		}
 
 		if(this.onGround && this.field_769_d-- <= 0) {
 			this.field_769_d = this.rand.nextInt(20) + 10;
-			if(entityPlayer1 !== null) {
+			if(entityPlayer1 !== undefined) {
 				this.field_769_d /= 3;
 			}
 
@@ -113,7 +113,7 @@ export  class EntitySlime extends EntityLiving implements IMobs {
 		await super.setEntityDead();
 	}
 
-	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| null):  Promise<void> {
+	public async onCollideWithPlayer(entityPlayer1: EntityPlayer| undefined):  Promise<void> {
 		if(this.slimeSize > 1 && this.canEntityBeSeen(entityPlayer1) && this.getDistanceToEntity(entityPlayer1) < 0.6 * this.slimeSize && await entityPlayer1.attackEntityFrom(this, this.slimeSize)) {
 			this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 		}

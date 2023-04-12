@@ -16,7 +16,7 @@ export  class BlockMushroom extends BlockFlower {
 		return Block.opaqueCubeLookup[i1];
 	}
 
-	public async canBlockStay(world1: World| null, i2: int, i3: int, i4: int): Promise<boolean> {
+	public async canBlockStay(world1: World| undefined, i2: int, i3: int, i4: int): Promise<boolean> {
 		return await world1.getBlockLightValue(i2, i3, i4) <= 13 && this.canThisPlantGrowOnThisBlockID(await world1.getBlockId(i2, i3 - 1, i4));
 	}
 }

@@ -31,8 +31,8 @@ export  class BlockFire extends Block {
 		this.abilityToCatchFire[i1] = i3;
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public isOpaqueCube():  boolean {
@@ -47,7 +47,7 @@ export  class BlockFire extends Block {
 		return 3;
 	}
 
-	public quantityDropped(random1: Random | null):  int {
+	public quantityDropped(random1: Random | undefined):  int {
 		return 0;
 	}
 
@@ -55,7 +55,7 @@ export  class BlockFire extends Block {
 		return 10;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		let  z6: boolean = await world1.getBlockId(i2, i3 - 1, i4) === Block.bloodStone.blockID;
 		let  i7: int = await world1.getBlockMetadata(i2, i3, i4);
 		if(i7 < 15) {
@@ -101,7 +101,7 @@ export  class BlockFire extends Block {
 		}
 	}
 
-	private async tryToCatchBlockOnFire(world1: World| null, i2: int, i3: int, i4: int, i5: int, random6: Random| null):  Promise<void> {
+	private async tryToCatchBlockOnFire(world1: World| undefined, i2: int, i3: int, i4: int, i5: int, random6: Random| undefined):  Promise<void> {
 		let  i7: int = this.abilityToCatchFire[await world1.getBlockId(i2, i3, i4)];
 		if(random6.nextInt(i5) < i7) {
 			let  z8: boolean = await world1.getBlockId(i2, i3, i4) === Block.tnt.blockID;
@@ -118,11 +118,11 @@ export  class BlockFire extends Block {
 
 	}
 
-	private async func_263_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async func_263_h(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await this.canBlockCatchFire(world1, i2 + 1, i3, i4) ? true : (await this.canBlockCatchFire(world1, i2 - 1, i3, i4) ? true : (await this.canBlockCatchFire(world1, i2, i3 - 1, i4) ? true : (await this.canBlockCatchFire(world1, i2, i3 + 1, i4) ? true : (await this.canBlockCatchFire(world1, i2, i3, i4 - 1) ? true : await this.canBlockCatchFire(world1, i2, i3, i4 + 1)))));
 	}
 
-	private async getChanceOfNeighborsEncouragingFire(world1: World| null, i2: int, i3: int, i4: int):  Promise<int> {
+	private async getChanceOfNeighborsEncouragingFire(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<int> {
 		let  b5: byte = 0;
 		if(!await world1.isAirBlock(i2, i3, i4)) {
 			return 0;
@@ -141,26 +141,26 @@ export  class BlockFire extends Block {
 		return false;
 	}
 
-	public async canBlockCatchFire(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canBlockCatchFire(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return this.chanceToEncourageFire[await iBlockAccess1.getBlockId(i2, i3, i4)] > 0;
 	}
 
-	public async getChanceToEncourageFire(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
+	public async getChanceToEncourageFire(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<int> {
 		let  i6: int = this.chanceToEncourageFire[await world1.getBlockId(i2, i3, i4)];
 		return i6 > i5 ? i6 : i5;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.isBlockOpaqueCube(i2, i3 - 1, i4) || await this.func_263_h(world1, i2, i3, i4);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(!await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await this.func_263_h(world1, i2, i3, i4)) {
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(await world1.getBlockId(i2, i3 - 1, i4) !== Block.obsidian.blockID || !Block.portal.tryToCreatePortal(world1, i2, i3, i4)) {
 			if(!await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && !await this.func_263_h(world1, i2, i3, i4)) {
 				await world1.setBlockWithNotify(i2, i3, i4, 0);
@@ -170,7 +170,7 @@ export  class BlockFire extends Block {
 		}
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(random5.nextInt(24) === 0) {
 			world1.playSoundEffect((i2 as float + 0.5) as double, (i3 as float + 0.5) as double, (i4 as float + 0.5) as double, "fire.fire", 1.0 + random5.nextFloat(), random5.nextFloat() * 0.7 + 0.3);
 		}

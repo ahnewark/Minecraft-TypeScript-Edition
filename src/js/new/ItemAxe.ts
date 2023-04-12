@@ -7,9 +7,9 @@ import { Block } from "./Block";
 
 
 export  class ItemAxe extends ItemTool {
-	private static blocksEffectiveAgainst:  Block[] | null =  [Block.planks, Block.bookShelf, Block.wood, Block.crate];
+	private static blocksEffectiveAgainst:  Block[] | undefined =  [Block.planks, Block.bookShelf, Block.wood, Block.crate];
 
-	public constructor(i1: int, enumToolMaterial2: EnumToolMaterial| null) {
+	public constructor(i1: int, enumToolMaterial2: EnumToolMaterial| undefined) {
 		super(i1, 3, enumToolMaterial2, ItemAxe.blocksEffectiveAgainst);
 	}
 }

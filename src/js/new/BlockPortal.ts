@@ -13,11 +13,11 @@ export  class BlockPortal extends BlockBreakable {
 		super(i1, i2, MaterialRegistry.portal, false);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
-	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  f5: float;
 		let  f6: float;
 		if(await iBlockAccess1.getBlockId(i2 - 1, i3, i4) !== this.blockID && await iBlockAccess1.getBlockId(i2 + 1, i3, i4) !== this.blockID) {
@@ -40,7 +40,7 @@ export  class BlockPortal extends BlockBreakable {
 		return false;
 	}
 
-	public async tryToCreatePortal(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async tryToCreatePortal(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  b5: byte = 0;
 		let  b6: byte = 0;
 		if(await world1.getBlockId(i2 - 1, i3, i4) === Block.obsidian.blockID || await world1.getBlockId(i2 + 1, i3, i4) === Block.obsidian.blockID) {
@@ -91,7 +91,7 @@ export  class BlockPortal extends BlockBreakable {
 		}
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  b6: byte = 0;
 		let  b7: byte = 1;
 		if(await world1.getBlockId(i2 - 1, i3, i4) === this.blockID || await world1.getBlockId(i2 + 1, i3, i4) === this.blockID) {
@@ -124,11 +124,11 @@ export  class BlockPortal extends BlockBreakable {
 		}
 	}
 
-	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		return true;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 0;
 	}
 
@@ -136,13 +136,13 @@ export  class BlockPortal extends BlockBreakable {
 		return 1;
 	}
 
-	public async onEntityCollidedWithBlock(world1: World| null, i2: int, i3: int, i4: int, entity5: Entity| null):  Promise<void> {
+	public async onEntityCollidedWithBlock(world1: World| undefined, i2: int, i3: int, i4: int, entity5: Entity| undefined):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			entity5.setInPortal();
 		}
 	}
 
-	public async randomDisplayTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async randomDisplayTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(random5.nextInt(100) === 0) {
 			world1.playSoundEffect(i2 as double + 0.5, i3 as double + 0.5, i4 as double + 0.5, "portal.portal", 1.0, random5.nextFloat() * 0.4 + 0.8);
 		}

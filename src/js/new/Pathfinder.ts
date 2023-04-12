@@ -11,20 +11,20 @@ import { Path } from "./Path";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class Pathfinder extends JavaObject {
-	private worldMap:  IBlockAccess | null;
+	private worldMap:  IBlockAccess | undefined;
 	private path:  Path = new Path();
-	private pointMap:  MCHashTable | null = new  MCHashTable();
-	private pathOptions:  PathPoint[] | null = new   Array<PathPoint>(32);
+	private pointMap:  MCHashTable | undefined = new  MCHashTable();
+	private pathOptions:  PathPoint[] | undefined = new   Array<PathPoint>(32);
 
-	public constructor(iBlockAccess1: IBlockAccess| null) {
+	public constructor(iBlockAccess1: IBlockAccess| undefined) {
 		super();
 		this.worldMap = iBlockAccess1;
 	}
 
-	public async createEntityPathTo(entity1: Entity| null, entity2: Entity| null, f3: float):  Promise<PathEntity | null>;
+	public async createEntityPathTo(entity1: Entity| undefined, entity2: Entity| undefined, f3: float):  Promise<PathEntity | undefined>;
 
-	public async createEntityPathTo(entity1: Entity| null, i2: int, i3: int, i4: int, f5: float):  Promise<PathEntity | null>;
-	public async createEntityPathTo(...args: unknown[]):  Promise<PathEntity | null> {
+	public async createEntityPathTo(entity1: Entity| undefined, i2: int, i3: int, i4: int, f5: float):  Promise<PathEntity | undefined>;
+	public async createEntityPathTo(...args: unknown[]):  Promise<PathEntity | undefined> {
 		switch (args.length) {
 			case 3: {
 				const [entity1, entity2, f3] = args as [Entity, Entity, float];
@@ -42,7 +42,7 @@ export  class Pathfinder extends JavaObject {
 		}
 	}
 
-	public async createEntityPathTo2(entity1: Entity| null, d2: double, d4: double, d6: double, f8: float):  Promise<PathEntity | null> {
+	public async createEntityPathTo2(entity1: Entity| undefined, d2: double, d4: double, d6: double, f8: float):  Promise<PathEntity | undefined> {
 		this.path.clearPath();
 		this.pointMap.clearMap();
 		let  pathPoint9: PathPoint = this.openPoint(MathHelper.floor_double(entity1.boundingBox.minX), MathHelper.floor_double(entity1.boundingBox.minY), MathHelper.floor_double(entity1.boundingBox.minZ));
@@ -53,7 +53,7 @@ export  class Pathfinder extends JavaObject {
 	}
 
 
-	private async addToPath(entity1: Entity| null, pathPoint2: PathPoint| null, pathPoint3: PathPoint| null, pathPoint4: PathPoint| null, f5: float):  Promise<PathEntity | null> {
+	private async addToPath(entity1: Entity| undefined, pathPoint2: PathPoint| undefined, pathPoint3: PathPoint| undefined, pathPoint4: PathPoint| undefined, f5: float):  Promise<PathEntity | undefined> {
 		pathPoint2.totalPathDistance = 0.0;
 		pathPoint2.distanceToNext = pathPoint2.distanceTo(pathPoint3);
 		pathPoint2.distanceToTarget = pathPoint2.distanceToNext;
@@ -92,13 +92,13 @@ export  class Pathfinder extends JavaObject {
 		}
 
 		if(pathPoint6 === pathPoint2) {
-			return null;
+			return undefined;
 		} else {
 			return this.createEntityPath(pathPoint2, pathPoint6);
 		}
 	}
 
-	private async findPathOptions(entity1: Entity| null, pathPoint2: PathPoint| null, pathPoint3: PathPoint| null, pathPoint4: PathPoint| null, f5: float):  Promise<int> {
+	private async findPathOptions(entity1: Entity| undefined, pathPoint2: PathPoint| undefined, pathPoint3: PathPoint| undefined, pathPoint4: PathPoint| undefined, f5: float):  Promise<int> {
 		let  i6: int = 0;
 		let  b7: byte = 0;
 		if(await this.getVerticalOffset(entity1, pathPoint2.xCoord, pathPoint2.yCoord + 1, pathPoint2.zCoord, pathPoint3) > 0) {
@@ -109,48 +109,48 @@ export  class Pathfinder extends JavaObject {
 		let  pathPoint9: PathPoint = await this.getSafePoint(entity1, pathPoint2.xCoord - 1, pathPoint2.yCoord, pathPoint2.zCoord, pathPoint3, b7);
 		let  pathPoint10: PathPoint = await this.getSafePoint(entity1, pathPoint2.xCoord + 1, pathPoint2.yCoord, pathPoint2.zCoord, pathPoint3, b7);
 		let  pathPoint11: PathPoint = await this.getSafePoint(entity1, pathPoint2.xCoord, pathPoint2.yCoord, pathPoint2.zCoord - 1, pathPoint3, b7);
-		if(pathPoint8 !== null && !pathPoint8.isFirst && pathPoint8.distanceTo(pathPoint4) < f5) {
+		if(pathPoint8 !== undefined && !pathPoint8.isFirst && pathPoint8.distanceTo(pathPoint4) < f5) {
 			this.pathOptions[i6++] = pathPoint8;
 		}
 
-		if(pathPoint9 !== null && !pathPoint9.isFirst && pathPoint9.distanceTo(pathPoint4) < f5) {
+		if(pathPoint9 !== undefined && !pathPoint9.isFirst && pathPoint9.distanceTo(pathPoint4) < f5) {
 			this.pathOptions[i6++] = pathPoint9;
 		}
 
-		if(pathPoint10 !== null && !pathPoint10.isFirst && pathPoint10.distanceTo(pathPoint4) < f5) {
+		if(pathPoint10 !== undefined && !pathPoint10.isFirst && pathPoint10.distanceTo(pathPoint4) < f5) {
 			this.pathOptions[i6++] = pathPoint10;
 		}
 
-		if(pathPoint11 !== null && !pathPoint11.isFirst && pathPoint11.distanceTo(pathPoint4) < f5) {
+		if(pathPoint11 !== undefined && !pathPoint11.isFirst && pathPoint11.distanceTo(pathPoint4) < f5) {
 			this.pathOptions[i6++] = pathPoint11;
 		}
 
 		return i6;
 	}
 
-	private async getSafePoint(entity1: Entity| null, i2: int, i3: int, i4: int, pathPoint5: PathPoint| null, i6: int): Promise<PathPoint | null> {
-		let  pathPoint7: PathPoint = null;
+	private async getSafePoint(entity1: Entity| undefined, i2: int, i3: int, i4: int, pathPoint5: PathPoint| undefined, i6: int): Promise<PathPoint | undefined> {
+		let  pathPoint7: PathPoint = undefined;
 		if(await this.getVerticalOffset(entity1, i2, i3, i4, pathPoint5) > 0) {
 			pathPoint7 = this.openPoint(i2, i3, i4);
 		}
 
-		if(pathPoint7 === null && await this.getVerticalOffset(entity1, i2, i3 + i6, i4, pathPoint5) > 0) {
+		if(pathPoint7 === undefined && await this.getVerticalOffset(entity1, i2, i3 + i6, i4, pathPoint5) > 0) {
 			pathPoint7 = this.openPoint(i2, i3 + i6, i4);
 			i3 += i6;
 		}
 
-		if(pathPoint7 !== null) {
+		if(pathPoint7 !== undefined) {
 			let  i8: int = 0;
 
 			let  i10: int;
 			for(let  z9: boolean = false; i3 > 0 && (i10 = await this.getVerticalOffset(entity1, i2, i3 - 1, i4, pathPoint5)) > 0; --i3) {
 				if(i10 < 0) {
-					return null;
+					return undefined;
 				}
 
 				++i8;
 				if(i8 >= 4) {
-					return null;
+					return undefined;
 				}
 			}
 
@@ -162,10 +162,10 @@ export  class Pathfinder extends JavaObject {
 		return pathPoint7;
 	}
 
-	private openPoint(i1: int, i2: int, i3: int):  PathPoint | null {
+	private openPoint(i1: int, i2: int, i3: int):  PathPoint | undefined {
 		let  i4: int = i1 | i2 << 10 | i3 << 20;
 		let  pathPoint5: PathPoint = this.pointMap.lookup(i4) as PathPoint;
-		if(pathPoint5 === null) {
+		if(pathPoint5 === undefined) {
 			pathPoint5 = new  PathPoint(i1, i2, i3);
 			this.pointMap.addKey(i4, pathPoint5);
 		}
@@ -173,7 +173,7 @@ export  class Pathfinder extends JavaObject {
 		return pathPoint5;
 	}
 
-	private async getVerticalOffset(entity1: Entity| null, i2: int, i3: int, i4: int, pathPoint5: PathPoint| null): Promise<int> {
+	private async getVerticalOffset(entity1: Entity| undefined, i2: int, i3: int, i4: int, pathPoint5: PathPoint| undefined): Promise<int> {
 		for(let  i6: int = i2; i6 < i2 + pathPoint5.xCoord; ++i6) {
 			for(let  i7: int = i3; i7 < i3 + pathPoint5.yCoord; ++i7) {
 				for(let  i8: int = i4; i8 < i4 + pathPoint5.zCoord; ++i8) {
@@ -192,11 +192,11 @@ export  class Pathfinder extends JavaObject {
 		return 1;
 	}
 
-	private createEntityPath(pathPoint1: PathPoint| null, pathPoint2: PathPoint| null):  PathEntity | null {
+	private createEntityPath(pathPoint1: PathPoint| undefined, pathPoint2: PathPoint| undefined):  PathEntity | undefined {
 		let  i3: int = 1;
 
 		let  pathPoint4: PathPoint;
-		for(pathPoint4 = pathPoint2; pathPoint4.previous !== null; pathPoint4 = pathPoint4.previous) {
+		for(pathPoint4 = pathPoint2; pathPoint4.previous !== undefined; pathPoint4 = pathPoint4.previous) {
 			++i3;
 		}
 
@@ -204,7 +204,7 @@ export  class Pathfinder extends JavaObject {
 		pathPoint4 = pathPoint2;
 		--i3;
 
-		for(pathPoint5[i3] = pathPoint2; pathPoint4.previous !== null; pathPoint5[i3] = pathPoint4) {
+		for(pathPoint5[i3] = pathPoint2; pathPoint4.previous !== undefined; pathPoint5[i3] = pathPoint4) {
 			pathPoint4 = pathPoint4.previous;
 			--i3;
 		}

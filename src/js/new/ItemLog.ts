@@ -12,7 +12,7 @@ export  class ItemLog extends ItemBlock {
 		this.setHasSubtypes(true);
 	}
 
-	public getIconIndex(itemStack1: ItemStack| null):  int {
+	public getIconIndex(itemStack1: ItemStack| undefined):  int {
 		return Block.wood.getBlockTextureFromSideAndMetadata(2, itemStack1.getItemDamage());
 	}
 

@@ -2,7 +2,7 @@ import { DataOutput } from "../java/io/DataOutput";
 import { DataInput } from "../java/io/DataInput";
 
 export abstract  class NBTBase {
-	public key: string | null = null;
+	public key: string | undefined = undefined;
 
 	public abstract writeTagContents(dataOutput1: DataOutput):  Promise<void>;
 
@@ -11,7 +11,7 @@ export abstract  class NBTBase {
 	public abstract getType(): number;
 
 	public getKey():  string {
-		return this.key === null ? "" : this.key;
+		return this.key === undefined ? "" : this.key;
 	}
 
 	public setKey(string1: string):  NBTBase {

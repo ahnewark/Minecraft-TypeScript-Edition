@@ -24,14 +24,14 @@ export  class ChunkLoader implements IChunkLoader {
 		this.createIfNecessary = z2;
 	}
 
-	private async chunkFileForXZ(i1: number, i2: number):  Promise<File | null> {
+	private async chunkFileForXZ(i1: number, i2: number):  Promise<File | undefined> {
 		let  string3: string = "c." + java.lang.Integer.toString(i1, 36) + "." + java.lang.Integer.toString(i2, 36) + ".dat";
 		let  string4: string= '' + java.lang.Integer.toString(i1 & 63, 36);
 		let  string5: string= '' + java.lang.Integer.toString(i2 & 63, 36);
 		let  file6: File = new File(this.saveDir, new JavaString(string4));
 		if(!await file6.exists()) {
 			if(!this.createIfNecessary) {
-				return null;
+				return undefined;
 			}
 
 			await file6.mkdir();
@@ -40,30 +40,30 @@ export  class ChunkLoader implements IChunkLoader {
 		file6 = new File(file6, new JavaString(string5));
 		if(!await file6.exists()) {
 			if(!this.createIfNecessary) {
-				return null;
+				return undefined;
 			}
 
 			await file6.mkdir();
 		}
 
 		file6 = new  File(file6, new JavaString(string3));
-		return !await file6.exists() && !this.createIfNecessary ? null : file6;
+		return !await file6.exists() && !this.createIfNecessary ? undefined : file6;
 	}
 
-	public async loadChunk(world1: World, i2: number, i3: number):  Promise<Chunk | null> {
-		let  file4: File | null = await this.chunkFileForXZ(i2, i3);
-		if(file4 !== null && await file4.exists()) {
+	public async loadChunk(world1: World, i2: number, i3: number):  Promise<Chunk | undefined> {
+		let  file4: File | undefined = await this.chunkFileForXZ(i2, i3);
+		if(file4 !== undefined && await file4.exists()) {
 			try {
 				let  fileInputStream5: java.io.FileInputStream = await FileInputStream.Construct(file4);
 				let  nBTTagCompound6: NBTTagCompound = await CompressedStreamTools.func_1138_a(fileInputStream5);
 				if(!nBTTagCompound6.hasKey("Level")) {
 					console.log("Chunk file at " + i2 + "," + i3 + " is missing level data, skipping");
-					return null;
+					return undefined;
 				}
 
 				if(!nBTTagCompound6.getCompoundTag("Level").hasKey("Blocks")) {
 					console.log("Chunk file at " + i2 + "," + i3 + " is missing block data, skipping");
-					return null;
+					return undefined;
 				}
 
 				let  chunk7: Chunk = await ChunkLoader.loadChunkIntoWorldFromCompound(world1, nBTTagCompound6.getCompoundTag("Level"));
@@ -85,13 +85,13 @@ export  class ChunkLoader implements IChunkLoader {
 			}
 		}
 
-		return null;
+		return undefined;
 	}
 
 	public async saveChunk(world1: World, chunk2: Chunk):  Promise<void> {
 		await world1.checkSessionLock();
-		let file3: File | null = await this.chunkFileForXZ(chunk2.xPosition, chunk2.zPosition);
-		if(file3 != null && await file3.exists()) {
+		let file3: File | undefined = await this.chunkFileForXZ(chunk2.xPosition, chunk2.zPosition);
+		if(file3 != undefined && await file3.exists()) {
 			world1.sizeOnDisk -= await file3.length();
 		}
 
@@ -162,7 +162,7 @@ export  class ChunkLoader implements IChunkLoader {
 		nBTTagCompound3.setTag("TileEntities", nBTTagList9);
 	}
 
-	public static async loadChunkIntoWorldFromCompound(world0: World| null, nBTTagCompound1: NBTTagCompound): Promise<Chunk> {
+	public static async loadChunkIntoWorldFromCompound(world0: World| undefined, nBTTagCompound1: NBTTagCompound): Promise<Chunk> {
 		let  i2: number = nBTTagCompound1.getInteger("xPos");
 		let  i3: number = nBTTagCompound1.getInteger("zPos");
 		let  chunk4: Chunk = new  Chunk(world0, i2, i3);
@@ -176,7 +176,7 @@ export  class ChunkLoader implements IChunkLoader {
 			chunk4.data = new  NibbleArray(chunk4.blocks.length);
 		}
 
-		if(chunk4.heightMap === null || !chunk4.skylightMap.isValid()) {
+		if(chunk4.heightMap === undefined || !chunk4.skylightMap.isValid()) {
 			chunk4.heightMap = new Int8Array(256);
 			chunk4.skylightMap = new  NibbleArray(chunk4.blocks.length);
 			await chunk4.func_1024_c();
@@ -188,23 +188,23 @@ export  class ChunkLoader implements IChunkLoader {
 		}
 
 		let  nBTTagList5: NBTTagList = nBTTagCompound1.getTagList("Entities");
-		if(nBTTagList5 !== null) {
+		if(nBTTagList5 !== undefined) {
 			for(let  i6: number = 0; i6 < nBTTagList5.tagCount(); ++i6) {
 				let  nBTTagCompound7: NBTTagCompound = nBTTagList5.tagAt(i6) as NBTTagCompound;
 				let  entity8: Entity = EntityList.createEntityFromNBT(nBTTagCompound7, world0);
 				chunk4.hasEntities = true;
-				if(entity8 !== null) {
+				if(entity8 !== undefined) {
 					chunk4.addEntity(entity8);
 				}
 			}
 		}
 
 		let  nBTTagList10: NBTTagList = nBTTagCompound1.getTagList("TileEntities");
-		if(nBTTagList10 !== null) {
+		if(nBTTagList10 !== undefined) {
 			for(let  i11: number = 0; i11 < nBTTagList10.tagCount(); ++i11) {
 				let  nBTTagCompound12: NBTTagCompound = nBTTagList10.tagAt(i11) as NBTTagCompound;
 				let  tileEntity9: TileEntity = TileEntity.createAndLoadEntity(nBTTagCompound12);
-				if(tileEntity9 !== null) {
+				if(tileEntity9 !== undefined) {
 					chunk4.func_1001_a(tileEntity9);
 				}
 			}
@@ -219,6 +219,6 @@ export  class ChunkLoader implements IChunkLoader {
 	public async saveExtraData():  Promise<void> {
 	}
 
-	public async saveExtraChunkData(world1: World| null, chunk2: Chunk| null):  Promise<void> {
+	public async saveExtraChunkData(world1: World| undefined, chunk2: Chunk| undefined):  Promise<void> {
 	}
 }

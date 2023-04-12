@@ -30,9 +30,9 @@ export abstract  class Entity extends JavaObject implements IEntity {
 	public entityId:  int = Entity.nextEntityID++;
 	public renderDistanceWeight:  double = 1.0;
 	public preventEntitySpawning:  boolean = false;
-	public riddenByEntity:  Entity | null;
-	public ridingEntity:  Entity | null;
-	public worldObj:  World | null;
+	public riddenByEntity:  Entity | undefined;
+	public ridingEntity:  Entity | undefined;
+	public worldObj:  World | undefined;
 	public prevPosX:  double;
 	public prevPosY:  double;
 	public prevPosZ:  double;
@@ -46,7 +46,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 	public rotationPitch:  float;
 	public prevRotationYaw:  float;
 	public prevRotationPitch:  float;
-	public readonly boundingBox:  AxisAlignedBB | null = AxisAlignedBB.getBoundingBox(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	public readonly boundingBox:  AxisAlignedBB | undefined = AxisAlignedBB.getBoundingBox(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	public onGround:  boolean = false;
 	public isCollidedHorizontally:  boolean;
 	public isCollidedVertically:  boolean;
@@ -79,10 +79,10 @@ export abstract  class Entity extends JavaObject implements IEntity {
 	public field_9306_bj:  int = 0;
 	public air:  int = 300;
 	private field_862_c:  boolean = true;
-	public skinUrl: string | null;
-	public cloakUrl: string | null;
+	public skinUrl: string | undefined;
+	public cloakUrl: string | undefined;
 	protected isImmuneToFire:  boolean = false;
-	protected dataWatcher:  DataWatcher | null = new  DataWatcher();
+	protected dataWatcher:  DataWatcher | undefined = new  DataWatcher();
 	private entityRiderPitchDelta:  double;
 	private entityRiderYawDelta:  double;
 	public addedToChunk:  boolean = false;
@@ -105,11 +105,11 @@ export abstract  class Entity extends JavaObject implements IEntity {
 
 	protected abstract entityInit():  void;
 
-	public getDataWatcher():  DataWatcher | null {
+	public getDataWatcher():  DataWatcher | undefined {
 		return this.dataWatcher;
 	}
 
-	public equals(object1: java.lang.Object| null):  boolean {
+	public equals(object1: java.lang.Object| undefined):  boolean {
 		return object1 instanceof Entity ? (object1 as Entity).entityId === this.entityId : false;
 	}
 
@@ -118,7 +118,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 	}
 
 	protected async preparePlayerToSpawn(): Promise<void> {
-		if(this.worldObj !== null) {
+		if(this.worldObj !== undefined) {
 			while(this.posY > 0.0) {
 				this.setPosition(this.posX, this.posY, this.posZ);
 				if (await (await this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox)).length === 0) {
@@ -178,8 +178,8 @@ export abstract  class Entity extends JavaObject implements IEntity {
 	}
 
 	public async onEntityUpdate():  Promise<void> {
-		if(this.ridingEntity !== null && this.ridingEntity.isDead) {
-			this.ridingEntity = null;
+		if(this.ridingEntity !== undefined && this.ridingEntity.isDead) {
+			this.ridingEntity = undefined;
 		}
 
 		++this.ticksExisted;
@@ -232,7 +232,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 				}
 			} else {
 				if(this.fire % 20 === 0) {
-					await this.attackEntityFrom(null as Entity, 1);
+					await this.attackEntityFrom(undefined as Entity, 1);
 				}
 
 				--this.fire;
@@ -249,7 +249,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 
 		if(!this.worldObj.multiplayerWorld) {
 			this.func_21059_b(0, this.fire > 0);
-			this.func_21059_b(2, this.ridingEntity !== null);
+			this.func_21059_b(2, this.ridingEntity !== undefined);
 		}
 
 		this.field_862_c = false;
@@ -257,7 +257,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 
 	protected async setOnFireFromLava():  Promise<void> {
 		if(!this.isImmuneToFire) {
-			await this.attackEntityFrom(null as Entity, 4);
+			await this.attackEntityFrom(undefined as Entity, 4);
 			this.fire = 600;
 		}
 
@@ -503,13 +503,13 @@ export abstract  class Entity extends JavaObject implements IEntity {
 
 	}
 
-	public getBoundingBox():  AxisAlignedBB | null {
-		return null;
+	public getBoundingBox():  AxisAlignedBB | undefined {
+		return undefined;
 	}
 
 	protected async dealFireDamage(i1: int):  Promise<void> {
 		if(!this.isImmuneToFire) {
-			await this.attackEntityFrom(null as Entity, i1);
+			await this.attackEntityFrom(undefined as Entity, i1);
 		}
 
 	}
@@ -521,7 +521,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return await this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0, -0.4000000059604645, 0.0), MaterialRegistry.water, this);
 	}
 
-	public async isInsideOfMaterial(material1: Material| null):  Promise<boolean> {
+	public async isInsideOfMaterial(material1: Material| undefined):  Promise<boolean> {
 		let  d2: double = this.posY + this.getEyeHeight() as double;
 		let  i4: int = MathHelper.floor_double(this.posX);
 		let  i5: int = MathHelper.floor_float(MathHelper.floor_double(d2) as float);
@@ -569,7 +569,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return await this.worldObj.checkChunksExist(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ), MathHelper.floor_double(this.boundingBox.maxX), MathHelper.floor_double(this.boundingBox.maxY), MathHelper.floor_double(this.boundingBox.maxZ)) ? this.worldObj.getLightBrightness(i2, i5, i6) : 0.0;
 	}
 
-	public setWorld(world1: World| null):  void {
+	public setWorld(world1: World| undefined):  void {
 		this.worldObj = world1;
 	}
 
@@ -602,7 +602,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
-	public getDistanceToEntity(entity1: Entity| null):  float {
+	public getDistanceToEntity(entity1: Entity| undefined):  float {
 		let  f2: float = (this.posX - entity1.posX) as float;
 		let  f3: float = (this.posY - entity1.posY) as float;
 		let  f4: float = (this.posZ - entity1.posZ) as float;
@@ -623,17 +623,17 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return MathHelper.sqrt_double(d7 * d7 + d9 * d9 + d11 * d11) as double;
 	}
 
-	public getDistanceSqToEntity(entity1: Entity| null):  double {
+	public getDistanceSqToEntity(entity1: Entity| undefined):  double {
 		let  d2: double = this.posX - entity1.posX;
 		let  d4: double = this.posY - entity1.posY;
 		let  d6: double = this.posZ - entity1.posZ;
 		return d2 * d2 + d4 * d4 + d6 * d6;
 	}
 
-	public async onCollideWithPlayer(entityPlayer1: IEntityPlayer| null):  Promise<void> {
+	public async onCollideWithPlayer(entityPlayer1: IEntityPlayer| undefined):  Promise<void> {
 	}
 
-	public applyEntityCollision(entity1: Entity| null):  void {
+	public applyEntityCollision(entity1: Entity| undefined):  void {
 		if(entity1.riddenByEntity !== this && entity1.ridingEntity !== this) {
 			let  d2: double = entity1.posX - this.posX;
 			let  d4: double = entity1.posZ - this.posZ;
@@ -670,7 +670,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		this.beenAttacked = true;
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int):  Promise<boolean> {
 		this.setBeenAttacked();
 		return false;
 	}
@@ -683,10 +683,10 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return false;
 	}
 
-	public addToPlayerScore(entity1: Entity| null, i2: int):  void {
+	public addToPlayerScore(entity1: Entity| undefined, i2: int):  void {
 	}
 
-	public isInRangeToRenderVec3D(vec3D1: Vec3D| null):  boolean {
+	public isInRangeToRenderVec3D(vec3D1: Vec3D| undefined):  boolean {
 		let  d2: double = this.posX - vec3D1.xCoord;
 		let  d4: double = this.posY - vec3D1.yCoord;
 		let  d6: double = this.posZ - vec3D1.zCoord;
@@ -704,9 +704,9 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return '';
 	}
 
-	public addEntityID(nBTTagCompound1: NBTTagCompound| null):  boolean {
+	public addEntityID(nBTTagCompound1: NBTTagCompound| undefined):  boolean {
 		let  string2 = this.getEntityString();
-		if(!this.isDead && string2 !== null) {
+		if(!this.isDead && string2 !== undefined) {
 			nBTTagCompound1.setString("id", string2);
 			this.writeToNBT(nBTTagCompound1);
 			return true;
@@ -715,7 +715,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		}
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setTag("Pos", this.newDoubleNBTList( [this.posX, this.posY, this.posZ]));
 		nBTTagCompound1.setTag("Motion", this.newDoubleNBTList( [this.motionX, this.motionY, this.motionZ]));
 		nBTTagCompound1.setTag("Rotation", this.func_377_a( [this.rotationYaw, this.rotationPitch]));
@@ -726,7 +726,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		this.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		let  nBTTagList2: NBTTagList = nBTTagCompound1.getTagList("Pos");
 		let  nBTTagList3: NBTTagList = nBTTagCompound1.getTagList("Motion");
 		let  nBTTagList4: NBTTagList = nBTTagCompound1.getTagList("Rotation");
@@ -751,11 +751,11 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return EntityList.getEntityString(this);
 	}
 
-	protected abstract readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void;
+	protected abstract readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void;
 
-	protected abstract writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void;
+	protected abstract writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void;
 
-	protected newDoubleNBTList(d1: double[]):  NBTTagList | null {
+	protected newDoubleNBTList(d1: double[]):  NBTTagList | undefined {
 		let  nBTTagList2: NBTTagList = new  NBTTagList();
 		let  d3 = d1;
 		let  i4: int = d1.length;
@@ -768,7 +768,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return nBTTagList2;
 	}
 
-	protected func_377_a(f1: float[]):  NBTTagList | null {
+	protected func_377_a(f1: float[]):  NBTTagList | undefined {
 		let  nBTTagList2: NBTTagList = new  NBTTagList();
 		let  f3 = f1;
 		let  i4: int = f1.length;
@@ -785,15 +785,15 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return this.height / 2.0;
 	}
 
-	public async dropItem(i1: int, i2: int):  Promise<IEntityItem | null> {
+	public async dropItem(i1: int, i2: int):  Promise<IEntityItem | undefined> {
 		return await this.dropItemWithOffset(i1, i2, 0.0);
 	}
 
-	public async dropItemWithOffset(i1: int, i2: int, f3: float):  Promise<IEntityItem | null> {
+	public async dropItemWithOffset(i1: int, i2: int, f3: float):  Promise<IEntityItem | undefined> {
 		return await this.entityDropItem(new  ItemStack(i1, i2, 0), f3);
 	}
 
-	public async entityDropItem(itemStack1: ItemStack| null, f2: float):  Promise<IEntityItem | null> {
+	public async entityDropItem(itemStack1: ItemStack| undefined, f2: float):  Promise<IEntityItem | undefined> {
 
 		let  entityItem3 = Entity.entityItemCtor(this.worldObj, this.posX, this.posY + f2 as double, this.posZ, itemStack1);
 		//let  entityItem3: EntityItem = new  EntityItem(this.worldObj, this.posX, this.posY + f2 as double, this.posZ, itemStack1);
@@ -813,17 +813,17 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return await this.worldObj.isBlockOpaqueCube(i1, i2, i3);
 	}
 
-	public async interact(entityPlayer1: IEntityPlayer| null):  Promise<boolean> {
+	public async interact(entityPlayer1: IEntityPlayer| undefined):  Promise<boolean> {
 		return false;
 	}
 
-	public func_383_b_(entity1: Entity| null):  AxisAlignedBB | null {
-		return null;
+	public func_383_b_(entity1: Entity| undefined):  AxisAlignedBB | undefined {
+		return undefined;
 	}
 
 	public async updateRidden():  Promise<void> {
 		if(this.ridingEntity.isDead) {
-			this.ridingEntity = null;
+			this.ridingEntity = undefined;
 		} else {
 			this.motionX = 0.0;
 			this.motionY = 0.0;
@@ -885,27 +885,27 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return this.height as double * 0.75;
 	}
 
-	public mountEntity(entity1: Entity| null):  void {
+	public mountEntity(entity1: Entity| undefined):  void {
 		this.entityRiderPitchDelta = 0.0;
 		this.entityRiderYawDelta = 0.0;
-		if(entity1 === null) {
-			if(this.ridingEntity !== null) {
+		if(entity1 === undefined) {
+			if(this.ridingEntity !== undefined) {
 				this.setLocationAndAngles(this.ridingEntity.posX, this.ridingEntity.boundingBox.minY + this.ridingEntity.height as double, this.ridingEntity.posZ, this.rotationYaw, this.rotationPitch);
-				this.ridingEntity.riddenByEntity = null;
+				this.ridingEntity.riddenByEntity = undefined;
 			}
 
-			this.ridingEntity = null;
+			this.ridingEntity = undefined;
 		} else if(this.ridingEntity === entity1) {
-			this.ridingEntity.riddenByEntity = null;
-			this.ridingEntity = null;
+			this.ridingEntity.riddenByEntity = undefined;
+			this.ridingEntity = undefined;
 			this.setLocationAndAngles(entity1.posX, entity1.boundingBox.minY + entity1.height as double, entity1.posZ, this.rotationYaw, this.rotationPitch);
 		} else {
-			if(this.ridingEntity !== null) {
-				this.ridingEntity.riddenByEntity = null;
+			if(this.ridingEntity !== undefined) {
+				this.ridingEntity.riddenByEntity = undefined;
 			}
 
-			if(entity1.riddenByEntity !== null) {
-				entity1.riddenByEntity.ridingEntity = null;
+			if(entity1.riddenByEntity !== undefined) {
+				entity1.riddenByEntity.ridingEntity = undefined;
 			}
 
 			this.ridingEntity = entity1;
@@ -922,8 +922,8 @@ export abstract  class Entity extends JavaObject implements IEntity {
 		return 0.1;
 	}
 
-	public getLookVec():  Vec3D | null {
-		return null;
+	public getLookVec():  Vec3D | undefined {
+		return undefined;
 	}
 
 	public setInPortal():  void {
@@ -952,7 +952,7 @@ export abstract  class Entity extends JavaObject implements IEntity {
 	}
 
 	public func_21063_V():  boolean {
-		return this.ridingEntity !== null || this.func_21060_d(2);
+		return this.ridingEntity !== undefined || this.func_21060_d(2);
 	}
 
 	public isSneaking():  boolean {

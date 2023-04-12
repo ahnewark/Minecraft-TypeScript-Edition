@@ -28,13 +28,13 @@ export  class BlockStep extends Block {
 		return this.blockType;
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		if(this === Block.stairSingle) {
 			;
 		}
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(this !== Block.stairSingle) {
 			await super.onBlockAdded(world1, i2, i3, i4);
 		}
@@ -47,7 +47,7 @@ export  class BlockStep extends Block {
 
 	}
 
-	public idDropped(i1: int, random2: Random | null):  int {
+	public idDropped(i1: int, random2: Random | undefined):  int {
 		return Block.stairSingle.blockID;
 	}
 
@@ -55,7 +55,7 @@ export  class BlockStep extends Block {
 		return this.blockType;
 	}
 
-	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		if(this !== Block.stairSingle) {
 			await super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5);
 		}

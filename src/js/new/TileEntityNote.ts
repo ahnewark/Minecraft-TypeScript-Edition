@@ -13,12 +13,12 @@ export  class TileEntityNote extends TileEntity {
 		return 'Music';
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeToNBT(nBTTagCompound1);
 		nBTTagCompound1.setByte("note", this.note);
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readFromNBT(nBTTagCompound1);
 		this.note = nBTTagCompound1.getByte("note");
 		if(this.note < 0) {
@@ -36,7 +36,7 @@ export  class TileEntityNote extends TileEntity {
 		await this.onInventoryChanged();
 	}
 
-	public async triggerNote(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async triggerNote(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		if(await world1.getBlockMaterial(i2, i3 + 1, i4) === MaterialRegistry.air) {
 			let  material5: Material = await world1.getBlockMaterial(i2, i3 - 1, i4);
 			let  b6: byte = 0;

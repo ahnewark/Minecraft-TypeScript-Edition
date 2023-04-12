@@ -14,7 +14,7 @@ import { Block } from "./Block";
 import { Item } from "./Item";
 
 export  class WorldGenDungeons extends WorldGenerator {
-	public async generate(world1: World| null, random2: Random| null, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {
 		let  b6: byte = 3;
 		let  i7: int = random2.nextInt(2) + 2;
 		let  i8: int = random2.nextInt(2) + 2;
@@ -95,7 +95,7 @@ export  class WorldGenDungeons extends WorldGenerator {
 								}
 
 								let  itemStack18: ItemStack = this.pickCheckLootItem(random2);
-								if(itemStack18 !== null) {
+								if(itemStack18 !== undefined) {
 									await tileEntityChest16.setInventorySlotContents(random2.nextInt(tileEntityChest16.getSizeInventory()), itemStack18);
 								}
 
@@ -115,12 +115,12 @@ export  class WorldGenDungeons extends WorldGenerator {
 		}
 	}
 
-	private pickCheckLootItem(random1: Random| null):  ItemStack | null {
+	private pickCheckLootItem(random1: Random| undefined):  ItemStack | undefined {
 		let  i2: int = random1.nextInt(11);
-		return i2 === 0 ? new  ItemStack(Item.saddle) : (i2 === 1 ? new  ItemStack(Item.ingotIron, random1.nextInt(4) + 1) : (i2 === 2 ? new  ItemStack(Item.bread) : (i2 === 3 ? new  ItemStack(Item.wheat, random1.nextInt(4) + 1) : (i2 === 4 ? new  ItemStack(Item.gunpowder, random1.nextInt(4) + 1) : (i2 === 5 ? new  ItemStack(Item.silk, random1.nextInt(4) + 1) : (i2 === 6 ? new  ItemStack(Item.bucketEmpty) : (i2 === 7 && random1.nextInt(100) === 0 ? new  ItemStack(Item.appleGold) : (i2 === 8 && random1.nextInt(2) === 0 ? new  ItemStack(Item.redstone, random1.nextInt(4) + 1) : (i2 === 9 && random1.nextInt(10) === 0 ? new  ItemStack(Item.itemsList[Item.record13.shiftedIndex + random1.nextInt(2)]) : null)))))))));
+		return i2 === 0 ? new  ItemStack(Item.saddle) : (i2 === 1 ? new  ItemStack(Item.ingotIron, random1.nextInt(4) + 1) : (i2 === 2 ? new  ItemStack(Item.bread) : (i2 === 3 ? new  ItemStack(Item.wheat, random1.nextInt(4) + 1) : (i2 === 4 ? new  ItemStack(Item.gunpowder, random1.nextInt(4) + 1) : (i2 === 5 ? new  ItemStack(Item.silk, random1.nextInt(4) + 1) : (i2 === 6 ? new  ItemStack(Item.bucketEmpty) : (i2 === 7 && random1.nextInt(100) === 0 ? new  ItemStack(Item.appleGold) : (i2 === 8 && random1.nextInt(2) === 0 ? new  ItemStack(Item.redstone, random1.nextInt(4) + 1) : (i2 === 9 && random1.nextInt(10) === 0 ? new  ItemStack(Item.itemsList[Item.record13.shiftedIndex + random1.nextInt(2)]) : undefined)))))))));
 	}
 
-	private pickMobSpawner(random1: Random| null):  string {
+	private pickMobSpawner(random1: Random| undefined):  string {
 		let  i2: int = random1.nextInt(4);
 		return i2 === 0 ? "Skeleton" : (i2 === 1 ? "Zombie" : (i2 === 2 ? "Zombie" : (i2 === 3 ? "Spider" : "")));
 	}

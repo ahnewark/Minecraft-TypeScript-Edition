@@ -10,7 +10,7 @@ import { BlockCloth } from "./BlockCloth";
 
 
 export  class RecipesDyes extends JavaObject {
-	public addRecipes(craftingManager1: CraftingManager| null):  void {
+	public addRecipes(craftingManager1: CraftingManager| undefined):  void {
 		for(let  i2: int = 0; i2 < 16; ++i2) {
 			craftingManager1.addShapelessRecipe(new  ItemStack(Block.cloth, 1, BlockCloth.func_21035_d(i2)),  [new  ItemStack(Item.dyePowder, 1, i2), new  ItemStack(Item.itemsList[Block.cloth.blockID], 1, 0)]);
 		}

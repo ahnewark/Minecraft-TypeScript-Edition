@@ -64,7 +64,7 @@ export class WorldChunkManager {
 	}
 
 	public getTemperatures(d1: Float64Array, i2: int, i3: int, i4: int, i5: int):  Float64Array {
-		if(d1 === null || d1.length < i4 * i5) {
+		if(d1 === undefined || d1.length < i4 * i5) {
 			d1 = new   Float64Array(i4 * i5);
 		}
 

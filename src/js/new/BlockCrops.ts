@@ -23,7 +23,7 @@ export  class BlockCrops extends BlockFlower {
 		return i1 === Block.tilledField.blockID;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null): Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined): Promise<void> {
 		await super.updateTick(world1, i2, i3, i4, random5);
 		if(await world1.getBlockLightValue(i2, i3 + 1, i4) >= 9) {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
@@ -38,11 +38,11 @@ export  class BlockCrops extends BlockFlower {
 
 	}
 
-	public async func_21027_c_(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async func_21027_c_(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, 7);
 	}
 
-	private async getGrowthRate(world1: World| null, i2: int, i3: int, i4: int):  Promise<float> {
+	private async getGrowthRate(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<float> {
 		let  f5: float = 1.0;
 		let  i6: int = await world1.getBlockId(i2, i3, i4 - 1);
 		let  i7: int = await world1.getBlockId(i2, i3, i4 + 1);
@@ -94,7 +94,7 @@ export  class BlockCrops extends BlockFlower {
 		return 6;
 	}
 
-	public async onBlockDestroyedByPlayer(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onBlockDestroyedByPlayer(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await super.onBlockDestroyedByPlayer(world1, i2, i3, i4, i5);
 		if(!world1.multiplayerWorld) {
 			for(let  i6: int = 0; i6 < 3; ++i6) {
@@ -112,11 +112,11 @@ export  class BlockCrops extends BlockFlower {
 
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return i1 === 7 ? Item.wheat.shiftedIndex : -1;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 1;
 	}
 }

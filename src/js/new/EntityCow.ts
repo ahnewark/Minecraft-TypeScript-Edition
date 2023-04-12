@@ -8,7 +8,7 @@ import { EntityAnimals } from "./EntityAnimals";
 import { Item } from "./Item";
 
 export  class EntityCow extends EntityAnimals {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/cow.png";
 		this.setSize(0.9, 1.3);
@@ -18,11 +18,11 @@ export  class EntityCow extends EntityAnimals {
 		return 'Cow';
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 
@@ -46,9 +46,9 @@ export  class EntityCow extends EntityAnimals {
 		return Item.leather.shiftedIndex;
 	}
 
-	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async interact(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		let  itemStack2: ItemStack = entityPlayer1.inventory.getCurrentItem();
-		if(itemStack2 !== null && itemStack2.itemID === Item.bucketEmpty.shiftedIndex) {
+		if(itemStack2 !== undefined && itemStack2.itemID === Item.bucketEmpty.shiftedIndex) {
 			await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, new  ItemStack(Item.bucketMilk));
 			return true;
 		} else {

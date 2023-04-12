@@ -7,7 +7,7 @@ import { EntityCreature } from "./EntityCreature";
 import { Block } from "./Block";
 
 export abstract  class EntityAnimals extends EntityCreature {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 	}
 
@@ -15,11 +15,11 @@ export abstract  class EntityAnimals extends EntityCreature {
 		return await this.worldObj.getBlockId(i1, i2 - 1, i3) === Block.grass.blockID ? 10.0 : await this.worldObj.getLightBrightness(i1, i2, i3) - 0.5;
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 

@@ -83,7 +83,7 @@ export  class AxisAlignedBB {
 		return AxisAlignedBB.getBoundingBoxFromPool(d7, d9, d11, d13, d15, d17);
 	}
 
-	public expand(d1: number, d3: number, d5: number):  AxisAlignedBB | null {
+	public expand(d1: number, d3: number, d5: number):  AxisAlignedBB | undefined {
 		let  d7: number = this.minX - d1;
 		let  d9: number = this.minY - d3;
 		let  d11: number = this.minZ - d5;
@@ -182,7 +182,7 @@ export  class AxisAlignedBB {
 		return axisAlignedBB1.maxX > this.minX && axisAlignedBB1.minX < this.maxX ? (axisAlignedBB1.maxY > this.minY && axisAlignedBB1.minY < this.maxY ? axisAlignedBB1.maxZ > this.minZ && axisAlignedBB1.minZ < this.maxZ : false) : false;
 	}
 
-	public offset(d1: number, d3: number, d5: number):  AxisAlignedBB | null {
+	public offset(d1: number, d3: number, d5: number):  AxisAlignedBB | undefined {
 		this.minX += d1;
 		this.minY += d3;
 		this.minZ += d5;
@@ -203,68 +203,68 @@ export  class AxisAlignedBB {
 		return (d1 + d3 + d5) / 3.0;
 	}
 
-	public copy():  AxisAlignedBB | null {
+	public copy():  AxisAlignedBB | undefined {
 		return AxisAlignedBB.getBoundingBoxFromPool(this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ);
 	}
 
-	public func_1169_a(vec3D1: Vec3D, vec3D2: Vec3D):  MovingObjectPosition | null {
-		let  vec3D3: Vec3D | null = vec3D1.getIntermediateWithXValue(vec3D2, this.minX);
-		let  vec3D4: Vec3D | null = vec3D1.getIntermediateWithXValue(vec3D2, this.maxX);
-		let  vec3D5: Vec3D | null = vec3D1.getIntermediateWithYValue(vec3D2, this.minY);
-		let  vec3D6: Vec3D | null = vec3D1.getIntermediateWithYValue(vec3D2, this.maxY);
-		let  vec3D7: Vec3D | null = vec3D1.getIntermediateWithZValue(vec3D2, this.minZ);
-		let  vec3D8: Vec3D | null= vec3D1.getIntermediateWithZValue(vec3D2, this.maxZ);
+	public func_1169_a(vec3D1: Vec3D, vec3D2: Vec3D):  MovingObjectPosition | undefined {
+		let  vec3D3: Vec3D | undefined = vec3D1.getIntermediateWithXValue(vec3D2, this.minX);
+		let  vec3D4: Vec3D | undefined = vec3D1.getIntermediateWithXValue(vec3D2, this.maxX);
+		let  vec3D5: Vec3D | undefined = vec3D1.getIntermediateWithYValue(vec3D2, this.minY);
+		let  vec3D6: Vec3D | undefined = vec3D1.getIntermediateWithYValue(vec3D2, this.maxY);
+		let  vec3D7: Vec3D | undefined = vec3D1.getIntermediateWithZValue(vec3D2, this.minZ);
+		let  vec3D8: Vec3D | undefined= vec3D1.getIntermediateWithZValue(vec3D2, this.maxZ);
 		if(!this.isVecInYZ(vec3D3)) {
-			vec3D3 = null;
+			vec3D3 = undefined;
 		}
 
 		if(!this.isVecInYZ(vec3D4)) {
-			vec3D4 = null;
+			vec3D4 = undefined;
 		}
 
 		if(!this.isVecInXZ(vec3D5)) {
-			vec3D5 = null;
+			vec3D5 = undefined;
 		}
 
 		if(!this.isVecInXZ(vec3D6)) {
-			vec3D6 = null;
+			vec3D6 = undefined;
 		}
 
 		if(!this.isVecInXY(vec3D7)) {
-			vec3D7 = null;
+			vec3D7 = undefined;
 		}
 
 		if(!this.isVecInXY(vec3D8)) {
-			vec3D8 = null;
+			vec3D8 = undefined;
 		}
 
-		let  vec3D9: Vec3D | null = null;
-		if(vec3D3 !== null && (vec3D9 === null || vec3D1.squareDistanceTo(vec3D3) < vec3D1.squareDistanceTo(vec3D9))) {
+		let  vec3D9: Vec3D | undefined = undefined;
+		if(vec3D3 !== undefined && (vec3D9 === undefined || vec3D1.squareDistanceTo(vec3D3) < vec3D1.squareDistanceTo(vec3D9))) {
 			vec3D9 = vec3D3;
 		}
 
-		if(vec3D4 !== null && (vec3D9 === null || vec3D1.squareDistanceTo(vec3D4) < vec3D1.squareDistanceTo(vec3D9))) {
+		if(vec3D4 !== undefined && (vec3D9 === undefined || vec3D1.squareDistanceTo(vec3D4) < vec3D1.squareDistanceTo(vec3D9))) {
 			vec3D9 = vec3D4;
 		}
 
-		if(vec3D5 !== null && (vec3D9 === null || vec3D1.squareDistanceTo(vec3D5) < vec3D1.squareDistanceTo(vec3D9))) {
+		if(vec3D5 !== undefined && (vec3D9 === undefined || vec3D1.squareDistanceTo(vec3D5) < vec3D1.squareDistanceTo(vec3D9))) {
 			vec3D9 = vec3D5;
 		}
 
-		if(vec3D6 !== null && (vec3D9 === null || vec3D1.squareDistanceTo(vec3D6) < vec3D1.squareDistanceTo(vec3D9))) {
+		if(vec3D6 !== undefined && (vec3D9 === undefined || vec3D1.squareDistanceTo(vec3D6) < vec3D1.squareDistanceTo(vec3D9))) {
 			vec3D9 = vec3D6;
 		}
 
-		if(vec3D7 !== null && (vec3D9 === null || vec3D1.squareDistanceTo(vec3D7) < vec3D1.squareDistanceTo(vec3D9))) {
+		if(vec3D7 !== undefined && (vec3D9 === undefined || vec3D1.squareDistanceTo(vec3D7) < vec3D1.squareDistanceTo(vec3D9))) {
 			vec3D9 = vec3D7;
 		}
 
-		if(vec3D8 !== null && (vec3D9 === null || vec3D1.squareDistanceTo(vec3D8) < vec3D1.squareDistanceTo(vec3D9))) {
+		if(vec3D8 !== undefined && (vec3D9 === undefined || vec3D1.squareDistanceTo(vec3D8) < vec3D1.squareDistanceTo(vec3D9))) {
 			vec3D9 = vec3D8;
 		}
 
-		if(vec3D9 === null) {
-			return null;
+		if(vec3D9 === undefined) {
+			return undefined;
 		} else {
 			let  b10: number = -1;
 			if(vec3D9 === vec3D3) {
@@ -295,16 +295,16 @@ export  class AxisAlignedBB {
 		}
 	}
 
-	private isVecInYZ(vec3D1: Vec3D| null):  boolean {
-		return vec3D1 === null ? false : vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
+	private isVecInYZ(vec3D1: Vec3D| undefined):  boolean {
+		return vec3D1 === undefined ? false : vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
 	}
 
-	private isVecInXZ(vec3D1: Vec3D| null):  boolean {
-		return vec3D1 === null ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
+	private isVecInXZ(vec3D1: Vec3D| undefined):  boolean {
+		return vec3D1 === undefined ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
 	}
 
-	private isVecInXY(vec3D1: Vec3D| null):  boolean {
-		return vec3D1 === null ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY;
+	private isVecInXY(vec3D1: Vec3D| undefined):  boolean {
+		return vec3D1 === undefined ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY;
 	}
 
 	public setBB(axisAlignedBB1: AxisAlignedBB):  void {

@@ -20,7 +20,7 @@ export  class BlockWorkbench extends Block {
 		return i1 === 1 ? this.blockIndexInTexture - 16 : (i1 === 0 ? Block.planks.getBlockTextureFromSide(0) : (i1 !== 2 && i1 !== 4 ? this.blockIndexInTexture : this.blockIndexInTexture + 1));
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<boolean> {
 		if(world1.multiplayerWorld) {
 			return true;
 		} else {

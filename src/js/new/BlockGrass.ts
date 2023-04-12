@@ -16,7 +16,7 @@ export  class BlockGrass extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public async getBlockTexture(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int): Promise<int> {
+	public async getBlockTexture(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int): Promise<int> {
 		if(i5 === 1) {
 			return 0;
 		} else if(i5 === 0) {
@@ -27,14 +27,14 @@ export  class BlockGrass extends Block {
 		}
 	}
 
-	public async colorMultiplier(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<int> {
+	public async colorMultiplier(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<int> {
 		iBlockAccess1.getWorldChunkManager().func_4069_a(i2, i4, 1, 1);
 		let  d5: double = iBlockAccess1.getWorldChunkManager().temperature[0];
 		let  d7: double = iBlockAccess1.getWorldChunkManager().humidity[0];
 		return ColorizerGrass.func_4147_a(d5, d7);
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			if(await world1.getBlockLightValue(i2, i3 + 1, i4) < 4 && (await world1.getBlockMaterial(i2, i3 + 1, i4)).getCanBlockGrass()) {
 				if(random5.nextInt(4) !== 0) {
@@ -54,7 +54,7 @@ export  class BlockGrass extends Block {
 		}
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Block.dirt.idDropped(0, random2);
 	}
 }

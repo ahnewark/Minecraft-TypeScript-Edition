@@ -16,7 +16,7 @@ export  class ItemRecord extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer| undefined, world3: World| undefined, i4: int, i5: int, i6: int, i7: int):  Promise<boolean> {
 		if(await world3.getBlockId(i4, i5, i6) === Block.jukebox.blockID && await world3.getBlockMetadata(i4, i5, i6) === 0) {
 			await world3.setBlockMetadataWithNotify(i4, i5, i6, this.shiftedIndex - Item.record13.shiftedIndex + 1);
 			world3.playRecord(this.recordName, i4, i5, i6);

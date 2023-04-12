@@ -11,7 +11,7 @@ export class TileEntitySign extends TileEntity {
 		return 'Sign'
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeToNBT(nBTTagCompound1);
 		nBTTagCompound1.setString("Text1", this.signText[0]);
 		nBTTagCompound1.setString("Text2", this.signText[1]);
@@ -19,7 +19,7 @@ export class TileEntitySign extends TileEntity {
 		nBTTagCompound1.setString("Text4", this.signText[3]);
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readFromNBT(nBTTagCompound1);
 
 		for(let  i2: int = 0; i2 < 4; ++i2) {

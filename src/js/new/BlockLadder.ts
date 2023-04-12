@@ -13,7 +13,7 @@ export  class BlockLadder extends Block {
 		super(i1, i2, MaterialRegistry.circuits);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  f6: float = 0.125;
 		if(i5 === 2) {
@@ -35,7 +35,7 @@ export  class BlockLadder extends Block {
 		return super.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
-	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getSelectedBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  f6: float = 0.125;
 		if(i5 === 2) {
@@ -69,11 +69,11 @@ export  class BlockLadder extends Block {
 		return 8;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.isBlockOpaqueCube(i2 - 1, i3, i4) ? true : (await world1.isBlockOpaqueCube(i2 + 1, i3, i4) ? true : (await world1.isBlockOpaqueCube(i2, i3, i4 - 1) ? true : await world1.isBlockOpaqueCube(i2, i3, i4 + 1)));
 	}
 
-	public async onBlockPlaced(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onBlockPlaced(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		if((i6 === 0 || i5 === 2) && await world1.isBlockOpaqueCube(i2, i3, i4 + 1)) {
 			i6 = 2;
@@ -94,7 +94,7 @@ export  class BlockLadder extends Block {
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		let  z7: boolean = false;
 		if(i6 === 2 && await world1.isBlockOpaqueCube(i2, i3, i4 + 1)) {
@@ -121,7 +121,7 @@ export  class BlockLadder extends Block {
 		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 1;
 	}
 }

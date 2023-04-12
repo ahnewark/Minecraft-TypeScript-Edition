@@ -9,7 +9,7 @@ import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockStationary extends BlockFluids {
-	public constructor(i1: int, material2: Material| null) {
+	public constructor(i1: int, material2: Material| undefined) {
 		super(i1, material2);
 		this.setTickOnLoad(false);
 		if(material2 === MaterialRegistry.lava) {
@@ -18,7 +18,7 @@ export  class BlockStationary extends BlockFluids {
 
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await super.onNeighborBlockChange(world1, i2, i3, i4, i5);
 		if(await world1.getBlockId(i2, i3, i4) === this.blockID) {
 			await this.func_20016_j(world1, i2, i3, i4);
@@ -26,7 +26,7 @@ export  class BlockStationary extends BlockFluids {
 
 	}
 
-	private async func_20016_j(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	private async func_20016_j(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  i5: int = await world1.getBlockMetadata(i2, i3, i4);
 		world1.field_1043_h = true;
 		await world1.setBlockAndMetadata(i2, i3, i4, this.blockID - 1, i5);
@@ -35,7 +35,7 @@ export  class BlockStationary extends BlockFluids {
 		world1.field_1043_h = false;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random | null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random | undefined):  Promise<void> {
 		if(this.blockMaterial === MaterialRegistry.lava) {
 			let  i6: int = random5.nextInt(3);
 
@@ -57,7 +57,7 @@ export  class BlockStationary extends BlockFluids {
 
 	}
 
-	private async func_301_k(world1: World| null, i2: int, i3: int, i4: int): Promise<boolean> {
+	private async func_301_k(world1: World| undefined, i2: int, i3: int, i4: int): Promise<boolean> {
 		return (await world1.getBlockMaterial(i2, i3, i4)).getBurning();
 	}
 }

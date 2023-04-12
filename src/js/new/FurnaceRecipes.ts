@@ -10,7 +10,7 @@ export class FurnaceRecipes {
 	public static smeltingBase:  FurnaceRecipes;
 	private smeltingList: { [id: number]: ItemStack} = {};
 
-	public static smelting():  FurnaceRecipes | null {
+	public static smelting():  FurnaceRecipes | undefined {
 		return FurnaceRecipes.smeltingBase;
 	}
 
@@ -31,7 +31,7 @@ export class FurnaceRecipes {
 		this.smeltingList[i1] = itemStack2;
 	}
 
-	public getSmeltingResult(i1: int):  ItemStack | null {
+	public getSmeltingResult(i1: int):  ItemStack | undefined {
 		return this.smeltingList[i1];
 	}
 }

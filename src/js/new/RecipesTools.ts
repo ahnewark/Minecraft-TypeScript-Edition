@@ -9,10 +9,10 @@ import { CraftingManager } from "./CraftingManager";
 
 
 export  class RecipesTools extends JavaObject {
-	private recipePatterns:  string[][] | null =  [["XXX", " # ", " # "], ["X", "#", "#"], ["XX", "X#", " #"], ["XX", " #", " #"]];
-	private recipeItems:  any[][] | null =  [[Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold], [Item.pickaxeWood, Item.pickaxeStone, Item.pickaxeSteel, Item.pickaxeDiamond, Item.pickaxeGold], [Item.shovelWood, Item.shovelStone, Item.shovelSteel, Item.shovelDiamond, Item.shovelGold], [Item.axeWood, Item.axeStone, Item.axeSteel, Item.axeDiamond, Item.axeGold], [Item.hoeWood, Item.hoeStone, Item.hoeSteel, Item.hoeDiamond, Item.hoeGold]];
+	private recipePatterns:  string[][] | undefined =  [["XXX", " # ", " # "], ["X", "#", "#"], ["XX", "X#", " #"], ["XX", " #", " #"]];
+	private recipeItems:  any[][] | undefined =  [[Block.planks, Block.cobblestone, Item.ingotIron, Item.diamond, Item.ingotGold], [Item.pickaxeWood, Item.pickaxeStone, Item.pickaxeSteel, Item.pickaxeDiamond, Item.pickaxeGold], [Item.shovelWood, Item.shovelStone, Item.shovelSteel, Item.shovelDiamond, Item.shovelGold], [Item.axeWood, Item.axeStone, Item.axeSteel, Item.axeDiamond, Item.axeGold], [Item.hoeWood, Item.hoeStone, Item.hoeSteel, Item.hoeDiamond, Item.hoeGold]];
 
-	public addRecipes(craftingManager1: CraftingManager| null):  void {
+	public addRecipes(craftingManager1: CraftingManager| undefined):  void {
 		for(let  i2: int = 0; i2 < this.recipeItems[0].length; ++i2) {
 			let  object3: java.lang.Object = this.recipeItems[0][i2];
 

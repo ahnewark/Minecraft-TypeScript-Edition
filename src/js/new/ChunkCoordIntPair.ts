@@ -15,7 +15,7 @@ export  class ChunkCoordIntPair extends JavaObject {
 		return this.chunkXPos << 8 | this.chunkZPos;
 	}
 
-	public equals(object1: java.lang.Object| null):  boolean {
+	public equals(object1: java.lang.Object| undefined):  boolean {
 		let  chunkCoordIntPair2: ChunkCoordIntPair = object1 as ChunkCoordIntPair;
 		return chunkCoordIntPair2.chunkXPos === this.chunkXPos && chunkCoordIntPair2.chunkZPos === this.chunkZPos;
 	}

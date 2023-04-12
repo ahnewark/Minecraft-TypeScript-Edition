@@ -20,8 +20,8 @@ import { Entity } from "./Entity";
 // import { Minecraft } from "../client/Minecraft";
 
 export  class EntityPlayerSP extends EntityPlayer {
-	// public movementInput:  MovementInput | null;
-	// protected mc:  Minecraft | null;
+	// public movementInput:  MovementInput | undefined;
+	// protected mc:  Minecraft | undefined;
 	public field_9373_b:  int = 20;
 	private inPortal:  boolean = false;
 	public timeInPortal:  float;
@@ -31,11 +31,11 @@ export  class EntityPlayerSP extends EntityPlayer {
 		return 'PlayerSP';
 	}
 
-	public constructor(/*minecraft1: Minecraft| null, */world2: World| null, /*session3: Session| null,*/ i4: int) {
+	public constructor(/*minecraft1: Minecraft| undefined, */world2: World| undefined, /*session3: Session| undefined,*/ i4: int) {
 		super(world2);
 		// this.mc = minecraft1;
 		this.dimension = i4;
-		// if(session3 !== null && session3.username !== null && session3.username.length() > 0) {
+		// if(session3 !== undefined && session3.username !== undefined && session3.username.length() > 0) {
 		// 	this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + session3.username + ".png";
 		// 	java.lang.System.out.println("Loading texture " + this.skinUrl);
 		// }
@@ -98,26 +98,26 @@ export  class EntityPlayerSP extends EntityPlayer {
 		// this.movementInput.checkKeyForMovementInput(i1, z2);
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 		nBTTagCompound1.setInteger("Score", this.score);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 		this.score = nBTTagCompound1.getInteger("Score");
 	}
 
 	public func_20059_m():  void {
 		super.func_20059_m();
-		// this.mc.displayGuiScreen(null as GuiScreen);
+		// this.mc.displayGuiScreen(undefined as GuiScreen);
 	}
 
-	public displayGUIEditSign(tileEntitySign1: TileEntitySign| null):  void {
+	public displayGUIEditSign(tileEntitySign1: TileEntitySign| undefined):  void {
 		// this.mc.displayGuiScreen(new  GuiEditSign(tileEntitySign1));
 	}
 
-	public displayGUIChest(iInventory1: IInventory| null):  void {
+	public displayGUIChest(iInventory1: IInventory| undefined):  void {
 		// this.mc.displayGuiScreen(new  GuiChest(this.inventory, iInventory1));
 	}
 
@@ -125,15 +125,15 @@ export  class EntityPlayerSP extends EntityPlayer {
 		// this.mc.displayGuiScreen(new  GuiCrafting(this.inventory, this.worldObj, i1, i2, i3));
 	}
 
-	public displayGUIFurnace(tileEntityFurnace1: TileEntityFurnace| null):  void {
+	public displayGUIFurnace(tileEntityFurnace1: TileEntityFurnace| undefined):  void {
 		// this.mc.displayGuiScreen(new  GuiFurnace(this.inventory, tileEntityFurnace1));
 	}
 
-	public displayGUIDispenser(tileEntityDispenser1: TileEntityDispenser| null):  void {
+	public displayGUIDispenser(tileEntityDispenser1: TileEntityDispenser| undefined):  void {
 		// this.mc.displayGuiScreen(new  GuiDispenser(this.inventory, tileEntityDispenser1));
 	}
 
-	public onItemPickup(entity1: Entity| null, i2: int):  void {
+	public onItemPickup(entity1: Entity| undefined, i2: int):  void {
 		// this.mc.effectRenderer.addEffect(new  EntityPickupFX(this.mc.theWorld, entity1, this, -0.5));
 	}
 
@@ -141,7 +141,7 @@ export  class EntityPlayerSP extends EntityPlayer {
 		return this.inventory.getTotalArmorValue();
 	}
 
-	public sendChatMessage(string1: java.lang.String| null):  void {
+	public sendChatMessage(string1: java.lang.String| undefined):  void {
 	}
 
 	public func_6420_o():  void {

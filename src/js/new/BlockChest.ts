@@ -15,14 +15,14 @@ import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
 
 export  class BlockChest extends BlockContainer {
-	private random:  Random | null = new Random();
+	private random:  Random | undefined = new Random();
 
 	public constructor(i1: int) {
 		super(i1, MaterialRegistry.wood);
 		this.blockIndexInTexture = 26;
 	}
 
-	public async getBlockTexture(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int): Promise<int> {
+	public async getBlockTexture(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int): Promise<int> {
 		if(i5 === 1) {
 			return this.blockIndexInTexture - 1;
 		} else if(i5 === 0) {
@@ -113,7 +113,7 @@ export  class BlockChest extends BlockContainer {
 		return i1 === 1 ? this.blockIndexInTexture - 1 : (i1 === 0 ? this.blockIndexInTexture - 1 : (i1 === 3 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture));
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  i5: int = 0;
 		if(await world1.getBlockId(i2 - 1, i3, i4) === this.blockID) {
 			++i5;
@@ -134,16 +134,16 @@ export  class BlockChest extends BlockContainer {
 		return i5 > 1 ? false : (await this.isThereANeighborChest(world1, i2 - 1, i3, i4) ? false : (await this.isThereANeighborChest(world1, i2 + 1, i3, i4) ? false : (await this.isThereANeighborChest(world1, i2, i3, i4 - 1) ? false : !await this.isThereANeighborChest(world1, i2, i3, i4 + 1))));
 	}
 
-	private async isThereANeighborChest(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async isThereANeighborChest(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return await world1.getBlockId(i2, i3, i4) !== this.blockID ? false : (await world1.getBlockId(i2 - 1, i3, i4) === this.blockID ? true : (await world1.getBlockId(i2 + 1, i3, i4) === this.blockID ? true : (await world1.getBlockId(i2, i3, i4 - 1) === this.blockID ? true : await world1.getBlockId(i2, i3, i4 + 1) === this.blockID)));
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		let  tileEntityChest5: TileEntityChest = await world1.getBlockTileEntity(i2, i3, i4) as TileEntityChest;
 
 		for(let  i6: int = 0; i6 < tileEntityChest5.getSizeInventory(); ++i6) {
 			let  itemStack7: ItemStack = tileEntityChest5.getStackInSlot(i6);
-			if(itemStack7 !== null) {
+			if(itemStack7 !== undefined) {
 				let  f8: float = this.random.nextFloat() * 0.8 + 0.1;
 				let  f9: float = this.random.nextFloat() * 0.8 + 0.1;
 				let  f10: float = this.random.nextFloat() * 0.8 + 0.1;
@@ -168,7 +168,7 @@ export  class BlockChest extends BlockContainer {
 		await super.onBlockRemoval(world1, i2, i3, i4);
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null): Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined): Promise<boolean> {
 		let  object6: IInventory = await world1.getBlockTileEntity(i2, i3, i4) as TileEntityChest;
 		if(await world1.isBlockOpaqueCube(i2, i3 + 1, i4)) {
 			return true;
@@ -206,7 +206,7 @@ export  class BlockChest extends BlockContainer {
 		}
 	}
 
-	protected getBlockEntity():  TileEntity | null {
+	protected getBlockEntity():  TileEntity | undefined {
 		return new  TileEntityChest();
 	}
 }

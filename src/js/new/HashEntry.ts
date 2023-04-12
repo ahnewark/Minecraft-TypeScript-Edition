@@ -5,10 +5,10 @@ import { MCHashTable } from "./MCHashTable";
 export class HashEntry {
 	public readonly hashEntry:  int;
 	public valueEntry: any;
-	public nextEntry: HashEntry | null;
+	public nextEntry: HashEntry | undefined;
 	public readonly slotHash:  int;
 
-	public constructor(i1: int, i2: int, object3: any, hashEntry4: HashEntry| null) {
+	public constructor(i1: int, i2: int, object3: any, hashEntry4: HashEntry| undefined) {
 		this.valueEntry = object3;
 		this.nextEntry = hashEntry4;
 		this.hashEntry = i2;
@@ -19,21 +19,21 @@ export class HashEntry {
 		return this.hashEntry;
 	}
 
-	public getValue():  java.lang.Object | null {
+	public getValue():  java.lang.Object | undefined {
 		return this.valueEntry;
 	}
 
-	public equals(object1: java.lang.Object| null):  boolean {
+	public equals(object1: java.lang.Object| undefined):  boolean {
 		if(!(object1 instanceof HashEntry)) {
 			return false;
 		} else {
 			let  hashEntry2: HashEntry = object1 as HashEntry;
 			let  integer3 = this.getHash();
 			let  integer4 = hashEntry2.getHash();
-			if(integer3 === integer4 || integer3 !== null && integer3 === integer4) {
+			if(integer3 === integer4 || integer3 !== undefined && integer3 === integer4) {
 				let  object5 = this.getValue();
 				let  object6 = hashEntry2.getValue();
-				if(object5 === object6 || object5 !== null && object5.equals(object6)) {
+				if(object5 === object6 || object5 !== undefined && object5.equals(object6)) {
 					return true;
 				}
 			}

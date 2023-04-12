@@ -293,13 +293,13 @@ export class Block {
 		return this.blockIndexInTexture;
 	}
 
-	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: number, i3: number, i4: number):  Promise<AxisAlignedBB | null> {
+	public async getSelectedBoundingBoxFromPool(world1: World| undefined, i2: number, i3: number, i4: number):  Promise<AxisAlignedBB | undefined> {
 		return AxisAlignedBB.getBoundingBoxFromPool(i2 as number + this.minX, i3 as number + this.minY, i4 as number + this.minZ, i2 as number + this.maxX, i3 as number + this.maxY, i4 as number + this.maxZ);
 	}
 
 	public async getCollidingBoundingBoxes(world1: World, i2: number, i3: number, i4: number, axisAlignedBB5: AxisAlignedBB, arrayList6: AxisAlignedBB[]):  Promise<void> {
 		let  axisAlignedBB7 = await this.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
-		if(axisAlignedBB7 !== null && axisAlignedBB5.intersectsWith(axisAlignedBB7)) {
+		if(axisAlignedBB7 !== undefined && axisAlignedBB5.intersectsWith(axisAlignedBB7)) {
 			arrayList6.push(axisAlignedBB7);
 		}
 
@@ -321,26 +321,26 @@ export class Block {
 		return true;
 	}
 
-	public async updateTick(world1: World| null, i2: number, i3: number, i4: number, random5: Random):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: number, i3: number, i4: number, random5: Random):  Promise<void> {
 	}
 
-	public randomDisplayTick(world1: World| null, i2: number, i3: number, i4: number, random5: Random):  void {
+	public randomDisplayTick(world1: World| undefined, i2: number, i3: number, i4: number, random5: Random):  void {
 	}
 
-	public async onBlockDestroyedByPlayer(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+	public async onBlockDestroyedByPlayer(world1: World| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 	}
 
 	public tickRate():  number {
 		return 10;
 	}
 
-	public async onBlockAdded(world1: World| null, i2: number, i3: number, i4: number):  Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: number, i3: number, i4: number):  Promise<void> {
 	}
 
-	public async onBlockRemoval(world1: World| null, i2: number, i3: number, i4: number):  Promise<void> {
+	public async onBlockRemoval(world1: World| undefined, i2: number, i3: number, i4: number):  Promise<void> {
 	}
 
 	public quantityDropped(random1: Random):  number {
@@ -351,15 +351,15 @@ export class Block {
 		return this.blockID;
 	}
 
-	public blockStrength(entityPlayer1: IEntityPlayer| null):  number {
+	public blockStrength(entityPlayer1: IEntityPlayer| undefined):  number {
 		return this.blockHardness < 0.0 ? 0.0 : (!entityPlayer1.canHarvestBlock(this) ? 1.0 / this.blockHardness / 100.0 : entityPlayer1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0);
 	}
 
-	public async dropBlockAsItem(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+	public async dropBlockAsItem(world1: World| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 		await this.dropBlockAsItemWithChance(world1, i2, i3, i4, i5, 1.0);
 	}
 
-	public async dropBlockAsItemWithChance(world1: World| null, i2: number, i3: number, i4: number, i5: number, f6: number):  Promise<void> {
+	public async dropBlockAsItemWithChance(world1: World| undefined, i2: number, i3: number, i4: number, i5: number, f6: number):  Promise<void> {
 		if(!world1.multiplayerWorld) {
 			let  i7: number = this.quantityDropped(world1.rand);
 
@@ -387,71 +387,71 @@ export class Block {
 		return 0;
 	}
 
-	public getExplosionResistance(entity1: IEntity | null):  number {
+	public getExplosionResistance(entity1: IEntity | undefined):  number {
 		return this.blockResistance / 5.0;
 	}
 
-	public async collisionRayTrace(world1: World, i2: number, i3: number, i4: number, vec3D5: Vec3D, vec3D6: Vec3D):  Promise<MovingObjectPosition | null> {
+	public async collisionRayTrace(world1: World, i2: number, i3: number, i4: number, vec3D5: Vec3D, vec3D6: Vec3D):  Promise<MovingObjectPosition | undefined> {
 		this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		vec3D5 = vec3D5.addVector((-i2) as number, (-i3) as number, (-i4) as number);
 		vec3D6 = vec3D6.addVector((-i2) as number, (-i3) as number, (-i4) as number);
-		let  vec3D7: Vec3D | null = vec3D5.getIntermediateWithXValue(vec3D6, this.minX);
-		let  vec3D8: Vec3D | null = vec3D5.getIntermediateWithXValue(vec3D6, this.maxX);
-		let  vec3D9: Vec3D | null = vec3D5.getIntermediateWithYValue(vec3D6, this.minY);
-		let  vec3D10: Vec3D | null = vec3D5.getIntermediateWithYValue(vec3D6, this.maxY);
-		let  vec3D11: Vec3D | null = vec3D5.getIntermediateWithZValue(vec3D6, this.minZ);
-		let  vec3D12: Vec3D | null = vec3D5.getIntermediateWithZValue(vec3D6, this.maxZ);
+		let  vec3D7: Vec3D | undefined = vec3D5.getIntermediateWithXValue(vec3D6, this.minX);
+		let  vec3D8: Vec3D | undefined = vec3D5.getIntermediateWithXValue(vec3D6, this.maxX);
+		let  vec3D9: Vec3D | undefined = vec3D5.getIntermediateWithYValue(vec3D6, this.minY);
+		let  vec3D10: Vec3D | undefined = vec3D5.getIntermediateWithYValue(vec3D6, this.maxY);
+		let  vec3D11: Vec3D | undefined = vec3D5.getIntermediateWithZValue(vec3D6, this.minZ);
+		let  vec3D12: Vec3D | undefined = vec3D5.getIntermediateWithZValue(vec3D6, this.maxZ);
 		if(!this.isVecInsideYZBounds(vec3D7)) {
-			vec3D7 = null;
+			vec3D7 = undefined;
 		}
 
 		if(!this.isVecInsideYZBounds(vec3D8)) {
-			vec3D8 = null;
+			vec3D8 = undefined;
 		}
 
 		if(!this.isVecInsideXZBounds(vec3D9)) {
-			vec3D9 = null;
+			vec3D9 = undefined;
 		}
 
 		if(!this.isVecInsideXZBounds(vec3D10)) {
-			vec3D10 = null;
+			vec3D10 = undefined;
 		}
 
 		if(!this.isVecInsideXYBounds(vec3D11)) {
-			vec3D11 = null;
+			vec3D11 = undefined;
 		}
 
 		if(!this.isVecInsideXYBounds(vec3D12)) {
-			vec3D12 = null;
+			vec3D12 = undefined;
 		}
 
-		let  vec3D13: Vec3D | null = null;
-		if(vec3D7 !== null && (vec3D13 === null || vec3D5.distanceTo(vec3D7) < vec3D5.distanceTo(vec3D13))) {
+		let  vec3D13: Vec3D | undefined = undefined;
+		if(vec3D7 !== undefined && (vec3D13 === undefined || vec3D5.distanceTo(vec3D7) < vec3D5.distanceTo(vec3D13))) {
 			vec3D13 = vec3D7;
 		}
 
-		if(vec3D8 !== null && (vec3D13 === null || vec3D5.distanceTo(vec3D8) < vec3D5.distanceTo(vec3D13))) {
+		if(vec3D8 !== undefined && (vec3D13 === undefined || vec3D5.distanceTo(vec3D8) < vec3D5.distanceTo(vec3D13))) {
 			vec3D13 = vec3D8;
 		}
 
-		if(vec3D9 !== null && (vec3D13 === null || vec3D5.distanceTo(vec3D9) < vec3D5.distanceTo(vec3D13))) {
+		if(vec3D9 !== undefined && (vec3D13 === undefined || vec3D5.distanceTo(vec3D9) < vec3D5.distanceTo(vec3D13))) {
 			vec3D13 = vec3D9;
 		}
 
-		if(vec3D10 !== null && (vec3D13 === null || vec3D5.distanceTo(vec3D10) < vec3D5.distanceTo(vec3D13))) {
+		if(vec3D10 !== undefined && (vec3D13 === undefined || vec3D5.distanceTo(vec3D10) < vec3D5.distanceTo(vec3D13))) {
 			vec3D13 = vec3D10;
 		}
 
-		if(vec3D11 !== null && (vec3D13 === null || vec3D5.distanceTo(vec3D11) < vec3D5.distanceTo(vec3D13))) {
+		if(vec3D11 !== undefined && (vec3D13 === undefined || vec3D5.distanceTo(vec3D11) < vec3D5.distanceTo(vec3D13))) {
 			vec3D13 = vec3D11;
 		}
 
-		if(vec3D12 !== null && (vec3D13 === null || vec3D5.distanceTo(vec3D12) < vec3D5.distanceTo(vec3D13))) {
+		if(vec3D12 !== undefined && (vec3D13 === undefined || vec3D5.distanceTo(vec3D12) < vec3D5.distanceTo(vec3D13))) {
 			vec3D13 = vec3D12;
 		}
 
-		if(vec3D13 === null) {
-			return null;
+		if(vec3D13 === undefined) {
+			return undefined;
 		} else {
 			let  b14: number = -1;
 			if(vec3D13 === vec3D7) {
@@ -482,54 +482,54 @@ export class Block {
 		}
 	}
 
-	private isVecInsideYZBounds(vec3D1: Vec3D| null):  boolean {
-		return vec3D1 === null ? false : vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
+	private isVecInsideYZBounds(vec3D1: Vec3D| undefined):  boolean {
+		return vec3D1 === undefined ? false : vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
 	}
 
-	private isVecInsideXZBounds(vec3D1: Vec3D| null):  boolean {
-		return vec3D1 === null ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
+	private isVecInsideXZBounds(vec3D1: Vec3D| undefined):  boolean {
+		return vec3D1 === undefined ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.zCoord >= this.minZ && vec3D1.zCoord <= this.maxZ;
 	}
 
-	private isVecInsideXYBounds(vec3D1: Vec3D| null):  boolean {
-		return vec3D1 === null ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY;
+	private isVecInsideXYBounds(vec3D1: Vec3D| undefined):  boolean {
+		return vec3D1 === undefined ? false : vec3D1.xCoord >= this.minX && vec3D1.xCoord <= this.maxX && vec3D1.yCoord >= this.minY && vec3D1.yCoord <= this.maxY;
 	}
 
-	public async onBlockDestroyedByExplosion(world1: World| null, i2: number, i3: number, i4: number):  Promise<void> {
+	public async onBlockDestroyedByExplosion(world1: World| undefined, i2: number, i3: number, i4: number):  Promise<void> {
 	}
 
 	public getRenderBlockPass():  number {
 		return 0;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: number, i3: number, i4: number):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: number, i3: number, i4: number):  Promise<boolean> {
 		let  i5: number = await world1.getBlockId(i2, i3, i4);
 		return i5 === 0 || Block.blocksList[i5].blockMaterial.getIsLiquid();
 	}
 
-	public async blockActivated(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: IEntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: number, i3: number, i4: number, entityPlayer5: IEntityPlayer| undefined):  Promise<boolean> {
 		return false;
 	}
 
-	public async onEntityWalking(world1: World| null, i2: number, i3: number, i4: number, entity5: IEntity | null):  Promise<void> {
+	public async onEntityWalking(world1: World| undefined, i2: number, i3: number, i4: number, entity5: IEntity | undefined):  Promise<void> {
 	}
 
-	public async onBlockPlaced(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+	public async onBlockPlaced(world1: World| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
 	}
 
-	public async onBlockClicked(world1: World| null, i2: number, i3: number, i4: number, entityPlayer5: IEntityPlayer| null):  Promise<void> {
+	public async onBlockClicked(world1: World| undefined, i2: number, i3: number, i4: number, entityPlayer5: IEntityPlayer| undefined):  Promise<void> {
 	}
 
-	public velocityToAddToEntity(world1: World| null, i2: number, i3: number, i4: number, entity5: IEntity | null, vec3D6: Vec3D| null):  void {
+	public velocityToAddToEntity(world1: World| undefined, i2: number, i3: number, i4: number, entity5: IEntity | undefined, vec3D6: Vec3D| undefined):  void {
 	}
 
-	public setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number):  void {
+	public setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: number, i3: number, i4: number):  void {
 	}
 
-	public async colorMultiplier(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number):  Promise<number> {
+	public async colorMultiplier(iBlockAccess1: IBlockAccess| undefined, i2: number, i3: number, i4: number):  Promise<number> {
 		return 0xFFFFFF;
 	}
 
-	public async isPoweringTo(iBlockAccess1: IBlockAccess| null, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
+	public async isPoweringTo(iBlockAccess1: IBlockAccess| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
 		return false;
 	}
 
@@ -537,25 +537,25 @@ export class Block {
 		return false;
 	}
 
-	public async onEntityCollidedWithBlock(world1: World| null, i2: number, i3: number, i4: number, entity5: IEntity | null):  Promise<void> {
+	public async onEntityCollidedWithBlock(world1: World| undefined, i2: number, i3: number, i4: number, entity5: IEntity | undefined):  Promise<void> {
 	}
 
-	public async isIndirectlyPoweringTo(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
+	public async isIndirectlyPoweringTo(world1: World| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<boolean> {
 		return false;
 	}
 
 	public func_237_e():  void {
 	}
 
-	public async harvestBlock(world1: World| null, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
+	public async harvestBlock(world1: World| undefined, i2: number, i3: number, i4: number, i5: number):  Promise<void> {
         await this.dropBlockAsItem(world1, i2, i3, i4, i5);
 	}
 
-	public async canBlockStay(world1: World| null, i2: number, i3: number, i4: number):  Promise<boolean> {
+	public async canBlockStay(world1: World| undefined, i2: number, i3: number, i4: number):  Promise<boolean> {
 		return true;
 	}
 
-	public async onBlockPlacedBy(world1: World| null, i2: number, i3: number, i4: number, entityLiving5: IEntityLiving| null):  Promise<void> {
+	public async onBlockPlacedBy(world1: World| undefined, i2: number, i3: number, i4: number, entityLiving5: IEntityLiving| undefined):  Promise<void> {
 	}
 
 	public setBlockName(string1: string):  Block {
@@ -567,7 +567,7 @@ export class Block {
 		return this.blockName;
 	}
 
-	public playBlock(world1: World| null, i2: number, i3: number, i4: number, i5: number, i6: number):  void {
+	public playBlock(world1: World| undefined, i2: number, i3: number, i4: number, i5: number, i6: number):  void {
 	}
 
 	// static {
@@ -575,7 +575,7 @@ export class Block {
 	// 	Item.itemsList[Block.wood.blockID] = (new  ItemLog(Block.wood.blockID - 256)).setItemName("log");
 
 	// 	for(let  i0: number = 0; i0 < 256; ++i0) {
-	// 		if(Block.blocksList[i0] !== null && Item.itemsList[i0] === null) {
+	// 		if(Block.blocksList[i0] !== undefined && Item.itemsList[i0] === undefined) {
 	// 			Item.itemsList[i0] = new  ItemBlock(i0 - 256);
 	// 		}
 	// 	}

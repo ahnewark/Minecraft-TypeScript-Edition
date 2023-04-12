@@ -51,7 +51,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 	protected field_914_i: number[] = [];
 	private generatedTemperatures:  Float64Array;
 
-	public constructor(world1: World| null, j2: long) {
+	public constructor(world1: World| undefined, j2: long) {
         this.worldObj = world1;
 		this.rand = new Random(j2);
 		this.field_912_k = new  NoiseGeneratorOctaves(this.rand, 16);
@@ -64,7 +64,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		this.mobSpawnerNoise = new  NoiseGeneratorOctaves(this.rand, 8);
 	}
 
-	public generateTerrain(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: never[]| null, d5: Float64Array):  void {
+	public generateTerrain(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined, d5: Float64Array):  void {
 		let  b6: number = 4;
 		let  b7: number = 64;
 		let  i8: number = b6 + 1;
@@ -134,7 +134,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 
 	}
 
-	public replaceBlocksForBiome(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: never[]| null):  void {
+	public replaceBlocksForBiome(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined):  void {
 		let  b5: number = 64;
 		let  d6: number = 8.0 / 256;
 		this.sandNoise = this.field_909_n.generateNoiseOctaves(this.sandNoise, (i1 * 16) as number, (i2 * 16) as number, 0.0, 16, 16, 1, d6, d6, 1.0);
@@ -212,8 +212,8 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		let  chunk4: Chunk = new  Chunk(this.worldObj, b3, i1, i2);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, i1 * 16, i2 * 16, 16, 16);
 		let  d5: Float64Array = this.worldObj.getWorldChunkManager().temperature;
-		this.generateTerrain(i1, i2, b3, null, d5);
-		this.replaceBlocksForBiome(i1, i2, b3, null);
+		this.generateTerrain(i1, i2, b3, this.biomesForGeneration, d5);
+		this.replaceBlocksForBiome(i1, i2, b3, this.biomesForGeneration);
 		this.field_902_u.func_867_a(this, this.worldObj, i1, i2, b3);
 		await chunk4.func_1024_c();
 		return chunk4;
@@ -323,7 +323,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		return true;
 	}
 
-	public async populate(iChunkProvider1: IChunkProvider| null, i2: number, i3: number):  Promise<void> {
+	public async populate(iChunkProvider1: IChunkProvider| undefined, i2: number, i3: number):  Promise<void> {
 		BlockSand.fallInstantly = true;
 		let  i4: number = i2 * 16;
 		let  i5: number = i3 * 16;

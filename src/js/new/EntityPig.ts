@@ -8,7 +8,7 @@ import { EntityAnimals } from "./EntityAnimals";
 import { Item } from "./Item";
 
 export  class EntityPig extends EntityAnimals {
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/pig.png";
 		this.setSize(0.9, 0.9);
@@ -22,12 +22,12 @@ export  class EntityPig extends EntityAnimals {
 		this.dataWatcher.addObject(16, 0, 'Byte');
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 		nBTTagCompound1.setBoolean("Saddle", this.func_21068_q());
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 		this.func_21069_a(nBTTagCompound1.getBoolean("Saddle"));
 	}
@@ -44,8 +44,8 @@ export  class EntityPig extends EntityAnimals {
 		return "mob.pigdeath";
 	}
 
-	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
-		if(!this.func_21068_q() || this.worldObj.multiplayerWorld || this.riddenByEntity !== null && this.riddenByEntity !== entityPlayer1) {
+	public async interact(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
+		if(!this.func_21068_q() || this.worldObj.multiplayerWorld || this.riddenByEntity !== undefined && this.riddenByEntity !== entityPlayer1) {
 			return false;
 		} else {
 			entityPlayer1.mountEntity(this);

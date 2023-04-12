@@ -31,7 +31,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	protected texture:  string = "/mob/char.png";
 	protected unusedEntityLivingBoolean:  boolean = true;
 	protected field_9353_B:  float = 0.0;
-	protected field_9351_C:  string | null = null;
+	protected field_9351_C:  string | undefined = undefined;
 	protected field_9349_D:  float = 1.0;
 	protected scoreValue:  int = 0;
 	protected field_9345_F:  float = 0.0;
@@ -69,14 +69,14 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	protected isJumping:  boolean = false;
 	protected defaultPitch:  float = 0.0;
 	protected moveSpeed:  float = 0.7;
-	private field_4120_b:  Entity | null;
+	private field_4120_b:  Entity | undefined;
 	private field_4127_c:  int = 0;
 
 	public override get type(): string {
 		return 'Living';
 	}
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.preventEntitySpawning = true;
 		this.field_9363_r = (java.lang.Math.random() + 1.0) as float * 0.01;
@@ -89,8 +89,8 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	protected entityInit():  void {
 	}
 
-	public canEntityBeSeen(entity1: Entity| null):  boolean {
-		return this.worldObj.rayTraceBlocks(Vec3D.createVector(this.posX, this.posY + this.getEyeHeight() as double, this.posZ), Vec3D.createVector(entity1.posX, entity1.posY + entity1.getEyeHeight() as double, entity1.posZ)) === null;
+	public canEntityBeSeen(entity1: Entity| undefined):  boolean {
+		return this.worldObj.rayTraceBlocks(Vec3D.createVector(this.posX, this.posY + this.getEyeHeight() as double, this.posZ), Vec3D.createVector(entity1.posX, entity1.posY + entity1.getEyeHeight() as double, entity1.posZ)) === undefined;
 	}
 
 	public getEntityTexture():  string {
@@ -119,13 +119,13 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		if(this.rand.nextInt(1000) < this.field_4121_a++) {
 			this.field_4121_a = -this.func_421_b();
 			let  string1 = this.getLivingSound();
-			if(string1 !== null) {
+			if(string1 !== undefined) {
 				this.worldObj.playSoundAtEntity(this, string1, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 			}
 		}
 
 		if(this.isEntityAlive() && await this.func_345_I()) {
-			await this.attackEntityFrom(null as Entity, 1);
+			await this.attackEntityFrom(undefined as Entity, 1);
 		}
 
 		if(this.isImmuneToFire || this.worldObj.multiplayerWorld) {
@@ -145,7 +145,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 					this.worldObj.spawnParticle("bubble", this.posX + f2 as double, this.posY + f3 as double, this.posZ + f4 as double, this.motionX, this.motionY, this.motionZ);
 				}
 
-				await this.attackEntityFrom(null as Entity, 2);
+				await this.attackEntityFrom(undefined as Entity, 2);
 			}
 
 			this.fire = 0;
@@ -318,7 +318,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		}
 	}
 
-	public async attackEntityFrom(entity1: Entity| null, i2: int):  Promise<boolean> {
+	public async attackEntityFrom(entity1: Entity| undefined, i2: int):  Promise<boolean> {
 		if(this.worldObj.multiplayerWorld) {
 			return false;
 		} else {
@@ -348,7 +348,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 				if(z3) {
 					this.worldObj.func_9425_a(this, 2 as byte);
 					this.setBeenAttacked();
-					if(entity1 !== null) {
+					if(entity1 !== undefined) {
 						let  d4: double = entity1.posX - this.posX;
 
 						let  d6: double;
@@ -392,7 +392,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	}
 
 	protected getLivingSound():  string {
-		return null;
+		return undefined;
 	}
 
 	protected getHurtSound():  string {
@@ -403,7 +403,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		return "random.hurt";
 	}
 
-	public knockBack(entity1: Entity| null, i2: int, d3: double, d5: double):  void {
+	public knockBack(entity1: Entity| undefined, i2: int, d3: double, d5: double):  void {
 		let  f7: float = MathHelper.sqrt_double(d3 * d3 + d5 * d5);
 		let  f8: float = 0.4;
 		this.motionX /= 2.0;
@@ -418,8 +418,8 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 
 	}
 
-	public async onDeath(entity1: Entity| null):  Promise<void> {
-		if(this.scoreValue > 0 && entity1 !== null) {
+	public async onDeath(entity1: Entity| undefined):  Promise<void> {
+		if(this.scoreValue > 0 && entity1 !== undefined) {
 			entity1.addToPlayerScore(this, this.scoreValue);
 		}
 
@@ -450,7 +450,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	protected async fall(f1: float):  Promise<void> {
 		let  i2: int = java.lang.Math.ceil((f1 - 3.0) as double) as int;
 		if(i2 > 0) {
-			await this.attackEntityFrom(null as Entity, i2);
+			await this.attackEntityFrom(undefined as Entity, i2);
 			let  i3: int = await this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.2 as double - this.yOffset as double), MathHelper.floor_double(this.posZ));
 			if(i3 > 0) {
 				let  stepSound4: StepSound = Block.blocksList[i3].stepSound;
@@ -542,14 +542,14 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		return await this.worldObj.getBlockId(i1, i2, i3) === Block.ladder.blockID || await this.worldObj.getBlockId(i1, i2 + 1, i3) === Block.ladder.blockID;
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		nBTTagCompound1.setShort("Health", this.health as short);
 		nBTTagCompound1.setShort("HurtTime", this.hurtTime as short);
 		nBTTagCompound1.setShort("DeathTime", this.deathTime as short);
 		nBTTagCompound1.setShort("AttackTime", this.attackTime as short);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.health = nBTTagCompound1.getShort("Health");
 		if(!nBTTagCompound1.hasKey("Health")) {
 			this.health = 10;
@@ -615,7 +615,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		this.randomYawVelocity *= 0.9;
 		await this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
 		let  list10 = await this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.2 as double, 0.0, 0.2 as double));
-		if(list10 !== null && list10.length > 0) {
+		if(list10 !== undefined && list10.length > 0) {
 			for(let  i4: int = 0; i4 < list10.length; ++i4) {
 				let  entity11: Entity = list10[i4] as Entity;
 				if(entity11.canBePushed()) {
@@ -633,7 +633,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	protected async updatePlayerActionState(): Promise<void> {
 		++this.field_9344_ag;
 		let  entityPlayer1: EntityPlayer = this.worldObj.getClosestPlayerToEntity(this, -1.0);
-		if(entityPlayer1 !== null) {
+		if(entityPlayer1 !== undefined) {
 			let  d2: double = entityPlayer1.posX - this.posX;
 			let  d4: double = entityPlayer1.posY - this.posY;
 			let  d6: double = entityPlayer1.posZ - this.posZ;
@@ -656,7 +656,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		let  f10: float = 8.0;
 		if(this.rand.nextFloat() < 0.02) {
 			entityPlayer1 = this.worldObj.getClosestPlayerToEntity(this, f10 as double);
-			if(entityPlayer1 !== null) {
+			if(entityPlayer1 !== undefined) {
 				this.field_4120_b = entityPlayer1;
 				this.field_4127_c = 10 + this.rand.nextInt(20);
 			} else {
@@ -664,10 +664,10 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 			}
 		}
 
-		if(this.field_4120_b !== null) {
+		if(this.field_4120_b !== undefined) {
 			this.faceEntity(this.field_4120_b, 10.0);
 			if(this.field_4127_c-- <= 0 || this.field_4120_b.isDead || this.field_4120_b.getDistanceSqToEntity(this) > (f10 * f10)) {
-				this.field_4120_b = null;
+				this.field_4120_b = undefined;
 			}
 		} else {
 			if(this.rand.nextFloat() < 0.05) {
@@ -686,7 +686,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 
 	}
 
-	public faceEntity(entity1: Entity| null, f2: float):  void {
+	public faceEntity(entity1: Entity| undefined, f2: float):  void {
 		let  d3: double = entity1.posX - this.posX;
 		let  d7: double = entity1.posZ - this.posZ;
 		let  d5: double;
@@ -732,7 +732,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	}
 
 	protected async kill():  Promise<void> {
-		await this.attackEntityFrom(null as Entity, 4);
+		await this.attackEntityFrom(undefined as Entity, 4);
 	}
 
 	public getSwingProgress(f1: float):  float {
@@ -744,7 +744,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		return this.prevSwingProgress + f2 * f1;
 	}
 
-	public getPosition(f1: float):  Vec3D | null {
+	public getPosition(f1: float):  Vec3D | undefined {
 		if(f1 === 1.0) {
 			return Vec3D.createVector(this.posX, this.posY, this.posZ);
 		} else {
@@ -755,11 +755,11 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		}
 	}
 
-	public getLookVec():  Vec3D | null {
+	public getLookVec():  Vec3D | undefined {
 		return this.getLook(1.0);
 	}
 
-	public getLook(f1: float):  Vec3D | null {
+	public getLook(f1: float):  Vec3D | undefined {
 		let  f2: float;
 		let  f3: float;
 		let  f4: float;
@@ -781,7 +781,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		}
 	}
 
-	public async rayTrace(d1: double, f3: float):  Promise<MovingObjectPosition | null> {
+	public async rayTrace(d1: double, f3: float):  Promise<MovingObjectPosition | undefined> {
 		let  vec3D4: Vec3D = this.getPosition(f3);
 		let  vec3D5: Vec3D = this.getLook(f3);
 		let  vec3D6: Vec3D = vec3D4.addVector(vec3D5.xCoord * d1, vec3D5.yCoord * d1, vec3D5.zCoord * d1);
@@ -792,8 +792,8 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 		return 4;
 	}
 
-	public getHeldItem():  ItemStack | null {
-		return null;
+	public getHeldItem():  ItemStack | undefined {
+		return undefined;
 	}
 
 	public async handleHealthUpdate(b1: byte):  Promise<void> {
@@ -803,11 +803,11 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 			this.hurtTime = this.maxHurtTime = 10;
 			this.attackedAtYaw = 0.0;
 			this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
-			await this.attackEntityFrom(null as Entity, 0);
+			await this.attackEntityFrom(undefined as Entity, 0);
 		} else if(b1 === 3) {
 			this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2 + 1.0);
 			this.health = 0;
-			await this.onDeath(null as Entity);
+			await this.onDeath(undefined as Entity);
 		} else {
 			super.handleHealthUpdate(b1);
 		}

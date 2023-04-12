@@ -19,8 +19,8 @@ export  class BlockSnow extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
-		return null;
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
+		return undefined;
 	}
 
 	public isOpaqueCube():  boolean {
@@ -31,16 +31,16 @@ export  class BlockSnow extends Block {
 		return false;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  i5: int = await world1.getBlockId(i2, i3 - 1, i4);
 		return i5 !== 0 && Block.blocksList[i5].isOpaqueCube() ? (await world1.getBlockMaterial(i2, i3 - 1, i4)).getIsSolid() : false;
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		await this.func_314_h(world1, i2, i3, i4);
 	}
 
-	private async func_314_h(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	private async func_314_h(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		if(!this.canPlaceBlockAt(world1, i2, i3, i4)) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
@@ -50,7 +50,7 @@ export  class BlockSnow extends Block {
 		}
 	}
 
-	public async harvestBlock(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async harvestBlock(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  i6: int = Item.snowball.shiftedIndex;
 		let  f7: float = 0.7;
 		let  d8: double = (world1.rand.nextFloat() * f7) as double + (1.0 - f7) as double * 0.5;
@@ -62,15 +62,15 @@ export  class BlockSnow extends Block {
 		await world1.setBlockWithNotify(i2, i3, i4, 0);
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return Item.snowball.shiftedIndex;
 	}
 
-	public quantityDropped(random1: Random| null):  int {
+	public quantityDropped(random1: Random| undefined):  int {
 		return 0;
 	}
 
-	public async updateTick(world1: World| null, i2: int, i3: int, i4: int, random5: Random| null):  Promise<void> {
+	public async updateTick(world1: World| undefined, i2: int, i3: int, i4: int, random5: Random| undefined):  Promise<void> {
 		if(await world1.getSavedLightValue(EnumSkyBlock.Block, i2, i3, i4) > 11) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
@@ -78,7 +78,7 @@ export  class BlockSnow extends Block {
 
 	}
 
-	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
+	public async shouldSideBeRendered(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
 		let  material6: Material = await iBlockAccess1.getBlockMaterial(i2, i3, i4);
 		return i5 === 1 ? true : (material6 === this.blockMaterial ? false : await super.shouldSideBeRendered(iBlockAccess1, i2, i3, i4, i5));
 	}

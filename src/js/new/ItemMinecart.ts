@@ -15,7 +15,7 @@ export  class ItemMinecart extends Item {
 		this.minecartType = i2;
 	}
 
-	public async onItemUse(itemStack1: ItemStack| null, entityPlayer2: EntityPlayer| null, world3: World| null, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
+	public async onItemUse(itemStack1: ItemStack| undefined, entityPlayer2: EntityPlayer| undefined, world3: World| undefined, i4: int, i5: int, i6: int, i7: int): Promise<boolean> {
 		let  i8: int = await world3.getBlockId(i4, i5, i6);
 		if(i8 === Block.minecartTrack.blockID) {
 			if(!world3.multiplayerWorld) {

@@ -15,9 +15,9 @@ export  class ChunkCache implements IBlockAccess {
 	private chunkX:  int;
 	private chunkZ:  int;
 	private chunkArray:  Chunk[][];
-	private worldObj:  World | null;
+	private worldObj:  World | undefined;
 
-	public static async Construct(world1: World| null, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int) {
+	public static async Construct(world1: World| undefined, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int) {
 		const _this = new ChunkCache();
 
 		_this.worldObj = world1;
@@ -45,7 +45,7 @@ export  class ChunkCache implements IBlockAccess {
 			let  i4: int = (i1 >> 4) - this.chunkX;
 			let  i5: int = (i3 >> 4) - this.chunkZ;
 			let  chunk6: Chunk = this.chunkArray[i4][i5];
-			return chunk6 === null ? 0 : chunk6.getBlockID(i1 & 15, i2, i3 & 15);
+			return chunk6 === undefined ? 0 : chunk6.getBlockID(i1 & 15, i2, i3 & 15);
 		}
 	}
 
@@ -133,7 +133,7 @@ export  class ChunkCache implements IBlockAccess {
 
 	public async isBlockOpaqueCube(i1: int, i2: int, i3: int):  Promise<boolean> {
 		let  block4: Block = Block.blocksList[await this.getBlockId(i1, i2, i3)];
-		return block4 === null ? false : block4.isOpaqueCube();
+		return block4 === undefined ? false : block4.isOpaqueCube();
 	}
 
 	public getWorldChunkManager():  WorldChunkManager {

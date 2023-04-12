@@ -18,7 +18,7 @@ export  class NextTickListEntry extends JavaObject implements java.lang.Comparab
 		this.blockID = i4;
 	}
 
-	public equals(object1: java.lang.Object| null):  boolean {
+	public equals(object1: java.lang.Object| undefined):  boolean {
 		if(!(object1 instanceof NextTickListEntry)) {
 			return false;
 		} else {
@@ -31,7 +31,7 @@ export  class NextTickListEntry extends JavaObject implements java.lang.Comparab
 		return (this.xCoord * 128 * 1024 + this.zCoord * 128 + this.yCoord) * 256 + this.blockID;
 	}
 
-	public setScheduledTime(j1: long):  NextTickListEntry | null {
+	public setScheduledTime(j1: long):  NextTickListEntry | undefined {
 		this.scheduledTime = j1;
 		return this;
 	}
@@ -40,7 +40,7 @@ export  class NextTickListEntry extends JavaObject implements java.lang.Comparab
 		return this.scheduledTime < nextTickListEntry1.scheduledTime ? -1 : (this.scheduledTime > nextTickListEntry1.scheduledTime ? 1 : (this.tickEntryID < nextTickListEntry1.tickEntryID ? -1 : (this.tickEntryID > nextTickListEntry1.tickEntryID ? 1 : 0)));
 	}
 
-	public compareTo(object1: java.lang.Object| null):  int {
+	public compareTo(object1: java.lang.Object| undefined):  int {
 		return this.comparer(object1 as NextTickListEntry);
 	}
 }

@@ -9,10 +9,10 @@ export class EnumCreatureType extends java.lang.Enum<EnumCreatureType> {
 	public static readonly waterCreature: EnumCreatureType = new class extends EnumCreatureType {}(5, MaterialRegistry.water, true,S`waterCreature`, 2);
 
 	private readonly maxNumberOfCreature:  int;
-	private readonly creatureMaterial:  Material | null;
+	private readonly creatureMaterial:  Material | undefined;
 	private readonly field_21172_g:  boolean;
 
-	private constructor(i4: int, material5: Material| null, z6: boolean, $name$: java.lang.String, $index$: number) {
+	private constructor(i4: int, material5: Material| undefined, z6: boolean, $name$: java.lang.String, $index$: number) {
 		super($name$, $index$);
 		this.maxNumberOfCreature = i4;
 		this.creatureMaterial = material5;
@@ -27,7 +27,7 @@ export class EnumCreatureType extends java.lang.Enum<EnumCreatureType> {
 		return this.maxNumberOfCreature;
 	}
 
-	public getCreatureMaterial():  Material | null {
+	public getCreatureMaterial():  Material | undefined {
 		return this.creatureMaterial;
 	}
 

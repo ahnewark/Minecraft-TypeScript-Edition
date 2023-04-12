@@ -15,7 +15,7 @@ import { Random } from "../java/util/Random";
 import { Item } from "./Item";
 
 export  class BlockDoor extends Block {
-	public constructor(i1: int, material2: Material| null) {
+	public constructor(i1: int, material2: Material| undefined) {
 		super(i1, material2);
 		this.blockIndexInTexture = 97;
 		if(material2 === MaterialRegistry.iron) {
@@ -60,17 +60,17 @@ export  class BlockDoor extends Block {
 		return 7;
 	}
 
-	public async getSelectedBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getSelectedBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.getSelectedBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
-	public async getCollisionBoundingBoxFromPool(world1: World| null, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | null> {
+	public async getCollisionBoundingBoxFromPool(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<AxisAlignedBB | undefined> {
 		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.getCollisionBoundingBoxFromPool(world1, i2, i3, i4);
 	}
 
-	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| null, i2: int, i3: int, i4: int):  Promise<void> {
+	public async setBlockBoundsBasedOnState(iBlockAccess1: IBlockAccess| undefined, i2: int, i3: int, i4: int):  Promise<void> {
 		this.func_313_b(this.func_312_c(await iBlockAccess1.getBlockMetadata(i2, i3, i4)));
 	}
 
@@ -95,11 +95,11 @@ export  class BlockDoor extends Block {
 
 	}
 
-	public async onBlockClicked(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<void> {
+	public async onBlockClicked(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<void> {
 		await this.blockActivated(world1, i2, i3, i4, entityPlayer5);
 	}
 
-	public async blockActivated(world1: World| null, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| null):  Promise<boolean> {
+	public async blockActivated(world1: World| undefined, i2: int, i3: int, i4: int, entityPlayer5: EntityPlayer| undefined):  Promise<boolean> {
 		if(this.blockMaterial === MaterialRegistry.iron) {
 			return true;
 		} else {
@@ -128,7 +128,7 @@ export  class BlockDoor extends Block {
 		}
 	}
 
-	public async func_311_a(world1: World| null, i2: int, i3: int, i4: int, z5: boolean):  Promise<void> {
+	public async func_311_a(world1: World| undefined, i2: int, i3: int, i4: int, z5: boolean):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		if((i6 & 8) !== 0) {
 			if(await world1.getBlockId(i2, i3 - 1, i4) === this.blockID) {
@@ -154,7 +154,7 @@ export  class BlockDoor extends Block {
 		}
 	}
 
-	public async onNeighborBlockChange(world1: World| null, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
+	public async onNeighborBlockChange(world1: World| undefined, i2: int, i3: int, i4: int, i5: int):  Promise<void> {
 		let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 		if((i6 & 8) !== 0) {
 			if(await world1.getBlockId(i2, i3 - 1, i4) !== this.blockID) {
@@ -189,11 +189,11 @@ export  class BlockDoor extends Block {
 
 	}
 
-	public idDropped(i1: int, random2: Random| null):  int {
+	public idDropped(i1: int, random2: Random| undefined):  int {
 		return (i1 & 8) !== 0 ? 0 : (this.blockMaterial === MaterialRegistry.iron ? Item.doorSteel.shiftedIndex : Item.doorWood.shiftedIndex);
 	}
 
-	public async collisionRayTrace(world1: World| null, i2: int, i3: int, i4: int, vec3D5: Vec3D| null, vec3D6: Vec3D| null):  Promise<MovingObjectPosition | null> {
+	public async collisionRayTrace(world1: World| undefined, i2: int, i3: int, i4: int, vec3D5: Vec3D| undefined, vec3D6: Vec3D| undefined):  Promise<MovingObjectPosition | undefined> {
 		await this.setBlockBoundsBasedOnState(world1, i2, i3, i4);
 		return await super.collisionRayTrace(world1, i2, i3, i4, vec3D5, vec3D6);
 	}
@@ -202,7 +202,7 @@ export  class BlockDoor extends Block {
 		return (i1 & 4) === 0 ? i1 - 1 & 3 : i1 & 3;
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		return i3 >= 127 ? false : await world1.isBlockOpaqueCube(i2, i3 - 1, i4) && await super.canPlaceBlockAt(world1, i2, i3, i4) && await super.canPlaceBlockAt(world1, i2, i3 + 1, i4);
 	}
 }

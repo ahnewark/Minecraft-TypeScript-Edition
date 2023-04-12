@@ -15,16 +15,16 @@ import { Block } from "./Block";
 
 export  class Explosion {
 	public field_12257_a:  boolean = false;
-	private ExplosionRNG:  Random | null = new Random();
-	private worldObj:  World | null;
+	private ExplosionRNG:  Random | undefined = new Random();
+	private worldObj:  World | undefined;
 	public explosionX:  double;
 	public explosionY:  double;
 	public explosionZ:  double;
-	public exploder:  Entity | null;
+	public exploder:  Entity | undefined;
 	public explosionSize:  float;
 	public destroyedBlockPositions: Set<ChunkPosition> = new Set();
 
-	public constructor(world1: World| null, entity2: Entity| null, d3: double, d5: double, d7: double, f9: float) {
+	public constructor(world1: World| undefined, entity2: Entity| undefined, d3: double, d5: double, d7: double, f9: float) {
 		this.worldObj = world1;
 		this.exploder = entity2;
 		this.explosionSize = f9;

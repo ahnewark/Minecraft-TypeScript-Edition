@@ -13,12 +13,12 @@ import { CraftingManager } from "./CraftingManager";
 import { CraftingInventoryCB } from "./CraftingInventoryCB";
 
 export  class CraftingInventoryPlayerCB extends CraftingInventoryCB {
-	public craftMatrix:  InventoryCrafting | null;
-	public craftResult:  IInventory | null;
+	public craftMatrix:  InventoryCrafting | undefined;
+	public craftResult:  IInventory | undefined;
 	public field_20124_c:  boolean;
 
-	public static async Construct(inventoryPlayer1: InventoryPlayer| null);
-	public static async Construct(inventoryPlayer1: InventoryPlayer| null, z2: boolean);
+	public static async Construct(inventoryPlayer1: InventoryPlayer| undefined);
+	public static async Construct(inventoryPlayer1: InventoryPlayer| undefined, z2: boolean);
     public static async Construct(...args: unknown[]) {
 		const _this = new CraftingInventoryPlayerCB();
 
@@ -75,24 +75,24 @@ export  class CraftingInventoryPlayerCB extends CraftingInventoryCB {
 	}
 
 
-	public async onCraftMatrixChanged(iInventory1: IInventory| null):  Promise<void> {
+	public async onCraftMatrixChanged(iInventory1: IInventory| undefined):  Promise<void> {
 		await this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix));
 	}
 
-	public async onCraftGuiClosed(entityPlayer1: EntityPlayer| null):  Promise<void> {
+	public async onCraftGuiClosed(entityPlayer1: EntityPlayer| undefined):  Promise<void> {
 		await super.onCraftGuiClosed(entityPlayer1);
 
 		for(let  i2: int = 0; i2 < 4; ++i2) {
 			let  itemStack3: ItemStack = this.craftMatrix.getStackInSlot(i2);
-			if(itemStack3 !== null) {
+			if(itemStack3 !== undefined) {
 				await entityPlayer1.dropPlayerItem(itemStack3);
-				await this.craftMatrix.setInventorySlotContents(i2, null as ItemStack);
+				await this.craftMatrix.setInventorySlotContents(i2, undefined as ItemStack);
 			}
 		}
 
 	}
 
-	public func_20120_b(entityPlayer1: EntityPlayer| null):  boolean {
+	public func_20120_b(entityPlayer1: EntityPlayer| undefined):  boolean {
 		return true;
 	}
 }

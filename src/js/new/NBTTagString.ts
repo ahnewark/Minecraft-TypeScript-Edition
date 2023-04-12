@@ -25,7 +25,7 @@ export  class NBTTagString extends NBTBase {
 				super();
 				this.stringValue = string1;
 
-				if(string1 === null) {
+				if(string1 === undefined) {
 					throw new  java.lang.IllegalArgumentException("Empty string not allowed");
 				}
 

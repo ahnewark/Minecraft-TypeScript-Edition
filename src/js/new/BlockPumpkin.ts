@@ -35,16 +35,16 @@ export  class BlockPumpkin extends Block {
 		return i1 === 1 ? this.blockIndexInTexture : (i1 === 0 ? this.blockIndexInTexture : (i1 === 3 ? this.blockIndexInTexture + 1 + 16 : this.blockIndexInTexture + 16));
 	}
 
-	public async onBlockAdded(world1: World| null, i2: int, i3: int, i4: int): Promise<void> {
+	public async onBlockAdded(world1: World| undefined, i2: int, i3: int, i4: int): Promise<void> {
 		await super.onBlockAdded(world1, i2, i3, i4);
 	}
 
-	public async canPlaceBlockAt(world1: World| null, i2: int, i3: int, i4: int):  Promise<boolean> {
+	public async canPlaceBlockAt(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<boolean> {
 		let  i5: int = await world1.getBlockId(i2, i3, i4);
 		return (i5 === 0 || Block.blocksList[i5].blockMaterial.getIsLiquid()) && await world1.isBlockOpaqueCube(i2, i3 - 1, i4);
 	}
 
-	public async onBlockPlacedBy(world1: World| null, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| null):  Promise<void> {
+	public async onBlockPlacedBy(world1: World| undefined, i2: int, i3: int, i4: int, entityLiving5: EntityLiving| undefined):  Promise<void> {
 		let  i6: int = MathHelper.floor_double((entityLiving5.rotationYaw * 4.0 / 360.0) as double + 0.5) & 3;
 		await world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
 	}

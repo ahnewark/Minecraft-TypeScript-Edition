@@ -14,19 +14,19 @@ export class ItemStack {
 	public itemID:  int;
 	private itemDamage:  int;
 
-	public constructor(block1: Block| null);
+	public constructor(block1: Block| undefined);
 
-	public constructor(item1: Item| null);
+	public constructor(item1: Item| undefined);
 
-	public constructor(nBTTagCompound1: NBTTagCompound| null);
+	public constructor(nBTTagCompound1: NBTTagCompound| undefined);
 
-	public constructor(block1: Block| null, i2: int);
+	public constructor(block1: Block| undefined, i2: int);
 
-	public constructor(item1: Item| null, i2: int);
+	public constructor(item1: Item| undefined, i2: int);
 
-	public constructor(block1: Block| null, i2: int, i3: int);
+	public constructor(block1: Block| undefined, i2: int, i3: int);
 
-	public constructor(item1: Item| null, i2: int, i3: int);
+	public constructor(item1: Item| undefined, i2: int, i3: int);
 
 	public constructor(i1: int, i2: int, i3: int);
     public constructor(...args: unknown[]) {
@@ -85,12 +85,12 @@ export class ItemStack {
 	}
 
 
-	public splitStack(i1: int):  ItemStack | null {
+	public splitStack(i1: int):  ItemStack | undefined {
 		this.stackSize -= i1;
 		return new  ItemStack(this.itemID, i1, this.itemDamage);
 	}
 
-	public getItem():  Item | null {
+	public getItem():  Item | undefined {
 		return Item.itemsList[this.itemID];
 	}
 
@@ -98,26 +98,26 @@ export class ItemStack {
 		return this.getItem().getIconIndex(this);
 	}
 
-	public async useItem(entityPlayer1: EntityPlayer| null, world2: World| null, i3: int, i4: int, i5: int, i6: int):  Promise<boolean> {
+	public async useItem(entityPlayer1: EntityPlayer| undefined, world2: World| undefined, i3: int, i4: int, i5: int, i6: int):  Promise<boolean> {
 		return await this.getItem().onItemUse(this, entityPlayer1, world2, i3, i4, i5, i6);
 	}
 
-	public getStrVsBlock(block1: Block| null):  float {
+	public getStrVsBlock(block1: Block| undefined):  float {
 		return this.getItem().getStrVsBlock(this, block1);
 	}
 
-	public async useItemRightClick(world1: World| null, entityPlayer2: EntityPlayer| null):  Promise<ItemStack | null> {
+	public async useItemRightClick(world1: World| undefined, entityPlayer2: EntityPlayer| undefined):  Promise<ItemStack | undefined> {
 		return await this.getItem().onItemRightClick(this, world1, entityPlayer2);
 	}
 
-	public writeToNBT(nBTTagCompound1: NBTTagCompound| null):  NBTTagCompound | null {
+	public writeToNBT(nBTTagCompound1: NBTTagCompound| undefined):  NBTTagCompound | undefined {
 		nBTTagCompound1.setShort("id", this.itemID as short);
 		nBTTagCompound1.setByte("Count", this.stackSize as byte);
 		nBTTagCompound1.setShort("Damage", this.itemDamage as short);
 		return nBTTagCompound1;
 	}
 
-	public readFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		this.itemID = nBTTagCompound1.getShort("id");
 		this.stackSize = nBTTagCompound1.getByte("Count");
 		this.itemDamage = nBTTagCompound1.getShort("Damage");
@@ -170,7 +170,7 @@ export class ItemStack {
 		}
 	}
 
-	public hitEntity(entityLiving1: EntityLiving| null):  void {
+	public hitEntity(entityLiving1: EntityLiving| undefined):  void {
 		Item.itemsList[this.itemID].hitEntity(this, entityLiving1);
 	}
 
@@ -178,34 +178,34 @@ export class ItemStack {
 		Item.itemsList[this.itemID].hitBlock(this, i1, i2, i3, i4);
 	}
 
-	public getDamageVsEntity(entity1: Entity| null):  int {
+	public getDamageVsEntity(entity1: Entity| undefined):  int {
 		return Item.itemsList[this.itemID].getDamageVsEntity(entity1);
 	}
 
-	public canHarvestBlock(block1: Block| null):  boolean {
+	public canHarvestBlock(block1: Block| undefined):  boolean {
 		return Item.itemsList[this.itemID].canHarvestBlock(block1);
 	}
 
-	public func_1097_a(entityPlayer1: EntityPlayer| null):  void {
+	public func_1097_a(entityPlayer1: EntityPlayer| undefined):  void {
 	}
 
-	public useItemOnEntity(entityLiving1: EntityLiving| null):  void {
+	public useItemOnEntity(entityLiving1: EntityLiving| undefined):  void {
 		Item.itemsList[this.itemID].saddleEntity(this, entityLiving1);
 	}
 
-	public copy():  ItemStack | null {
+	public copy():  ItemStack | undefined {
 		return new  ItemStack(this.itemID, this.stackSize, this.itemDamage);
 	}
 
-	public static areItemStacksEqual(itemStack0: ItemStack| null, itemStack1: ItemStack| null):  boolean {
-		return itemStack0 === null && itemStack1 === null ? true : (itemStack0 !== null && itemStack1 !== null ? itemStack0.isItemStackEqual(itemStack1) : false);
+	public static areItemStacksEqual(itemStack0: ItemStack| undefined, itemStack1: ItemStack| undefined):  boolean {
+		return itemStack0 === undefined && itemStack1 === undefined ? true : (itemStack0 !== undefined && itemStack1 !== undefined ? itemStack0.isItemStackEqual(itemStack1) : false);
 	}
 
-	private isItemStackEqual(itemStack1: ItemStack| null):  boolean {
+	private isItemStackEqual(itemStack1: ItemStack| undefined):  boolean {
 		return this.stackSize !== itemStack1.stackSize ? false : (this.itemID !== itemStack1.itemID ? false : this.itemDamage === itemStack1.itemDamage);
 	}
 
-	public isItemEqual(itemStack1: ItemStack| null):  boolean {
+	public isItemEqual(itemStack1: ItemStack| undefined):  boolean {
 		return this.itemID === itemStack1.itemID && this.itemDamage === itemStack1.itemDamage;
 	}
 

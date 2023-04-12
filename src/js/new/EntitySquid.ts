@@ -28,31 +28,31 @@ export  class EntitySquid extends EntityWaterMob {
 	private field_21077_o:  float = 0.0;
 	private field_21076_p:  float = 0.0;
 
-	public constructor(world1: World| null) {
+	public constructor(world1: World| undefined) {
 		super(world1);
 		this.texture = "/mob/squid.png";
 		this.setSize(0.95, 0.95);
 		this.field_21080_l = 1.0 / (this.rand.nextFloat() + 1.0) * 0.2;
 	}
 
-	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public writeEntityToNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.writeEntityToNBT(nBTTagCompound1);
 	}
 
-	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| null):  void {
+	public readEntityFromNBT(nBTTagCompound1: NBTTagCompound| undefined):  void {
 		super.readEntityFromNBT(nBTTagCompound1);
 	}
 
 	protected getLivingSound(): string {
-		return null;
+		return undefined;
 	}
 
 	protected getHurtSound(): string {
-		return null;
+		return undefined;
 	}
 
 	protected getDeathSound(): string {
-		return null;
+		return undefined;
 	}
 
 	protected getSoundVolume():  float {
@@ -72,9 +72,9 @@ export  class EntitySquid extends EntityWaterMob {
 
 	}
 
-	public async interact(entityPlayer1: EntityPlayer| null):  Promise<boolean> {
+	public async interact(entityPlayer1: EntityPlayer| undefined):  Promise<boolean> {
 		let  itemStack2: ItemStack = entityPlayer1.inventory.getCurrentItem();
-		if(itemStack2 !== null && itemStack2.itemID === Item.bucketEmpty.shiftedIndex) {
+		if(itemStack2 !== undefined && itemStack2.itemID === Item.bucketEmpty.shiftedIndex) {
 			await entityPlayer1.inventory.setInventorySlotContents(entityPlayer1.inventory.currentItem, new  ItemStack(Item.bucketMilk));
 			return true;
 		} else {
