@@ -12,7 +12,6 @@ import { Block } from "./Block";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { Item } from "./Item";
 
 export  class BlockDoor extends Block {
 	public constructor(i1: int, material2: Material| undefined) {

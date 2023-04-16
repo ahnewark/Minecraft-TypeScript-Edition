@@ -10,7 +10,7 @@ import { Appendable } from "../lang/Appendable";
 import { JavaObject } from "../lang/Object";
 import { Closeable } from "./Closeable";
 import { Flushable } from "./Flushable";
-import { IllegalArgumentException } from "../lang";
+import { IllegalArgumentException } from "../lang/IllegalArgumentException";
 import { NotImplementedError } from "../../NotImplementedError";
 import { convertStringToUTF16 } from "../../string-helpers";
 

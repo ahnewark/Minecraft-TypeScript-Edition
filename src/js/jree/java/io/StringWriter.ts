@@ -7,7 +7,7 @@ import { char, int } from "../../types";
 import { StringBuffer } from "../lang/StringBuffer";
 import { CharSequence } from "../lang/CharSequence";
 import { Writer } from "./Writer";
-import { JavaString } from "../lang";
+import { JavaString } from "../lang/String";
 
 export class StringWriter extends Writer {
     #buffer = new StringBuffer();

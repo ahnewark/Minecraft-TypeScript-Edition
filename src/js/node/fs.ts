@@ -79,7 +79,7 @@ const mkdirsRecurse = async (path: string, dirHandle: FileSystemDirectoryHandle,
 }
 
 const mkdirAsync = async (path: string, options: MkdirOptions): Promise<boolean> => {
-    console.log('Making directory ', path);
+    console.debug('Making directory ', path);
     try {
         const root = await navigator.storage.getDirectory();
         return await (mkdirsRecurse(path, root, options.recursive));
@@ -113,18 +113,20 @@ const openAsync = async (path: string, openMode: OpenModes, unk1: number) => {
     const root = await navigator.storage.getDirectory();
     const folder = await getNestedFolderHandle(path, root);
     const fileName = posixPath.basename(path);
-    const handle = await folder.getFileHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
+    let handle = await folder.getFileHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
 
     if (openMode === 'as' || openMode === 'w')
-        return await await (handle as any).createWritable();
+        handle = await (handle as any).createWritable();
 
     // console.log({path, fileName, folder, handle})
+
+    (handle as any).path = path;
 
     return handle;
 }
 
 const existsAsync = async (path: string) => {
-    console.log('checking if file exists ', path);
+    console.debug('checking if file exists ', path);
     const root = await navigator.storage.getDirectory();
     
     let folder: FileSystemDirectoryHandle;
@@ -140,18 +142,18 @@ const existsAsync = async (path: string) => {
 
     try {
         await folder.getFileHandle(fileName, { create: false});
-        console.log('... it does');
+        console.debug('... it does');
         return true;
     } catch (error) {
         try {
             await folder.getDirectoryHandle(fileName, {create: false});
-            console.log('... it does');
+            console.debug('... it does');
             return true
         } catch (err) {
 
         }
     }
-    console.log('... it does not');
+    console.debug('... it does not');
     return false;
 }
 
@@ -178,7 +180,7 @@ const isTypedArray = (function() {
   
 
 const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayBuffer | TypedArray | DataView | Blob | String | string, offset: number = 0, length: number = 0, position?: number): Promise<void> => {
-    console.log('writing to file', {writable, buffer, offset, length, position})
+    console.debug('writing to file', {writable, buffer, offset, length, position})
     // if (position === undefined) {
     //     // console.log(file);
     //     position = ((await writable.getFile()).size);
@@ -218,7 +220,7 @@ const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayB
 
 const readAsync = async (fileHandle: FileSystemFileHandle, buffer: Int8Array, offset: number, length: number, position: bigint): Promise<number> => {
     // console.error('readAsync is not yet implemented.');
-    console.log('Reading file', {fileHandle, buffer, position, length})
+    console.debug('Reading file', {fileHandle, buffer, position, length})
     const file = await fileHandle.getFile();
     const arrayBuffer = new Int8Array(await file.slice(Number(position), Number(position) + length).arrayBuffer());
     for (let i = 0; i < arrayBuffer.byteLength; i++) {

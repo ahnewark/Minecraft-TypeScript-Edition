@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { closeAsync } from "../../../node/fs";
+import { closeAsync, openAsync } from "../../../node/fs";
 import { JavaObject } from "../lang/Object";
 import { Throwable } from "../lang/Throwable";
 import { Closeable } from "./Closeable";
@@ -19,7 +19,7 @@ export class FileDescriptor extends JavaObject {
     private otherParents: Closeable[] = [];
     private closed = false;
 
-    private fileHandle?: number;
+    private fileHandle?: any;
 
     /** Constructs an (invalid) FileDescriptor object. */
     public constructor() {
@@ -34,7 +34,10 @@ export class FileDescriptor extends JavaObject {
             throw new IOException("File descriptor is not open");
         }
 
-        console.error('FileDescriptor.sync is not yet implemented.')
+        closeAsync(this.fileHandle);
+        openAsync(this.fileHandle.path, 'w', 0);
+
+        // console.error('FileDescriptor.sync is not yet implemented.')
 
         // fsyncSync(this.fileHandle);
     }

@@ -12,7 +12,7 @@ import { Writer } from "./Writer";
 import { CharsetEncoder } from "../nio/charset/CharsetEncoder";
 import { CharBuffer } from "../nio/CharBuffer";
 import { IllegalArgumentException } from "../lang/IllegalArgumentException";
-import { IndexOutOfBoundsException } from "../lang";
+import { IndexOutOfBoundsException } from "../lang/IndexOutOfBoundsException";
 
 /**
  * An OutputStreamWriter is a bridge from character streams to byte streams: Characters written to it are encoded

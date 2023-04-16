@@ -13,4 +13,13 @@ export abstract class FilterOutputStream extends OutputStream {
         super();
         this.out = output;
     }
+
+    public flush() {
+        this.out.flush();
+    }
+
+    public async close() {
+       this.flush();
+    }
+
 }
