@@ -51,9 +51,9 @@ export class OutputStreamWriter extends Writer {
     }
 
     /** Closes the stream, flushing it first. */
-    public close(): void {
+    public async close(): Promise<void> {
         this.flush();
-        this.#out.close();
+        await this.#out.close();
     }
 
     /** Flushes the stream. */

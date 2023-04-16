@@ -13,7 +13,7 @@ export class SystemOutputStream extends OutputStream {
         super();
     }
 
-    public override close(): void {
+    public override async close(): Promise<void> {
         // no-op
     }
 

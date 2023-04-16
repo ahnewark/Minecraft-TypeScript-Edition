@@ -47,8 +47,8 @@ export class BufferedReader extends Reader {
         this.#limit = read < 0 ? 0 : read;
     }
 
-    public override close(): void {
-        this.#input.close();
+    public override async close(): Promise<void> {
+        await this.#input.close();
         this.#buffer = new Uint16Array(0);
         this.#currentIndex = 0;
         this.#limit = 0;

@@ -29,7 +29,7 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
 
     public static nullReader(): Reader {
         return new class extends Reader {
-            public override close(): void {
+            public override async close(): Promise<void> {
                 // Do nothing.
             }
 
@@ -198,5 +198,5 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
     /**
      * Closes the stream and releases any system resources associated with it.
      */
-    public abstract close(): void;
+    public abstract close(): Promise<void>;
 }

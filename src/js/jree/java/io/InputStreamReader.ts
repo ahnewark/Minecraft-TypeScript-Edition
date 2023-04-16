@@ -60,8 +60,8 @@ export class InputStreamReader extends Reader {
         }
     }
 
-    public override close(): void {
-        this.#input.close();
+    public override async close(): Promise<void> {
+        await this.#input.close();
     }
 
     /** @returns the name of the character encoding being used by this stream. */

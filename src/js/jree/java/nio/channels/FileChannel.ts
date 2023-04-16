@@ -35,7 +35,7 @@ import { NonWritableChannelException } from "./NonWritableChannelException";
 import { NonReadableChannelException } from "./NonReadableChannelException";
 import { IOException } from "../../io/IOException";
 import { Throwable } from "../../lang/Throwable";
-import { openAsync, readAsync } from "../../../../node/fs";
+import { closeAsync, openAsync, readAsync } from "../../../../node/fs";
 
 /** A channel for reading, writing, mapping, and manipulating a file. */
 export abstract class FileChannel extends AbstractInterruptibleChannel implements SeekableByteChannel,
@@ -319,7 +319,7 @@ export class FileChannelImpl extends FileChannel {
                 continue;
             }
 
-            const bytesRead = await this.readBytes(bb, remaining);
+            const bytesRead = await this.readBytes(bb, Math.min(length, remaining));
             if (bytesRead === 0n) {
                 break;
             }
@@ -477,10 +477,10 @@ export class FileChannelImpl extends FileChannel {
         return totalBytesWritten;
     }
 
-    protected implCloseChannel(): void {
+    protected async implCloseChannel(): Promise<void> {
         //console.error('FileChannel.implCloseChannel is not yet implemented.')
 
-        // closeSync(this.#fileHandle);
+        await closeAsync(this.#fileHandle);
         this.#fileHandle = -1;
 
         if (this.#deleteOnClose) {

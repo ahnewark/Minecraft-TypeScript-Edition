@@ -92,13 +92,13 @@ export class FileOutputStream extends OutputStream {
     }
 
     /** Closes this output stream and releases any system resources associated with this stream. */
-    public override close(): void {
+    public override async close(): Promise<void> {
         if (this.closed) {
             return;
         }
 
         this.closed = true;
-        this.fd.closeAll(new class extends JavaObject implements AutoCloseable {
+        await this.fd.closeAll(new class extends JavaObject implements AutoCloseable {
             public constructor(private fd: FileDescriptor) {
                 super();
             }

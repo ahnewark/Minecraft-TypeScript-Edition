@@ -42,7 +42,7 @@ export class BufferedWriter extends Writer {
         this.#currentPosition = 0;
     }
 
-    public close(): void {
+    public async close(): Promise<void> {
         if (this.#out === null) {
             return;
         }
@@ -50,7 +50,7 @@ export class BufferedWriter extends Writer {
         try {
             this.flush();
         } finally {
-            this.#out.close();
+            await this.#out.close();
             this.#out = null;
             this.#buffer = new Uint16Array();
         }

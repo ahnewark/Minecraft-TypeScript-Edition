@@ -17,10 +17,10 @@ export abstract class AbstractInterruptibleChannel extends JavaObject
     }
 
     /** Close this channel. */
-    public close(): void {
+    public async close(): Promise<void> {
         if (!this.#closed) {
             this.#closed = true;
-            this.implCloseChannel();
+            await this.implCloseChannel();
         }
     }
 
@@ -46,5 +46,5 @@ export abstract class AbstractInterruptibleChannel extends JavaObject
         // Nothing to do here.
     }
 
-    protected abstract implCloseChannel(): void;
+    protected abstract implCloseChannel(): Promise<void>;
 }

@@ -40,7 +40,7 @@ export class StringWriter extends Writer {
         return this;
     }
 
-    public override close(): void {
+    public override async close(): Promise<void> {
         // Nothing to do.
     }
 

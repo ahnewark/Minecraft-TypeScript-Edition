@@ -32,7 +32,7 @@ export abstract class OutputStream extends JavaObject implements Closeable, Flus
     }
 
     /** Closes this output stream and releases any system resources associated with this stream. */
-    public close(): void {
+    public async close(): Promise<void> {
         // Nothing to do here.
     }
 
@@ -59,7 +59,7 @@ export abstract class OutputStream extends JavaObject implements Closeable, Flus
             length = args[2] as number;
         }
 
-        for (let i = offset; i < offset + length; i++) {
+        for (let i = offset; i < (offset + length); i++) {
             await this.write(b[i]);
         }
     }

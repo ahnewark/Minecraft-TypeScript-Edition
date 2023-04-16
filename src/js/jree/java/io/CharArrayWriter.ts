@@ -86,7 +86,7 @@ export class CharArrayWriter extends Writer {
     }
 
     /** Close this stream. */
-    public override close(): void {
+    public override async close(): Promise<void> {
         // Nothing to do here.
     }
 

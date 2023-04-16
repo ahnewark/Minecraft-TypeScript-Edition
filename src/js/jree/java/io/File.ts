@@ -19,7 +19,7 @@ import { NullPointerException } from "../lang/NullPointerException";
 import { IllegalArgumentException } from "../lang/IllegalArgumentException";
 // import { existsSync, mkdirSync, openSync, rmdirSync, statSync, unlinkSync } from "fs";
 import { Random } from '../../../java/util/Random';
-import { deleteAsync, existsAsync, mkdirAsync, renameAsync } from '../../../node/fs';
+import { deleteAsync, existsAsync, mkdirAsync, renameAsync, statAsync } from '../../../node/fs';
 
 const pendingFiles = new Set<JavaFile>();
 
@@ -317,9 +317,10 @@ export class JavaFile extends JavaObject implements Comparable<JavaFile>, Serial
     /**
      * @returns an array of strings naming the files and directories in the directory denoted by this abstract pathname.
      */
-    public length(): bigint {
-        console.error('File.statSync not yet implemented.')
-        return 0n;
+    public async length(): Promise<bigint> {
+        return await (await statAsync(`${this.#path}`, { bigint: true })).size as bigint;
+        // console.error('File.statSync not yet implemented.')
+        // return 0n;
 
         // const stat = statSync(`${this.#path}`, { bigint: true });
 

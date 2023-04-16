@@ -3,6 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
+import { closeAsync } from "../../../node/fs";
 import { JavaObject } from "../lang/Object";
 import { Throwable } from "../lang/Throwable";
 import { Closeable } from "./Closeable";
@@ -50,10 +51,8 @@ export class FileDescriptor extends JavaObject {
 
     public async close(): Promise<void> {
         console.log('FileDescriptor.close', this.closed, this.fileHandle);
-        if (!this.closed && this.fileHandle) {
-            console.error('FileDescriptor.close is not yet implemented.')
-
-            // closeSync(this.fileHandle);
+        if (this.fileHandle) {
+            await closeAsync(this.fileHandle);
         }
     }
 
@@ -92,7 +91,7 @@ export class FileDescriptor extends JavaObject {
      *
      * @param releaser tbd
      */
-    public closeAll(releaser: Closeable): void {
+    public async closeAll(releaser: Closeable): Promise<void> {
         if (!this.closed) {
             this.closed = true;
             let ioe: IOException | undefined;
@@ -101,7 +100,7 @@ export class FileDescriptor extends JavaObject {
                 try {
                     for (const referent of this.otherParents) {
                         try {
-                            referent.close();
+                            await referent.close();
                         } catch (x) {
                             const t = Throwable.fromError(x);
                             if (!ioe) {
@@ -112,7 +111,7 @@ export class FileDescriptor extends JavaObject {
                         }
                     }
                 } finally {
-                    releaser.close();
+                    await releaser.close();
                 }
             } catch (ex) {
                 /*

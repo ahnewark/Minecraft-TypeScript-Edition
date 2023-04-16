@@ -8,5 +8,5 @@ import { Channel } from "./Channel";
 /** A channel that can be asynchronously closed and interrupted. */
 export interface InterruptibleChannel extends Channel {
     /** Closes this channel. */
-    close(): void;
+    close(): Promise<void>;
 }

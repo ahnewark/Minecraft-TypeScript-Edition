@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import { FileInputStream, InputStream, OutputStream } from "../../io";
+import { FileInputStream, InputStream, OutputStream } from "../../io/index";
 import { IllegalArgumentException } from "../../lang/IllegalArgumentException";
 import { JavaObject } from "../../lang/Object";
 import { ByteBuffer } from "../ByteBuffer";
@@ -38,8 +38,8 @@ export class Channels extends JavaObject {
                     return await arg.read(dst.array());
                 }
 
-                protected implCloseChannel(): void {
-                    arg.close();
+                protected async implCloseChannel(): Promise<void> {
+                    await arg.close();
                 }
             }();
         } else {
@@ -59,8 +59,8 @@ export class Channels extends JavaObject {
                     return count;
                 }
 
-                protected implCloseChannel(): void {
-                    arg.close();
+                protected async implCloseChannel(): Promise<void> {
+                    await arg.close();
                 }
             }();
         }

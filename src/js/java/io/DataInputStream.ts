@@ -64,7 +64,6 @@ export class DataInputStream extends FilterInputStream implements DataInput {
             throw new IndexOutOfBoundsException();
         let n = 0;
         while (n < len) {
-            console.log('DataInputStream', len);
             let count = await this.in.read(b, off + n, len - n);
             if (count < 0)
                 throw new Error('EOF');
@@ -109,7 +108,7 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         let ch2 = await this.in.read();
         if ((ch1 | ch2) < 0)
             throw new Error('EOF');
-        return ((ch1 << 8) + (ch2 << 0)) && 0xffff;
+        return ((ch1 << 8) + (ch2 << 0)) & 0xffff;
     }
 
     public async readUnsignedShort(): Promise<number> {
@@ -117,7 +116,8 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         let ch2 = await this.in.read();
         if ((ch1 | ch2) < 0)
             throw new Error('EOF');
-        return (ch1 << 8) + (ch2 << 0) && 0xffff;
+
+        return ((ch1 << 8) + (ch2 << 0)) & 0xffff;
     }
 
     public async readChar(): Promise<char> {
@@ -223,6 +223,7 @@ loop:   while (true) {
 
     public static async readUTF(_in: DataInput): Promise<string> {
         let utflen = await _in.readUnsignedShort();
+        console.log({utflen});
         let bytearr: Int8Array;
         let chararr: Int8Array;
         if (_in instanceof DataInputStream) {
@@ -253,6 +254,7 @@ loop:   while (true) {
 
         while (count < utflen) {
             c = bytearr[count] & 0xff;
+            console.log({c, c4: c>>4});
             switch (c >> 4) {
                 case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
                     /* 0xxxxxxx*/

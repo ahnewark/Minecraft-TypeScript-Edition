@@ -11,7 +11,7 @@ import { Spliterator } from "../Spliterator";
  */
 export interface BaseStream<T, S extends BaseStream<T, S>> extends AutoCloseable {
     /** Closes this stream, causing all close handlers for this stream pipeline to be called. */
-    close(): void;
+    close(): Promise<void>;
 
     /** @returns whether this stream, if a terminal operation were to be executed, would execute in parallel. */
     isParallel(): boolean;

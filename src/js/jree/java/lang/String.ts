@@ -140,7 +140,7 @@ export class JavaString extends JavaObject implements Serializable, CharSequence
                 }
 
                 if (input instanceof Int8Array) {
-                    this.#value = Charset.defaultCharset().decode(ByteBuffer.wrap(input, offset, length)).array();
+                    this.#value = Charset.defaultCharset().decode(ByteBuffer.wrap(input, offset, length)).array().slice(0, length);
                 } else if (input instanceof Uint16Array) {
                     this.#value = input.slice(offset, offset + length);
                 } else {

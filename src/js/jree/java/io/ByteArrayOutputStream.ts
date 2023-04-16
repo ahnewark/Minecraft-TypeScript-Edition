@@ -6,7 +6,7 @@
 import { int } from "../../types";
 import { JavaString } from "../lang/String";
 import { ByteBuffer } from "../nio/ByteBuffer";
-import { Charset } from "../nio/charset";
+import { Charset } from "../nio/charset/Charset";
 import { OutputStream } from "./OutputStream";
 
 /**
@@ -33,7 +33,7 @@ export class ByteArrayOutputStream extends OutputStream {
         this.count = 0;
     }
 
-    public override close(): void {
+    public override async close(): Promise<void> {
         // Do nothing.
     }
 

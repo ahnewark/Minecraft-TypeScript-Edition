@@ -7,5 +7,5 @@ import { AutoCloseable } from "../lang/AutoCloseable";
 
 export interface Closeable extends AutoCloseable {
     /** Closes this stream and releases any system resources associated with it. */
-    close(): void;
+    close(): Promise<void>;
 }

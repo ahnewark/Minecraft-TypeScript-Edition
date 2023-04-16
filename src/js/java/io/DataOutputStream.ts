@@ -121,7 +121,7 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
     }
 
     public async writeUTF(str: string): Promise<void> {
-        await DataOutputStream.writeUTF(str, this as DataOutput);
+        await DataOutputStream.writeUTF(str, this);
     }
 
     static async writeUTF(str: string, out: DataOutput): Promise<number> {
@@ -131,7 +131,7 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
 
         /* use charAt instead of copying String to char array */
         for (let i = 0; i < strlen; i++) {
-            c = str.charAt(i);
+            c = str.charCodeAt(i);
             if ((c >= 0x0001) && (c <= 0x007F)) {
                 utflen++;
             } else if (c > 0x07FF) {
@@ -159,13 +159,13 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
 
         let i=0;
         for (i=0; i<strlen; i++) {
-           c = str.charAt(i);
+           c = str.charCodeAt(i);
            if (!((c >= 0x0001) && (c <= 0x007F))) break;
            bytearr[count++] = c;
         }
 
         for (;i < strlen; i++){
-            c = str.charAt(i);
+            c = str.charCodeAt(i);
             if ((c >= 0x0001) && (c <= 0x007F)) {
                 bytearr[count++] = c;
 

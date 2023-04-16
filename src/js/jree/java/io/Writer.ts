@@ -41,7 +41,7 @@ export abstract class Writer extends JavaObject implements Closeable, Flushable,
     /** @returns a new Writer which discards all characters. */
     public static nullWriter(): Writer {
         return new class extends Writer {
-            public override close(): void {
+            public override async close(): Promise<void> {
                 // Do nothing.
             }
 

@@ -30,7 +30,7 @@ export class StringReader extends Reader {
     /**
      * Closes the stream and releases any system resources associated with it.
      */
-    public close(): void {
+    public async close(): Promise<void> {
         // Nothing to do.
     }
 

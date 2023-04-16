@@ -7,7 +7,7 @@ import { Closeable } from "../../io/Closeable";
 
 export interface Channel extends Closeable {
     /** Closes this channel. */
-    close(): void;
+    close(): Promise<void>;
 
     /** Tells whether or not this channel is open. */
     isOpen(): boolean;

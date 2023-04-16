@@ -172,10 +172,10 @@ export class PushbackInputStream extends FilterInputStream {
         throw new IOException("mark/reset not supported");
     }
 
-    public close(): void {
+    public async close(): Promise<void> {
         if (this.in == null)
             return;
-        this.in.close();
+        await this.in.close();
         // this.in = null;
         // this.buf = null;
     }

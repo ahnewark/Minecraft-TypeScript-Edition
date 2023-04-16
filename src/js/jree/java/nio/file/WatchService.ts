@@ -14,7 +14,7 @@ import { WatchKey } from "./WatchKey";
  */
 export interface WatchService extends AutoCloseable, JavaIterable<WatchKey> {
     /** Closes this watch service. */
-    close(): void;
+    close(): Promise<void>;
 
     /** Retrieves and removes the next watch key, or null if none are present. */
     poll(): WatchKey;

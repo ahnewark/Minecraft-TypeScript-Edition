@@ -115,6 +115,9 @@ const openAsync = async (path: string, openMode: OpenModes, unk1: number) => {
     const fileName = posixPath.basename(path);
     const handle = await folder.getFileHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
 
+    if (openMode === 'as' || openMode === 'w')
+        return await await (handle as any).createWritable();
+
     // console.log({path, fileName, folder, handle})
 
     return handle;
@@ -168,18 +171,35 @@ const openSync = (path: string, openMode: OpenModes, unk1: number) => {
     return res;
 }
 
-const writeAsync = async (fileHandle: FileSystemFileHandle, buffer: ArrayBuffer | TypedArray | DataView | Blob | String | string, offset: number = 0, length: number = 0, position?: number): Promise<void> => {
-    console.log('writing to file', {fileHandle, buffer, offset, length, position})
-    if (position == undefined) {
-        const file = await fileHandle.getFile();
-        // console.log(file);
-        position = (await fileHandle.getFile()).size;
-        
-    }
-    const writable = await (fileHandle as any).createWritable();
-    // console.log({type: 'write', position, data: buffer});
-    await writable.write({type: 'write', position, data: buffer});
-    await writable.close();
+const isTypedArray = (function() {
+    const TypedArray = Object.getPrototypeOf(Uint8Array);
+    return (obj) => obj instanceof TypedArray;
+  })();
+  
+
+const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayBuffer | TypedArray | DataView | Blob | String | string, offset: number = 0, length: number = 0, position?: number): Promise<void> => {
+    console.log('writing to file', {writable, buffer, offset, length, position})
+    // if (position === undefined) {
+    //     // console.log(file);
+    //     position = ((await writable.getFile()).size);
+    // }
+    // const writable = await (fileHandle as any).createWritable();
+
+    let trimmed = buffer;
+    if (buffer instanceof ArrayBuffer)
+        trimmed = buffer.slice(offset, length);
+    if (isTypedArray(buffer))
+        trimmed = (buffer as TypedArray).slice(offset, length);
+    if (buffer instanceof DataView)
+        throw new Error('DataView Writing not yet implemented.')
+    if (buffer instanceof Blob)
+        trimmed = buffer.slice(offset, length)
+    if (typeof buffer === 'string')
+        trimmed = buffer.substring(offset, length)
+
+    console.log({type: 'write', position, data: trimmed, length});
+    await writable.write({type: 'write', position, data: trimmed});
+    // await writable.close();
     // console.log({fileHandle});
     // let settled = false;
     // let res;
@@ -223,7 +243,11 @@ export type Stats = {
 }
 
 const statAsync = async (path: string, options: StatOPtions): Promise<Stats> => {
-    const handle = await openSync(path, 'r', 0) as FileSystemFileHandle;
+    console.log(path);
+    console.log(await existsAsync(path));
+
+    const handle = await openAsync(path, 'r', 0) as FileSystemFileHandle;
+    console.log(handle);
     const size = (await handle.getFile()).size;
     if (options.bigint)
         return { size: BigInt(size) }
@@ -256,6 +280,12 @@ const renameAsync = async (oldPath: string, newPath: string) => {
     await deleteAsync(oldPath);
 }
 
+const closeAsync = async (handle: FileSystemFileHandle | FileSystemWritableFileStream) => {
+    console.log('closing', handle)
+    if (handle.close)
+        await handle.close();
+}
+
 export {
     mkdirAsync,
     openAsync,
@@ -265,4 +295,5 @@ export {
     statAsync,
     deleteAsync,
     renameAsync,
+    closeAsync
 }

@@ -37,7 +37,7 @@ export abstract class InputStream extends JavaObject implements Closeable {
     }
 
     /** Closes this input stream and releases any system resources associated with the stream. */
-    public close(): void {
+    public async close(): Promise<void> {
         // Overridden by descendants.
     }
 

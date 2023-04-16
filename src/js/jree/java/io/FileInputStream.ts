@@ -63,7 +63,7 @@ export class FileInputStream extends InputStream implements AutoCloseable {
 
     /** Closes this file input stream and releases any system resources associated with the stream. */
     public override async close(): Promise<void> {
-        this.#channel.close();
+        await this.#channel.close();
     }
 
     /** @returns the FileChannel object associated with this file input stream. */
@@ -117,7 +117,6 @@ export class FileInputStream extends InputStream implements AutoCloseable {
                 }
 
                 const buffer = ByteBuffer.wrap(b);
-                console.log('FileInputStream', length);
                 const read = await this.#channel.read([buffer], offset, length);
 
                 if (read === 0n) {

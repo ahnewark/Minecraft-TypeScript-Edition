@@ -194,8 +194,8 @@ export class PrintStream extends FilterOutputStream {
     }
 
     /** Closes the stream. */
-    public override close(): void {
-        this.out.close();
+    public override async close(): Promise<void> {
+        await this.out.close();
     }
 
     /** Flushes the stream. */

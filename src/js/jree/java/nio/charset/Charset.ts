@@ -247,7 +247,7 @@ export class Charset extends JavaObject implements Comparable<Charset> {
         ["x-user-defined", "x-user-defined"],
     ]);
 
-    static readonly #default: Charset = new Charset("utf-8");
+    static #default: Charset = new Charset("utf-8");
 
     #alternatives: Set<string>;
     #canonicalName: string;
@@ -473,10 +473,7 @@ export class Charset extends JavaObject implements Comparable<Charset> {
     }
 
     static {
-        setTimeout(() => {
-            // @ts-expect-error
-            Charset.defaultCharset = new Charset("utf-8");
-        }, 0);
+        Charset.#default = new Charset("utf-8");
     }
 
 }

@@ -38,8 +38,8 @@ export class FilterInputStream extends java.io.InputStream {
         return this.in.available();
     }
 
-    public close() {
-        this.in.close();
+    public async close() {
+        await this.in.close();
     }
 
     public mark(readlimit: int): void {
