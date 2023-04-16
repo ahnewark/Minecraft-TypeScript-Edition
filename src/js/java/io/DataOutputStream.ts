@@ -31,10 +31,12 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
             case 1: {
                 await this.out.write(args[0]);
                 this.incCount(1);
+                break;
             }
             case 3: {
                 await this.out.write(args[0], args[1], args[2]);
                 this.incCount(args[2]);
+                break;
             }
         }
     }

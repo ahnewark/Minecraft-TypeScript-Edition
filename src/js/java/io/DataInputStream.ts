@@ -223,7 +223,6 @@ loop:   while (true) {
 
     public static async readUTF(_in: DataInput): Promise<string> {
         let utflen = await _in.readUnsignedShort();
-        console.log({utflen});
         let bytearr: Int8Array;
         let chararr: Int8Array;
         if (_in instanceof DataInputStream) {
