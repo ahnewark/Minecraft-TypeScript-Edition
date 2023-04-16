@@ -67,8 +67,9 @@ export  class MobSpawnerBase extends JavaObject {
 	}
 
 	public static getBiomeFromLookup(d0: double, d2: double):  MobSpawnerBase | undefined {
-		let  i4: int = (d0 * 63.0) as int;
-		let  i5: int = (d2 * 63.0) as int;
+		let  i4: int = Math.round(d0 * 63.0) as int;
+		let  i5: int = Math.round(d2 * 63.0) as int;
+
 		return MobSpawnerBase.biomeLookupTable[i4 + i5 * 64];
 	}
 

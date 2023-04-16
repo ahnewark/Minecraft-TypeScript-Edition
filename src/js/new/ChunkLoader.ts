@@ -103,14 +103,14 @@ export  class ChunkLoader implements IChunkLoader {
 			nBTTagCompound6.setTag("Level", nBTTagCompound7);
 			await this.storeChunkInCompound(chunk2, world1, nBTTagCompound7);
 			await CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound6, fileOutputStream5);
-			fileOutputStream5.close();
+			await fileOutputStream5.close();
 			if(file3 && await file3.exists()) {
 				await file3.delete();
 			}
 
 			if (file3) {
 				await file4.renameTo(file3);
-				world1.sizeOnDisk += file3.length();
+				world1.sizeOnDisk += await file3.length();
 			}
 		} catch (exception8) {
 			if (exception8 instanceof java.lang.Exception) {

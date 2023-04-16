@@ -18,7 +18,7 @@ export  class CompressedStreamTools extends JavaObject {
 		try {
 			nBTTagCompound2 = await CompressedStreamTools.func_1141_a(dataInputStream1);
 		} finally {
-			dataInputStream1.close();
+			await dataInputStream1.close();
 		}
 
 		return nBTTagCompound2;
@@ -30,7 +30,7 @@ export  class CompressedStreamTools extends JavaObject {
 		try {
 			await CompressedStreamTools.func_1139_a(nBTTagCompound0, dataOutputStream2);
 		} finally {
-			dataOutputStream2.close();
+			await dataOutputStream2.close();
 		}
 
 	}

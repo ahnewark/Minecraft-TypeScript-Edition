@@ -186,18 +186,21 @@ const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayB
     // const writable = await (fileHandle as any).createWritable();
 
     let trimmed = buffer;
-    if (buffer instanceof ArrayBuffer)
-        trimmed = buffer.slice(offset, length);
-    if (isTypedArray(buffer))
-        trimmed = (buffer as TypedArray).slice(offset, length);
-    if (buffer instanceof DataView)
-        throw new Error('DataView Writing not yet implemented.')
-    if (buffer instanceof Blob)
-        trimmed = buffer.slice(offset, length)
-    if (typeof buffer === 'string')
-        trimmed = buffer.substring(offset, length)
 
-    console.log({type: 'write', position, data: trimmed, length});
+    if (length) {
+        if (buffer instanceof ArrayBuffer)
+            trimmed = buffer.slice(offset, length);
+        if (isTypedArray(buffer))
+            trimmed = (buffer as TypedArray).slice(offset, length);
+        if (buffer instanceof DataView)
+            throw new Error('DataView Writing not yet implemented.')
+        if (buffer instanceof Blob)
+            trimmed = buffer.slice(offset, length)
+        if (typeof buffer === 'string')
+            trimmed = buffer.substring(offset, length)
+    }
+
+    // console.log({type: 'write', position, data: trimmed, length});
     await writable.write({type: 'write', position, data: trimmed});
     // await writable.close();
     // console.log({fileHandle});
@@ -277,6 +280,7 @@ const renameAsync = async (oldPath: string, newPath: string) => {
     const oldFile = await oldFileHandle.getFile()
     const newHandle = await openAsync(newPath, 'w', 0);
     await writeAsync(newHandle, await oldFile.arrayBuffer());
+    await newHandle.close();
     await deleteAsync(oldPath);
 }
 

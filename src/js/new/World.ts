@@ -35,14 +35,11 @@ import { IBlockAccess } from "./IBlockAccess";
 import { Random } from "../java/util/Random";
 import { DataOutputStream } from "../java/io/DataOutputStream";
 import { Block } from "./Block";
-
-import { DataInputStream } from "../java/io/DataInputStream";
 import { FileInputStream } from "../jree/java/io/FileInputStream";
 import { FileOutputStream } from "../jree/java/io/FileOutputStream";
 import { File } from "../jree/java/io/index";
 import { JavaString } from "../jree/index";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Block } from "./Block";
 
 export  class World implements IBlockAccess {
 	public scheduledUpdatesAreImmediate:  boolean;
@@ -288,7 +285,7 @@ export  class World implements IBlockAccess {
 					try {
 						await dataOutputStream7.writeLong(_this.lockTimestamp);
 					} finally {
-						dataOutputStream7.close();
+						await dataOutputStream7.close();
 					}
 				} catch (iOException16) {
 					if (iOException16 instanceof java.io.IOException) {
@@ -2090,26 +2087,26 @@ export  class World implements IBlockAccess {
 	}
 
 	public async checkSessionLock():  Promise<void> {
-		// console.error('World.checkSessionLock() is not yet implemented.')
-		try {
-			let  file1: File = new  File(this.savePath, new JavaString("session.lock"));
-			let  dataInputStream2: DataInputStream = new  DataInputStream(await FileInputStream.Construct(file1));
+		console.error('World.checkSessionLock() is not yet implemented.')
+		// try {
+		// 	let  file1: File = new  File(this.savePath, new JavaString("session.lock"));
+		// 	let  dataInputStream2: DataInputStream = new  DataInputStream(await FileInputStream.Construct(file1));
 
-			try {
-				if(await dataInputStream2.readLong() !== this.lockTimestamp) {
-					throw new  MinecraftException("The save is being accessed from another location, aborting");
-				}
-			} finally {
-				dataInputStream2.close();
-			}
+		// 	try {
+		// 		if(await dataInputStream2.readLong() !== this.lockTimestamp) {
+		// 			throw new  MinecraftException("The save is being accessed from another location, aborting");
+		// 		}
+		// 	} finally {
+		// 		dataInputStream2.close();
+		// 	}
 
-		} catch (iOException7) {
-			if (iOException7 instanceof java.io.IOException) {
-				throw new  MinecraftException("Failed to check session lock, aborting");
-			} else {
-				throw iOException7;
-			}
-		}
+		// } catch (iOException7) {
+		// 	if (iOException7 instanceof java.io.IOException) {
+		// 		throw new  MinecraftException("Failed to check session lock, aborting");
+		// 	} else {
+		// 		throw iOException7;
+		// 	}
+		// }
 	}
 
 	public setWorldTime(j1: long):  void {

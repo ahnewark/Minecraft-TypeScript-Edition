@@ -4,7 +4,7 @@ import { NBTRegistry } from "./static/NBTRegistry";
 import { NBTBase } from "./NBTBase";
 
 export  class NBTTagList extends NBTBase {
-	private tagList: NBTBase[];
+	private tagList: NBTBase[] = [];
 	private tagType: number;
 
 	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {

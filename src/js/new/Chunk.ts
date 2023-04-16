@@ -66,7 +66,7 @@ export class Chunk {
 				const [world1, b2, i3, i4] = args as [World, Int8Array, number, number];
 
                 this.chunkTileEntityMap = new Map();
-
+                this.entities = new Array(8);
                 this.isTerrainPopulated = false;
                 this.isModified = false;
                 this.hasEntities = false;
@@ -75,6 +75,10 @@ export class Chunk {
                 this.xPosition = i3;
                 this.zPosition = i4;
                 this.heightMap = new Int8Array(256);
+
+                for(let  i4: number = 0; i4 < this.entities.length; ++i4) {
+                    this.entities[i4] = [];
+                }
 
                 this.blocks = b2;
                 this.data = new  NibbleArray(b2.length);

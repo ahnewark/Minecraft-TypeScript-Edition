@@ -20,7 +20,7 @@ export  class NBTTagCompound extends NBTBase {
 	private tagMap: Map<string, NBTBase> = new Map();
 
 	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
-		for (let [, value] of this.tagMap) {
+		for (let [, value] of this.tagMap.entries()) {
 			await NBTRegistry.writeTag(value, dataOutput1);
 		}
 
@@ -42,43 +42,43 @@ export  class NBTTagCompound extends NBTBase {
 	}
 
 	public setTag(string1: string, nBTBase2: NBTBase):  void {
-		this.tagMap[string1] = nBTBase2.setKey(string1);
+		this.tagMap.set(string1, nBTBase2.setKey(string1));
 	}
 
 	public setByte(string1: string, b2: number):  void {
-		this.tagMap[string1] = (new  NBTTagByte(b2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagByte(b2)).setKey(string1));
 	}
 
 	public setShort(string1: string, s2: short):  void {
-		this.tagMap[string1] = (new  NBTTagShort(s2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagShort(s2)).setKey(string1));
 	}
 
 	public setInteger(string1: string, i2: int):  void {
-		this.tagMap[string1] = (new  NBTTagInt(i2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagInt(i2)).setKey(string1));
 	}
 
 	public setLong(string1: string, j2: long):  void {
-		this.tagMap[string1] = (new  NBTTagLong(j2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagLong(j2)).setKey(string1));
 	}
 
 	public setFloat(string1: string, f2: float):  void {
-		this.tagMap[string1] = (new  NBTTagFloat(f2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagFloat(f2)).setKey(string1));
 	}
 
 	public setDouble(string1: string, d2: double):  void {
-		this.tagMap[string1] = (new  NBTTagDouble(d2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagDouble(d2)).setKey(string1));
 	}
 
 	public setString(string1: string, string2: string):  void {
-		this.tagMap[string1] = (new  NBTTagString(string2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagString(string2)).setKey(string1));
 	}
 
 	public setByteArray(string1: string, b2: Int8Array):  void {
-		this.tagMap[string1] = (new  NBTTagByteArray(b2)).setKey(string1);
+		this.tagMap.set(string1, (new  NBTTagByteArray(b2)).setKey(string1));
 	}
 
 	public setCompoundTag(string1: string, nBTTagCompound2: NBTTagCompound):  void {
-		this.tagMap[string1] = nBTTagCompound2.setKey(string1);
+		this.tagMap.set[string1] = nBTTagCompound2.setKey(string1);
 	}
 
 	public setBoolean(string1: string, z2: boolean):  void {
