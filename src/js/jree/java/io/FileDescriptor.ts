@@ -35,7 +35,7 @@ export class FileDescriptor extends JavaObject {
         }
 
         closeAsync(this.fileHandle);
-        openAsync(this.fileHandle.path, 'w', 0);
+        this.fileHandle = openAsync(this.fileHandle.path, 'w', 0);
 
         // console.error('FileDescriptor.sync is not yet implemented.')
 
@@ -117,6 +117,7 @@ export class FileDescriptor extends JavaObject {
                     await releaser.close();
                 }
             } catch (ex) {
+                console.error({ex})
                 /*
                  * If releaser close() throws IOException
                  * add other exceptions as suppressed.

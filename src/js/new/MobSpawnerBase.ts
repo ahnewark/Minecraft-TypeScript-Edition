@@ -39,8 +39,8 @@ export  class MobSpawnerBase extends JavaObject {
 			}
 		}
 
-		MobSpawnerBase.desert.topBlock = MobSpawnerBase.desert.fillerBlock = Block.sand.blockID as byte;
-		MobSpawnerBase.iceDesert.topBlock = MobSpawnerBase.iceDesert.fillerBlock = Block.sand.blockID as byte;
+		MobSpawnerBase.desert.topBlock = MobSpawnerBase.desert.fillerBlock = Block.sand.blockID;
+		MobSpawnerBase.iceDesert.topBlock = MobSpawnerBase.iceDesert.fillerBlock = Block.sand.blockID;
 	}
 
 	public getRandomWorldGenForTrees(random1: Random| undefined):  WorldGenerator | undefined {

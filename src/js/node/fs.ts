@@ -108,7 +108,7 @@ const mkdirSync = (
 
 type OpenModes = 'as' | 'w' | 'r';
 
-const openAsync = async (path: string, openMode: OpenModes, unk1: number) => {
+const openAsync = async (path: string, openMode: OpenModes, unk1: number): Promise<FileSystemFileHandle | FileSystemWritableFileStream> => {
     console.log('Opening file ', path, openMode);
     const root = await navigator.storage.getDirectory();
     const folder = await getNestedFolderHandle(path, root);

@@ -7,7 +7,6 @@ import { BlockBreakable } from "./BlockBreakable";
 import { Block } from "./Block";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Random } from "../java/util/Random";
-import { Block } from "./Block";
 
 
 
