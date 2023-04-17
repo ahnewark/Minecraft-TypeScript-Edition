@@ -7,15 +7,49 @@ import ChunkSection from "../world/ChunkSection.js";
 import Random from "../../util/Random.js";
 import Vector3 from "../../util/Vector3.js";
 import * as THREE from "three";
+import Minecraft from "../Minecraft";
+import GameWindow from "../GameWindow";
 
 export default class WorldRenderer {
 
     static THIRD_PERSON_DISTANCE = 4;
 
-    constructor(minecraft, window) {
+    private minecraft: Minecraft;
+    private window: GameWindow;
+    private chunkSectionUpdateQueue = [];
+    private tessellator: Tessellator;
+    private textureTerrain: THREE.Texture;
+    private textureSun: THREE.Texture;
+    private textureMoon: THREE.Texture;
+    private blockRenderer: BlockRenderer;
+    private entityRenderManager: EntityRenderManager;
+    private equippedProgress: number;
+    private prevEquippedProgress: number;
+    private itemToRender: number;
+    private prevFogBrightness: number;
+    private fogBrightness: number;
+    private flushRebuild = false;
+    private lastHitResult = null;
+    private camera: THREE.PerspectiveCamera;
+    private frustum: THREE.Frustum;
+    private background: THREE.Scene;
+    private scene: THREE.Scene;
+    private overlay: THREE.Scene;
+    private webRenderer: THREE.WebGLRenderer;
+    private blockHitBox: THREE.LineSegments;
+    private backgroundCenter: THREE.Object3D;
+    private listSky: THREE.Object3D;
+    private listVoid: THREE.Object3D;
+    private listSunset: THREE.Object3D;
+    private listStars: THREE.Object3D;
+    private cycleGroup: THREE.Object3D;
+    private sun: THREE.Mesh;
+    private moon: THREE.Mesh;
+
+
+    constructor(minecraft: Minecraft, window: GameWindow) {
         this.minecraft = minecraft;
         this.window = window;
-        this.chunkSectionUpdateQueue = [];
 
         this.tessellator = new Tessellator();
 
@@ -441,7 +475,7 @@ export default class WorldRenderer {
         });
         this.sun = new THREE.Mesh(geometry, materialSun);
         this.sun.translateZ(-2);
-        this.sun.material.depthTest = false;
+        (this.sun.material as THREE.Material).depthTest = false;
         this.cycleGroup.add(this.sun);
 
         // Create moon
@@ -454,7 +488,7 @@ export default class WorldRenderer {
         });
         this.moon = new THREE.Mesh(geometry, materialMoon);
         this.moon.translateZ(2);
-        this.moon.material.depthTest = false;
+        (this.moon.material as THREE.Material).depthTest = false;
         this.cycleGroup.add(this.moon);
 
         // Add cycle group before the void to hide the cycling elements behind the void
@@ -521,10 +555,10 @@ export default class WorldRenderer {
             // Update fog color
             this.scene.fog = new THREE.Fog(new THREE.Color(red, green, blue), 0.0025, viewDistance * 2);
 
-            let skyMesh = this.listSky.children[0];
-            let voidMesh = this.listVoid.children[0];
-            let starsMesh = this.listStars.children[0];
-            let sunsetMesh = this.listSunset.children[0];
+            let skyMesh = this.listSky.children[0] as any;
+            let voidMesh = this.listVoid.children[0] as any;
+            let starsMesh = this.listStars.children[0] as any;
+            let sunsetMesh = this.listSunset.children[0] as any;
 
             // Update sky and void color
             skyMesh.material.color.set(new THREE.Color(skyColor.x, skyColor.y, skyColor.z));

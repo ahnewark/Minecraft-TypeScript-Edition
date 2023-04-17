@@ -1,4 +1,9 @@
+import Minecraft from "../Minecraft";
+
 export default class Command {
+    public command: string;
+    public usage: string;
+    public description: string;
 
     constructor(command, usage, description) {
         this.command = command;
@@ -6,7 +11,7 @@ export default class Command {
         this.description = description;
     }
 
-    execute(minecraft, args) {
+    execute(minecraft: Minecraft, args) {
         return false;
     }
 

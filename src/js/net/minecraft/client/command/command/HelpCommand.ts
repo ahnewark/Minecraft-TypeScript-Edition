@@ -1,5 +1,5 @@
-import Command from "../Command.js";
-import FontRenderer from "../../render/gui/FontRenderer.js";
+import Command from "../Command";
+import FontRenderer from "../../render/gui/FontRenderer";
 
 export default class HelpCommand extends Command {
 

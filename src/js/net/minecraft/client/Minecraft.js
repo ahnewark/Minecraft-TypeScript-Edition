@@ -42,16 +42,20 @@ export default class Minecraft {
         "port": 30023
     };
 
+    static newWorld = undefined;
+
     /**
      * Create Minecraft instance and render it on a canvas
      */
     constructor(canvasWrapperId, resources) {
         this.resources = resources;
 
-        this.newWorld = NewWorld.Construct(new JavaFile(new JavaString('/saves/')), 'World1').then(world => {
-            // world.saveLevel();
-            // world.saveWorld(true)
-            console.log({world})
+        NewWorld.Construct(new JavaFile(new JavaString('/saves/')), 'World1').then(async world => {
+            Minecraft.newWorld = world;
+            await world.saveLevel();
+            await world.saveWorld(true)
+            console.log('saved the world.');
+            // console.log({world})
         })
 
         this.currentScreen = null;
