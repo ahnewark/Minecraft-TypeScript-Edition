@@ -8,5 +8,5 @@ import { Channel } from "./Channel";
 
 export interface WritableByteChannel extends Channel {
     /** Writes a sequence of bytes to this channel from the given buffer. */
-    write(src: ByteBuffer): number;
+    write(src: ByteBuffer): Promise<number>;
 }

@@ -110,8 +110,8 @@ export class FileOutputStream extends OutputStream {
     }
 
     /** Flushes this output stream and forces any buffered output bytes to be written out. */
-    public override flush(): void {
-        this.fd.sync();
+    public override async flush(): Promise<void> {
+        await this.fd.sync();
     }
 
     /** Writes b.length bytes from the specified byte array to this output stream. */

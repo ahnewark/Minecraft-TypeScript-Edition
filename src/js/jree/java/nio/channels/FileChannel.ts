@@ -393,7 +393,7 @@ export class FileChannelImpl extends FileChannel {
             }
 
             buffer.flip();
-            target.write(buffer);
+            await target.write(buffer);
 
             totalBytesRead += bytesRead;
         }

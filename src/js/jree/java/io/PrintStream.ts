@@ -183,9 +183,9 @@ export class PrintStream extends FilterOutputStream {
      * @returns `true` if the print stream has encountered an error, either on the underlying output stream or during
      *           a format conversion.
      */
-    public checkError(): boolean {
+    public async checkError(): Promise<boolean> {
         try {
-            this.out.flush();
+            await this.out.flush();
         } catch (e) {
             this.#haveError = true;
         }
@@ -199,8 +199,8 @@ export class PrintStream extends FilterOutputStream {
     }
 
     /** Flushes the stream. */
-    public override flush(): void {
-        this.out.flush();
+    public override async flush(): Promise<void> {
+        await this.out.flush();
     }
 
     /** Writes a formatted string to this output stream using the specified format string and arguments. */
@@ -297,7 +297,7 @@ export class PrintStream extends FilterOutputStream {
 
         await this.print(PrintStream.#lineSeparator);
         if (this.#autoFlush) {
-            this.flush();
+            await this.flush();
         }
     }
 

@@ -48,13 +48,13 @@ export class Channels extends JavaObject {
                     super();
                 }
 
-                public write(src: ByteBuffer): number {
+                public async write(src: ByteBuffer): Promise<number> {
                     if (!this.isOpen()) {
                         throw new ClosedChannelException();
                     }
 
                     const count = src.remaining();
-                    arg.write(src.array());
+                    await arg.write(src.array());
 
                     return count;
                 }

@@ -41,8 +41,8 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
         }
     }
 
-    public flush(): void {
-        this.out.flush();
+    public async flush(): Promise<void> {
+        await this.out.flush();
     }
 
     public async writeBoolean(v: boolean): Promise<void> {

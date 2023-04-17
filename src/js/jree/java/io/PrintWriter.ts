@@ -131,12 +131,12 @@ export class PrintWriter extends Writer {
     }
 
     /** Appends the specified character to this writer. */
-    public override append(c: char): this;
+    public override async append(c: char): Promise<PrintWriter>;
     /** Appends the specified character sequence to this writer. */
-    public override append(csq: CharSequence): this;
+    public override async append(csq: CharSequence): Promise<PrintWriter>;
     /** Appends a subsequence of the specified character sequence to this writer. */
-    public override append(csq: CharSequence, start: int, end: int): this;
-    public override append(...args: unknown[]): this {
+    public override async append(csq: CharSequence, start: int, end: int): Promise<PrintWriter>;
+    public override async append(...args: unknown[]): Promise<PrintWriter> {
         switch (args.length) {
             case 1: {
                 if (typeof args[0] === "number") {
@@ -160,7 +160,7 @@ export class PrintWriter extends Writer {
         }
 
         if (this.#autoFlush) {
-            this.flush();
+            await this.flush();
         }
 
         return this;
@@ -172,8 +172,8 @@ export class PrintWriter extends Writer {
      * @returns `true` if the print stream has encountered an error, either on the underlying output stream or during
      *          a format conversion.
      */
-    public checkError(): boolean {
-        this.out.flush();
+    public async checkError(): Promise<boolean> {
+        await this.out.flush();
 
         return false;
     }
@@ -184,13 +184,13 @@ export class PrintWriter extends Writer {
     }
 
     /** Closes the stream and releases any system resources associated with it. */
-    public close(): void {
-        this.out.close();
+    public async close(): Promise<void> {
+        await this.out.close();
     }
 
     /** Flushes the stream. */
-    public flush(): void {
-        this.out.flush();
+    public async flush(): Promise<void> {
+        await this.out.flush();
     }
 
     /** Writes a formatted string to this writer using the specified format string and arguments. */

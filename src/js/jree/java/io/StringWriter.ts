@@ -44,7 +44,7 @@ export class StringWriter extends Writer {
         // Nothing to do.
     }
 
-    public override flush(): void {
+    public override async flush(): Promise<void> {
         // Nothing to do.
     }
 

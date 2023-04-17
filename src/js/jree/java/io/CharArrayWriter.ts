@@ -91,7 +91,7 @@ export class CharArrayWriter extends Writer {
     }
 
     /** Flush the stream. */
-    public override flush(): void {
+    public override async flush(): Promise<void> {
         // Nothing to do here.
     }
 

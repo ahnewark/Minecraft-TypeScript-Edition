@@ -29,13 +29,13 @@ export class FileDescriptor extends JavaObject {
     /**
      * Force all system buffers to synchronize with the underlying device.
      */
-    public sync(): void {
+    public async sync(): Promise<void> {
         if (!this.fileHandle) {
             throw new IOException("File descriptor is not open");
         }
 
-        closeAsync(this.fileHandle);
-        this.fileHandle = openAsync(this.fileHandle.path, 'w', 0);
+        await closeAsync(this.fileHandle);
+        this.fileHandle = await openAsync(this.fileHandle.path, 'w', 0);
 
         // console.error('FileDescriptor.sync is not yet implemented.')
 

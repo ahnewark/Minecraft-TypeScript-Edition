@@ -287,7 +287,7 @@ export class Properties extends HashMap<JavaString, JavaString> {
             await this.writeString(out, S`${key}=${trimmed}${lineSeparator}`);
         }
 
-        out.flush();
+        await out.flush();
     }
 
     /**

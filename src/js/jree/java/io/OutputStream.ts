@@ -27,7 +27,7 @@ export abstract class OutputStream extends JavaObject implements Closeable, Flus
     }
 
     /** Flushes this output stream and forces any buffered output bytes to be written out. */
-    public flush(): void {
+    public async flush(): Promise<void> {
         // Nothing to do here.
     }
 

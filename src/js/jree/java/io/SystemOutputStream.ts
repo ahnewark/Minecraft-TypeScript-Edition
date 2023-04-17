@@ -17,7 +17,7 @@ export class SystemOutputStream extends OutputStream {
         // no-op
     }
 
-    public override flush(): void {
+    public override async flush(): Promise<void> {
         // The stream auto-flushes.
     }
 

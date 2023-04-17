@@ -48,7 +48,7 @@ export class BufferedWriter extends Writer {
         }
 
         try {
-            this.flush();
+            await this.flush();
         } finally {
             await this.#out.close();
             this.#out = null;
@@ -56,15 +56,15 @@ export class BufferedWriter extends Writer {
         }
     }
 
-    public flush(): void {
+    public async flush(): Promise<void> {
         this.checkOpen();
 
         if (this.#currentPosition > 0) {
-            this.#out?.write(this.#buffer, 0, this.#currentPosition);
+            await this.#out?.write(this.#buffer, 0, this.#currentPosition);
             this.#currentPosition = 0;
         }
 
-        this.#out?.flush();
+        await this.#out?.flush();
     }
 
     /** Writes a line separator. */
@@ -73,22 +73,22 @@ export class BufferedWriter extends Writer {
     }
 
     /** Writes an array of characters. */
-    public override write(buffer: Uint16Array): void;
+    public override async write(buffer: Uint16Array): Promise<void>;
     /** Writes a portion of an array of characters. */
-    public override write(buffer: Uint16Array, offset: int, length: int): void;
+    public override async write(buffer: Uint16Array, offset: int, length: int): Promise<void>;
     /** Writes a single character. */
-    public override write(c: int): void;
+    public override async write(c: int): Promise<void>;
     /** Writes a string. */
-    public override write(str: string | JavaString): void;
+    public override async write(str: string | JavaString): Promise<void>;
     /** Writes a portion of a string. */
-    public override write(str: string | JavaString, offset: int, length: int): void;
-    public override write(...args: unknown[]): void {
+    public override async write(str: string | JavaString, offset: int, length: int): Promise<void>;
+    public override async write(...args: unknown[]): Promise<void> {
         switch (args.length) {
             case 1: {
                 const source = args[0] as Uint16Array | int | string | JavaString;
                 if (typeof source === "number") {
                     if (this.#currentPosition >= this.#buffer.length) {
-                        this.flush();
+                        await this.flush();
                     }
 
                     this.#buffer[this.#currentPosition++] = source;
@@ -101,7 +101,7 @@ export class BufferedWriter extends Writer {
                     }
 
                     if (this.#currentPosition + data.length > this.#buffer.length) {
-                        this.flush();
+                        await this.flush();
                     }
 
                     if (data.length >= this.#buffer.length) {
@@ -130,7 +130,7 @@ export class BufferedWriter extends Writer {
 
                 if (length > 0) {
                     if (this.#currentPosition + length > this.#buffer.length) {
-                        this.flush();
+                        await this.flush();
                     }
 
                     if (length >= this.#buffer.length) {

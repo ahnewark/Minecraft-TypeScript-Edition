@@ -14,12 +14,12 @@ export abstract class FilterOutputStream extends OutputStream {
         this.out = output;
     }
 
-    public flush() {
-        this.out.flush();
+    public async flush() {
+        await this.out.flush();
     }
 
     public async close() {
-       this.flush();
+       await this.flush();
     }
 
 }

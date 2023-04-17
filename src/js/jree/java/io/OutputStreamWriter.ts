@@ -52,13 +52,13 @@ export class OutputStreamWriter extends Writer {
 
     /** Closes the stream, flushing it first. */
     public async close(): Promise<void> {
-        this.flush();
+        await this.flush();
         await this.#out.close();
     }
 
     /** Flushes the stream. */
-    public flush(): void {
-        this.#out.flush();
+    public async flush(): Promise<void> {
+        await this.#out.flush();
     }
 
     /** @returns the name of the character encoding being used by this stream. */

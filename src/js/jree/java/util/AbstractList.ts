@@ -21,7 +21,7 @@ import { ListIterator } from "./ListIterator";
 import { Predicate } from "./function/Predicate";
 import { Spliterator } from "./Spliterator";
 import { NotImplementedError } from "../../NotImplementedError";
-import { JavaString } from "../lang";
+import { JavaString } from "../lang/index";
 
 /**
  * This is the base class for all list implementations. It provides the core functionality and the
