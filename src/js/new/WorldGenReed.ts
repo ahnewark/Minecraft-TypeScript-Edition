@@ -17,7 +17,7 @@ export  class WorldGenReed extends WorldGenerator {
 				let  i10: int = 2 + random2.nextInt(random2.nextInt(3) + 1);
 
 				for(let  i11: int = 0; i11 < i10; ++i11) {
-					if(Block.reed.canBlockStay(world1, i7, i8 + i11, i9)) {
+					if(await Block.reed.canBlockStay(world1, i7, i8 + i11, i9)) {
 						await world1.setBlock(i7, i8 + i11, i9, Block.reed.blockID);
 					}
 				}

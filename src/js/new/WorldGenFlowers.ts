@@ -22,7 +22,7 @@ export  class WorldGenFlowers extends WorldGenerator {
 			let  i7: int = i3 + random2.nextInt(8) - random2.nextInt(8);
 			let  i8: int = i4 + random2.nextInt(4) - random2.nextInt(4);
 			let  i9: int = i5 + random2.nextInt(8) - random2.nextInt(8);
-			if(await world1.isAirBlock(i7, i8, i9) && (Block.blocksList[this.plantBlockId] as BlockFlower).canBlockStay(world1, i7, i8, i9)) {
+			if(await world1.isAirBlock(i7, i8, i9) && await (Block.blocksList[this.plantBlockId] as BlockFlower).canBlockStay(world1, i7, i8, i9)) {
 				await world1.setBlock(i7, i8, i9, this.plantBlockId);
 			}
 		}
