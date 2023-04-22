@@ -4,6 +4,14 @@ export default class Timer {
     static MAX_MS_PER_UPDATE = 1000;
     static MAX_TICKS_PER_UPDATE = 100;
 
+    private ticksPerSecond: number;
+    private lastTime: number;
+    private timeScale: number;
+    private fps: number;
+    private passedTime: number;
+    public ticks: number;
+    public partialTicks: number;
+
     /**
      * Timer to control the tick speed independently of the framerate
      *
@@ -54,7 +62,7 @@ export default class Timer {
 
         // Calculate passed time and ticks
         this.passedTime += passedMs * this.timeScale * this.ticksPerSecond / Timer.MS_PER_SECOND;
-        this.ticks = parseInt(this.passedTime);
+        this.ticks = parseInt("" + this.passedTime);
 
         // Maximum ticks per update
         this.ticks = Math.min(Timer.MAX_TICKS_PER_UPDATE, this.ticks);

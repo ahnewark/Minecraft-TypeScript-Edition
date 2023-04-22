@@ -34,27 +34,17 @@ const directoryExists = async (path: string, dirHandle: FileSystemDirectoryHandl
     }
 }
 
-const getNestedFolderHandle = async (path: string, dirHandle: FileSystemDirectoryHandle): Promise<FileSystemDirectoryHandle> => {    
-    let opfsPath = getOpfsPath(path);
-
-    let nestedFolderName: string;
-    if (posixPath.basename(opfsPath).includes('.')) {
-        opfsPath = posixPath.dirname(opfsPath);
+const getNestedFolderHandle = async (path: string, root: FileSystemDirectoryHandle): Promise<FileSystemDirectoryHandle> => {    
+    // console.log('getNestedFolderHandle', path)
+    if (path.startsWith('/'))
+        path = path.substring(1);
+    const directoies = path.split(posixPath.sep);
+    if (directoies.length > 1) {
+        const subDirectory = await root.getDirectoryHandle(directoies[0]);
+        const remainingPath = path.substring(directoies[0].length);
+        return await getNestedFolderHandle(remainingPath, subDirectory);
     }
-    if (opfsPath.indexOf('/') > -1) {
-        nestedFolderName = opfsPath.substring(0, opfsPath.indexOf('/'))
-    } else {
-        nestedFolderName = opfsPath;
-    }
-
-    let remainingPath = opfsPath.substring(nestedFolderName.length);
-
-    const thisDir = await dirHandle.getDirectoryHandle(nestedFolderName);
-
-    if (!remainingPath)
-        return thisDir;
-
-    return await getNestedFolderHandle(remainingPath, thisDir);
+    return root;
 }
 
 const mkdirsRecurse = async (path: string, dirHandle: FileSystemDirectoryHandle, recursiveCreate: boolean) => {
@@ -88,39 +78,41 @@ const mkdirAsync = async (path: string, options: MkdirOptions): Promise<boolean>
     }
 }
 
-const mkdirSync = (
-    path: string, options: MkdirOptions = {
-        recursive: false}
-    ) => 
-{
-    let settled = false;
-    let res = false;
-    mkdirAsync(path, options)
-        .then(data => res = data)
-        .finally(() => settled = true)
-
-    while (!settled) {
-        // wait
-    }
-
-    return res;
-}
-
 type OpenModes = 'as' | 'w' | 'r';
 
+const currentHandles: Map<(FileSystemFileHandle | FileSystemWritableFileStream), string> = new Map();
+
+
 const openAsync = async (path: string, openMode: OpenModes, unk1: number): Promise<FileSystemFileHandle | FileSystemWritableFileStream> => {
-    console.log('Opening file ', path, openMode);
+    console.debug('Opening file ', path, openMode);
+    // console.trace();
     const root = await navigator.storage.getDirectory();
     const folder = await getNestedFolderHandle(path, root);
     const fileName = posixPath.basename(path);
-    let handle = await folder.getFileHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
 
-    if (openMode === 'as' || openMode === 'w')
+    // console.log({fileName});
+
+    // if (!fileName.includes('.'))
+    //     return folder;
+    
+    let handle: FileSystemDirectoryHandle | FileSystemFileHandle;
+    try {
+        handle = await folder.getFileHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
+    } catch (err) {
+        handle = await folder.getDirectoryHandle(fileName, { create: openMode == 'as' || openMode == 'w'});
+    }
+
+    if ((openMode === 'as' || openMode === 'w') && handle.kind === 'file')
         handle = await (handle as any).createWritable();
 
     // console.log({path, fileName, folder, handle})
 
     (handle as any).path = path;
+
+    if (Array.from(currentHandles.values()).find(potential => potential === path))
+        console.error('Opening a second handle for ' + path + '! This bad!')
+
+    currentHandles.set(handle, path);
 
     return handle;
 }
@@ -137,7 +129,6 @@ const existsAsync = async (path: string) => {
     }
     
     const fileName = posixPath.basename(path);
-
     // console.log({folder, fileName});
 
     try {
@@ -146,7 +137,7 @@ const existsAsync = async (path: string) => {
         return true;
     } catch (error) {
         try {
-            await folder.getDirectoryHandle(fileName, {create: false});
+            await folder.getDirectoryHandle(fileName, { create: false});
             console.debug('... it does');
             return true
         } catch (err) {
@@ -155,22 +146,6 @@ const existsAsync = async (path: string) => {
     }
     console.debug('... it does not');
     return false;
-}
-
-const openSync = (path: string, openMode: OpenModes, unk1: number) => {
-    let settled = false;
-    let res;
-    openAsync(path, openMode, unk1)
-        .then(data => res = data)
-        .finally(() => settled = true)
-
-    while (!settled) {
-        // wait
-    }
-
-    // console.log({res, settled})
-
-    return res;
 }
 
 const isTypedArray = (function() {
@@ -220,7 +195,7 @@ const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayB
 
 const readAsync = async (fileHandle: FileSystemFileHandle, buffer: Int8Array, offset: number, length: number, position: bigint): Promise<number> => {
     // console.error('readAsync is not yet implemented.');
-    console.debug('Reading file', {fileHandle, buffer, position, length})
+    console.debug('Reading ', fileHandle.path)
     const file = await fileHandle.getFile();
     const arrayBuffer = new Int8Array(await file.slice(Number(position), Number(position) + length).arrayBuffer());
     for (let i = 0; i < arrayBuffer.byteLength; i++) {
@@ -248,12 +223,14 @@ export type Stats = {
 }
 
 const statAsync = async (path: string, options: StatOPtions): Promise<Stats> => {
-    console.log(path);
-    console.log(await existsAsync(path));
+    console.debug('stat' + path);
+    // console.log(await existsAsync(path));
 
     const handle = await openAsync(path, 'r', 0) as FileSystemFileHandle;
-    console.log(handle);
+    // console.log(handle);
     const size = (await handle.getFile()).size;
+
+    console.debug('size', size)
     if (options.bigint)
         return { size: BigInt(size) }
     else
@@ -268,28 +245,36 @@ type DeleteOptions = {
 }
 
 const deleteAsync = async (path, options?: DeleteOptions) => {
-    console.log('delete', path);
+    console.debug('delete', path);
     const dir = await getNestedFolderHandle(path, await navigator.storage.getDirectory());
     const basename = posixPath.basename(path);
     await dir.removeEntry(basename);
+    await Promise.all(Array.from(currentHandles.keys()).map(handle => {
+        if (handle.path === path)
+            return closeAsync(handle);
+    }))
 }
 
 const renameAsync = async (oldPath: string, newPath: string) => {
-    console.log('renaming', oldPath, newPath);
+    console.debug('renaming', oldPath, newPath);
     if (!await existsAsync(oldPath))
         throw new Error('Cant rename file as it does not exist.')
     const oldFileHandle = await openAsync(oldPath, 'r', 0) as FileSystemFileHandle;
     const oldFile = await oldFileHandle.getFile()
     const newHandle = await openAsync(newPath, 'w', 0);
     await writeAsync(newHandle, await oldFile.arrayBuffer());
-    await newHandle.close();
+    await closeAsync(newHandle);
+    await closeAsync(oldFileHandle);
     await deleteAsync(oldPath);
 }
 
 const closeAsync = async (handle: FileSystemFileHandle | FileSystemWritableFileStream) => {
-    console.log('closing', handle)
+    console.debug('closing', handle.path)
+    // console.trace();
     if (handle.close)
         await handle.close();
+
+    currentHandles.delete(handle);
 }
 
 export {

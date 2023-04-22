@@ -1,5 +1,13 @@
 export default class BoundingBox {
 
+    private minX: number;
+    private minY: number;
+    private minZ: number;
+    private maxX: number;
+    private maxY: number;
+    private maxZ: number;
+    private epsilon: number;
+
     /**
      * Bounding box
      *

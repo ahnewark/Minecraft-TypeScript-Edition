@@ -1,14 +1,13 @@
 import Minecraft from './net/minecraft/client/Minecraft.js';
 
 class Start {
-
     loadTextures(textures) {
-        let resources = [];
+        let resources:{ [texturePath: string]: HTMLImageElement } = {};
         let index = 0;
 
         return textures.reduce((currentPromise, texturePath) => {
             return currentPromise.then(() => {
-                return new Promise((resolve, reject) => {
+                return new Promise<void>((resolve, reject) => {
                     // Load texture
                     let image = new Image();
                     image.src = "src/resources/" + texturePath;

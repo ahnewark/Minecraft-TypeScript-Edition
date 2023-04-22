@@ -1,10 +1,26 @@
 import EnumSkyBlock from "../../util/EnumSkyBlock.js";
 import Block from "./block/Block.js";
 import * as THREE from "three";
+import World from "./World.js";
+import Chunk from "./Chunk.js";
 
 export default class ChunkSection {
 
     static SIZE = 16;
+
+    private world: World;
+    private chunk: Chunk;
+    private x: number;
+    private y: number;
+    private z: number;
+    public boundingBox: THREE.Box3;
+    public group: THREE.Object3D;
+    public isModified: boolean;
+    private blocks: number[];
+    private blocksData: number[];
+    private blockLight: number[];
+    private skyLight: number[];
+    private empty: boolean;
 
     constructor(world, chunk, x, y, z) {
         this.world = world;
@@ -41,7 +57,7 @@ export default class ChunkSection {
 
     }
 
-    rebuild(renderer) {
+    async rebuild(renderer) {
         this.isModified = false;
         this.group.clear();
 
@@ -70,7 +86,7 @@ export default class ChunkSection {
                                 continue;
                             }
 
-                            renderer.blockRenderer.renderBlock(this.world, block, ambientOcclusion, absoluteX, absoluteY, absoluteZ);
+                            await renderer.blockRenderer.renderBlock(this.world, block, ambientOcclusion, absoluteX, absoluteY, absoluteZ);
                         }
                     }
                 }

@@ -45,7 +45,7 @@ export abstract class Writer extends JavaObject implements Closeable, Flushable,
                 // Do nothing.
             }
 
-            public override flush(): void {
+            public override async flush(): Promise<void> {
                 // Do nothing.
             }
 
@@ -63,12 +63,12 @@ export abstract class Writer extends JavaObject implements Closeable, Flushable,
     /**
       Appends the specified character to this writer.
      */
-    public append(c: char): this;
-    /** Appends the specified character sequence to this writer. */
-    public append(csq: CharSequence | null): this;
-    /** Appends a subsequence of the specified character sequence to this writer. */
-    public append(csq: CharSequence | null, start: int, end: int): this;
-    public append(...args: unknown[]): this {
+      public append(c: char): this;
+      /** Appends the specified character sequence to this writer. */
+      public append(csq: CharSequence | null): this;
+      /** Appends a subsequence of the specified character sequence to this writer. */
+      public append(csq: CharSequence | null, start: int, end: int): this;
+      public append(...args: unknown[]): this {
         if (typeof args[0] === "number") {
             this.write(args[0]);
         } else {
@@ -144,8 +144,8 @@ export abstract class Writer extends JavaObject implements Closeable, Flushable,
     }
 
     /** Closes the stream, flushing it first. */
-    public abstract close(): void;
+    public abstract close(): Promise<void>;
 
     /** Flushes the stream. */
-    public abstract flush(): void;
+    public abstract flush(): Promise<void>;
 }

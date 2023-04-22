@@ -47,8 +47,8 @@ export default class Block {
         return this.getTransparency() > 0.0;
     }
 
-    shouldRenderFace(world, x, y, z, face) {
-        let typeId = world.getBlockAtFace(x, y, z, face);
+    async shouldRenderFace(world, x, y, z, face) {
+        let typeId = await world.getBlockAtFace(x, y, z, face);
         if (typeId === 0) {
             return true;
         }
@@ -214,7 +214,7 @@ export default class Block {
 
     static getById(typeId) {
         let block = Block.blocks.get(typeId);
-        return typeof block === "undefined" ? null : block;
+        return typeof block === "undefined" ? Block.blocks.get(1) : block;
     }
 }
 

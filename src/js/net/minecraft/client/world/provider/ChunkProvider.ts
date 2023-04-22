@@ -1,6 +1,10 @@
 import Chunk from "../Chunk.js";
+import World from "../World.js";
 
 export default class ChunkProvider {
+
+    private world: World;
+    private chunks: Map<number, Chunk>;
 
     constructor(world) {
         this.world = world;
@@ -13,19 +17,21 @@ export default class ChunkProvider {
         return typeof chunk !== 'undefined';
     }
 
-    getChunkAt(x, z) {
+    async getChunkAt(x, z) {
         let index = x + (z << 16);
         let chunk = this.chunks.get(index);
-        if (typeof chunk === 'undefined') {
-            chunk = this.loadChunk(x, z);
+        // console.log('getting chunk', {x, z, index, chunk: !chunk})
+        if (!chunk) {
+            chunk = await this.loadChunk(x, z);
         }
+        this.chunks.set(index, chunk)
         return chunk;
     }
 
-    generateChunk(x, z) {
+    async generateChunk(x, z) {
         let chunk = new Chunk(this.world, x, z);
-        chunk.generateSkylightMap();
-        chunk.generateBlockLightMap();
+        await chunk.generateSkylightMap();
+        await chunk.generateBlockLightMap();
         return chunk;
     }
 
@@ -33,9 +39,15 @@ export default class ChunkProvider {
 
     }
 
-    loadChunk(x, z) {
+    async loadChunk(x, z) {
         let index = x + (z << 16);
-        let chunk = this.generateChunk(x, z)
+        let chunk = this.chunks.get(index);
+
+        if (chunk && chunk.loaded) return chunk
+        console.log('loading chunk', {x, z, chunk})
+
+
+        chunk = await this.generateChunk(x, z)
 
         // Register and mark as loaded
         chunk.loaded = true;

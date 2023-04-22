@@ -8,10 +8,22 @@ import Vector3 from "../../util/Vector3.js";
 import Vector4 from "../../util/Vector4.js";
 import MetadataChunkBlock from "../../util/MetadataChunkBlock.js";
 import * as THREE from "three";
+import Minecraft from "../Minecraft.js";
+import Entity from "../entity/Entity.js";
+import ChunkProvider from "./provider/ChunkProvider.js";
 
 export default class World {
 
     static TOTAL_HEIGHT = ChunkSection.SIZE * 8 - 1; // ChunkSection.SIZE * 16 - 1;
+
+    private minecraft: Minecraft;
+    private entities: Entity[];
+    public group: THREE.Object3D;
+    public lightUpdateQueue: MetadataChunkBlock[];
+    private chunkProvider: ChunkProvider;
+    private time: number;
+    private spawn: Vector3;
+    private skylightSubtracted: number;
 
     constructor(minecraft) {
         this.minecraft = minecraft;
@@ -28,14 +40,14 @@ export default class World {
         this.spawn = new Vector3(0, 0, 0);
 
         // Update lights async
-        let scope = this;
-        setInterval(function () {
-            let i = scope.minecraft.loadingScreen === null ? 1000 : 100000;
-            while (scope.lightUpdateQueue.length >= 10 && i > 0) {
-                i--;
-                scope.lightUpdateQueue.shift().updateBlockLightning(scope);
-            }
-        }, 0);
+        // let scope = this;
+        // setInterval(async () => {
+        //     let i = scope.minecraft.loadingScreen === null ? 1000 : 100000;
+        //     while (scope.lightUpdateQueue.length >= 10 && i > 0) {
+        //         i--;
+        //         await scope.lightUpdateQueue.shift().updateBlockLightning(scope);
+        //     }
+        // }, 0);
     }
 
     setChunkProvider(chunkProvider) {
@@ -61,15 +73,15 @@ export default class World {
         this.time++;
     }
 
-    getChunkAt(x, z) {
-        return this.chunkProvider.getChunkAt(x, z);
+    async getChunkAt(x, z) {
+        return await this.chunkProvider.getChunkAt(x, z);
     }
 
-    getChunkAtBlock(x, y, z) {
-        return this.getChunkAt(x >> 4, z >> 4).getSection(y >> 4);
+    async getChunkAtBlock(x, y, z) {
+        return (await this.getChunkAt(x >> 4, z >> 4)).getSection(y >> 4);
     }
 
-    getCollisionBoxes(region) {
+    async getCollisionBoxes(region) {
         let boundingBoxList = [];
 
         let minX = MathHelper.floor(region.minX);
@@ -82,7 +94,7 @@ export default class World {
         for (let x = minX; x < maxX; x++) {
             for (let y = minY; y < maxY; y++) {
                 for (let z = minZ; z < maxZ; z++) {
-                    if (this.isSolidBlockAt(x, y, z)) {
+                    if (await this.isSolidBlockAt(x, y, z)) {
                         boundingBoxList.push(new BoundingBox(x, y, z, x + 1, y + 1, z + 1));
                     }
                 }
@@ -91,7 +103,7 @@ export default class World {
         return boundingBoxList;
     }
 
-    updateLights() {
+    async updateLights() {
         let scope = this;
 
         if (this.lightUpdateQueue.length < 10) {
@@ -103,14 +115,14 @@ export default class World {
                 }
 
                 let meta = scope.lightUpdateQueue.shift();
-                meta.updateBlockLightning(scope);
+                await meta.updateBlockLightning(scope);
                 i--;
             }
         }
         return false;
     }
 
-    updateLight(sourceType, x1, y1, z1, x2, y2, z2, notifyNeighbor = true) {
+    async updateLight(sourceType, x1, y1, z1, x2, y2, z2, notifyNeighbor = true) {
         let centerX = (x2 + x1) / 2;
         let centerZ = (z2 + z1) / 2;
 
@@ -133,14 +145,14 @@ export default class World {
             }
         }
 
-        let centerChunk = this.getChunkAt(centerX >> 4, centerZ >> 4);
+        let centerChunk = await this.getChunkAt(centerX >> 4, centerZ >> 4);
         if (!centerChunk.loaded) {
             return;
         }
 
         // Skip if section has no blocks
-        let section1 = this.getChunkSectionAt(x1 >> 4, y1 >> 4, z1 >> 4);
-        let section2 = this.getChunkSectionAt(x2 >> 4, y2 >> 4, z2 >> 4);
+        let section1 = await this.getChunkSectionAt(x1 >> 4, y1 >> 4, z1 >> 4);
+        let section2 = await this.getChunkSectionAt(x2 >> 4, y2 >> 4, z2 >> 4);
         if (section1 === section2 && section1.isEmpty()) {
             return;
         }
@@ -168,16 +180,16 @@ export default class World {
         return this.chunkProvider !== null && this.chunkProvider.chunkExists(chunkX, chunkZ);
     }
 
-    neighborLightPropagationChanged(sourceType, x, y, z, level) {
+    async neighborLightPropagationChanged(sourceType, x, y, z, level) {
         if (!this.blockExists(x, y, z)) {
             return;
         }
         if (sourceType === EnumSkyBlock.SKY) {
-            if (this.isAboveGround(x, y, z)) {
+            if (await this.isAboveGround(x, y, z)) {
                 level = 15;
             }
         } else if (sourceType === EnumSkyBlock.BLOCK) {
-            let typeId = this.getBlockAt(x, y, z);
+            let typeId = await this.getBlockAt(x, y, z);
             let block = Block.getById(typeId);
             let blockLight = typeId === 0 ? 0 : block.getLightValue();
 
@@ -185,79 +197,79 @@ export default class World {
                 level = blockLight;
             }
         }
-        if (this.getSavedLightValue(sourceType, x, y, z) !== level) {
-            this.updateLight(sourceType, x, y, z, x, y, z);
+        if (await this.getSavedLightValue(sourceType, x, y, z) !== level) {
+            await this.updateLight(sourceType, x, y, z, x, y, z);
         }
     }
 
     /**
      * Get the first non-solid block
      */
-    getHeightAt(x, z) {
+    async getHeightAt(x, z) {
         if (!this.chunkExists(x >> 4, z >> 4)) {
             return 0;
         }
-        return this.getChunkAt(x >> 4, z >> 4).getHeightAt(x & 15, z & 15);
+        return (await this.getChunkAt(x >> 4, z >> 4)).getHeightAt(x & 15, z & 15);
     }
 
     /**
      * Get the highest solid block
      */
-    getHighestBlockAt(x, z) {
+    async getHighestBlockAt(x, z) {
         if (!this.chunkExists(x >> 4, z >> 4)) {
             return 0;
         }
-        return this.getChunkAt(x >> 4, z >> 4).getHighestBlockAt(x & 15, z & 15);
+        return (await this.getChunkAt(x >> 4, z >> 4)).getHighestBlockAt(x & 15, z & 15);
     }
 
     /**
      * Is the highest solid block or above
      */
-    isHighestBlock(x, y, z) {
-        let chunk = this.getChunkAt(x >> 4, z >> 4)
+    async isHighestBlock(x, y, z) {
+        let chunk = await this.getChunkAt(x >> 4, z >> 4)
         return chunk.isHighestBlock(x & 15, y, z & 15);
     }
 
     /**
      * Is above the highest solid block
      */
-    isAboveGround(x, y, z) {
-        let chunk = this.getChunkAt(x >> 4, z >> 4)
+    async isAboveGround(x, y, z) {
+        let chunk = await this.getChunkAt(x >> 4, z >> 4)
         return chunk.isAboveGround(x & 15, y, z & 15);
     }
 
-    getTotalLightAt(x, y, z) {
+    async getTotalLightAt(x, y, z) {
         if (!this.blockExists(x, y, z)) {
             return 15;
         }
 
-        let section = this.getChunkSectionAt(x >> 4, y >> 4, z >> 4)
+        let section = await this.getChunkSectionAt(x >> 4, y >> 4, z >> 4)
         return section.getTotalLightAt(x & 15, y & 15, z & 15);
     }
 
-    getSavedLightValue(sourceType, x, y, z) {
+    async getSavedLightValue(sourceType, x, y, z) {
         if (!this.blockExists(x, y, z)) {
             return 15;
         }
 
-        let section = this.getChunkSectionAt(x >> 4, y >> 4, z >> 4)
+        let section = await this.getChunkSectionAt(x >> 4, y >> 4, z >> 4)
         return section.getLightAt(sourceType, x & 15, y & 15, z & 15);
     }
 
-    setLightAt(sourceType, x, y, z, lightLevel) {
+    async setLightAt(sourceType, x, y, z, lightLevel) {
         if (!this.chunkExists(x >> 4, z >> 4)) {
             return;
         }
 
-        let section = this.getChunkSectionAt(x >> 4, y >> 4, z >> 4)
+        let section = await this.getChunkSectionAt(x >> 4, y >> 4, z >> 4)
         section.setLightAt(sourceType, x & 15, y & 15, z & 15, lightLevel);
 
         // Rebuild chunk
-        this.onBlockChanged(x, y, z);
+        await this.onBlockChanged(x, y, z);
     }
 
-    isSolidBlockAt(x, y, z) {
-        let typeId = this.getBlockAt(x, y, z);
+    async isSolidBlockAt(x, y, z) {
+        let typeId = await this.getBlockAt(x, y, z);
         if (typeId === 0) {
             return false;
         }
@@ -266,46 +278,46 @@ export default class World {
         return block !== null && block.isSolid();
     }
 
-    isTranslucentBlockAt(x, y, z) {
-        let typeId = this.getBlockAt(x, y, z);
+    async isTranslucentBlockAt(x, y, z) {
+        let typeId = await this.getBlockAt(x, y, z);
         return typeId === 0 || Block.getById(typeId).isTranslucent();
     }
 
-    setBlockAt(x, y, z, type) {
-        let chunk = this.getChunkAt(x >> 4, z >> 4);
-        chunk.setBlockAt(x & 15, y, z & 15, type);
+    async setBlockAt(x, y, z, type) {
+        let chunk = await this.getChunkAt(x >> 4, z >> 4);
+        await chunk.setBlockAt(x & 15, y, z & 15, type);
 
         // Rebuild chunk
-        this.onBlockChanged(x, y, z);
+        await this.onBlockChanged(x, y, z);
     }
 
-    setBlockDataAt(x, y, z, data) {
-        this.getChunkAt(x >> 4, z >> 4).setBlockDataAt(x & 15, y, z & 15, data);
+    async setBlockDataAt(x, y, z, data) {
+        await (await this.getChunkAt(x >> 4, z >> 4)).setBlockDataAt(x & 15, y, z & 15, data);
     }
 
-    getBlockAt(x, y, z) {
-        let chunkSection = this.getChunkAtBlock(x, y, z);
+    async getBlockAt(x, y, z) {
+        let chunkSection = await this.getChunkAtBlock(x, y, z);
         return chunkSection == null ? 0 : chunkSection.getBlockAt(x & 15, y & 15, z & 15);
     }
 
-    getBlockDataAt(x, y, z) {
-        let chunkSection = this.getChunkAtBlock(x, y, z);
+    async getBlockDataAt(x, y, z) {
+        let chunkSection = await this.getChunkAtBlock(x, y, z);
         return chunkSection == null ? 0 : chunkSection.getBlockDataAt(x & 15, y & 15, z & 15);
     }
 
-    getBlockAtFace(x, y, z, face) {
-        return this.getBlockAt(x + face.x, y + face.y, z + face.z);
+    async getBlockAtFace(x, y, z, face) {
+        return await this.getBlockAt(x + face.x, y + face.y, z + face.z);
     }
 
-    getChunkSectionAt(chunkX, layerY, chunkZ) {
-        return this.getChunkAt(chunkX, chunkZ).getSection(layerY);
+    async getChunkSectionAt(chunkX, layerY, chunkZ) {
+        return (await this.getChunkAt(chunkX, chunkZ)).getSection(layerY);
     }
 
-    onBlockChanged(x, y, z) {
-        this.setModified(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
+    async onBlockChanged(x, y, z) {
+        await this.setModified(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
     }
 
-    setModified(minX, minY, minZ, maxX, maxY, maxZ) {
+    async setModified(minX, minY, minZ, maxX, maxY, maxZ) {
         // To chunk coordinates
         minX = minX >> 4;
         maxX = maxX >> 4;
@@ -322,14 +334,14 @@ export default class World {
             for (let y = minY; y <= maxY; y++) {
                 for (let z = minZ; z <= maxZ; z++) {
                     if (this.chunkExists(x, z)) {
-                        this.getChunkSectionAt(x, y, z).isModified = true;
+                        (await this.getChunkSectionAt(x, y, z)).isModified = true;
                     }
                 }
             }
         }
     }
 
-    rayTraceBlocks(from, to) {
+    async rayTraceBlocks(from, to) {
         let toX = MathHelper.floor(to.x);
         let toY = MathHelper.floor(to.y);
         let toZ = MathHelper.floor(to.z);
@@ -338,7 +350,7 @@ export default class World {
         let y = MathHelper.floor(from.y);
         let z = MathHelper.floor(from.z);
 
-        let blockId = this.getBlockAt(x, y, z);
+        let blockId = await this.getBlockAt(x, y, z);
         let block = Block.getById(blockId);
 
         if (block != null && block.canInteract()) {
@@ -432,7 +444,7 @@ export default class World {
             y = MathHelper.floor(from.y) - (face === EnumBlockFace.TOP ? 1 : 0);
             z = MathHelper.floor(from.z) - (face === EnumBlockFace.SOUTH ? 1 : 0);
 
-            let blockId = this.getBlockAt(x, y, z);
+            let blockId = await this.getBlockAt(x, y, z);
             let block = Block.getById(blockId);
 
             if (block != null && block.canInteract()) {
@@ -450,11 +462,11 @@ export default class World {
         return MathHelper.calculateCelestialAngle(this.time, partialTicks);
     }
 
-    getTemperature(x, y, z) {
+    getTemperature(x, z) {
         return 0.75; // TODO implement biomes
     }
 
-    getHumidity(x, y, z) {
+    getHumidity(x, z) {
         return 0.85; // TODO implement biomes
     }
 
@@ -530,13 +542,13 @@ export default class World {
         return rotation * rotation * 0.5;
     }
 
-    getLightBrightnessForEntity(entity) {
-        let level = this.getTotalLightAt(Math.floor(entity.x), Math.floor(entity.y), Math.floor(entity.z));
+    async getLightBrightnessForEntity(entity) {
+        let level = await this.getTotalLightAt(Math.floor(entity.x), Math.floor(entity.y), Math.floor(entity.z));
         return Math.max(level / 15, 0.1);
     }
 
-    getLightBrightness(x, y, z) {
-        let level = this.getTotalLightAt(x, y, z);
+    async getLightBrightness(x, y, z) {
+        let level = await this.getTotalLightAt(x, y, z);
         return Math.max(level / 15, 0.1);
     }
 
@@ -590,19 +602,19 @@ export default class World {
         return this.spawn;
     }
 
-    setSpawn(x, z) {
-        let y = this.getHeightAt(x, z);
+    async setSpawn(x, z) {
+        let y = await this.getHeightAt(x, z);
         this.spawn = new Vector3(x, y + 8, z);
     }
 
-    loadSpawnChunks() {
+    async loadSpawnChunks() {
         let viewDistance = this.minecraft.settings.viewDistance;
         for (let x = -viewDistance; x <= viewDistance; x++) {
             for (let z = -viewDistance; z <= viewDistance; z++) {
-                this.getChunkAt(x + this.spawn.x >> 4, z + this.spawn.z >> 4);
+                await this.getChunkAt(x + this.spawn.x >> 4, z + this.spawn.z >> 4);
             }
         }
-        this.spawn.y = this.getHeightAt(this.spawn.x, this.spawn.z) + 8;
+        this.spawn.y = await this.getHeightAt(this.spawn.x, this.spawn.z) + 8;
     }
 
     getChunkProvider() {

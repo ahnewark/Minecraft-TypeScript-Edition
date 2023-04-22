@@ -107,7 +107,7 @@ export default class IngameOverlay extends Gui {
         }
     }
 
-    renderLeftDebugOverlay(stack, filters = []) {
+    async renderLeftDebugOverlay(stack, filters = []) {
         let world = this.minecraft.world;
         let player = this.minecraft.player;
         let worldRenderer = this.minecraft.worldRenderer;
@@ -163,9 +163,9 @@ export default class IngameOverlay extends Gui {
         let chunkUpdates = worldRenderer.chunkSectionUpdateQueue.length;
         let entities = world.entities.length;
         let particles = this.minecraft.particleRenderer.particles.length;
-        let skyLight = world.getSavedLightValue(EnumSkyBlock.SKY, blockX, blockY, blockZ);
-        let blockLight = world.getSavedLightValue(EnumSkyBlock.BLOCK, blockX, blockY, blockZ);
-        let lightLevel = world.getTotalLightAt(blockX, blockY, blockZ);
+        let skyLight = await world.getSavedLightValue(EnumSkyBlock.SKY, blockX, blockY, blockZ);
+        let blockLight = await world.getSavedLightValue(EnumSkyBlock.BLOCK, blockX, blockY, blockZ);
+        let lightLevel = await world.getTotalLightAt(blockX, blockY, blockZ);
         let biome = "T: " + world.getTemperature(blockX, blockY, blockZ) + " H: " + world.getHumidity(blockX, blockY, blockZ);
 
         let soundsLoaded = 0;

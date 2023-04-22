@@ -32,7 +32,7 @@ export  class NBTTagCompound extends NBTBase {
 
 		let  nBTBase2: NBTBase;
 		while((nBTBase2 = (await NBTRegistry.readTag(dataInput1))).getType() !== 0) {
-			this.tagMap[nBTBase2.getKey()] = nBTBase2;
+			this.tagMap.set(nBTBase2.getKey(), nBTBase2);
 		}
 
 	}
@@ -78,7 +78,7 @@ export  class NBTTagCompound extends NBTBase {
 	}
 
 	public setCompoundTag(string1: string, nBTTagCompound2: NBTTagCompound):  void {
-		this.tagMap.set[string1] = nBTTagCompound2.setKey(string1);
+		this.tagMap.set(string1, nBTTagCompound2.setKey(string1));
 	}
 
 	public setBoolean(string1: string, z2: boolean):  void {

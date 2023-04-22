@@ -13,8 +13,8 @@ export default class BlockGlass extends Block {
         return true;
     }
 
-    shouldRenderFace(world, x, y, z, face) {
-        let typeId = world.getBlockAtFace(x, y, z, face);
+    async shouldRenderFace(world, x, y, z, face) {
+        let typeId = await world.getBlockAtFace(x, y, z, face);
         return typeId === 0 || typeId !== this.id;
     }
 

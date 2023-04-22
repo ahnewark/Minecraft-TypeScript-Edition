@@ -17,6 +17,7 @@ import { EntityPlayer } from "./EntityPlayer";
 // import { EntityPickupFX } from "./EntityPickupFX";
 import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
+import { Session } from "./Session";
 // import { Minecraft } from "../client/Minecraft";
 
 export  class EntityPlayerSP extends EntityPlayer {
@@ -31,22 +32,20 @@ export  class EntityPlayerSP extends EntityPlayer {
 		return 'PlayerSP';
 	}
 
-	public constructor(/*minecraft1: Minecraft| undefined, */world2: World| undefined, /*session3: Session| undefined,*/ i4: int) {
+	public constructor(/*minecraft1: Minecraft| undefined, */world2: World| undefined, session3: Session| undefined, i4: int) {
 		super(world2);
 		// this.mc = minecraft1;
 		this.dimension = i4;
-		// if(session3 !== undefined && session3.username !== undefined && session3.username.length() > 0) {
-		// 	this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + session3.username + ".png";
-		// 	java.lang.System.out.println("Loading texture " + this.skinUrl);
-		// }
+		if(session3 !== undefined && session3.username !== undefined && session3.username.length > 0) {
+			this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + session3.username + ".png";
+			console.log("Loading texture " + this.skinUrl);
+		}
 
-		this.username = 'craftycodie';
-
-		// this.username = session3.username;
+		this.username = session3.username;
 	}
 
 	public async updatePlayerActionState(): Promise<void> {
-		super.updatePlayerActionState();
+		await super.updatePlayerActionState();
 		// this.moveStrafing = this.movementInput.moveStrafe;
 		// this.moveForward = this.movementInput.moveForward;
 		// this.isJumping = this.movementInput.jump;
@@ -87,7 +86,7 @@ export  class EntityPlayerSP extends EntityPlayer {
 		// 	this.ySize = 0.2;
 		// }
 
-		super.onLivingUpdate();
+		await super.onLivingUpdate();
 	}
 
 	public resetPlayerKeyState():  void {

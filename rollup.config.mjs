@@ -1,9 +1,9 @@
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
 import esbuild from 'rollup-plugin-esbuild';
 import nodePollyfills from 'rollup-plugin-polyfill-node';
+import eslint from '@rollup/plugin-eslint';
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -27,6 +27,7 @@ export default {
     alias({}),
     nodeResolve({ preferBuiltins: false, browser: true }),
     nodePollyfills(),
+    eslint({}),
     esbuild({ tsconfig: 'tsconfig.json', sourceMap: true, minify: false, legalComments: 'none' , platform: 'browser'}),
   ],
   preserveEntrySignatures: false

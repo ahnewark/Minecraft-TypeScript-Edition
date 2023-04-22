@@ -19,7 +19,7 @@ export abstract class FilterOutputStream extends OutputStream {
     }
 
     public async close() {
-       await this.flush();
+       await this.out.close();
     }
 
 }

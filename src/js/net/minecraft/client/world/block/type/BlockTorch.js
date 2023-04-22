@@ -53,7 +53,7 @@ export default class BlockTorch extends Block {
         }
     }
 
-    onBlockPlaced(world, x, y, z, face) {
+    async onBlockPlaced(world, x, y, z, face) {
         let data = world.getBlockDataAt(x, y, z);
 
         for (let i in this.dataFaces) {
@@ -66,7 +66,7 @@ export default class BlockTorch extends Block {
         }
 
         // Update block data in chunk section directly to avoid notify
-        world.getChunkSectionAt(x >> 4, y >> 4, z >> 4).setBlockDataAt(x & 15, y & 15, z & 15, data);
+        (await world.getChunkSectionAt(x >> 4, y >> 4, z >> 4)).setBlockDataAt(x & 15, y & 15, z & 15, data);
     }
 
     collisionRayTrace(world, x, y, z, start, end) {

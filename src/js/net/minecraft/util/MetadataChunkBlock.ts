@@ -4,6 +4,14 @@ import World from "../client/world/World.js";
 
 export default class MetadataChunkBlock {
 
+    private type: number;
+    private x1: number;
+    private y1: number;
+    private z1: number;
+    private x2: number;
+    private y2: number;
+    private z2: number;
+
     constructor(type, x1, y1, z1, x2, y2, z2) {
         this.type = type;
         this.x1 = x1;
@@ -14,7 +22,7 @@ export default class MetadataChunkBlock {
         this.z2 = z2;
     }
 
-    updateBlockLightning(world) {
+    async updateBlockLightning(world: World) {
         let centerX = (this.x2 - this.x1) + 1;
         let centerY = (this.y2 - this.y1) + 1;
         let centerZ = (this.z2 - this.z1) + 1;
@@ -29,7 +37,7 @@ export default class MetadataChunkBlock {
                     continue;
                 }
 
-                let centerChunk = world.getChunkAt(x >> 4, z >> 4);
+                let centerChunk = await world.getChunkAt(x >> 4, z >> 4);
                 if (!centerChunk.loaded) {
                     return;
                 }
@@ -39,9 +47,9 @@ export default class MetadataChunkBlock {
                         continue;
                     }
 
-                    let savedLightValue = world.getSavedLightValue(this.type, x, y, z);
+                    let savedLightValue = await world.getSavedLightValue(this.type, x, y, z);
                     let newLevel = 0;
-                    let typeId = world.getBlockAt(x, y, z);
+                    let typeId = await world.getBlockAt(x, y, z);
                     let block = Block.getById(typeId);
                     let opacity = block === null || typeId === 0 ? 0 : Math.round(block.getOpacity() * 255);
 
@@ -52,7 +60,7 @@ export default class MetadataChunkBlock {
                     let level = 0;
 
                     if (this.type === EnumSkyBlock.SKY) {
-                        if (world.isAboveGround(x, y, z)) {
+                        if (await world.isAboveGround(x, y, z)) {
                             level = 15;
                         }
                     } else if (this.type === EnumSkyBlock.BLOCK) {
@@ -62,12 +70,12 @@ export default class MetadataChunkBlock {
                     if (opacity >= 15 && level === 0) {
                         newLevel = 0;
                     } else {
-                        let x1Level = world.getSavedLightValue(this.type, x - 1, y, z);
-                        let x2Level = world.getSavedLightValue(this.type, x + 1, y, z);
-                        let bottomLevel = world.getSavedLightValue(this.type, x, y - 1, z);
-                        let topLevel = world.getSavedLightValue(this.type, x, y + 1, z);
-                        let z1Level = world.getSavedLightValue(this.type, x, y, z - 1);
-                        let z2Level = world.getSavedLightValue(this.type, x, y, z + 1);
+                        let x1Level = await world.getSavedLightValue(this.type, x - 1, y, z);
+                        let x2Level = await world.getSavedLightValue(this.type, x + 1, y, z);
+                        let bottomLevel = await world.getSavedLightValue(this.type, x, y - 1, z);
+                        let topLevel = await world.getSavedLightValue(this.type, x, y + 1, z);
+                        let z1Level = await world.getSavedLightValue(this.type, x, y, z - 1);
+                        let z2Level = await world.getSavedLightValue(this.type, x, y, z + 1);
 
                         newLevel = x1Level;
 
@@ -97,25 +105,25 @@ export default class MetadataChunkBlock {
                     if (savedLightValue === newLevel) {
                         continue;
                     }
-                    world.setLightAt(this.type, x, y, z, newLevel);
+                    await world.setLightAt(this.type, x, y, z, newLevel);
 
                     let decreasedLevel = newLevel - 1;
                     if (decreasedLevel < 0) {
                         decreasedLevel = 0;
                     }
 
-                    world.neighborLightPropagationChanged(this.type, x - 1, y, z, decreasedLevel);
-                    world.neighborLightPropagationChanged(this.type, x, y - 1, z, decreasedLevel);
-                    world.neighborLightPropagationChanged(this.type, x, y, z - 1, decreasedLevel);
+                    await world.neighborLightPropagationChanged(this.type, x - 1, y, z, decreasedLevel);
+                    await world.neighborLightPropagationChanged(this.type, x, y - 1, z, decreasedLevel);
+                    await world.neighborLightPropagationChanged(this.type, x, y, z - 1, decreasedLevel);
 
                     if (x + 1 >= this.x2) {
-                        world.neighborLightPropagationChanged(this.type, x + 1, y, z, decreasedLevel);
+                        await world.neighborLightPropagationChanged(this.type, x + 1, y, z, decreasedLevel);
                     }
                     if (y + 1 >= this.y2) {
-                        world.neighborLightPropagationChanged(this.type, x, y + 1, z, decreasedLevel);
+                        await world.neighborLightPropagationChanged(this.type, x, y + 1, z, decreasedLevel);
                     }
                     if (z + 1 >= this.z2) {
-                        world.neighborLightPropagationChanged(this.type, x, y, z + 1, decreasedLevel);
+                        await world.neighborLightPropagationChanged(this.type, x, y, z + 1, decreasedLevel);
                     }
                 }
             }

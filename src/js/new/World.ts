@@ -63,7 +63,7 @@ export  class World implements IBlockAccess {
 	public spawnX:  int;
 	public spawnY:  int;
 	public spawnZ:  int;
-	public field_1033_r:  boolean;
+	public isNewWorld:  boolean;
 	public worldProvider:  WorldProvider;
 	protected worldAccesses:  IWorldAccess[];
 	private chunkProvider:  IChunkProvider;
@@ -165,7 +165,7 @@ export  class World implements IBlockAccess {
 					_this.lockTimestamp = java.lang.System.currentTimeMillis();
 					_this.autosavePeriod = 40;
 					_this.rand = new  Random();
-					_this.field_1033_r = false;
+					_this.isNewWorld = false;
 					_this.worldAccesses = [];
 					_this.randomSeed = 0n;
 					_this.sizeOnDisk = 0n;
@@ -219,7 +219,7 @@ export  class World implements IBlockAccess {
 					_this.lockTimestamp = java.lang.System.currentTimeMillis();
 					_this.autosavePeriod = 40;
 					_this.rand = new Random();
-					_this.field_1033_r = false;
+					_this.isNewWorld = false;
 					_this.worldAccesses = [];
 					_this.randomSeed = 0n;
 					_this.sizeOnDisk = 0n;
@@ -260,7 +260,7 @@ export  class World implements IBlockAccess {
 				_this.lockTimestamp = java.lang.System.currentTimeMillis();
 				_this.autosavePeriod = 40;
 				_this.rand = new  Random();
-				_this.field_1033_r = false;
+				_this.isNewWorld = false;
 				_this.worldAccesses = [];
 				_this.randomSeed = 0n;
 				_this.sizeOnDisk = 0n;
@@ -298,7 +298,7 @@ export  class World implements IBlockAccess {
 
 				let  object17: java.lang.Object = new  WorldProvider();
 				let  file18: File = new File(_this.savePath, new JavaString("level.dat"));
-				_this.field_1033_r = !await file18.exists();
+				_this.isNewWorld = !await file18.exists();
 				if (await file18.exists()) {
 					try {
 						let  nBTTagCompound8: NBTTagCompound = await CompressedStreamTools.func_1138_a(await FileInputStream.Construct(file18));
@@ -363,7 +363,7 @@ export  class World implements IBlockAccess {
 
 
 	protected async getChunkProvider(file1: File):  Promise<IChunkProvider> {
-		return new  ChunkProviderLoadOrGenerate(this, await this.worldProvider.getChunkLoader(file1), this.worldProvider.getChunkProvider());
+		return new ChunkProviderLoadOrGenerate(this, await this.worldProvider.getChunkLoader(file1), this.worldProvider.getChunkProvider());
 	}
 
 	public async setSpawnLocation():  Promise<void> {
@@ -389,13 +389,13 @@ export  class World implements IBlockAccess {
 	public func_6464_c():  void {
 	}
 
-	public async func_608_a(entityPlayer1: EntityPlayer| undefined):  Promise<void> {
+	public async spawnPlayer(entityPlayer1: EntityPlayer| undefined):  Promise<void> {
 		try {
 			if(this.nbtCompoundPlayer !== undefined) {
 				entityPlayer1.readFromNBT(this.nbtCompoundPlayer);
 				this.nbtCompoundPlayer = undefined;
 			}
-
+			
 			if(this.chunkProvider instanceof ChunkProviderLoadOrGenerate) {
 				let  chunkProviderLoadOrGenerate2: ChunkProviderLoadOrGenerate = this.chunkProvider as ChunkProviderLoadOrGenerate;
 				let  i3: int = MathHelper.floor_float((entityPlayer1.posX as int) as float) >> 4;
@@ -536,12 +536,12 @@ export  class World implements IBlockAccess {
 		return this.chunkProvider.chunkExists(i1, i2);
 	}
 
-	public getChunkFromBlockCoords(i1: int, i2: int):  Promise<Chunk> {
-		return this.getChunkFromChunkCoords(i1 >> 4, i2 >> 4);
+	public async getChunkFromBlockCoords(i1: int, i2: int):  Promise<Chunk> {
+		return await this.getChunkFromChunkCoords(i1 >> 4, i2 >> 4);
 	}
 
-	public getChunkFromChunkCoords(i1: int, i2: int):  Promise<Chunk> {
-		return this.chunkProvider.provideChunk(i1, i2);
+	public async getChunkFromChunkCoords(i1: int, i2: int):  Promise<Chunk> {
+		return await this.chunkProvider.provideChunk(i1, i2);
 	}
 
 	public async setBlockAndMetadata(i1: int, i2: int, i3: int, i4: int, i5: int):  Promise<boolean> {
@@ -1646,7 +1646,7 @@ export  class World implements IBlockAccess {
 		await this.saveWorld(true, iProgressUpdate1);
 	}
 
-	public async func_6465_g(): Promise<boolean> {
+	public async lighting_func_6465_g(): Promise<boolean> {
 		if(this.field_4204_J >= 50) {
 			return false;
 		} else {
@@ -1656,15 +1656,28 @@ export  class World implements IBlockAccess {
 			try {
 				let  i1: int = 500;
 
-				while(this.field_1051_z.length > 0) {
-					--i1;
-					if(i1 <= 0) {
-						z2 = true;
-						return z2;
-					}
+				const lightPromises = this.field_1051_z.map((metadata, index) => {
+					if (index >= i1) {
+						console.warn(`More than ${i1} lighting updates, ignoring`)
+						return Promise.resolve();
 
-					await (this.field_1051_z.pop() as MetadataChunkBlock).func_4127_a(this);
-				}
+					}
+					return metadata.func_4127_a(this);
+				})
+
+				await Promise.all(lightPromises);
+				// This is not how this function should beahve.
+				this.field_1051_z = [];
+
+				// while(this.field_1051_z.length > 0) {
+				// 	--i1;
+				// 	if(i1 <= 0) {
+				// 		z2 = true;
+				// 		return z2;
+				// 	}
+
+				// 	await (this.field_1051_z.pop() as MetadataChunkBlock).func_4127_a(this);
+				// }
 
 				z2 = false;
 			} finally {

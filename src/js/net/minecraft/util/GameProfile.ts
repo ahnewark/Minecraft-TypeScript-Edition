@@ -1,5 +1,8 @@
 export default class GameProfile {
 
+    public uuid: string;
+    public username: string;
+
     constructor(uuid, username) {
         this.uuid = uuid;
         this.username = username;

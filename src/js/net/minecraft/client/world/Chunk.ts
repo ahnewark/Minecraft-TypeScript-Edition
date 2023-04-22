@@ -8,6 +8,15 @@ export default class Chunk {
 
     static SECTION_AMOUNT = 16;
 
+    private world: World; 
+    private x: number;
+    private z: number;
+    public group: THREE.Object3D;
+    public loaded: boolean;
+    private isTerrainPopulated: boolean;
+    public sections: ChunkSection[];
+    private heightMap: number[];
+
     constructor(world, x, z) {
         this.world = world;
         this.x = x;
@@ -34,19 +43,19 @@ export default class Chunk {
         this.heightMap = [];
     }
 
-    generateSkylightMap() {
+    async generateSkylightMap() {
         // Calculate height map
         for (let x = 0; x < 16; x++) {
             for (let z = 0; z < 16; z++) {
                 this.setHeightAt(x, z, 0);
-                this.updateHeightMap(x, World.TOTAL_HEIGHT, z);
+                await this.updateHeightMap(x, World.TOTAL_HEIGHT, z);
             }
         }
 
         // Update light of neighbor blocks
         for (let x = 0; x < 16; x++) {
             for (let z = 0; z < 16; z++) {
-                this.notifyNeighbors(x, z);
+                await this.notifyNeighbors(x, z);
             }
         }
 
@@ -54,7 +63,7 @@ export default class Chunk {
         this.setModifiedAllSections();
     }
 
-    generateBlockLightMap() {
+    async generateBlockLightMap() {
         let targetY = 32;
         for (let x = 0; x < 16; x++) {
             for (let z = 0; z < 16; z++) {
@@ -101,7 +110,7 @@ export default class Chunk {
             }
         }
 
-        this.world.updateLight(EnumSkyBlock.BLOCK,
+        await this.world.updateLight(EnumSkyBlock.BLOCK,
             this.x * 16, targetY - 1, this.z * 16,
             this.x * 16 + 16, targetY + 1, this.z * 16 + 16
         );
@@ -112,28 +121,28 @@ export default class Chunk {
         this.setModifiedAllSections();
     }
 
-    notifyNeighbors(x, z) {
+    async notifyNeighbors(x, z) {
         let height = this.getHeightAt(x, z);
         let totalX = this.x * 16 + x;
         let totalZ = this.z * 16 + z;
 
-        this.updateSkyLight(totalX - 1, totalZ, height);
-        this.updateSkyLight(totalX + 1, totalZ, height);
-        this.updateSkyLight(totalX, totalZ - 1, height);
-        this.updateSkyLight(totalX, totalZ + 1, height);
+        await this.updateSkyLight(totalX - 1, totalZ, height);
+        await this.updateSkyLight(totalX + 1, totalZ, height);
+        await this.updateSkyLight(totalX, totalZ - 1, height);
+        await this.updateSkyLight(totalX, totalZ + 1, height);
     }
 
-    updateSkyLight(x, z, y) {
-        let height = this.world.getHeightAt(x, z);
+    async updateSkyLight(x, z, y) {
+        let height = await this.world.getHeightAt(x, z);
         if (height > y) {
-            this.world.updateLight(EnumSkyBlock.SKY, x, y, z, x, height, z);
+            await this.world.updateLight(EnumSkyBlock.SKY, x, y, z, x, height, z);
         } else if (height < y) {
-            this.world.updateLight(EnumSkyBlock.SKY, x, height, z, x, y, z);
+            await this.world.updateLight(EnumSkyBlock.SKY, x, height, z, x, y, z);
         }
         this.setModifiedAllSections();
     }
 
-    updateHeightMap(relX, y, relZ) {
+    async updateHeightMap(relX, y, relZ) {
         let currentHighestY = this.getHeightAt(relX, relZ);
         let highestY = currentHighestY;
         if (y > currentHighestY) {
@@ -156,7 +165,7 @@ export default class Chunk {
                 this.setLightAt(EnumSkyBlock.SKY, relX, hy, relZ, 15);
             }
         } else {
-            this.world.updateLight(EnumSkyBlock.SKY, x, currentHighestY, z, x, highestY, z);
+            await this.world.updateLight(EnumSkyBlock.SKY, x, currentHighestY, z, x, highestY, z);
             for (let hy = currentHighestY; hy < highestY; hy++) {
                 this.setLightAt(EnumSkyBlock.SKY, relX, hy, relZ, 0);
             }
@@ -185,7 +194,7 @@ export default class Chunk {
         highestY = this.calculateHeightAt(relX, relZ, highestY);
 
         if (highestY !== prevHeight) {
-            this.world.updateLight(EnumSkyBlock.SKY, x - 1, highestY, z - 1, x + 1, prevHeight, z + 1);
+            await this.world.updateLight(EnumSkyBlock.SKY, x - 1, highestY, z - 1, x + 1, prevHeight, z + 1);
         }
         this.setModifiedAllSections();
     }
@@ -247,11 +256,11 @@ export default class Chunk {
         section.setLightAt(sourceType, x, y & 15, z, level);
     }
 
-    setBlockDataAt(x, y, z, data) {
-        this.setBlockAt(x, y, z, this.getBlockAt(x, y, z), data);
+    async setBlockDataAt(x, y, z, data) {
+        await this.setBlockAt(x, y, z, this.getBlockAt(x, y, z), data);
     }
 
-    setBlockAt(x, y, z, typeId, data = 0) {
+    async setBlockAt(x, y, z, typeId, data = 0) {
         if (y < 0 || y >= World.TOTAL_HEIGHT) {
             return;
         }
@@ -280,21 +289,21 @@ export default class Chunk {
         let block = Block.getById(typeId);
         if (typeId !== 0 && block !== null && block.isSolid()) {
             if (y >= height) {
-                this.updateHeightMap(x, y + 1, z);
+                await this.updateHeightMap(x, y + 1, z);
             }
         } else if (y === height - 1) {
-            this.updateHeightMap(x, y, z);
+            await this.updateHeightMap(x, y, z);
         }
 
         let totalX = this.x * 16 + x;
         let totalZ = this.z * 16 + z;
 
         // Update light
-        this.world.updateLight(EnumSkyBlock.SKY, totalX, y, totalZ, totalX, y, totalZ);
-        this.world.updateLight(EnumSkyBlock.BLOCK, totalX, y, totalZ, totalX, y, totalZ);
+        await this.world.updateLight(EnumSkyBlock.SKY, totalX, y, totalZ, totalX, y, totalZ);
+        await this.world.updateLight(EnumSkyBlock.BLOCK, totalX, y, totalZ, totalX, y, totalZ);
 
         // Notify surrounding blocks
-        this.notifyNeighbors(x, z);
+        await this.notifyNeighbors(x, z);
 
         // Handle block abilities
         if (typeId !== 0 && block !== null) {
@@ -348,9 +357,9 @@ export default class Chunk {
         return this.sections[y];
     }
 
-    rebuild(renderer) {
+    async rebuild(renderer) {
         for (let y = 0; y < Chunk.SECTION_AMOUNT; y++) {
-            this.sections[y].rebuild(renderer);
+            await this.sections[y].rebuild(renderer);
         }
     }
 

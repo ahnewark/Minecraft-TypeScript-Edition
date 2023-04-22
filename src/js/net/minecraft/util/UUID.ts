@@ -3,6 +3,9 @@ import Random from "./Random.js";
 
 export default class UUID {
 
+    private mostSigBits: Long;
+    private leastSigBits: Long;
+    
     constructor(msb, lsb) {
         this.mostSigBits = msb;
         this.leastSigBits = lsb;
@@ -36,7 +39,7 @@ export default class UUID {
         return UUID.fromBytes(randomBytes);
     }
 
-    static digits(val, digits) {
+    static digits(val, digits): string {
         let hi = Long.fromInt(1).shiftLeft(Long.fromInt(digits).multiply(4));
         let num = hi.or(val.and(hi.add(Long.fromInt(-1))));
         return num.toString(16).substr(1);

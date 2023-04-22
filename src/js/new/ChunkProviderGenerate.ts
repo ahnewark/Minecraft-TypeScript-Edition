@@ -167,20 +167,15 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 								} else if(i17 >= b5 - 4 && i17 <= b5 + 1) {
 									b15 = mobSpawnerBase10.topBlock;
 									b16 = mobSpawnerBase10.fillerBlock;
+									
 									if(z12) {
 										b15 = 0;
-									}
-
-									if(z12) {
 										b16 = Block.gravel.blockID as number;
 									}
 
 									if(z11) {
-										b15 = Block.sand.blockID as number;
-									}
-
-									if(z11) {
-										b16 = Block.sand.blockID as number;
+=										b15 = Block.sand.blockID;
+										b16 = Block.sand.blockID;
 									}
 								}
 
@@ -545,7 +540,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 				i19 = i17 - (i5 + 8);
 				let  i20: number = await this.worldObj.findTopSolidBlock(i16, i17);
 				let  d21: number = this.generatedTemperatures[i23 * 16 + i19] - (i20 - 64) as number / 64.0 * 0.3;
-				if(d21 < 0.5 && i20 > 0 && i20 < 128 && (await this.worldObj.isAirBlock(i16, i20, i17) && (await this.worldObj.getBlockMaterial(i16, i20 - 1, i17))).getIsSolid() && await this.worldObj.getBlockMaterial(i16, i20 - 1, i17) !== MaterialRegistry.ice) {
+				if(d21 < 0.5 && i20 > 0 && i20 < 128 && (await this.worldObj.isAirBlock(i16, i20, i17)) && (await this.worldObj.getBlockMaterial(i16, i20 - 1, i17)).getIsSolid() && await this.worldObj.getBlockMaterial(i16, i20 - 1, i17) !== MaterialRegistry.ice) {
 					await this.worldObj.setBlockWithNotify(i16, i20, i17, Block.snow.blockID);
 				}
 			}

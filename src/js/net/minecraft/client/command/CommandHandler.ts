@@ -22,7 +22,7 @@ export default class CommandHandler {
         this.handleCommand(command, args.slice(1));
     }
 
-    handleCommand(command: string, ...args) {
+    handleCommand(command: string, args: string[]) {
         for (let i = 0; i < this.commands.length; i++) {
             let commandExecutor = this.commands[i];
             if (commandExecutor.command === command) {

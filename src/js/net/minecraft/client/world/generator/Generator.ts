@@ -1,7 +1,12 @@
 import Random from "../../../util/Random.js";
 import Long from 'long';
+import World from "../World.js";
 
 export default class Generator {
+    private world: World;
+    private seed: number;
+    protected random: Random;
+    private seaLevel: number;
 
     constructor(world, seed) {
         this.world = world;

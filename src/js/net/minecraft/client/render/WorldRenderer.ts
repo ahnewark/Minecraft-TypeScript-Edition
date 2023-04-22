@@ -28,12 +28,12 @@ export default class WorldRenderer {
     private itemToRender: number;
     private prevFogBrightness: number;
     private fogBrightness: number;
-    private flushRebuild = false;
+    public flushRebuild = false;
     private lastHitResult = null;
     private camera: THREE.PerspectiveCamera;
     private frustum: THREE.Frustum;
     private background: THREE.Scene;
-    private scene: THREE.Scene;
+    public scene: THREE.Scene;
     private overlay: THREE.Scene;
     private webRenderer: THREE.WebGLRenderer;
     private blockHitBox: THREE.LineSegments;
@@ -137,21 +137,21 @@ export default class WorldRenderer {
         this.scene.add(this.blockHitBox);
     }
 
-    render(partialTicks) {
+    async render(partialTicks) {
         // Setup camera
-        this.orientCamera(partialTicks);
+        await this.orientCamera(partialTicks);
 
         // Render chunks
         let player = this.minecraft.player;
         let cameraChunkX = Math.floor(player.x) >> 4;
         let cameraChunkZ = Math.floor(player.z) >> 4;
-        this.renderChunks(cameraChunkX, cameraChunkZ);
+        await this.renderChunks(cameraChunkX, cameraChunkZ);
 
         // Render sky
         this.renderSky(partialTicks);
 
         // Render target block
-        this.renderBlockHitBox(player, partialTicks);
+        await this.renderBlockHitBox(player, partialTicks);
 
         // Render particles
         this.minecraft.particleRenderer.renderParticles(player, partialTicks);
@@ -187,14 +187,14 @@ export default class WorldRenderer {
         this.webRenderer.render(this.overlay, this.camera);
     }
 
-    onTick() {
+    async onTick() {
         // Rebuild 2 chunk sections each tick
         for (let i = 0; i < 2; i++) {
             if (this.chunkSectionUpdateQueue.length !== 0) {
                 let chunkSection = this.chunkSectionUpdateQueue.shift();
                 if (chunkSection != null) {
                     // Rebuild chunk
-                    chunkSection.rebuild(this);
+                    await chunkSection.rebuild(this);
                 }
             }
         }
@@ -224,13 +224,13 @@ export default class WorldRenderer {
         }
 
         // Update fog brightness
-        let brightnessAtPosition = this.minecraft.world.getLightBrightnessForEntity(player);
+        let brightnessAtPosition = await this.minecraft.world.getLightBrightnessForEntity(player);
         let renderDistance = this.minecraft.settings.viewDistance / 32.0;
         let fogBrightness = brightnessAtPosition * (1.0 - renderDistance) + renderDistance;
         this.fogBrightness += (fogBrightness - this.fogBrightness) * 0.1;
     }
 
-    orientCamera(partialTicks) {
+    async orientCamera(partialTicks) {
         let player = this.minecraft.player;
 
         // Reset rotation stack
@@ -275,7 +275,7 @@ export default class WorldRenderer {
                 to = to.addVector(offsetX, offsetY, offsetZ);
 
                 // Make ray trace
-                let target = this.minecraft.world.rayTraceBlocks(from, to);
+                let target = await this.minecraft.world.rayTraceBlocks(from, to);
                 if (target === null) {
                     continue;
                 }
@@ -587,7 +587,7 @@ export default class WorldRenderer {
         this.background.fog = this.scene.fog;
     }
 
-    renderChunks(cameraChunkX, cameraChunkZ) {
+    async renderChunks(cameraChunkX, cameraChunkZ) {
         let world = this.minecraft.world;
         let renderDistance = this.minecraft.settings.viewDistance;
 
@@ -662,7 +662,7 @@ export default class WorldRenderer {
                     let chunkSection = this.chunkSectionUpdateQueue.shift();
                     if (chunkSection != null) {
                         // Rebuild chunk
-                        chunkSection.rebuild(this);
+                        await chunkSection.rebuild(this);
                     }
                 }
             }
@@ -762,7 +762,7 @@ export default class WorldRenderer {
         }
     }
 
-    renderBlockHitBox(player, partialTicks) {
+    async renderBlockHitBox(player, partialTicks) {
         let hitResult = player.rayTrace(5, partialTicks);
         let hitBoxVisible = !(hitResult === null);
         if ((this.blockHitBox.visible = hitBoxVisible)) {
@@ -772,7 +772,7 @@ export default class WorldRenderer {
 
             // Get block type
             let world = this.minecraft.world;
-            let typeId = world.getBlockAt(x, y, z);
+            let typeId = await world.getBlockAt(x, y, z);
             let block = Block.getById(typeId);
 
             if (typeId !== 0) {

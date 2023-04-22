@@ -11,7 +11,7 @@ export default class Command {
         this.description = description;
     }
 
-    execute(minecraft: Minecraft, args) {
+    execute(minecraft: Minecraft, args: string[]) {
         return false;
     }
 

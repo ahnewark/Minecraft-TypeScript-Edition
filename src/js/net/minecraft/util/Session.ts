@@ -2,6 +2,9 @@ import GameProfile from "./GameProfile.js";
 
 export default class Session {
 
+    private profile: GameProfile;
+    private accessToken: string;
+
     constructor(profile, accessToken) {
         this.profile = profile;
         this.accessToken = accessToken;

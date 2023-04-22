@@ -27,8 +27,8 @@ export default class BlockWater extends Block {
         return false;
     }
 
-    shouldRenderFace(world, x, y, z, face) {
-        let typeId = world.getBlockAtFace(x, y, z, face);
+    async shouldRenderFace(world, x, y, z, face) {
+        let typeId = await world.getBlockAtFace(x, y, z, face);
         return typeId === 0 || typeId !== this.id || typeId !== this.id && face === EnumBlockFace.TOP;
     }
 

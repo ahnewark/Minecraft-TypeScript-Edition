@@ -1,36 +1,78 @@
-import Timer from "../util/Timer.js";
-import GameSettings from "./GameSettings.js";
-import GameWindow from "./GameWindow.js";
-import WorldRenderer from "./render/WorldRenderer.js";
-import ScreenRenderer from "./render/gui/ScreenRenderer.js";
-import ItemRenderer from "./render/gui/ItemRenderer.js";
-import IngameOverlay from "./gui/overlay/IngameOverlay.js";
-import SoundManager from "./sound/SoundManager.js";
-import Block from "./world/block/Block.js";
-import BoundingBox from "../util/BoundingBox.js";
-import {BlockRegistry} from "./world/block/BlockRegistry.js";
-import FontRenderer from "./render/gui/FontRenderer.js";
-import GrassColorizer from "./render/GrassColorizer.js";
-import GuiMainMenu from "./gui/screens/GuiMainMenu.js";
-import GuiLoadingScreen from "./gui/screens/GuiLoadingScreen.js";
+import Timer from "../util/Timer";
+import GameSettings from "../client/GameSettings.js";
+import GameWindow from "../client/GameWindow.js";
+import WorldRenderer from "../client/render/WorldRenderer.js";
+import ScreenRenderer from "../client/render/gui/ScreenRenderer.js";
+import ItemRenderer from "../client/render/gui/ItemRenderer.js";
+import IngameOverlay from "../client/gui/overlay/IngameOverlay.js";
+import SoundManager from "../client/sound/SoundManager.js";
+import Block from "../client/world/block/Block.js";
+import BoundingBox from "../util/BoundingBox";
+import {BlockRegistry} from "../client/world/block/BlockRegistry.js";
+import FontRenderer from "../client/render/gui/FontRenderer.js";
+import GrassColorizer from "../client/render/GrassColorizer.js";
+import GuiMainMenu from "../client/gui/screens/GuiMainMenu.js";
+import GuiLoadingScreen from "../client/gui/screens/GuiLoadingScreen.js";
 import * as THREE from "three";
-import ParticleRenderer from "./render/particle/ParticleRenderer.js";
-import GuiChat from "./gui/screens/GuiChat.js";
-import CommandHandler from "./command/CommandHandler.js";
-import GuiContainerPlayer from "./gui/screens/container/GuiContainerCreative";
-import GameProfile from "../util/GameProfile.js";
-import UUID from "../util/UUID.js";
+import ParticleRenderer from "../client/render/particle/ParticleRenderer.js";
+import GuiChat from "../client/gui/screens/GuiChat.js";
+import CommandHandler from "../client/command/CommandHandler.js";
+import GuiContainerPlayer from "../client/gui/screens/container/GuiContainerCreative";
+import GameProfile from "../util/GameProfile";
+import UUID from "../util/UUID";
 import FocusStateType from "../util/FocusStateType.js";
-import Session from "../util/Session.js";
-import PlayerControllerMultiplayer from "./network/controller/PlayerControllerMultiplayer.js";
-import * as Foobert from '../../../new/index';
+import Session from "../util/Session";
+import { Session as NewSession } from '../../../new/Session';
+import PlayerControllerMultiplayer from "../client/network/controller/PlayerControllerMultiplayer.js";
+// import * as Foobert from '.../client/.../client/.../client/new/index';
 import { World as NewWorld } from '../../../new/World';
-import {JavaFile} from "../../../jree/java/io/File";
+// import {JavaFile} from ".../client/.../client/.../client/jree/java/io/File";
+// import { JavaString } from ".../client/.../client/.../client/jree/index.js";
+// import { IOException } from ".../client/.../client/.../client/jree/java/io/IOException.js";
+// import { FileOutputStream } from ".../client/.../client/.../client/jree/java/io/FileOutputStream.js";
+// import { DataOutputStream } from ".../client/.../client/.../client/java/io/DataOutputStream.js";
+// import { File, FileInputStream } from ".../client/.../client/.../client/jree/java/io/index.js";
+// import { DataInputStream } from ".../client/.../client/.../client/java/io/DataInputStream.js";
+import '../../../new/index';
+import { JavaFile } from "../../../jree/java/io/File.js";
 import { JavaString } from "../../../jree/index.js";
+import GuiScreen from "../client/gui/GuiScreen.js";
+import PlayerController from "../client/network/controller/PlayerController.js";
+import World from "../client/world/World.js";
+import { EntityPlayer } from "../../../new/EntityPlayer";
+import { EntityPlayerSP } from "../../../new/EntityPlayerSP";
+import { existsAsync } from "../../../node/fs";
+import { main } from "../../../WorldTest";
 
-console.log({Foobert})
+// console.log({Foobert})
 
 export default class Minecraft {
+
+    private resources: { [texturePath: string]: HTMLImageElement };
+    private currentScreen: GuiScreen;
+    public loadingScreen: GuiLoadingScreen;
+    public world: World;
+    private newWorld: NewWorld;
+    public player;
+    private playerController: PlayerController;
+    private fps: number;
+    private maxFps: number;
+    private timer: Timer;
+    public settings: GameSettings;
+    private window: GameWindow;
+    public worldRenderer: WorldRenderer;
+    private screenRenderer: ScreenRenderer;
+    private itemRenderer: ItemRenderer;
+    private ingameOverlay: IngameOverlay;
+    private commandHandler: CommandHandler;
+    private frames: number;
+    private lastTime: number;
+    private fontRenderer: FontRenderer;
+    private grassColorizer: GrassColorizer;
+    public particleRenderer: ParticleRenderer;
+    private soundManager: SoundManager;
+    private running: boolean;
+    private session: Session;
 
     static VERSION = "Minecraft Beta 1.2_02"
     static URL_GITHUB = "https://github.com/craftycodie/js-minecraft";
@@ -50,13 +92,44 @@ export default class Minecraft {
     constructor(canvasWrapperId, resources) {
         this.resources = resources;
 
-        NewWorld.Construct(new JavaFile(new JavaString('/saves/')), 'World1').then(async world => {
+        // NewWorld.Construct(new JavaFile(new JavaString('/saves/')), 'World1').then(async world => {
+        //     this.newWorld = world;
+        //     Minecraft.newWorld = world;
+        //     // await world.saveLevel();
+        //     await this.newWorld.spawnPlayer(new EntityPlayerSP(world, new NewSession('craftycodie', 'foo'), 0))
+        //     await world.saveWorld(true, null)
+        //     console.log('saved the world.');
+
+        //     // await existsAsync('/saves/World1/1')
+        //     // console.log({world})
+        // })
+
+        const foo = async () => { 
+            const world = await main() 
+            this.newWorld = world;
             Minecraft.newWorld = world;
-            await world.saveLevel();
-            await world.saveWorld(true)
-            console.log('saved the world.');
-            // console.log({world})
-        })
+        };
+
+        foo();
+
+        // const main = async () => {
+        //     const testFile = new File(new JavaString('/test/test.txt'));
+        //     await testFile.getParentFile().mkdirs();
+
+        //     await testFile.delete();
+
+        //     const fos = await FileOutputStream.Construct(testFile);
+        //     const dos = new DataOutputStream(fos);
+        //     await dos.writeUTF('Test Test Among Us');
+        //     await fos.close();
+
+        //     const fis = await FileInputStream.Construct(testFile);
+        //     const dis = new DataInputStream(fis);
+        //     console.log({fileContents: await dis.readUTF()})
+        //     await fis.close();
+        // }
+
+        // main();
 
         this.currentScreen = null;
         this.loadingScreen = null;
@@ -129,7 +202,7 @@ export default class Minecraft {
         this.requestNextFrame();
     }
 
-    loadWorld(world) {
+    async loadWorld(world) {
         if (world === null) {
             this.worldRenderer.reset();
             this.itemRenderer.reset();
@@ -179,7 +252,7 @@ export default class Minecraft {
             this.world.addEntity(this.player);
 
             // Load spawn chunks and respawn player
-            this.world.loadSpawnChunks();
+            await this.world.loadSpawnChunks();
             this.player.respawn();
         }
     }
@@ -197,15 +270,29 @@ export default class Minecraft {
     }
 
     requestNextFrame() {
-        requestAnimationFrame(() => {
+        // console.log('requestNextFrame')
+        // return await new Promise<void>(resolve => {
+        requestAnimationFrame(async () => {
+            // console.log('requestAnimationFrame start')
             if (this.running) {
+                await this.onLoop();
                 this.requestNextFrame();
-                this.onLoop();
             }
+            // console.log('requestAnimationFrame finish')
+
+            // resolve();
         });
     }
+    // );
+        // requestAnimationFrame(async () => {
+        //     if (this.running) {
+        //         this.requestNextFrame();
+        //         await this.onLoop();
+        //     }
+        // });
+    // }
 
-    onLoop() {
+    async onLoop() {
         // Update the timer
         if (this.isPaused() && this.isInGame()) {
             let prevPartialTicks = this.timer.partialTicks;
@@ -217,11 +304,11 @@ export default class Minecraft {
 
         // Call the tick to reach updates 20 per seconds
         for (let i = 0; i < this.timer.ticks; i++) {
-            this.onTick();
+            await this.onTick();
         }
 
         // Render the game
-        this.onRender(this.timer.partialTicks);
+        await this.onRender(this.timer.partialTicks);
 
         // Increase rendered frame
         this.frames++;
@@ -235,7 +322,7 @@ export default class Minecraft {
         }
     }
 
-    onRender(partialTicks) {
+    async onRender(partialTicks) {
         if (this.isInGame()) {
             // Player rotation
             if (this.hasInGameFocus()) {
@@ -245,13 +332,13 @@ export default class Minecraft {
             }
 
             // Update lights
-            while (this.world.updateLights()) {
+            while (await this.world.updateLights()) {
                 // Empty
             }
 
             // Render the game
             if (this.isInGame() && !this.isPaused()) {
-                this.worldRenderer.render(partialTicks);
+                await this.worldRenderer.render(partialTicks);
             }
         }
 
@@ -300,7 +387,9 @@ export default class Minecraft {
         this.itemRenderer.rebuildAllItems();
     }
 
-    onTick() {
+    private loadingPromise: Promise<void>;
+
+    async onTick() {
         if (this.isInGame() && !this.isPaused()) {
             // Tick overlay
             this.ingameOverlay.onTick();
@@ -309,7 +398,7 @@ export default class Minecraft {
             this.world.onTick();
 
             // Tick renderer
-            this.worldRenderer.onTick();
+            await this.worldRenderer.onTick();
 
             // Tick particle renderer
             this.particleRenderer.onTick();
@@ -329,24 +418,39 @@ export default class Minecraft {
             let requiredChunks = this.isSingleplayer() ? Math.pow(renderDistance * 2 - 1, 2) : 1;
             let loadedChunks = this.world.getChunkProvider().getChunks().size;
 
-            // Load chunks and count
-            setTimeout(() => {
+            const func = async () => {
+                const chunkLoaders = [];
                 for (let x = -renderDistance + 1; x < renderDistance; x++) {
                     for (let z = -renderDistance + 1; z < renderDistance; z++) {
-                        this.world.getChunkAt(cameraChunkX + x, cameraChunkZ + z);
+                        chunkLoaders.push(this.world.getChunkAt(cameraChunkX + x, cameraChunkZ + z));
+                        let progress = 1 / requiredChunks * Math.max(0, loadedChunks - this.world.lightUpdateQueue.length / 1000);
+                        this.loadingScreen.setProgress(progress);
                     }
                 }
-            }, 0);
+                await Promise.all(chunkLoaders);
+                console.log('done loading chunks')
+                this.loadingScreen = null;
+                this.displayScreen(null);
+            }
+
+            // Load chunks and count
+            // setTimeout(async () => {
+            if (!this.loadingPromise)
+                this.loadingPromise = func().then(() => {
+                    this.loadingScreen = null;
+                    this.displayScreen(null);
+                });
+            // }, 0);
 
             // Update progress
             let progress = 1 / requiredChunks * Math.max(0, loadedChunks - this.world.lightUpdateQueue.length / 1000);
-            this.loadingScreen.setProgress(progress);
+            // this.loadingScreen.setProgress(progress);
 
             // Finish loading
             if (progress >= 0.99) {
                 this.loadingScreen = null;
                 this.displayScreen(null);
-                this.soundManager.playMusic('hal', 1);
+                //this.soundManager.playMusic('hal', 1);
             }
         }
     }
@@ -382,7 +486,7 @@ export default class Minecraft {
         }
     }
 
-    onMouseClicked(button) {
+    async onMouseClicked(button) {
         if (this.window.isLocked()) {
             let hitResult = this.player.rayTrace(5, this.timer.partialTicks);
 
@@ -390,7 +494,7 @@ export default class Minecraft {
             if (button === 0) {
                 if (hitResult != null) {
                     // Get previous block
-                    let typeId = this.world.getBlockAt(hitResult.x, hitResult.y, hitResult.z);
+                    let typeId = await this.world.getBlockAt(hitResult.x, hitResult.y, hitResult.z);
                     let block = Block.getById(typeId);
 
                     if (typeId !== 0) {
@@ -410,7 +514,7 @@ export default class Minecraft {
                         this.particleRenderer.spawnBlockBreakParticle(this.world, hitResult.x, hitResult.y, hitResult.z);
 
                         // Destroy block
-                        this.world.setBlockAt(hitResult.x, hitResult.y, hitResult.z, 0);
+                        await this.world.setBlockAt(hitResult.x, hitResult.y, hitResult.z, 0);
                     }
                 }
 
@@ -420,7 +524,7 @@ export default class Minecraft {
             // Pick block
             if (button === 1) {
                 if (hitResult != null) {
-                    let typeId = this.world.getBlockAt(hitResult.x, hitResult.y, hitResult.z);
+                    let typeId = await this.world.getBlockAt(hitResult.x, hitResult.y, hitResult.z);
                     if (typeId !== 0) {
                         // Switch to slot if item is already in hotbar
                         for (const item of this.player.inventory.items) {
@@ -451,11 +555,11 @@ export default class Minecraft {
                         let typeId = this.player.inventory.getItemInSelectedSlot();
 
                         // Get previous block
-                        let prevTypeId = this.world.getBlockAt(x, y, z);
+                        let prevTypeId = await this.world.getBlockAt(x, y, z);
 
                         if (typeId !== 0 && prevTypeId !== typeId) {
                             // Place block
-                            this.world.setBlockAt(x, y, z, typeId);
+                            await this.world.setBlockAt(x, y, z, typeId);
 
                             // Swing player arm
                             this.player.swingArm();

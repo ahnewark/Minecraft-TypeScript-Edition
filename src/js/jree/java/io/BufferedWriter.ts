@@ -68,8 +68,8 @@ export class BufferedWriter extends Writer {
     }
 
     /** Writes a line separator. */
-    public newLine(): void {
-        this.write(System.lineSeparator());
+    public async newLine(): Promise<void> {
+        await this.write(System.lineSeparator());
     }
 
     /** Writes an array of characters. */
