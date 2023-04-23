@@ -69,7 +69,7 @@ export  class DataWatcher extends JavaObject {
 			await dataOutputStream0.writeShort((watchableObject1.getObject() as short));
 			break;
 		case 2:
-			await dataOutputStream0.writeInt((watchableObject1.getObject() as int));
+			await dataOutputStream0.writeInt(Math.floor(watchableObject1.getObject()));
 			break;
 		case 3:
 			await dataOutputStream0.writeFloat((watchableObject1.getObject() as float));

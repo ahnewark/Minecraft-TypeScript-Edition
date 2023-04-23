@@ -359,7 +359,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 						this.attackedAtYaw = (java.lang.Math.atan2(d6, d4) * 180.0 / java.lang.Math.PI as float as double) as float - this.rotationYaw;
 						this.knockBack(entity1, i2, d4, d6);
 					} else {
-						this.attackedAtYaw = ((java.lang.Math.random() * 2.0) as int * 180) as float;
+						this.attackedAtYaw = (Math.floor(java.lang.Math.random() * 2.0) * 180) as float;
 					}
 				}
 
@@ -448,7 +448,7 @@ export  class EntityLiving extends Entity implements IEntityLiving {
 	}
 
 	protected async fall(f1: float):  Promise<void> {
-		let  i2: int = java.lang.Math.ceil((f1 - 3.0) as double) as int;
+		let  i2: int = java.lang.Math.ceil((f1 - 3.0) as double);
 		if(i2 > 0) {
 			await this.attackEntityFrom(undefined as Entity, i2);
 			let  i3: int = await this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.2 as double - this.yOffset as double), MathHelper.floor_double(this.posZ));

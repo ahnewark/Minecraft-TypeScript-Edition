@@ -38,9 +38,9 @@ export  class WorldGenClay extends WorldGenerator {
 				let  d28: double = (MathHelper.sin(i19 * java.lang.Math.PI / this.numberOfBlocks) + 1.0) * d26 + 1.0;
 				let  d30: double = (MathHelper.sin(i19 * java.lang.Math.PI / this.numberOfBlocks) + 1.0) * d26 + 1.0;
 
-				for(let  i32: int = (d20 - d28 / 2.0) as int; i32 <= (d20 + d28 / 2.0); ++i32) {
-					for(let  i33: int = (d22 - d30 / 2.0) as int; i33 <= (d22 + d30 / 2.0); ++i33) {
-						for(let  i34: int = (d24 - d28 / 2.0) as int; i34 <= (d24 + d28 / 2.0); ++i34) {
+				for(let  i32: int = Math.floor(d20 - d28 / 2.0); i32 <= (d20 + d28 / 2.0); ++i32) {
+					for(let  i33: int = Math.floor(d22 - d30 / 2.0); i33 <= (d22 + d30 / 2.0); ++i33) {
+						for(let  i34: int = Math.floor(d24 - d28 / 2.0); i34 <= (d24 + d28 / 2.0); ++i34) {
 							let  d35: double = (i32 + 0.5 - d20) / (d28 / 2.0);
 							let  d37: double = (i33 + 0.5 - d22) / (d30 / 2.0);
 							let  d39: double = (i34 + 0.5 - d24) / (d28 / 2.0);

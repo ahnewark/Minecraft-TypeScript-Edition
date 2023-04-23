@@ -5,7 +5,6 @@ import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Random } from "../java/util/Random";
 import { Block } from "./Block";
-import { Block } from "./Block";
 
 export  class WorldGenLiquids extends WorldGenerator {
 	private liquidBlockId:  number;
@@ -41,19 +40,19 @@ export  class WorldGenLiquids extends WorldGenerator {
 			}
 
 			let  i7: number = 0;
-			if(world1.isAirBlock(i3 - 1, i4, i5)) {
+			if(await world1.isAirBlock(i3 - 1, i4, i5)) {
 				++i7;
 			}
 
-			if(world1.isAirBlock(i3 + 1, i4, i5)) {
+			if(await world1.isAirBlock(i3 + 1, i4, i5)) {
 				++i7;
 			}
 
-			if(world1.isAirBlock(i3, i4, i5 - 1)) {
+			if(await world1.isAirBlock(i3, i4, i5 - 1)) {
 				++i7;
 			}
 
-			if(world1.isAirBlock(i3, i4, i5 + 1)) {
+			if(await world1.isAirBlock(i3, i4, i5 + 1)) {
 				++i7;
 			}
 

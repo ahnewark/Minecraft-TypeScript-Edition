@@ -35,9 +35,9 @@ export  class WorldChunkManagerHell extends WorldChunkManager {
 		return this.field_4195_d;
 	}
 
-	public getTemperatures(d1: Float64Array, i2: int, i3: int, i4: int, i5: int):  Float64Array {
+	public getTemperatures(d1: number[], i2: int, i3: int, i4: int, i5: int):  number[] {
 		if(d1 === undefined || d1.length < i4 * i5) {
-			d1 = new  Float64Array(i4 * i5);
+			d1 = new Array<number>(i4 * i5).fill(0);
 		}
 
 		d1.fill(this.field_4200_f, 0, i4 * i5);
@@ -47,8 +47,8 @@ export  class WorldChunkManagerHell extends WorldChunkManager {
 	public loadBlockGeneratorData(mobSpawnerBase1: MobSpawnerBase[]| undefined, i2: int, i3: int, i4: int, i5: int):  MobSpawnerBase[] | undefined {
 		if(mobSpawnerBase1 === undefined || mobSpawnerBase1.length < i4 * i5) {
 			mobSpawnerBase1 = new   Array<MobSpawnerBase>(i4 * i5);
-			this.temperature = new  Float64Array(i4 * i5);
-			this.humidity = new  Float64Array(i4 * i5);
+			this.temperature = new Array<number>(i4 * i5).fill(0);
+			this.humidity = new Array<number>(i4 * i5).fill(0);
 		}
 
 		mobSpawnerBase1.fill(this.field_4201_e, 0, i4 * i5);

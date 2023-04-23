@@ -52,27 +52,27 @@ export class NoiseGenerator2 {
 
 
 	private static wrap(d0: number):  number {
-		return d0 > 0.0 ? d0 as number : d0 as number - 1;
+		return d0 > 0.0 ? d0 : d0 - 1;
 	}
 
 	private static func_4156_a(i0: number[], d1: number, d3: number):  number {
-		return i0[0] as number * d1 + i0[1] as number * d3;
+		return i0[0] * d1 + i0[1] * d3;
 	}
 
-	public func_4157_a(d1: Float64Array, d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number):  void {
+	public func_4157_a(d1: number[], d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number):  void {
 		let  i14: number = 0;
 
 		for(let  i15: number = 0; i15 < i6; ++i15) {
-			let  d16: number = (d2 + i15 as number) * d8 + this.field_4292_a;
+			let  d16: number = (d2 + i15) * d8 + this.field_4292_a;
 
 			for(let  i18: number = 0; i18 < i7; ++i18) {
 				let  d19: number = (d4 + i18 as number) * d10 + this.field_4291_b;
 				let  d27: number = (d16 + d19) * NoiseGenerator2.field_4294_f;
 				let  i29: number = NoiseGenerator2.wrap(d16 + d27);
 				let  i30: number = NoiseGenerator2.wrap(d19 + d27);
-				let  d31: number = (i29 + i30) as number * NoiseGenerator2.field_4293_g;
-				let  d33: number = i29 as number - d31;
-				let  d35: number = i30 as number - d31;
+				let  d31: number = (i29 + i30) * NoiseGenerator2.field_4293_g;
+				let  d33: number = i29 - d31;
+				let  d35: number = i30 - d31;
 				let  d37: number = d16 - d33;
 				let  d39: number = d19 - d35;
 				let  b41: number;
@@ -85,8 +85,8 @@ export class NoiseGenerator2 {
 					b42 = 1;
 				}
 
-				let  d43: number = d37 - b41 as number + NoiseGenerator2.field_4293_g;
-				let  d45: number = d39 - b42 as number + NoiseGenerator2.field_4293_g;
+				let  d43: number = d37 - b41 + NoiseGenerator2.field_4293_g;
+				let  d45: number = d39 - b42 + NoiseGenerator2.field_4293_g;
 				let  d47: number = d37 - 1.0 + 2.0 * NoiseGenerator2.field_4293_g;
 				let  d49: number = d39 - 1.0 + 2.0 * NoiseGenerator2.field_4293_g;
 				let  i51: number = i29 & 255;

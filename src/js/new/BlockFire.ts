@@ -12,8 +12,8 @@ import { Block } from "./Block";
 import { Random } from "../java/util/Random";
 
 export  class BlockFire extends Block {
-	private chanceToEncourageFire:  number[] = new   Array<number>(256);
-	private abilityToCatchFire:  number[] = new   Array<number>(256);
+	private chanceToEncourageFire:  number[] = new   Array<number>(256).fill(0);
+	private abilityToCatchFire:  number[] = new   Array<number>(256).fill(0);
 
 	public constructor(i1: int, i2: int) {
 		super(i1, i2, MaterialRegistry.fire);

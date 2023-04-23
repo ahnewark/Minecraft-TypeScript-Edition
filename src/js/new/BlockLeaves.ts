@@ -9,6 +9,7 @@ import { BlockLeavesBase } from "./BlockLeavesBase";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { BlockRegistry } from './static/BlockRegistry';
 import { Random } from "../java/util/Random";
+import { Block } from "./Block";
 
 export  class BlockLeaves extends BlockLeavesBase {
 	private baseIndexInPNG:  int;
@@ -63,7 +64,7 @@ export  class BlockLeaves extends BlockLeavesBase {
 				let  i10: int = b9 * b9;
 				let  i11: int = b9 / 2;
 				if(this.adjacentTreeBlocks === undefined) {
-					this.adjacentTreeBlocks = new   Array<number>(b9 * b9 * b9);
+					this.adjacentTreeBlocks = new   Array<number>(b9 * b9 * b9).fill(0);
 				}
 
 				let  i12: int;

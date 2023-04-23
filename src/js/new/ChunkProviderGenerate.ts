@@ -37,19 +37,19 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 	public field_921_b:  NoiseGeneratorOctaves;
 	public mobSpawnerNoise:  NoiseGeneratorOctaves;
 	private worldObj:  World;
-	private field_4180_q:  Float64Array;
-	private sandNoise:  Float64Array = new Float64Array(256);
-	private gravelNoise:  Float64Array = new Float64Array(256);
-	private stoneNoise:  Float64Array = new Float64Array(256);
+	private field_4180_q:  number[];
+	private sandNoise:  number[] = new Array<number>(256).fill(0);
+	private gravelNoise:  number[] = new Array<number>(256).fill(0);
+	private stoneNoise:  number[] = new Array<number>(256).fill(0);
 	private field_902_u:  MapGenBase = new  MapGenCaves();
 	private biomesForGeneration:  MobSpawnerBase[];
-	protected field_4185_d: Float64Array;
-	protected field_4184_e: Float64Array;
-	protected field_4183_f: Float64Array;
-	protected field_4182_g: Float64Array;
-	protected field_4181_h: Float64Array;
+	protected field_4185_d: number[];
+	protected field_4184_e: number[];
+	protected field_4183_f: number[];
+	protected field_4182_g: number[];
+	protected field_4181_h: number[];
 	protected field_914_i: number[] = [];
-	private generatedTemperatures:  Float64Array;
+	private generatedTemperatures:  number[];
 
 	public constructor(world1: World| undefined, j2: long) {
         this.worldObj = world1;
@@ -64,7 +64,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		this.mobSpawnerNoise = new  NoiseGeneratorOctaves(this.rand, 8);
 	}
 
-	public generateTerrain(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined, d5: Float64Array):  void {
+	public generateTerrain(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined, d5: number[]):  void {
 		let  b6: number = 4;
 		let  b7: number = 64;
 		let  i8: number = b6 + 1;
@@ -174,7 +174,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 									}
 
 									if(z11) {
-=										b15 = Block.sand.blockID;
+										b15 = Block.sand.blockID;
 										b16 = Block.sand.blockID;
 									}
 								}
@@ -206,7 +206,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		let  b3: Int8Array = new Int8Array(32768);
 		let  chunk4: Chunk = new  Chunk(this.worldObj, b3, i1, i2);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, i1 * 16, i2 * 16, 16, 16);
-		let  d5: Float64Array = this.worldObj.getWorldChunkManager().temperature;
+		let  d5: number[] = this.worldObj.getWorldChunkManager().temperature;
 		this.generateTerrain(i1, i2, b3, this.biomesForGeneration, d5);
 		this.replaceBlocksForBiome(i1, i2, b3, this.biomesForGeneration);
 		this.field_902_u.func_867_a(this, this.worldObj, i1, i2, b3);
@@ -214,15 +214,15 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		return chunk4;
 	}
 
-	private func_4061_a(d1: Float64Array, i2: number, i3: number, i4: number, i5: number, i6: number, i7: number):  Float64Array {
+	private func_4061_a(d1: number[], i2: number, i3: number, i4: number, i5: number, i6: number, i7: number):  number[] {
 		if(d1 === undefined) {
-			d1 = new Float64Array(i5 * i6 * i7);
+			d1 = new Array<number>(i5 * i6 * i7).fill(0);
 		}
 
 		let  d8: number = 684.412;
 		let  d10: number = 684.412;
-		let  d12: Float64Array = this.worldObj.getWorldChunkManager().temperature;
-		let  d13: Float64Array = this.worldObj.getWorldChunkManager().humidity;
+		let  d12: number[] = this.worldObj.getWorldChunkManager().temperature;
+		let  d13: number[] = this.worldObj.getWorldChunkManager().humidity;
 		this.field_4182_g = this.field_922_a.func_4109_a(this.field_4182_g, i2, i4, i5, i7, 1.121, 1.121, 0.5);
 		this.field_4181_h = this.field_921_b.func_4109_a(this.field_4181_h, i2, i4, i5, i7, 200.0, 200.0, 0.5);
 		this.field_4185_d = this.field_910_m.generateNoiseOctaves(this.field_4185_d, i2 as number, i3 as number, i4 as number, i5, i6, i7, d8 / 80.0, d10 / 160.0, d8 / 80.0);
@@ -539,7 +539,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 				i23 = i16 - (i4 + 8);
 				i19 = i17 - (i5 + 8);
 				let  i20: number = await this.worldObj.findTopSolidBlock(i16, i17);
-				let  d21: number = this.generatedTemperatures[i23 * 16 + i19] - (i20 - 64) as number / 64.0 * 0.3;
+				let  d21: number = this.generatedTemperatures[i23 * 16 + i19] - (i20 - 64) / 64.0 * 0.3;
 				if(d21 < 0.5 && i20 > 0 && i20 < 128 && (await this.worldObj.isAirBlock(i16, i20, i17)) && (await this.worldObj.getBlockMaterial(i16, i20 - 1, i17)).getIsSolid() && await this.worldObj.getBlockMaterial(i16, i20 - 1, i17) !== MaterialRegistry.ice) {
 					await this.worldObj.setBlockWithNotify(i16, i20, i17, Block.snow.blockID);
 				}

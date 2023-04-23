@@ -20,20 +20,20 @@ export  class NoiseGeneratorOctaves2 extends NoiseGenerator {
 		}
 	}
 
-	public func_4112_a(d1: Float64Array, d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number):  Float64Array {
+	public func_4112_a(d1: number[], d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number):  number[] {
 		return this.func_4111_a(d1, d2, d4, i6, i7, d8, d10, d12, 0.5);
 	}
 
-	public func_4111_a(d1: Float64Array, d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number, d14: number):  Float64Array {
+	public func_4111_a(d1: number[], d2: number, d4: number, i6: number, i7: number, d8: number, d10: number, d12: number, d14: number):  number[] {
 		d8 /= 1.5;
 		d10 /= 1.5;
+
 		if(d1 && d1.length >= i6 * i7) {
-			for(let  i16: number = 0; i16 < d1.length; ++i16) {
-				d1[i16] = 0.0;
-			}
+			d1.fill(0);
 		} else {
-			d1 = new Float64Array(i6 * i7);
+			d1 = new Array<number>(i6 * i7).fill(0);
 		}
+
 
 		let  d21: number = 1.0;
 		let  d18: number = 1.0;
@@ -43,7 +43,7 @@ export  class NoiseGeneratorOctaves2 extends NoiseGenerator {
 			d18 *= d12;
 			d21 *= d14;
 		}
-
+		
 		return d1;
 	}
 }

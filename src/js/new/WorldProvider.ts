@@ -20,9 +20,9 @@ export  class WorldProvider extends JavaObject {
 	public field_4220_c:  boolean = false;
 	public isHellWorld:  boolean = false;
 	public field_6478_e:  boolean = false;
-	public lightBrightnessTable:  Float64Array = new   Float64Array(16);
+	public lightBrightnessTable:  number[] = new Array<number>(16).fill(0);
 	public worldType:  int = 0;
-	private field_4217_f:  Float64Array = new   Float64Array(4);
+	private field_4217_f:  number[] = new Array<number>(4).fill(0);
 
 	public registerWorld(world1: World):  void {
 		this.worldObj = world1;
@@ -53,8 +53,8 @@ export  class WorldProvider extends JavaObject {
 	}
 
 	public async canCoordinateBeSpawn(i1: int, i2: int):  Promise<boolean> {
-		console.error('WorldProvider.canCoordinateBeSpawn is not yet implemented.')
-		return true;
+		// console.error('WorldProvider.canCoordinateBeSpawn is not yet implemented.')
+		// return true;
 		let  i3: int = await this.worldObj.getFirstUncoveredBlock(i1, i2);
 		// console.log('checking spawn block', {x: i1, y: i2, block: i3, sand: Block.sand.blockID})
 		// // TODO: Fix
@@ -64,7 +64,7 @@ export  class WorldProvider extends JavaObject {
 	}
 
 	public calculateCelestialAngle(j1: long, f3: float):  float {
-		let  i4: int = (Number(j1) % 24000) as int;
+		let  i4: int = Math.floor(Number(j1) % 24000);
 		let  f5: float = (i4 as float + f3) / 24000.0 - 0.25;
 		if(f5 < 0.0) {
 			++f5;
@@ -80,7 +80,7 @@ export  class WorldProvider extends JavaObject {
 		return f5;
 	}
 
-	public func_4097_b(f1: float, f2: float):  Float64Array | undefined {
+	public func_4097_b(f1: float, f2: float):  number[] | undefined {
 		let  f3: float = 0.4;
 		let  f4: float = MathHelper.cos(f1 * java.lang.Math.PI as float * 2.0) - 0.0;
 		let  f5: float = -0.0;

@@ -398,8 +398,8 @@ export  class World implements IBlockAccess {
 			
 			if(this.chunkProvider instanceof ChunkProviderLoadOrGenerate) {
 				let  chunkProviderLoadOrGenerate2: ChunkProviderLoadOrGenerate = this.chunkProvider as ChunkProviderLoadOrGenerate;
-				let  i3: int = MathHelper.floor_float((entityPlayer1.posX as int) as float) >> 4;
-				let  i4: int = MathHelper.floor_float((entityPlayer1.posZ as int) as float) >> 4;
+				let  i3: int = MathHelper.floor_float(Math.floor(entityPlayer1.posX) as float) >> 4;
+				let  i4: int = MathHelper.floor_float(Math.floor(entityPlayer1.posZ) as float) >> 4;
 				chunkProviderLoadOrGenerate2.func_21110_c(i3, i4);
 			}
 
@@ -952,19 +952,19 @@ export  class World implements IBlockAccess {
 					}
 
 					let  vec3D30: Vec3D = Vec3D.createVector(vec3D1.xCoord, vec3D1.yCoord, vec3D1.zCoord);
-					i7 = (vec3D30.xCoord = MathHelper.floor_double(vec3D1.xCoord) as double) as int;
+					i7 = Math.floor(vec3D30.xCoord = MathHelper.floor_double(vec3D1.xCoord) as double);
 					if(b35 === 5) {
 						--i7;
 						++vec3D30.xCoord;
 					}
 
-					i8 = (vec3D30.yCoord = MathHelper.floor_double(vec3D1.yCoord) as double) as int;
+					i8 = Math.floor(vec3D30.yCoord = MathHelper.floor_double(vec3D1.yCoord) as double);
 					if(b35 === 1) {
 						--i8;
 						++vec3D30.yCoord;
 					}
 
-					i9 = (vec3D30.zCoord = MathHelper.floor_double(vec3D1.zCoord) as double) as int;
+					i9 = Math.floor(vec3D30.zCoord = MathHelper.floor_double(vec3D1.zCoord) as double);
 					if(b35 === 3) {
 						--i9;
 						++vec3D30.zCoord;
@@ -1130,7 +1130,7 @@ export  class World implements IBlockAccess {
 			f3 = 1.0;
 		}
 
-		return (f3 * 11.0) as int;
+		return Math.floor(f3 * 11.0);
 	}
 
 	public func_4079_a(entity1: Entity| undefined, f2: float):  Vec3D | undefined {
@@ -1983,7 +1983,7 @@ export  class World implements IBlockAccess {
 		let  i4: int = MathHelper.floor_double(entity1.posX);
 		let  i5: int = MathHelper.floor_double(entity1.posY);
 		let  i6: int = MathHelper.floor_double(entity1.posZ);
-		let  i7: int = (f3 + 16.0) as int;
+		let  i7: int = Math.floor(f3 + 16.0);
 		let  i8: int = i4 - i7;
 		let  i9: int = i5 - i7;
 		let  i10: int = i6 - i7;
@@ -1998,7 +1998,7 @@ export  class World implements IBlockAccess {
 		let  i6: int = MathHelper.floor_double(entity1.posX);
 		let  i7: int = MathHelper.floor_double(entity1.posY);
 		let  i8: int = MathHelper.floor_double(entity1.posZ);
-		let  i9: int = (f5 + 8.0) as int;
+		let  i9: int = Math.floor(f5 + 8.0);
 		let  i10: int = i6 - i9;
 		let  i11: int = i7 - i9;
 		let  i12: int = i8 - i9;

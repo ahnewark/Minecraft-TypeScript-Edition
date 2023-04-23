@@ -6,8 +6,6 @@ import { Item } from "./Item";
 import { EntityPlayer } from "./EntityPlayer";
 import { Block } from "./Block";
 
-import { Block } from "./Block";
-
 export  class ItemBlock extends Item {
 	private blockID:  int;
 

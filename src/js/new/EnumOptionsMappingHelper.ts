@@ -1,7 +1,7 @@
 import { EnumOptions } from "./EnumOptions";
 
 export class EnumOptionsMappingHelper {
-	public static readonly enumOptionsMappingHelperArray:  number[] = new   Array<number>(EnumOptions.values().length);
+	public static readonly enumOptionsMappingHelperArray:  number[] = new   Array<number>(EnumOptions.values().length).fill(0);
 
 	static {
 		// try {

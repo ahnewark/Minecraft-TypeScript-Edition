@@ -24,9 +24,9 @@ export  class PathEntity extends JavaObject {
 	}
 
 	public getPosition(entity1: Entity| undefined):  Vec3D | undefined {
-		let  d2: double = this.points[this.pathIndex].xCoord as double + ((entity1.width + 1.0) as int) as double * 0.5;
+		let  d2: double = this.points[this.pathIndex].xCoord as double + (Math.floor(entity1.width + 1.0)) as double * 0.5;
 		let  d4: double = this.points[this.pathIndex].yCoord as double;
-		let  d6: double = this.points[this.pathIndex].zCoord as double + ((entity1.width + 1.0) as int) as double * 0.5;
+		let  d6: double = this.points[this.pathIndex].zCoord as double + (Math.floor(entity1.width + 1.0)) as double * 0.5;
 		return Vec3D.createVector(d2, d4, d6);
 	}
 }

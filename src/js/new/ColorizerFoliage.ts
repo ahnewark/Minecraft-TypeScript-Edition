@@ -7,12 +7,12 @@ import { JavaObject, int, double, java } from "../jree/index";
 
 
 export  class ColorizerFoliage {
-	private static readonly field_6529_a: number[] = new   Array<number>(65536);
+	private static readonly field_6529_a: number[] = new   Array<number>(65536).fill(0);
 
 	public static func_4146_a(d0: double, d2: double):  int {
 		d2 *= d0;
-		let  i4: int = ((1.0 - d0) * 255.0) as int;
-		let  i5: int = ((1.0 - d2) * 255.0) as int;
+		let  i4: int = Math.floor((1.0 - d0) * 255.0);
+		let  i5: int = Math.floor((1.0 - d2) * 255.0);
 		return ColorizerFoliage.field_6529_a[i5 << 8 | i4];
 	}
 

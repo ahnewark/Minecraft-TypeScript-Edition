@@ -87,6 +87,10 @@ export  class WorldGenDungeons extends WorldGenerator {
 						if(i15 === 1) {
 							await world1.setBlockWithNotify(i12, i4, i14, Block.crate.blockID);
 							let  tileEntityChest16: TileEntityChest = await world1.getBlockTileEntity(i12, i4, i14) as TileEntityChest;
+							// console.log({tileEntityChest16, i12, i4, i14})
+							if (!tileEntityChest16) {
+								continue;
+							}
 							let  i17: int = 0;
 
 							while(true) {
@@ -95,7 +99,7 @@ export  class WorldGenDungeons extends WorldGenerator {
 								}
 
 								let  itemStack18: ItemStack = this.pickCheckLootItem(random2);
-								if(itemStack18 !== undefined) {
+								if(itemStack18) {
 									await tileEntityChest16.setInventorySlotContents(random2.nextInt(tileEntityChest16.getSizeInventory()), itemStack18);
 								}
 
@@ -107,8 +111,9 @@ export  class WorldGenDungeons extends WorldGenerator {
 			}
 
 			await world1.setBlockWithNotify(i3, i4, i5, Block.mobSpawner.blockID);
-			let  tileEntityMobSpawner19: TileEntityMobSpawner = await world1.getBlockTileEntity(i3, i4, i5) as TileEntityMobSpawner;
-			tileEntityMobSpawner19.setMobID(this.pickMobSpawner(random2));
+			console.error('Generating a dungeon, but tile ents are broken currently.')
+			// let  tileEntityMobSpawner19: TileEntityMobSpawner = await world1.getBlockTileEntity(i3, i4, i5) as TileEntityMobSpawner;
+			// tileEntityMobSpawner19.setMobID(this.pickMobSpawner(random2));
 			return true;
 		} else {
 			return false;

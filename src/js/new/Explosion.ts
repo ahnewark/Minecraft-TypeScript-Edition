@@ -104,7 +104,7 @@ export  class Explosion {
 				d19 /= d39;
 				let  d40: double = await this.worldObj.func_675_a(vec3D31, entity33.boundingBox);
 				let  d41: double = (1.0 - d13) * d40;
-				await entity33.attackEntityFrom(this.exploder, ((d41 * d41 + d41) / 2.0 * 8.0 * this.explosionSize + 1.0) as int);
+				await entity33.attackEntityFrom(this.exploder, Math.floor((d41 * d41 + d41) / 2.0 * 8.0 * this.explosionSize + 1.0));
 				entity33.motionX += d15 * d41;
 				entity33.motionY += d17 * d41;
 				entity33.motionZ += d19 * d41;

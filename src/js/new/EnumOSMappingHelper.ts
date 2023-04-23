@@ -1,7 +1,7 @@
 import { EnumOS } from "./EnumOS";
 
 export class EnumOSMappingHelper {
-	public static readonly enumOSMappingArray:  number[] = new Array<number>(EnumOS.values().length);
+	public static readonly enumOSMappingArray:  number[] = new Array<number>(EnumOS.values().length).fill(0);
 
 	static {
 		// try {

@@ -28,16 +28,16 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 	public field_4177_a:  NoiseGeneratorOctaves | undefined;
 	public field_4176_b:  NoiseGeneratorOctaves | undefined;
 	private field_4164_n:  World | undefined;
-	private field_4163_o:  Float64Array;
-	private field_4162_p:  Float64Array = new  Float64Array(256);
-	private field_4161_q:  Float64Array = new   Float64Array(256);
-	private field_4160_r:  Float64Array = new   Float64Array(256);
+	private field_4163_o:  number[];
+	private field_4162_p:  number[] = new Array<number>(256).fill(0);
+	private field_4161_q:  number[] = new Array<number>(256).fill(0);
+	private field_4160_r:  number[] = new Array<number>(256).fill(0);
 	private field_4159_s:  MapGenBase | undefined = new  MapGenCavesHell();
-	protected field_4175_c: Float64Array;
-	protected field_4174_d: Float64Array;
-	protected field_4173_e: Float64Array;
-	protected field_4172_f: Float64Array;
-	protected field_4171_g: Float64Array;
+	protected field_4175_c: number[];
+	protected field_4174_d: number[];
+	protected field_4173_e: number[];
+	protected field_4172_f: number[];
+	protected field_4171_g: number[];
 
 	public constructor(world1: World| undefined, j2: long) {
 		super();
@@ -128,7 +128,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 			for(let  i8: int = 0; i8 < 16; ++i8) {
 				let  z9: boolean = this.field_4162_p[i7 + i8 * 16] + this.hellRNG.nextDouble() * 0.2 > 0.0;
 				let  z10: boolean = this.field_4161_q[i7 + i8 * 16] + this.hellRNG.nextDouble() * 0.2 > 0.0;
-				let  i11: int = (this.field_4160_r[i7 + i8 * 16] / 3.0 + 3.0 + this.hellRNG.nextDouble() * 0.25) as int;
+				let  i11: int = Math.floor(this.field_4160_r[i7 + i8 * 16] / 3.0 + 3.0 + this.hellRNG.nextDouble() * 0.25);
 				let  i12: int = -1;
 				let  b13: byte = Block.bloodStone.blockID as byte;
 				let  b14: byte = Block.bloodStone.blockID as byte;
@@ -200,9 +200,9 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 		return chunk4;
 	}
 
-	private func_4057_a(d1: Float64Array, i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  Float64Array {
+	private func_4057_a(d1: number[], i2: int, i3: int, i4: int, i5: int, i6: int, i7: int):  number[] {
 		if(!d1) {
-			d1 = new Float64Array(i5 * i6 * i7);
+			d1 = new Array<number>(i5 * i6 * i7).fill(0);
 		}
 
 		let  d8: double = 684.412;
@@ -214,7 +214,7 @@ export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 		this.field_4173_e = this.field_4168_j.generateNoiseOctaves(this.field_4173_e, i2 as double, i3 as double, i4 as double, i5, i6, i7, d8, d10, d8);
 		let  i12: int = 0;
 		let  i13: int = 0;
-		let  d14 = new Float64Array(i6);
+		let  d14 = new Array<number>(i6).fill(0);
 
 		let  i15: int;
 		for(i15 = 0; i15 < i6; ++i15) {

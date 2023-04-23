@@ -14,7 +14,7 @@ import { Block } from "./Block";
 export  class BlockFlowing extends BlockFluids {
 	protected field_460_a: int = 0;
 	protected field_459_b: boolean[] = new   Array<boolean>(4);
-	protected field_461_c: number[] = new   Array<number>(4);
+	protected field_461_c: number[] = new   Array<number>(4).fill(0);
 
 	public constructor(i1: int, material2: Material| undefined) {
 		super(i1, material2);

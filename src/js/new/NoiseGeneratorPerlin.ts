@@ -35,7 +35,7 @@ export  class NoiseGeneratorPerlin extends NoiseGenerator {
 			}
 		}
 
-		this.permutations = new   Array<number>(512);
+		this.permutations = new   Array<number>(512).fill(0);
 		this.xCoord = random.nextDouble() * 256.0;
 		this.yCoord = random.nextDouble() * 256.0;
 		this.zCoord = random.nextDouble() * 256.0;
@@ -91,9 +91,9 @@ export  class NoiseGeneratorPerlin extends NoiseGenerator {
 		return this.lerp(d23, this.lerp(d21, this.lerp(d19, this.grad(this.permutations[i26], d7, d9, d11), this.grad(this.permutations[i29], d7 - 1.0, d9, d11)), this.lerp(d19, this.grad(this.permutations[i27], d7, d9 - 1.0, d11), this.grad(this.permutations[i30], d7 - 1.0, d9 - 1.0, d11))), this.lerp(d21, this.lerp(d19, this.grad(this.permutations[i26 + 1], d7, d9, d11 - 1.0), this.grad(this.permutations[i29 + 1], d7 - 1.0, d9, d11 - 1.0)), this.lerp(d19, this.grad(this.permutations[i27 + 1], d7, d9 - 1.0, d11 - 1.0), this.grad(this.permutations[i30 + 1], d7 - 1.0, d9 - 1.0, d11 - 1.0))));
 	}
 
-	public lerp(d1: number, d3: number, d5: number):  number {
-		return d3 + d1 * (d5 - d3);
-	}
+	// public lerp(d1: number, d3: number, d5: number):  number {
+	// 	return d3 + d1 * (d5 - d3);
+	// }
 
 	public func_4110_a(i1: number, d2: number, d4: number):  number {
 		let  i6: number = i1 & 15;
@@ -102,18 +102,38 @@ export  class NoiseGeneratorPerlin extends NoiseGenerator {
 		return ((i6 & 1) === 0 ? d7 : -d7) + ((i6 & 2) === 0 ? d9 : -d9);
 	}
 
-	public grad(i1: number, d2: number, d4: number, d6: number):  number {
-		let  i8: number = i1 & 15;
-		let  d9: number = i8 < 8 ? d2 : d4;
-		let  d11: number = i8 < 4 ? d4 : (i8 !== 12 && i8 !== 14 ? d6 : d2);
-		return ((i8 & 1) === 0 ? d9 : -d9) + ((i8 & 2) === 0 ? d11 : -d11);
-	}
+	// public grad(i1: number, d2: number, d4: number, d6: number):  number {
+	// 	let  i8: number = i1 & 15;
+	// 	let  d9: number = i8 < 8 ? d2 : d4;
+	// 	let  d11: number = i8 < 4 ? d4 : (i8 !== 12 && i8 !== 14 ? d6 : d2);
+	// 	return ((i8 & 1) === 0 ? d9 : -d9) + ((i8 & 2) === 0 ? d11 : -d11);
+	// }
+
+	public lerp(x: number, a: number, b: number): number {
+        return a + x * (b - a);
+    }
+
+    public grad(hash: number, x: number, y: number, z: number): number {
+        let h = hash & 15;                                    // Take the hashed value and take the first 4 bits of it (15 == 0b1111)
+        let u = h < 8 /* 0b1000 */ ? x : y;                // If the most significant bit (MSB) of the hash is 0 then set u = x.  Otherwise y.
+
+        let v;                                             // In Ken Perlin's original implementation this was another conditional operator (?:).  I
+        // expanded it for readability.
+        if (h < 4 /* 0b0100 */)                                // If the first and second significant bits are 0 set v = y
+            v = y;
+        else if (h === 12 /* 0b1100 */ || h === 14 /* 0b1110*/)  // If the first and second significant bits are 1 set v = x
+            v = x;
+        else                                                  // If the first and second significant bits are not equal (0/1, 1/0) set v = z
+            v = z;
+
+        return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v); // Use the last 2 bits to decide if u and v are positive or negative.  Then return their addition.
+    }
 
 	public func_801_a(d1: number, d3: number):  number {
 		return this.generateNoise(d1, d3, 0.0);
 	}
 
-	public func_805_a(d1: Float64Array, d2: number, d4: number, d6: number, i8: number, i9: number, i10: number, d11: number, d13: number, d15: number, d17: number):  void {
+	public func_805_a(d1: number[], d2: number, d4: number, d6: number, i8: number, i9: number, i10: number, d11: number, d13: number, d15: number, d17: number):  void {
 		let  i10001: number;
 		let  i19: number;
 		let  i22: number;
@@ -136,25 +156,25 @@ export  class NoiseGeneratorPerlin extends NoiseGenerator {
 			let  d77: number = 1.0 / d17;
 
 			for(let  i30: number = 0; i30 < i8; ++i30) {
-				d31 = (d2 + i30 as number) * d11 + this.xCoord;
-				let  i78: number = d31 as number;
+				d31 = (d2 + i30) * d11 + this.xCoord;
+				let  i78: number = Math.floor(d31);
 				if(d31 < i78) {
 					--i78;
 				}
 
 				let  i34: number = i78 & 255;
-				d31 -= i78 as number;
+				d31 -= i78;
 				d35 = d31 * d31 * d31 * (d31 * (d31 * 6.0 - 15.0) + 10.0);
 
 				for(i37 = 0; i37 < i10; ++i37) {
-					d38 = (d6 + i37 as number) * d15 + this.zCoord;
-					i40 = d38 as number;
+					d38 = (d6 + i37) * d15 + this.zCoord;
+					i40 = Math.floor(d38);
 					if(d38 < i40) {
 						--i40;
 					}
 
 					i41 = i40 & 255;
-					d38 -= i40 as number;
+					d38 -= i40;
 					d42 = d38 * d38 * d38 * (d38 * (d38 * 6.0 - 15.0) + 10.0);
 					i19 = this.permutations[i34] + 0;
 					let  i66: number = this.permutations[i19] + i41;
@@ -163,6 +183,7 @@ export  class NoiseGeneratorPerlin extends NoiseGenerator {
 					d70 = this.lerp(d35, this.func_4110_a(this.permutations[i66], d31, d38), this.grad(this.permutations[i22], d31 - 1.0, 0.0, d38));
 					d73 = this.lerp(d35, this.grad(this.permutations[i66 + 1], d31, 0.0, d38 - 1.0), this.grad(this.permutations[i22 + 1], d31 - 1.0, 0.0, d38 - 1.0));
 					let  d79: number = this.lerp(d42, d70, d73);
+
 					i10001 = i75++;
 					d1[i10001] += d79 * d77;
 				}
@@ -185,34 +206,34 @@ export  class NoiseGeneratorPerlin extends NoiseGenerator {
 
 			for(i37 = 0; i37 < i8; ++i37) {
 				d38 = (d2 + i37 as number) * d11 + this.xCoord;
-				i40 = d38 as number;
+				i40 = Math.floor(d38);
 				if(d38 < i40) {
 					--i40;
 				}
 
 				i41 = i40 & 255;
-				d38 -= i40 as number;
+				d38 -= i40;
 				d42 = d38 * d38 * d38 * (d38 * (d38 * 6.0 - 15.0) + 10.0);
 
 				for(let  i44: number = 0; i44 < i10; ++i44) {
 					let  d45: number = (d6 + i44 as number) * d15 + this.zCoord;
-					let  i47: number = d45 as number;
+					let  i47: number = Math.floor(d45);
 					if(d45 < i47) {
 						--i47;
 					}
 
-					let  i48: number = i47 & 255;
+					let  i48: number = Math.floor(i47 & 255);
 					d45 -= i47 as number;
 					let  d49: number = d45 * d45 * d45 * (d45 * (d45 * 6.0 - 15.0) + 10.0);
 
 					for(let  i51: number = 0; i51 < i9; ++i51) {
 						let  d52: number = (d4 + i51 as number) * d13 + this.yCoord;
-						let  i54: number = d52 as number;
+						let  i54: number = Math.floor(d52);
 						if(d52 < i54) {
 							--i54;
 						}
 
-						let  i55: number = i54 & 255;
+						let  i55: number = Math.floor(i54 & 255);
 						d52 -= i54 as number;
 						let  d56: number = d52 * d52 * d52 * (d52 * (d52 * 6.0 - 15.0) + 10.0);
 						if(i51 === 0 || i55 !== i22) {

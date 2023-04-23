@@ -49,7 +49,7 @@ export  class BlockReed extends Block {
 	}
 
 	protected async checkBlockCoordValid(world1: World| undefined, i2: int, i3: int, i4: int):  Promise<void> {
-		if(!this.canBlockStay(world1, i2, i3, i4)) {
+		if(!await this.canBlockStay(world1, i2, i3, i4)) {
 			await this.dropBlockAsItem(world1, i2, i3, i4, await world1.getBlockMetadata(i2, i3, i4));
 			await world1.setBlockWithNotify(i2, i3, i4, 0);
 		}

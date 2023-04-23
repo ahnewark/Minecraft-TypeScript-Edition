@@ -32,13 +32,11 @@ export  class NoiseGeneratorOctaves extends NoiseGenerator {
 		return d5;
 	}
 
-	public generateNoiseOctaves(d1: Float64Array, d2: number, d4: number, d6: number, i8: number, i9: number, i10: number, d11: number, d13: number, d15: number):  Float64Array {
-		if(d1 === undefined) {
-			d1 = new  Float64Array(i8 * i9 * i10);
+	public generateNoiseOctaves(d1: number[], d2: number, d4: number, d6: number, i8: number, i9: number, i10: number, d11: number, d13: number, d15: number):  number[] {
+		if(!d1) {
+			d1 = new  Array<number>(i8 * i9 * i10).fill(0);
 		} else {
-			for(let  i17: number = 0; i17 < d1.length; ++i17) {
-				d1[i17] = 0.0;
-			}
+			d1.fill(0);
 		}
 
 		let  d20: number = 1.0;
@@ -51,7 +49,7 @@ export  class NoiseGeneratorOctaves extends NoiseGenerator {
 		return d1;
 	}
 
-	public func_4109_a(d1: Float64Array, i2: number, i3: number, i4: number, i5: number, d6: number, d8: number, d10: number):  Float64Array {
+	public func_4109_a(d1: number[], i2: number, i3: number, i4: number, i5: number, d6: number, d8: number, d10: number):  number[] {
 		return this.generateNoiseOctaves(d1, i2 as number, 10.0, i3 as number, i4, 1, i5, d6, 1.0, d8);
 	}
 }

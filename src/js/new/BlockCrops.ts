@@ -29,7 +29,7 @@ export  class BlockCrops extends BlockFlower {
 			let  i6: int = await world1.getBlockMetadata(i2, i3, i4);
 			if(i6 < 7) {
 				let  f7: float = await this.getGrowthRate(world1, i2, i3, i4);
-				if(random5.nextInt((100.0 / f7) as int) === 0) {
+				if(Math.floor(random5.nextInt((100.0 / f7))) === 0) {
 					++i6;
 					await world1.setBlockMetadataWithNotify(i2, i3, i4, i6);
 				}

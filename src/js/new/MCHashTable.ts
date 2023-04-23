@@ -53,7 +53,7 @@ export  class MCHashTable extends JavaObject {
 			let  hashEntry4: HashEntry[] = new   Array<HashEntry>(i1);
 			this.copyTo(hashEntry4);
 			this.slots = hashEntry4;
-			this.threshold = (i1 as float * this.growFactor) as int;
+			this.threshold = Math.floor(i1 as float * this.growFactor);
 		}
 	}
 

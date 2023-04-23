@@ -34,12 +34,12 @@ export  class WorldGenMinable extends WorldGenerator {
 			let  d26: number = random2.nextDouble() * this.numberOfBlocks as number / 16.0;
 			let  d28: number = (MathHelper.sin(i19 as number * java.lang.Math.PI as number / this.numberOfBlocks as number) + 1.0) as number * d26 + 1.0;
 			let  d30: number = (MathHelper.sin(i19 as number * java.lang.Math.PI as number / this.numberOfBlocks as number) + 1.0) as number * d26 + 1.0;
-			let  i32: number = (d20 - d28 / 2.0) as number;
-			let  i33: number = (d22 - d30 / 2.0) as number;
-			let  i34: number = (d24 - d28 / 2.0) as number;
-			let  i35: number = (d20 + d28 / 2.0) as number;
-			let  i36: number = (d22 + d30 / 2.0) as number;
-			let  i37: number = (d24 + d28 / 2.0) as number;
+			let  i32: number = Math.floor(d20 - d28 / 2.0) as number;
+			let  i33: number = Math.floor(d22 - d30 / 2.0) as number;
+			let  i34: number = Math.floor(d24 - d28 / 2.0) as number;
+			let  i35: number = Math.floor(d20 + d28 / 2.0) as number;
+			let  i36: number = Math.floor(d22 + d30 / 2.0) as number;
+			let  i37: number = Math.floor(d24 + d28 / 2.0) as number;
 
 			for(let  i38: number = i32; i38 <= i35; ++i38) {
 				let  d39: number = (i38 as number + 0.5 - d20) / (d28 / 2.0);

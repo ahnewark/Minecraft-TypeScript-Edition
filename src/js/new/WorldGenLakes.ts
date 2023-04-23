@@ -18,12 +18,12 @@ export  class WorldGenLakes extends WorldGenerator {
 	public async generate(world1: World, random2: Random, i3: number, i4: number, i5: number):  Promise<boolean> {
 		i3 -= 8;
 
-		for(i5 -= 8; i4 > 0 && world1.isAirBlock(i3, i4, i5); --i4) {
+		for(i5 -= 8; i4 > 0 && await world1.isAirBlock(i3, i4, i5); --i4) {
 		}
 
 		i4 -= 4;
 		let  z6: boolean[] = new   Array<boolean>(2048);
-		let  i7: number = random2.nextInt(4) + 4;
+		let  i7: number = Math.floor(random2.nextInt(4) + 4);
 
 		let  i8: number;
 		for(i8 = 0; i8 < i7; ++i8) {

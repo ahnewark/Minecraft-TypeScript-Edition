@@ -5,12 +5,12 @@ import { JavaObject, int, double, java } from "../jree/index";
 import { ColorizerFoliage } from "./ColorizerFoliage";
 
 export  class ColorizerGrass {
-	private static readonly field_6540_a:  number[] = new   Array<number>(65536);
+	private static readonly field_6540_a:  number[] = new   Array<number>(65536).fill(0);
 
 	public static func_4147_a(d0: double, d2: double):  int {
 		d2 *= d0;
-		let  i4: int = ((1.0 - d0) * 255.0) as int;
-		let  i5: int = ((1.0 - d2) * 255.0) as int;
+		let  i4: int = Math.floor((1.0 - d0) * 255.0);
+		let  i5: int = Math.floor((1.0 - d2) * 255.0);
 		return ColorizerGrass.field_6540_a[i5 << 8 | i4];
 	}
 

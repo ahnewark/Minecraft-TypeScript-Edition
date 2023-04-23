@@ -12,9 +12,9 @@ export class WorldChunkManager {
 	private field_4194_e:  NoiseGeneratorOctaves2;
 	private field_4193_f:  NoiseGeneratorOctaves2;
 	private field_4192_g:  NoiseGeneratorOctaves2;
-	public temperature:  Float64Array = new Float64Array(16*16);
-	public humidity:  Float64Array = new Float64Array(16*16);
-	public field_4196_c:  Float64Array;
+	public temperature:  number[] = new Array<number>(16*16).fill(0);
+	public humidity:  number[] = new Array<number>(16*16).fill(0);
+	public field_4196_c:  number[];
 	
     public field_4195_d:  MobSpawnerBase[];
 
@@ -55,6 +55,7 @@ export class WorldChunkManager {
 
 	public func_4072_b(i1: int, i2: int):  double {
 		this.temperature = this.field_4194_e.func_4112_a(this.temperature, i1 as double, i2 as double, 1, 1, 0.02500000037252903, 0.02500000037252903, 0.5);
+
 		return this.temperature[0];
 	}
 
@@ -63,9 +64,9 @@ export class WorldChunkManager {
 		return this.field_4195_d;
 	}
 
-	public getTemperatures(d1: Float64Array, i2: int, i3: int, i4: int, i5: int):  Float64Array {
+	public getTemperatures(d1: number[], i2: int, i3: int, i4: int, i5: int):  number[] {
 		if(d1 === undefined || d1.length < i4 * i5) {
-			d1 = new   Float64Array(i4 * i5);
+			d1 = new Array<number>(i4 * i5).fill(0);
 		}
 
 		d1 = this.field_4194_e.func_4112_a(d1, i2 as double, i3 as double, i4, i4, 0.02500000037252903, 0.02500000037252903, 0.25);
@@ -101,6 +102,7 @@ export class WorldChunkManager {
 		}
 
 		this.temperature = this.field_4194_e.func_4112_a(this.temperature, i2 as double, i3 as double, i4, i4, 0.02500000037252903, 0.02500000037252903, 0.25);
+
 		this.humidity = this.field_4193_f.func_4112_a(this.humidity, i2 as double, i3 as double, i4, i4, 0.05 as double, 0.05 as double, 0.3333333333333333);
 		this.field_4196_c = this.field_4192_g.func_4112_a(this.field_4196_c, i2 as double, i3 as double, i4, i4, 0.25, 0.25, 0.5882352941176471);
 		let  i6: int = 0;
@@ -113,7 +115,7 @@ export class WorldChunkManager {
 				let  d15: double = (this.temperature[i6] * 0.15 + 0.7) * d13 + d9 * d11;
 				d11 = 0.002;
 				d13 = 1.0 - d11;
-				let  d17: double = (this.humidity[i6] * 0.15 + 0.5) * d13 + d9 * d11;
+				let  d17 = (this.humidity[i6] * 0.15 + 0.5) * d13 + d9 * d11;
 				d15 = 1.0 - (1.0 - d15) * (1.0 - d15);
 				if(d15 < 0.0) {
 					d15 = 0.0;
@@ -133,6 +135,7 @@ export class WorldChunkManager {
 
 				this.temperature[i6] = d15;
 				this.humidity[i6] = d17;
+
 				mobSpawnerBase1[i6++] = MobSpawnerBase.getBiomeFromLookup(d15, d17);
 			}
 		}

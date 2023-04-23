@@ -30,7 +30,7 @@ export  class MapGenCaves extends MapGenBase {
 			z52 = true;
 		}
 
-		let  i25: number = random23.nextInt(i14 / 2) + i14 / 4;
+		let  i25: number = Math.floor(random23.nextInt(i14 / 2) + i14 / 4);
 
 		for(let  z26: boolean = random23.nextInt(6) === 0; i13 < i14; ++i13) {
 			let  d27: number = 1.5 + (MathHelper.sin(i13 as number * java.lang.Math.PI as number / i14 as number) * f10 * 1.0) as number;
@@ -68,12 +68,12 @@ export  class MapGenCaves extends MapGenBase {
 				}
 
 				if(d4 >= d17 - 16.0 - d27 * 2.0 && d8 >= d19 - 16.0 - d27 * 2.0 && d4 <= d17 + 16.0 + d27 * 2.0 && d8 <= d19 + 16.0 + d27 * 2.0) {
-					let  i53: number = MathHelper.floor_double(d4 - d27) - i1 * 16 - 1;
-					let  i34: number = MathHelper.floor_double(d4 + d27) - i1 * 16 + 1;
-					let  i54: number = MathHelper.floor_double(d6 - d29) - 1;
-					let  i36: number = MathHelper.floor_double(d6 + d29) + 1;
-					let  i55: number = MathHelper.floor_double(d8 - d27) - i2 * 16 - 1;
-					let  i38: number = MathHelper.floor_double(d8 + d27) - i2 * 16 + 1;
+					let  i53: number = Math.floor(MathHelper.floor_double(d4 - d27) - i1 * 16 - 1);
+					let  i34: number = Math.floor(MathHelper.floor_double(d4 + d27) - i1 * 16 + 1);
+					let  i54: number = Math.floor(MathHelper.floor_double(d6 - d29) - 1);
+					let  i36: number = Math.floor(MathHelper.floor_double(d6 + d29) + 1);
+					let  i55: number = Math.floor(MathHelper.floor_double(d8 - d27) - i2 * 16 - 1);
+					let  i38: number = Math.floor(MathHelper.floor_double(d8 + d27) - i2 * 16 + 1);
 					if(i53 < 0) {
 						i53 = 0;
 					}
@@ -105,7 +105,7 @@ export  class MapGenCaves extends MapGenBase {
 					for(i40 = i53; !z56 && i40 < i34; ++i40) {
 						for(let  i41: number = i55; !z56 && i41 < i38; ++i41) {
 							for(let  i42: number = i36 + 1; !z56 && i42 >= i54 - 1; --i42) {
-								i43 = (i40 * 16 + i41) * 128 + i42;
+								i43 = Math.floor((i40 * 16 + i41) * 128 + i42);
 								if(i42 >= 0 && i42 < 128) {
 									if(b3[i43] === Block.waterStill.blockID || b3[i43] === Block.waterMoving.blockID) {
 										z56 = true;
@@ -177,7 +177,7 @@ export  class MapGenCaves extends MapGenBase {
 			let  i15: number = 1;
 			if(this.rand.nextInt(4) === 0) {
 				this.func_870_a(i4, i5, b6, d9, d11, d13);
-				i15 += this.rand.nextInt(4);
+				i15 += Math.floor(this.rand.nextInt(4));
 			}
 
 			for(let  i16: number = 0; i16 < i15; ++i16) {

@@ -2,7 +2,7 @@
 import { java } from "../jree/index";
 
 export  class MathHelper {
-	private static SIN_TABLE:  Float64Array = new Float64Array(65536);
+	private static SIN_TABLE:  number[] = new Array<number>(65536).fill(0);
 
 	public static sin(f0: number):  number {
 		return MathHelper.SIN_TABLE[(f0 * 10430.378) & 65535];
