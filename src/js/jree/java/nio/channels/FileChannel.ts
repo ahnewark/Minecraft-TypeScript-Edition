@@ -35,7 +35,7 @@ import { NonWritableChannelException } from "./NonWritableChannelException";
 import { NonReadableChannelException } from "./NonReadableChannelException";
 import { IOException } from "../../io/IOException";
 import { Throwable } from "../../lang/Throwable";
-import { closeAsync, openAsync, readAsync } from "../../../../node/fs";
+import { closeAsync, openAsync, readAsync, writeAsync } from "../../../../node/fs";
 
 /** A channel for reading, writing, mapping, and manipulating a file. */
 export abstract class FileChannel extends AbstractInterruptibleChannel implements SeekableByteChannel,
@@ -108,14 +108,14 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
     // public tryLock(position: int, size: int, shared: boolean): FileLock;
 
     /** Writes a sequence of bytes to this channel from the given buffer. */
-    public /** abstract */ write(src: ByteBuffer): int;
+    public /** abstract */ async write(src: ByteBuffer): Promise<int>;
     /** Writes a sequence of bytes to this channel from the given buffers. */
-    public write(src: ByteBuffer[]): long;
+    public async write(src: ByteBuffer[]): Promise<long>;
     /** Writes a sequence of bytes to this channel from a subsequence of the given buffers. */
-    public /** abstract */ write(src: ByteBuffer[], offset: int, length: int): long;
+    public /** abstract */ async write(src: ByteBuffer[], offset: int, length: int): Promise<long>;
     /** Writes a sequence of bytes to this channel from the given buffer, starting at the given file position. */
-    public /** abstract */ write(src: ByteBuffer, position: long): int;
-    public write(...args: unknown[]): long | int {
+    public /** abstract */ async write(src: ByteBuffer, position: long): Promise<int>;
+    public async write(...args: unknown[]): Promise<long | int> {
         switch (args.length) {
             case 1: {
                 if (args[0] instanceof ByteBuffer) {
@@ -123,7 +123,7 @@ export abstract class FileChannel extends AbstractInterruptibleChannel implement
                 } else {
                     const [src] = args as [ByteBuffer[]];
 
-                    return this.write(src, 0, src.length);
+                    return await this.write(src, 0, src.length);
                 }
             }
 
@@ -410,13 +410,13 @@ export class FileChannelImpl extends FileChannel {
     }
 
     // public tryLock(): FileLock | null;
-    // public tryLock(position: long, size: long, shared: boolean): FileLock | null;
+    // public tryLock(position: number, size: number, shared: boolean): FileLock | null;
 
-    public override write(src: ByteBuffer): int;
-    public override write(src: ByteBuffer[]): long;
-    public override write(src: ByteBuffer[], offset: int, length: int): long;
-    public override write(src: ByteBuffer, position: long): int;
-    public override write(...args: unknown[]): long | int {
+    public override async write(src: ByteBuffer): Promise<int>;
+    public override async write(src: ByteBuffer[]): Promise<long>;
+    public override async write(src: ByteBuffer[], offset: int, length: int): Promise<long>;
+    public override async write(src: ByteBuffer, position: long): Promise<int>;
+    public override async write(...args: unknown[]): Promise<long | int> {
         let currentBuffer = 0;
         let end: int;
         let targets: ByteBuffer[];
@@ -466,7 +466,7 @@ export class FileChannelImpl extends FileChannel {
                 continue;
             }
 
-            const bytesWritten = this.writeBytes(target, remaining);
+            const bytesWritten = await this.writeBytes(target, remaining);
             if (bytesWritten === 0n) {
                 break;
             }
@@ -513,7 +513,7 @@ export class FileChannelImpl extends FileChannel {
      *
      * @returns The int of bytes read.
      */
-    private async readBytes(target: ByteBuffer, remaining: int): Promise<long> {
+     private async readBytes(target: ByteBuffer, remaining: int): Promise<long> {
         const buffer = target.array();
         const bytesRead = await readAsync(this.#fileHandle, buffer, 0, Math.min(buffer.length, remaining),
             this.#currentPosition);
@@ -531,17 +531,18 @@ export class FileChannelImpl extends FileChannel {
      *
      * @returns The int of bytes read.
      */
-    private writeBytes(target: ByteBuffer, remaining: int): long {
-        console.error('FileChannel.writeBytes is not yet implemented.')
-        return 0n;
+     private async writeBytes(target: ByteBuffer, remaining: int): Promise<long> {
+        // console.error('FileChannel.writeBytes is not yet implemented.')
+        // return 0;
 
 
-        // const buffer = target.array();
-        // const bytesWritten = writeSync(this.#fileHandle, buffer, 0, Math.min(buffer.length, remaining),
-        //     Number(this.#currentPosition));
-        // this.#currentPosition += BigInt(bytesWritten);
-        // target.position(target.position() + bytesWritten);
+        const buffer = target.array();
+        const bytesWritten = Math.min(buffer.length, remaining);
+        await writeAsync(this.#fileHandle, buffer, 0, bytesWritten,
+            Number(this.#currentPosition));
+        this.#currentPosition += BigInt(bytesWritten);
+        target.position(target.position() + bytesWritten);
 
-        // return BigInt(bytesWritten);
+        return BigInt(bytesWritten);
     }
 }

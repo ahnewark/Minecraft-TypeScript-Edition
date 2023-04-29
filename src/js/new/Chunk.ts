@@ -14,7 +14,7 @@ import { Entity } from "./Entity";
 import { ChunkPosition } from "./ChunkPosition";
 import { BlockContainer } from "./BlockContainer";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export class Chunk {
 	public static isLit:  boolean;
@@ -28,7 +28,7 @@ export class Chunk {
 	public field_1532_i:  number;
 	public readonly xPosition:  number;
 	public readonly zPosition:  number;
-	public chunkTileEntityMap: Map<ChunkPosition, TileEntity>;
+	public chunkTileEntityMap: Map<number, TileEntity>;
 	public entities: Entity[][];
 	public isTerrainPopulated:  boolean;
 	public isModified:  boolean;
@@ -478,7 +478,7 @@ export class Chunk {
 
 	public async getChunkBlockTileEntity(i1: number, i2: number, i3: number):  Promise<TileEntity | undefined> {
 		let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
-		let  tileEntity5: TileEntity = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
+		let  tileEntity5: TileEntity = this.chunkTileEntityMap.get(chunkPosition4.hashCode()) as TileEntity;
 		if(tileEntity5 === undefined) {
 			let  i6: number = this.getBlockID(i1, i2, i3);
 			if(!Block.isBlockContainer[i6]) {
@@ -487,7 +487,7 @@ export class Chunk {
 
 			let  blockContainer7: BlockContainer = Block.blocksList[i6] as BlockContainer;
 			await blockContainer7.onBlockAdded(this.worldObj, this.xPosition * 16 + i1, i2, this.zPosition * 16 + i3);
-			tileEntity5 = this.chunkTileEntityMap.get(chunkPosition4) as TileEntity;
+			tileEntity5 = this.chunkTileEntityMap.get(chunkPosition4.hashCode()) as TileEntity;
 		}
 
 		return tileEntity5;
@@ -508,15 +508,15 @@ export class Chunk {
 		tileEntity4.zCoord = this.zPosition * 16 + i3;
 		if(this.getBlockID(i1, i2, i3) !== 0 && Block.blocksList[this.getBlockID(i1, i2, i3)] instanceof BlockContainer) {
 			if(this.isChunkLoaded) {
-				if(this.chunkTileEntityMap.get(chunkPosition5) !== undefined) {
-					const tileEntity = this.chunkTileEntityMap.get(chunkPosition5);
+				if(this.chunkTileEntityMap.get(chunkPosition5.hashCode()) !== undefined) {
+					const tileEntity = this.chunkTileEntityMap.get(chunkPosition5.hashCode());
 					this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(loadedTileEntity => loadedTileEntity !== tileEntity);
 				}
 
 				this.worldObj.loadedTileEntityList.push(tileEntity4);
 			}
 
-			this.chunkTileEntityMap.set(chunkPosition5, tileEntity4);
+			this.chunkTileEntityMap.set(chunkPosition5.hashCode(), tileEntity4);
 		} else {
 			console.log("Attempted to place a tile entity where there was no entity tile!");
 		}
@@ -525,8 +525,8 @@ export class Chunk {
 	public removeChunkBlockTileEntity(i1: number, i2: number, i3: number):  void {
 		let  chunkPosition4: ChunkPosition = new  ChunkPosition(i1, i2, i3);
 		if(this.isChunkLoaded) {
-			const tileEntity = this.chunkTileEntityMap.get(chunkPosition4);
-			this.chunkTileEntityMap.delete(chunkPosition4)
+			const tileEntity = this.chunkTileEntityMap.get(chunkPosition4.hashCode());
+			this.chunkTileEntityMap.delete(chunkPosition4.hashCode())
 			this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(loadedTileEntity => loadedTileEntity !== tileEntity);
 		}
 
@@ -537,10 +537,9 @@ export class Chunk {
 
 		this.worldObj.loadedTileEntityList = [...this.worldObj.loadedTileEntityList, ...this.chunkTileEntityMap.values()];
 
-        // TODO: Entities
-		// for(let  i1: number = 0; i1 < this.entities.length; ++i1) {
-		// 	this.worldObj.func_636_a(this.entities[i1]);
-		// }
+		for(let  i1: number = 0; i1 < this.entities.length; ++i1) {
+			this.worldObj.func_636_a(this.entities[i1]);
+		}
 
 	}
 
@@ -550,10 +549,9 @@ export class Chunk {
 		const tileEntitiesArray = Array.from(this.chunkTileEntityMap.values())
 		this.worldObj.loadedTileEntityList = this.worldObj.loadedTileEntityList.filter(tileEntity => !tileEntitiesArray.includes(tileEntity));
 
-        // TODO: Entities
-		// for(let  i1: number = 0; i1 < this.entities.length; ++i1) {
-		// 	this.worldObj.func_632_b(this.entities[i1]);
-		// }
+		for(let  i1: number = 0; i1 < this.entities.length; ++i1) {
+			this.worldObj.func_632_b(this.entities[i1]);
+		}
 
 	}
 

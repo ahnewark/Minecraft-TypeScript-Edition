@@ -46,7 +46,7 @@ export abstract class TileEntity {
 
 	public static createAndLoadEntity(nBTTagCompound0: NBTTagCompound| undefined):  TileEntity | undefined {
 		let  tileEntity1: TileEntity = undefined;
-
+		
 		try {
 			let makeTileEntity = TileEntity.nameToClassMap[nBTTagCompound0.getString("id")];
 			if(makeTileEntity) {

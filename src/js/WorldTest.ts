@@ -18,6 +18,7 @@ class ProgressUpdateDOM implements IProgressUpdate {
         showText(string1);
     }
     setLoadingProgress(i1: number): void {
+        showProgress(Math.floor(i1));
         // throw new Error("Method not implemented.");
     }
     
@@ -84,6 +85,19 @@ const changeWorld = async (world1: World, string2: string, entityPlayer3: Entity
 const root = document.getElementById('content');
 // document.appendChild(root);
 
+const showProgress = (progress: number) => {
+    let div = document.getElementById('progress')
+    if (!div) {
+        div = document.createElement('progress');
+        div.setAttribute('id', 'progress');
+        div.setAttribute('max', '100')
+        root.appendChild(div);
+    }
+
+    div.setAttribute('value', ''+ progress);
+    div.textContent = progress + '%'
+}
+
 const showText = (text: string) => {
     const div = document.createElement('div');
     root.appendChild(div);
@@ -94,9 +108,9 @@ const showText = (text: string) => {
 const main = async() => {
     showText('World Test');
 
-    await mkdirAsync(`/minecraft/saves/Test1`, { 'recursive': true})
+    await mkdirAsync(`/minecraft/saves/Test2`, { 'recursive': true})
 
-    const world = await World.Construct(new JavaFile(S`/minecraft/saves`), 'Test1');
+    const world = await World.Construct(new JavaFile(S`/minecraft/saves`), 'Test2');
     if (world.isNewWorld) {
         await changeWorld(world, 'Generating level', null);
     } else {
@@ -191,7 +205,7 @@ const test = async () => {
     // const worldZip = new JSZip();
     showText("Zipping...");
 
-    const testWorldPath = '/minecraft/saves/Test1'
+    const testWorldPath = '/minecraft/saves/Test2'
     const worldZip = await zipWorld(testWorldPath);
 
     // const testWorldFolder = await openAsync(testWorldPath, 'r', 0);
@@ -205,7 +219,7 @@ const test = async () => {
     var file = new Blob([zipData], {type: "application/octet-binary;charset=utf-8"});
 		var a = document.createElement("a"), url = URL.createObjectURL(file);
         a.href = url;
-        a.download = 'Test1.zip';
+        a.download = 'World4.zip';
 		document.body.appendChild(a);
 		a.click();
     

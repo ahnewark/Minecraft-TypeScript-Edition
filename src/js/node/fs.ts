@@ -69,7 +69,7 @@ const mkdirsRecurse = async (path: string, dirHandle: FileSystemDirectoryHandle,
 }
 
 const mkdirAsync = async (path: string, options: MkdirOptions): Promise<boolean> => {
-    console.debug('Making directory ', path);
+    // console.debug('Making directory ', path);
     try {
         const root = await navigator.storage.getDirectory();
         return await (mkdirsRecurse(path, root, options.recursive));
@@ -84,7 +84,7 @@ const currentHandles: Map<(FileSystemFileHandle | FileSystemWritableFileStream),
 
 
 const openAsync = async (path: string, openMode: OpenModes, unk1: number): Promise<FileSystemFileHandle | FileSystemWritableFileStream> => {
-    console.debug('Opening file ', path, openMode);
+    // console.debug('Opening file ', path, openMode);
     // console.trace();
     const root = await navigator.storage.getDirectory();
     const folder = await getNestedFolderHandle(path, root);
@@ -118,7 +118,7 @@ const openAsync = async (path: string, openMode: OpenModes, unk1: number): Promi
 }
 
 const existsAsync = async (path: string) => {
-    console.debug('checking if file exists ', path);
+    // console.debug('checking if file exists ', path);
     const root = await navigator.storage.getDirectory();
     
     let folder: FileSystemDirectoryHandle;
@@ -133,18 +133,18 @@ const existsAsync = async (path: string) => {
 
     try {
         await folder.getFileHandle(fileName, { create: false});
-        console.debug('... it does');
+        // console.debug('... it does');
         return true;
     } catch (error) {
         try {
             await folder.getDirectoryHandle(fileName, { create: false});
-            console.debug('... it does');
+            // console.debug('... it does');
             return true
         } catch (err) {
 
         }
     }
-    console.debug('... it does not');
+    // console.debug('... it does not');
     return false;
 }
 
@@ -155,7 +155,7 @@ const isTypedArray = (function() {
   
 
 const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayBuffer | TypedArray | DataView | Blob | String | string, offset: number = 0, length: number = 0, position?: number): Promise<void> => {
-    console.debug('writing to file', {writable, buffer, offset, length, position})
+    // console.debug('writing to file', {writable, buffer, offset, length, position})
     // if (position === undefined) {
     //     // console.log(file);
     //     position = ((await writable.getFile()).size);
@@ -195,7 +195,7 @@ const writeAsync = async (writable: FileSystemWritableFileStream, buffer: ArrayB
 
 const readAsync = async (fileHandle: FileSystemFileHandle, buffer: Int8Array, offset: number, length: number, position: bigint): Promise<number> => {
     // console.error('readAsync is not yet implemented.');
-    console.debug('Reading ', fileHandle.path)
+    // console.debug('Reading ', fileHandle.path)
     const file = await fileHandle.getFile();
     const arrayBuffer = new Int8Array(await file.slice(Number(position), Number(position) + length).arrayBuffer());
     for (let i = 0; i < arrayBuffer.byteLength; i++) {
@@ -223,14 +223,14 @@ export type Stats = {
 }
 
 const statAsync = async (path: string, options: StatOPtions): Promise<Stats> => {
-    console.debug('stat' + path);
+    // console.debug('stat' + path);
     // console.log(await existsAsync(path));
 
     const handle = await openAsync(path, 'r', 0) as FileSystemFileHandle;
     // console.log(handle);
     const size = (await handle.getFile()).size;
 
-    console.debug('size', size)
+    // console.debug('size', size)
     if (options.bigint)
         return { size: BigInt(size) }
     else
@@ -245,7 +245,7 @@ type DeleteOptions = {
 }
 
 const deleteAsync = async (path, options?: DeleteOptions) => {
-    console.debug('delete', path);
+    // console.debug('delete', path);
     const dir = await getNestedFolderHandle(path, await navigator.storage.getDirectory());
     const basename = posixPath.basename(path);
     await dir.removeEntry(basename);
@@ -256,7 +256,7 @@ const deleteAsync = async (path, options?: DeleteOptions) => {
 }
 
 const renameAsync = async (oldPath: string, newPath: string) => {
-    console.debug('renaming', oldPath, newPath);
+    // console.debug('renaming', oldPath, newPath);
     if (!await existsAsync(oldPath))
         throw new Error('Cant rename file as it does not exist.')
     const oldFileHandle = await openAsync(oldPath, 'r', 0) as FileSystemFileHandle;
@@ -269,7 +269,7 @@ const renameAsync = async (oldPath: string, newPath: string) => {
 }
 
 const closeAsync = async (handle: FileSystemFileHandle | FileSystemWritableFileStream) => {
-    console.debug('closing', handle.path)
+    // console.debug('closing', handle.path)
     // console.trace();
     if (handle.close)
         await handle.close();

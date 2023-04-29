@@ -13,7 +13,7 @@ import { EntityEgg } from "./EntityEgg";
 import { EntityArrow } from "./EntityArrow";
 import { BlockContainer } from "./BlockContainer";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { BlockRegistry } from './static/BlockRegistry'
 import { Block } from "./Block";
 

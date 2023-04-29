@@ -131,25 +131,25 @@ export class PrintWriter extends Writer {
     }
 
     /** Appends the specified character to this writer. */
-    public override async append(c: char): Promise<PrintWriter>;
+    public override async append(c: char): Promise<this>;
     /** Appends the specified character sequence to this writer. */
-    public override async append(csq: CharSequence): Promise<PrintWriter>;
+    public override async append(csq: CharSequence): Promise<this>;
     /** Appends a subsequence of the specified character sequence to this writer. */
-    public override async append(csq: CharSequence, start: int, end: int): Promise<PrintWriter>;
-    public override async append(...args: unknown[]): Promise<PrintWriter> {
+    public override async append(csq: CharSequence, start: int, end: int): Promise<this>;
+    public override async append(...args: unknown[]): Promise<this> {
         switch (args.length) {
             case 1: {
                 if (typeof args[0] === "number") {
-                    this.out.append(args[0]);
+                    await this.out.append(args[0]);
                 } else {
-                    this.out.append(args[0] as CharSequence);
+                    await this.out.append(args[0] as CharSequence);
                 }
 
                 break;
             }
 
             case 3: {
-                this.out.append(args[0] as CharSequence, args[1] as int, args[2] as int);
+                await this.out.append(args[0] as CharSequence, args[1] as int, args[2] as int);
 
                 break;
             }

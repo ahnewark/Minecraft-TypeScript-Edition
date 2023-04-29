@@ -7,8 +7,7 @@ import { Block } from "./Block";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Item } from "./Item";
-import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockRedstoneWire extends Block {
 	private wiresProvidePower:  boolean = true;

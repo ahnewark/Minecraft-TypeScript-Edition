@@ -58,7 +58,7 @@ export class StringReader extends Reader {
         return true;
     }
 
-    public override read(): int;
+    public override async read(): Promise<int>;
     /**
      * Reads characters into a portion of an array.
      *
@@ -70,8 +70,8 @@ export class StringReader extends Reader {
      *
      * @throws IndexOutOfBoundsException If offset or length are out of bounds.
      */
-    public override read(target: Uint16Array, offset: int, length: int): int;
-    public override read(...args: unknown[]): int {
+    public override async read(target: Uint16Array, offset: int, length: int): Promise<int>;
+    public override async read(...args: unknown[]): Promise<int> {
         switch (args.length) {
             case 0: {
                 if (this.#position >= this.#content.length()) {
@@ -136,7 +136,7 @@ export class StringReader extends Reader {
      *
      * @returns The number of characters actually skipped.
      */
-    public override skip(n: long): long {
+    public override async skip(n: long): Promise<long> {
         let count = 0;
         const nn = Number(n);
 

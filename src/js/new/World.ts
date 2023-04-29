@@ -13,7 +13,6 @@ import { PathEntity } from "./PathEntity";
 import { NextTickListEntry } from "./NextTickListEntry";
 import { NBTTagCompound } from "./NBTTagCompound";
 import { MovingObjectPosition } from "./MovingObjectPosition";
-import { MinecraftException } from "./MinecraftException";
 import { MetadataChunkBlock } from "./MetadataChunkBlock";
 import { MathHelper } from "./MathHelper";
 import { Material } from "./Material";
@@ -32,7 +31,6 @@ import { Chunk } from "./Chunk";
 import { BlockFluids } from "./BlockFluids";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { IBlockAccess } from "./IBlockAccess";
-import { Random } from "../java/util/Random";
 import { DataOutputStream } from "../java/io/DataOutputStream";
 import { Block } from "./Block";
 import { FileInputStream } from "../jree/java/io/FileInputStream";
@@ -40,6 +38,7 @@ import { FileOutputStream } from "../jree/java/io/FileOutputStream";
 import { File } from "../jree/java/io/index";
 import { JavaString } from "../jree/index";
 import { MaterialRegistry } from "./static/MaterialRegistry";
+import { Random } from "../jree/java/util/Random";
 
 export  class World implements IBlockAccess {
 	public scheduledUpdatesAreImmediate:  boolean;
@@ -232,6 +231,7 @@ export  class World implements IBlockAccess {
 					_this.field_1012_M = [];
 					_this.multiplayerWorld = false;
 					_this.field_9431_w = string1;
+					// console.log('setting random seed', {j3})
 					_this.randomSeed = j3;
 					_this.worldProvider = worldProvider2;
 					worldProvider2.registerWorld(_this);
@@ -331,6 +331,7 @@ export  class World implements IBlockAccess {
 
 				let  z19: boolean = false;
 				if(_this.randomSeed === 0n) {
+					// console.log('setting random seed', {j3})
 					_this.randomSeed = j3;
 					z19 = true;
 				}
@@ -2100,7 +2101,7 @@ export  class World implements IBlockAccess {
 	}
 
 	public async checkSessionLock():  Promise<void> {
-		console.error('World.checkSessionLock() is not yet implemented.')
+		// console.error('World.checkSessionLock() is not yet implemented.')
 		// try {
 		// 	let  file1: File = new  File(this.savePath, new JavaString("session.lock"));
 		// 	let  dataInputStream2: DataInputStream = new  DataInputStream(await FileInputStream.Construct(file1));

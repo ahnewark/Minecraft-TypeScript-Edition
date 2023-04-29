@@ -4,7 +4,7 @@ import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Item } from "./Item";
 
 export  class BlockSnowBlock extends Block {

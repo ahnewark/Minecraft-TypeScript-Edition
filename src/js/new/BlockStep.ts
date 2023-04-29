@@ -5,7 +5,7 @@ import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { BlockRegistry } from './static/BlockRegistry'
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockStep extends Block {
 	private blockType:  boolean;

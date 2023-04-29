@@ -70,12 +70,12 @@ export class InputStreamReader extends Reader {
     }
 
     /** Reads a single character. */
-    public override read(): char;
+    public override async read(): Promise<char>;
     /** Reads characters into an array. */
-    public override read(buffer: Uint16Array): int;
+    public override async read(buffer: Uint16Array): Promise<int>;
     /** Reads characters into a portion of an array. */
-    public override read(chars: Uint16Array, offset: int, length: int): int;
-    public override read(...args: unknown[]): char | int {
+    public override async read(chars: Uint16Array, offset: int, length: int): Promise<int>;
+    public override async read(...args: unknown[]): Promise<char | int> {
         if (!this.ready()) {
             return -1;
         }
@@ -83,7 +83,7 @@ export class InputStreamReader extends Reader {
         switch (args.length) {
             case 0: {
                 if (this.#currentIndex >= this.#currentContent.length) {
-                    this.#currentContent = this.nextChunk();
+                    this.#currentContent = await this.nextChunk();
                     this.#currentIndex = 0;
                 }
 
@@ -93,7 +93,7 @@ export class InputStreamReader extends Reader {
             case 1: {
                 const [buffer] = args as [Uint16Array];
 
-                return this.read(buffer, 0, buffer.length);
+                return await this.read(buffer, 0, buffer.length);
             }
 
             case 3: {
@@ -112,7 +112,7 @@ export class InputStreamReader extends Reader {
                 }
 
                 while (count < length && !this.eof) {
-                    this.#currentContent = this.nextChunk();
+                    this.#currentContent = await this.nextChunk();
                     this.#currentIndex = 0;
 
                     const toCopy = Math.min(this.#currentContent.length, length - count);
@@ -140,9 +140,9 @@ export class InputStreamReader extends Reader {
     }
 
     /** @returns as many characters as can be decoded with one buffer content. */
-    private nextChunk(): Uint16Array {
+    private async nextChunk(): Promise<Uint16Array> {
         const buffer = new Int8Array(10000);
-        const count = this.#input.read(buffer);
+        const count = await this.#input.read(buffer);
         if (count < 10000) {
             this.eof = true;
         }

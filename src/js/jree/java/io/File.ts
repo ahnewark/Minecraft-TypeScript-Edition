@@ -18,8 +18,8 @@ import { FileSystems } from "../nio/file/FileSystems";
 import { NullPointerException } from "../lang/NullPointerException";
 import { IllegalArgumentException } from "../lang/IllegalArgumentException";
 // import { existsSync, mkdirSync, openSync, rmdirSync, statSync, unlinkSync } from "fs";
-import { Random } from '../../../java/util/Random';
 import { deleteAsync, existsAsync, mkdirAsync, renameAsync, statAsync } from '../../../node/fs';
+import { Random } from '../util/Random';
 
 const pendingFiles = new Set<JavaFile>();
 

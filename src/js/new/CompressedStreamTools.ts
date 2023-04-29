@@ -9,10 +9,19 @@ import { DataInput } from "../java/io/DataInput";
 import { DataOutputStream } from "../java/io/DataOutputStream";
 import { DataInputStream } from "../java/io/DataInputStream";
 import { NBTRegistry } from "./static/NBTRegistry";
+import GZIPOutputStream from "../jree/java/util/zip/GZIPOutputStream";
+import GZIPInputStream from "../jree/java/util/zip/GZIPInputStream";
+
+const DISABLE_COMPRESSION = false;
 
 export  class CompressedStreamTools extends JavaObject {
 	public static async func_1138_a(inputStream0: java.io.InputStream):  Promise<NBTTagCompound> {
-		let  dataInputStream1: DataInputStream = new DataInputStream(inputStream0);
+		let  dataInputStream1: DataInputStream;
+
+		if (DISABLE_COMPRESSION)
+			dataInputStream1 = new DataInputStream(inputStream0);
+		else 
+			dataInputStream1 = new DataInputStream(new GZIPInputStream(inputStream0));
 
 		let  nBTTagCompound2: NBTTagCompound;
 		try {
@@ -25,7 +34,12 @@ export  class CompressedStreamTools extends JavaObject {
 	}
 
 	public static async writeGzippedCompoundToOutputStream(nBTTagCompound0: NBTTagCompound, outputStream1: java.io.OutputStream):  Promise<void> {
-		let dataOutputStream2: DataOutputStream = new DataOutputStream(outputStream1);
+		let dataOutputStream2: DataOutputStream;
+
+		if (DISABLE_COMPRESSION)
+			dataOutputStream2 = new DataOutputStream(outputStream1);
+		else
+			dataOutputStream2 = new DataOutputStream(new GZIPOutputStream(outputStream1));
 
 		try {
 			await CompressedStreamTools.func_1139_a(nBTTagCompound0, dataOutputStream2);

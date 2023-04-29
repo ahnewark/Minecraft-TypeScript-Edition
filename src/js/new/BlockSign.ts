@@ -9,8 +9,7 @@ import { Block } from "./Block";
 
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
-import { Item } from "./Item";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockSign extends BlockContainer {
 	private signEntityClass:  string;

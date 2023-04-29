@@ -8,7 +8,7 @@ import { ColorizerFoliage } from "./ColorizerFoliage";
 import { BlockLeavesBase } from "./BlockLeavesBase";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { BlockRegistry } from './static/BlockRegistry';
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class BlockLeaves extends BlockLeavesBase {

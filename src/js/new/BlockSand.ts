@@ -7,9 +7,8 @@ import { Material } from "./Material";
 import { EntityFallingSand } from "./EntityFallingSand";
 import { Block } from "./Block";
 
-import { BlockRegistry, } from "./static/BlockRegistry";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockSand extends Block {
 	public static fallInstantly:  boolean = false;

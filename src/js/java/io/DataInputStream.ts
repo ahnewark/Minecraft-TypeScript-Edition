@@ -1,4 +1,4 @@
-import { byte, char, double, float, int, java, long, short } from "../../jree/index"
+import { byte, char, double, float, int, java, short } from "../../jree/index"
 import { InputStream } from "../../jree/java/io/InputStream";
 import { IndexOutOfBoundsException } from "../../jree/java/lang/IndexOutOfBoundsException";
 import System from "../lang/System";
@@ -71,11 +71,11 @@ export class DataInputStream extends FilterInputStream implements DataInput {
         }
     }
 
-    public skipBytes(n: int): int {
-        let total = 0;
-        let cur = 0;
+    public async skipBytes(n: bigint): Promise<bigint> {
+        let total = 0n;
+        let cur = 0n;
 
-        while ((total<n) && ((cur = Number(this.in.skip(BigInt(n - total)))) > 0)) {
+        while (total < n && (cur = await this.in.skip((BigInt(n - total)))) > 0) {
             total += cur;
         }
 
@@ -140,7 +140,7 @@ export class DataInputStream extends FilterInputStream implements DataInput {
 
     private readBuffer = new Int8Array(8);
 
-    public async readLong(): Promise<long> {
+    public async readLong(): Promise<bigint> {
         await this.readFully(this.readBuffer, 0, 8);
         return ((BigInt(this.readBuffer[0]) << BigInt(56)) +
                 (BigInt(this.readBuffer[1] & 255) << BigInt(48)) +

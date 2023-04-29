@@ -2,9 +2,8 @@ import { int } from "../jree/index";
 import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Item } from "./Item";
-import { BlockRegistry} from './static/BlockRegistry'
 
 export  class BlockOre extends Block {
 	public constructor(i1: int, i2: int) {

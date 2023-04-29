@@ -8,8 +8,7 @@ import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockFire extends Block {
 	private chanceToEncourageFire:  number[] = new   Array<number>(256).fill(0);

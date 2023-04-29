@@ -20,11 +20,10 @@ import { IProgressUpdate } from "./IProgressUpdate";
 import { IChunkProvider } from "./IChunkProvider";
 import { Chunk } from "./Chunk";
 import { BlockSand } from "./BlockSand";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { long } from "../jree/index";
 import { Block } from "./Block";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { MobSpawnerRegistry } from "./static/MobSpawnerRegistry";
 
 export  class ChunkProviderGenerate implements IChunkProvider {
 	private rand:  Random;
@@ -106,7 +105,8 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 									if(d53 < 0.5 && i13 * 8 + i32 >= b7 - 1) {
 										i55 = Block.ice.blockID;
 									} else {
-										i55 = Block.waterMoving.blockID;
+										//i55 = Block.waterMoving.blockID;
+										i55 = Block.blockLapis.blockID;
 									}
 								}
 
@@ -373,7 +373,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(128);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(Block.cobblestone.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.gravel.blockID, 32)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 20; ++i13) {
@@ -387,14 +387,14 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(64);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(Block.blockSteel.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.oreIron.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 2; ++i13) {
 			i14 = i4 + this.rand.nextInt(16);
 			i15 = this.rand.nextInt(32);
 			i16 = i5 + this.rand.nextInt(16);
-			await (new  WorldGenMinable(Block.blockGold.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
+			await (new  WorldGenMinable(Block.oreGold.blockID, 8)).generate(this.worldObj, this.rand, i14, i15, i16);
 		}
 
 		for(i13 = 0; i13 < 8; ++i13) {

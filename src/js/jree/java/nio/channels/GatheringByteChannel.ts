@@ -8,10 +8,10 @@ import { WritableByteChannel } from "./WritableByteChannel";
 
 /** A channel that can write bytes to a sequence of buffers. */
 export interface GatheringByteChannel extends WritableByteChannel {
-    write(src: ByteBuffer): number;
+    write(src: ByteBuffer): Promise<number>;
     /** Writes a sequence of bytes to this channel from a subsequence of the given buffers. */
-    write(source: ByteBuffer[]): bigint;
+    write(source: ByteBuffer[]): Promise<bigint>;
     /** Writes a sequence of bytes to this channel from a subsequence of the given buffers. */
-    write(source: ByteBuffer[], offset: number, length: number): bigint;
+    write(source: ByteBuffer[], offset: number, length: number): Promise<bigint>;
 
 }

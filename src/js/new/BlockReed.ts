@@ -7,8 +7,7 @@ import { Block } from "./Block";
 
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Item } from "./Item";
 
 export  class BlockReed extends Block {

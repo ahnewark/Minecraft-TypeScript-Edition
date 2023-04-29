@@ -1,14 +1,11 @@
-
-
-
 import { byte, java, int, double, float, long } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export class WorldGenBigTree extends WorldGenerator {
-	protected static readonly field_882_a   = Int8Array.from([2, 0, 0, 1, 2, 1]);
+	protected static readonly field_882_a   = [2, 0, 0, 1, 2, 1];
 	protected field_881_b: Random | undefined = new  Random();
 	protected worldObj: World | undefined;
 	protected basePos = [0,0,0];
@@ -25,17 +22,20 @@ export class WorldGenBigTree extends WorldGenerator {
 	protected field_868_o: number[][] = [];
 
 	protected async func_521_a(): Promise<void> {
-		this.height = (this.field_878_e as double * this.field_876_g) as int;
+		this.height = Math.floor(this.field_878_e  * this.field_876_g);
 		if(this.height >= this.field_878_e) {
 			this.height = this.field_878_e - 1;
 		}
 
-		let  i1: int = (1.382 + java.lang.Math.pow(this.field_872_k * this.field_878_e as double / 13.0, 2.0)) as int;
+		let  i1: int = Math.floor(1.382 + java.lang.Math.pow(this.field_872_k * this.field_878_e  / 13.0, 2.0));
 		if(i1 < 1) {
 			i1 = 1;
 		}
 
-		let  i2: number[][] = [[]];
+	
+		let  i2: number[][] = new Array<Array<number>>(i1 * this.field_878_e).fill(new Array<number>(4).fill(0));
+		// int[][] i2 = new int[i1 * this.field_878_e][4];
+
 		let  i3: int = this.basePos[1] + this.field_878_e - this.field_869_n;
 		let  i4: int = 1;
 		let  i5: int = this.basePos[1] + this.height;
@@ -55,20 +55,20 @@ export class WorldGenBigTree extends WorldGenerator {
 					--i6;
 				} else {
 					for(let  d9: double = 0.5; i7 < i1; ++i7) {
-						let  d11: double = this.field_873_j * f8 as double * (this.field_881_b.nextFloat() as double + 0.328);
-						let  d13: double = this.field_881_b.nextFloat() as double * 2.0 * 3.14159;
-						let  i15: int = (d11 * java.lang.Math.sin(d13) + this.basePos[0] as double + d9) as int;
-						let  i16: int = (d11 * java.lang.Math.cos(d13) + this.basePos[2] as double + d9) as int;
+						let  d11: double = this.field_873_j * f8  * (this.field_881_b.nextFloat()  + 0.328);
+						let  d13: double = this.field_881_b.nextFloat()  * 2.0 * 3.14159;
+						let  i15: int = Math.floor(d11 * java.lang.Math.sin(d13) + this.basePos[0] + d9);
+						let  i16: int = Math.floor(d11 * java.lang.Math.cos(d13) + this.basePos[2] + d9);
 						let  i17 =  [i15, i3, i16];
 						let  i18 =  [i15, i3 + this.field_869_n, i16];
 						if(await this.func_524_a(i17, i18) === -1) {
 							let  i19 =  [this.basePos[0], this.basePos[1], this.basePos[2]];
-							let  d20: double = java.lang.Math.sqrt(java.lang.Math.pow(java.lang.Math.abs(this.basePos[0] - i17[0]) as double, 2.0) + java.lang.Math.pow(java.lang.Math.abs(this.basePos[2] - i17[2]) as double, 2.0));
+							let  d20: double = java.lang.Math.sqrt(java.lang.Math.pow(java.lang.Math.abs(this.basePos[0] - i17[0]) , 2.0) + java.lang.Math.pow(java.lang.Math.abs(this.basePos[2] - i17[2]) , 2.0));
 							let  d22: double = d20 * this.field_874_i;
 							if(i17[1] - d22 > i5) {
 								i19[1] = i5;
 							} else {
-								i19[1] = (i17[1] - d22) as int;
+								i19[1] = Math.floor(i17[1] - d22);
 							}
 
 							if(await this.func_524_a(i19, i17) === -1) {
@@ -93,7 +93,7 @@ export class WorldGenBigTree extends WorldGenerator {
 	}
 
 	protected async func_523_a(i1: int, i2: int, i3: int, f4: float, b5: byte, i6: int): Promise<void> {
-		let  i7: int = (f4 as double + 0.618) as int;
+		let  i7: int = Math.floor(f4  + 0.618);
 		let  b8: byte = WorldGenBigTree.field_882_a[b5];
 		let  b9: byte = WorldGenBigTree.field_882_a[b5 + 3];
 		let  i10 =  [i1, i2, i3];
@@ -112,7 +112,7 @@ export class WorldGenBigTree extends WorldGenerator {
 						continue label32;
 					}
 
-					let  d15: double = java.lang.Math.sqrt(java.lang.Math.pow(java.lang.Math.abs(i12) as double + 0.5, 2.0) + java.lang.Math.pow(java.lang.Math.abs(i13) as double + 0.5, 2.0));
+					let  d15: double = java.lang.Math.sqrt(java.lang.Math.pow(java.lang.Math.abs(i12)  + 0.5, 2.0) + java.lang.Math.pow(java.lang.Math.abs(i13)  + 0.5, 2.0));
 					if(d15 > f4) {
 						++i13;
 					} else {
@@ -192,6 +192,7 @@ export class WorldGenBigTree extends WorldGenerator {
 			let  i14 =  [0, 0, 0];
 			let  i15: int = 0;
 
+			// console.error("this function is broken.")
 			for(let  i16: int = i4[b6] + b9; i15 !== i16; i15 += b9) {
 				i14[b6] = MathHelper.floor_double((i1[b6] + i15) + 0.5);
 				i14[b7] = MathHelper.floor_double(i1[b7] + i15 * d10 + 0.5);
@@ -257,6 +258,7 @@ export class WorldGenBigTree extends WorldGenerator {
 	}
 
 	protected async func_524_a(i1: number[], i2: number[]): Promise<int> {
+		// console.log('func_524_a', {i1, i2})
 		let  i3 =  [0, 0, 0];
 		let  b4: byte = 0;
 
@@ -280,16 +282,16 @@ export class WorldGenBigTree extends WorldGenerator {
 				b8 = -1;
 			}
 
-			let  d9: double = i3[b6] as double / i3[b5] as double;
-			let  d11: double = i3[b7] as double / i3[b5] as double;
+			let  d9 = i3[b6] / i3[b5];
+			let  d11: double = i3[b7]  / i3[b5] ;
 			let  i13 =  [0, 0, 0];
 			let  i14: int = 0;
 
 			let  i15: int;
 			for(i15 = i3[b5] + b8; i14 !== i15; i14 += b8) {
 				i13[b5] = i1[b5] + i14;
-				i13[b6] = (i1[b6] as double + i14 as double * d9) as int;
-				i13[b7] = (i1[b7] as double + i14 as double * d11) as int;
+				i13[b6] = Math.floor(i1[b6]  + i14  * d9);
+				i13[b7] = Math.floor(i1[b7]  + i14  * d11);
 				let  i16: int = await this.worldObj.getBlockId(i13[0], i13[1], i13[2]);
 				if(i16 !== 0 && i16 !== 18) {
 					break;
@@ -320,7 +322,7 @@ export class WorldGenBigTree extends WorldGenerator {
 	}
 
 	public func_517_a(d1: double, d3: double, d5: double):  void {
-		this.field_870_m = (d1 * 12.0) as int;
+		this.field_870_m = Math.floor(d1 * 12.0);
 		if(d1 > 0.5) {
 			this.field_869_n = 5;
 		}

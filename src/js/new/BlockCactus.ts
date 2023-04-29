@@ -7,9 +7,8 @@ import { Entity } from "./Entity";
 import { Block } from "./Block";
 
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Block } from "./Block";
 
 export  class BlockCactus extends Block {
 	public constructor(i1: int, i2: int) {

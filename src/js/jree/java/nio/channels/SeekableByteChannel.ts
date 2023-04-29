@@ -23,5 +23,5 @@ export interface SeekableByteChannel extends ByteChannel {
     /** Truncates this channel's file to the given size. */
     truncate(size: bigint): SeekableByteChannel;
 
-    write(src: ByteBuffer): number;
+    write(src: ByteBuffer): Promise<number>;
 }

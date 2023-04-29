@@ -33,10 +33,10 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
                 // Do nothing.
             }
 
-            public override read(): char;
-            public override read(target: Uint16Array, offset: int, length: int): int;
-            public override read(target: CharBuffer): int;
-            public override read(...args: unknown[]): int {
+            public override async read(): Promise<char>;
+            public override async read(target: Uint16Array, offset: int, length: int): Promise<int>;
+            public override async read(target: CharBuffer): Promise<int>;
+            public override async read(...args: unknown[]): Promise<int> {
                 return -1;
             }
         }();
@@ -62,18 +62,18 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
     }
 
     /** Reads a single character. */
-    public read(): char;
+    public async read(): Promise<char>;
     /** Reads characters into an array. */
-    public read(buffer: Uint16Array): int;
+    public async read(buffer: Uint16Array): Promise<int>;
     /** Reads characters into a portion of an array. */
-    public /* abstract */ read(target: Uint16Array, offset: int, length: int): int;
+    public /* abstract */ read(target: Uint16Array, offset: int, length: int): Promise<int>;
     /** Attempts to read characters into the specified character buffer. */
-    public read(target: CharBuffer): int;
-    public read(...args: unknown[]): int {
+    public async read(target: CharBuffer): Promise<int>;
+    public async read(...args: unknown[]): Promise<int> {
         switch (args.length) {
             case 0: {
                 const temp = new Uint16Array(1);
-                this.read(temp, 0, 1);
+                await this.read(temp, 0, 1);
 
                 return temp[0];
             }
@@ -85,7 +85,7 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
                         throw new NotImplementedError("abstract");
                     }
 
-                    return this.read(target, 0, target.length);
+                    return await this.read(target, 0, target.length);
                 } else {
                     if (target.isReadOnly()) {
                         throw new ReadOnlyBufferException();
@@ -96,7 +96,7 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
                         const buffer = target.array();
                         const pos = target.position();
                         const rem = Math.max(target.remaining(), 0);
-                        const n = this.read(buffer, pos, rem);
+                        const n = await this.read(buffer, pos, rem);
                         if (n > 0) {
                             target.position(pos + n);
                         }
@@ -105,7 +105,7 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
                     } else {
                         const temp = new Uint16Array(10000);
                         while (target.hasRemaining()) {
-                            const n = this.read(temp, 0, Math.min(temp.length, target.remaining()));
+                            const n = await this.read(temp, 0, Math.min(temp.length, target.remaining()));
                             if (n === -1) {
                                 break;
                             }
@@ -147,7 +147,7 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
      *
      * @returns The number of characters actually skipped
      */
-    public skip(n: long): long {
+    public async skip(n: long): Promise<long> {
         if (n < 0) {
             throw new IllegalArgumentException(new JavaString("skip value is negative"));
         }
@@ -160,7 +160,7 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
 
         let r = n;
         while (r > 0) {
-            const nc = this.read(this.skipBuffer, 0, Number(r < nn ? r : nn));
+            const nc = await this.read(this.skipBuffer, 0, Number(r < nn ? r : nn));
             if (nc === -1) {
                 break;
             }
@@ -179,11 +179,11 @@ export abstract class Reader extends JavaObject implements Closeable, Readable {
      *
      * @returns The number of characters that were read and written.
      */
-    public transferTo(target: Writer): long {
+    public async transferTo(target: Writer): Promise<long> {
         let total = 0n;
         const buffer = new Uint16Array(10000);
         while (true) {
-            const n = this.read(buffer);
+            const n = await this.read(buffer);
             if (n === -1) {
                 break;
             }

@@ -25,11 +25,11 @@ export class BufferedReader extends Reader {
     #input: Reader;
 
     /** Creates a buffering character-input stream that uses a default-sized input buffer. */
-    public constructor(input: Reader);
+    public static async Construct(input: Reader);
     /** Creates a buffering character-input stream that uses an input buffer of the specified size. */
-    public constructor(input: Reader, sz: int);
-    public constructor(...args: unknown[]) {
-        super();
+    public static async Construct(input: Reader, sz: int);
+    public static async Construct(...args: unknown[]) {
+        const _this = new BufferedReader();
 
         let size = 10000;
         if (args.length === 2) {
@@ -40,11 +40,12 @@ export class BufferedReader extends Reader {
             throw new IllegalArgumentException(new JavaString("Buffer size <= 0"));
         }
 
-        this.#buffer = new Uint16Array(size);
-        this.#input = args[0] as Reader;
+        _this.#buffer = new Uint16Array(size);
+        _this.#input = args[0] as Reader;
 
-        const read = this.#input.read(this.#buffer);
-        this.#limit = read < 0 ? 0 : read;
+        const read = await _this.#input.read(_this.#buffer);
+        _this.#limit = read < 0 ? 0 : read;
+        return _this;
     }
 
     public override async close(): Promise<void> {
@@ -81,17 +82,17 @@ export class BufferedReader extends Reader {
     }
 
     /** Reads a single character. */
-    public override read(): int;
+    public override async read(): Promise<int>;
     /** Reads characters into a portion of an array. */
-    public override read(buffer: Uint16Array, offset: int, count: int): int;
-    public override read(...args: unknown[]): int {
+    public override async read(buffer: Uint16Array, offset: int, count: int): Promise<int>;
+    public override async read(...args: unknown[]): Promise<int> {
         this.checkOpen();
 
         if (args.length === 0) {
             // Read a single character.
             if (this.#currentIndex >= this.#limit) {
                 this.#currentIndex = 0;
-                this.#limit = this.#input.read(this.#buffer);
+                this.#limit = await this.#input.read(this.#buffer);
                 if (this.#limit === -1) {
                     return -1;
                 }
@@ -126,7 +127,7 @@ export class BufferedReader extends Reader {
                     break;
                 }
 
-                const result = this.#input.read(this.#buffer);
+                const result = await this.#input.read(this.#buffer);
                 if (result === -1) {
                     return read === 0 ? -1 : read;
                 }
@@ -197,7 +198,7 @@ export class BufferedReader extends Reader {
      *
      * @returns The number of characters actually skipped.
      */
-    public override skip(n: long): long {
+    public override async skip(n: long): Promise<long> {
         this.checkOpen();
 
         if (n <= 0n) {
@@ -221,7 +222,7 @@ export class BufferedReader extends Reader {
                 break;
             }
 
-            const result = this.#input.read(this.#buffer);
+            const result = await this.#input.read(this.#buffer);
             if (result === -1) {
                 return skipped;
             }

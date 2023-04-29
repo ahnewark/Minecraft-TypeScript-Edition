@@ -5,9 +5,8 @@ import { int, byte } from "../jree/index";
 import { World } from "./World";
 import { Material } from "./Material";
 import { BlockFluids } from "./BlockFluids";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Block } from "./Block";
 import { Block } from "./Block";
 
 

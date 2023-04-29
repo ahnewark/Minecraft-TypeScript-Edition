@@ -6,7 +6,7 @@ import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class WorldGenClay extends WorldGenerator {

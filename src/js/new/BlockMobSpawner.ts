@@ -3,7 +3,7 @@ import { TileEntityMobSpawner } from "./TileEntityMobSpawner";
 import { TileEntity } from "./TileEntity";
 import { BlockContainer } from "./BlockContainer";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockMobSpawner extends BlockContainer {
 	public constructor(i1: int, i2: int) {

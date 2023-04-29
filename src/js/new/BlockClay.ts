@@ -7,7 +7,7 @@ import { Block } from "./Block";
 
 import { Item } from "./Item";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockClay extends Block {
 	public constructor(i1: int, i2: int) {

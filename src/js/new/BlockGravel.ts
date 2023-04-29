@@ -4,7 +4,7 @@
 import { int } from "../jree/index";
 import { BlockSand } from "./BlockSand";
 import { Item } from "./Item";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockGravel extends BlockSand {
 	public constructor(i1: int, i2: int) {

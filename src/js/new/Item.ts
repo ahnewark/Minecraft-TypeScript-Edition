@@ -9,7 +9,7 @@ import { Entity } from "./Entity";
 import { Block } from "./Block";
 
 import { ItemStack } from "./ItemStack";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class Item extends JavaObject {
 	protected static itemRand:  Random | undefined = new  Random();

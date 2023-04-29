@@ -8,7 +8,7 @@ import { NBTTagCompound } from "./NBTTagCompound";
 import { ItemStack } from "./ItemStack";
 import { IInventory } from "./IInventory";
 import { EntityPlayer } from "./EntityPlayer";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class TileEntityDispenser extends TileEntity implements IInventory {
 	private dispenserContents:  ItemStack[] = new   Array<ItemStack>(9);

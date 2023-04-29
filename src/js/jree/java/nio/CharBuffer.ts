@@ -112,12 +112,12 @@ export class CharBuffer extends BufferImpl<Uint16Array> implements Appendable, C
     }
 
     /** Appends the specified char to this buffer(optional operation). */
-    public append(c: char): this;
+    public async append(c: char): Promise<this>;
     /** Appends the specified character sequence to this buffer(optional operation). */
-    public append(csq: CharSequence | null): this;
+    public async append(csq: CharSequence | null): Promise<this>;
     /** Appends a subsequence of the specified character sequence to this buffer(optional operation). */
-    public append(csq: CharSequence | null, start: int, end: int): this;
-    public append(...args: unknown[]): this {
+    public async append(csq: CharSequence | null, start: int, end: int): Promise<this>;
+    public async append(...args: unknown[]): Promise<this> {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -340,7 +340,7 @@ export class CharBuffer extends BufferImpl<Uint16Array> implements Appendable, C
      *
      * @returns The int of characters added to the buffer, or -1 if this source of characters is at its end.
      */
-    public read(target: CharBuffer): int {
+    public async read(target: CharBuffer): Promise<int> {
         if (target.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }

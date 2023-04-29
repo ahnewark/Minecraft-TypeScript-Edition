@@ -1,5 +1,5 @@
 import { BlockStone } from "./BlockStone";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class BlockObsidian extends BlockStone {

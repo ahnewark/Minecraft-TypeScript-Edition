@@ -6,7 +6,7 @@ import { EnumCreatureType } from "./EnumCreatureType";
 import { Block } from "./Block";
 
 import { Color } from "../jree/java/util/Color";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class MobSpawnerBase extends JavaObject {
 	public biomeName:  string;

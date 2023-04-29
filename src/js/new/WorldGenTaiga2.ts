@@ -4,7 +4,7 @@
 import { java, int, byte } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 import { BlockRegistry } from './static/BlockRegistry'

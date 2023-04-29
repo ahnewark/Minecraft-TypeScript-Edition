@@ -4,7 +4,7 @@
 import { java, int, double, S } from "../jree/index";
 import { World } from "./World";
 import { NoiseGeneratorOctaves2 } from "./NoiseGeneratorOctaves2";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { ChunkCoordIntPair } from "./ChunkCoordIntPair";
 import { MobSpawnerBase } from "./MobSpawnerBase";
 

@@ -53,7 +53,7 @@ export class FileDescriptor extends JavaObject {
     }
 
     public async close(): Promise<void> {
-        console.log('FileDescriptor.close', this.closed, this.fileHandle);
+        // console.log('FileDescriptor.close', this.closed, this.fileHandle);
         if (this.fileHandle) {
             await closeAsync(this.fileHandle);
         }

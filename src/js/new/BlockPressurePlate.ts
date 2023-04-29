@@ -2,14 +2,12 @@ import { int, float, java, double } from "../jree/index";
 import { World } from "./World";
 import { IBlockAccess } from "./IBlockAccess";
 import { EnumMobType } from "./EnumMobType";
-import { EntityPlayer } from "./EntityPlayer";
-import { EntityLiving } from "./EntityLiving";
 import { Entity } from "./Entity";
 import { Block } from "./Block";
 
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockPressurePlate extends Block {
 	private triggerMobType:  EnumMobType | undefined;

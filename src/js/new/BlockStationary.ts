@@ -3,10 +3,9 @@ import { World } from "./World";
 import { Material } from "./Material";
 import { Block } from "./Block";
 import { BlockFluids } from "./BlockFluids";
-import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockStationary extends BlockFluids {
 	public constructor(i1: int, material2: Material| undefined) {

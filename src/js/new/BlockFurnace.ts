@@ -12,9 +12,8 @@ import { EntityLiving } from "./EntityLiving";
 import { BlockContainer } from "./BlockContainer";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 import { Block } from "./Block";
-import { Block } from "./Block";
 
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockFurnace extends BlockContainer {
 	private readonly isActive:  boolean;

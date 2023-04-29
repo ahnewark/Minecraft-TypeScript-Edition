@@ -3,7 +3,7 @@ import { WorldGenTrees } from "./WorldGenTrees";
 import { WorldGenForest } from "./WorldGenForest";
 import { WorldGenBigTree } from "./WorldGenBigTree";
 import { MobSpawnerBase } from "./MobSpawnerBase";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class MobSpawnerForest extends MobSpawnerBase {
 	public getRandomWorldGenForTrees(random1: Random | undefined):  WorldGenerator | undefined {

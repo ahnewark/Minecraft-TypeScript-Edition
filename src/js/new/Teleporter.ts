@@ -1,7 +1,7 @@
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { Entity } from "./Entity";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class Teleporter {

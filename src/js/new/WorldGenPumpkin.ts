@@ -2,7 +2,7 @@ import { int } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class WorldGenPumpkin extends WorldGenerator {
 	public async generate(world1: World| undefined, random2: Random | undefined, i3: int, i4: int, i5: int):  Promise<boolean> {

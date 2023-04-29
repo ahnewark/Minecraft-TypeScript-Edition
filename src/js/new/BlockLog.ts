@@ -3,8 +3,7 @@ import { World } from "./World";
 import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
-import { Block } from "./Block";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockLog extends Block {
 	public constructor(i1: int) {

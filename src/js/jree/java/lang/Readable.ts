@@ -8,5 +8,5 @@ import { IReflection } from "./Object";
 
 export interface Readable extends IReflection {
     /** Attempts to read characters into the specified character buffer. */
-    read(cb: CharBuffer): number;
+    read(cb: CharBuffer): Promise<number>;
 }

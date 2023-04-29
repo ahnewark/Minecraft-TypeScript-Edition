@@ -48,3 +48,5 @@ export * from "./concurrent/concurrent";
 export * from "./function/$function";
 
 export * from "./stream/$stream";
+
+export * from "./zip";

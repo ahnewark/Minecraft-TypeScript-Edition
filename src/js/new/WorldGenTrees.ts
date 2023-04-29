@@ -4,9 +4,8 @@
 import { java, int, byte } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from './Block';
-import { Block } from "./Block";
 
 export class WorldGenTrees extends WorldGenerator {
 	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {

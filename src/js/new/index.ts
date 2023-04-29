@@ -15,6 +15,7 @@ import './static/CraftingManagerRegistry';
 import './static/FurnaceRecipesRegistry';
 import './static/MobSpawnerRegistry';
 import './static/SessionRegistry';
+import './static/TileEntityRegistry';
 export { }
 // export { Block } from './Block';
 // export { NBTBase } from './NBTBase';

@@ -5,7 +5,7 @@ import { int, double, float, java, byte } from "../jree/index";
 import { World } from "./World";
 import { MathHelper } from "./MathHelper";
 import { MapGenBase } from "./MapGenBase";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class MapGenCavesHell extends MapGenBase {

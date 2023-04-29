@@ -1,4 +1,4 @@
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { IllegalArgumentException } from "../jree/java/lang/IllegalArgumentException";
 import { JavaMath } from "../jree/java/lang/Math";
 import { S } from "../jree/templates";

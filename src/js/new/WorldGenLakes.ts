@@ -2,8 +2,7 @@ import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Material } from "./Material";
 import { EnumSkyBlock } from "./EnumSkyBlock";
-import { Random } from "../java/util/Random";
-import { Block } from "./Block";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 

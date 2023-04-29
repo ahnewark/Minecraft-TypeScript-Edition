@@ -3,7 +3,7 @@
 
 import { NoiseGenerator2 } from "./NoiseGenerator2";
 import { NoiseGenerator } from "./NoiseGenerator";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class NoiseGeneratorOctaves2 extends NoiseGenerator {
 	private field_4234_a:  NoiseGenerator2[];

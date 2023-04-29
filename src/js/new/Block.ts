@@ -20,7 +20,7 @@ import { IEntityPlayer } from "./interfaces/IEntityPlayer";
 // import { EntityItem } from "./EntityItem";
 // import { Entity } from "./Entity";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { IEntity } from "./interfaces/IEntity";
 import { IEntityLiving } from "./interfaces/IEntityLiving";
 import { IEntityItem } from "./interfaces/IEntityItem";

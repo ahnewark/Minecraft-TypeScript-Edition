@@ -6,7 +6,7 @@ import { World } from "./World";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Block } from "./Block";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockFlower extends Block {
 	public constructor(i1: int, i2: int) {

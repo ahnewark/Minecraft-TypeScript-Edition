@@ -9,7 +9,7 @@ import { Entity } from "./Entity";
 import { Block } from "./Block";
 
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockStairs extends Block {
 	private modelBlock:  Block | undefined;

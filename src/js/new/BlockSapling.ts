@@ -7,7 +7,7 @@ import { WorldGenTrees } from "./WorldGenTrees";
 import { WorldGenBigTree } from "./WorldGenBigTree";
 import { World } from "./World";
 import { BlockFlower } from "./BlockFlower";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockSapling extends BlockFlower {
 	public constructor(i1: int, i2: int) {

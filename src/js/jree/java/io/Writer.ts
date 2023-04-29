@@ -63,12 +63,12 @@ export abstract class Writer extends JavaObject implements Closeable, Flushable,
     /**
       Appends the specified character to this writer.
      */
-      public append(c: char): this;
+      public async append(c: char): Promise<this>;
       /** Appends the specified character sequence to this writer. */
-      public append(csq: CharSequence | null): this;
+      public async append(csq: CharSequence | null): Promise<this>;
       /** Appends a subsequence of the specified character sequence to this writer. */
-      public append(csq: CharSequence | null, start: int, end: int): this;
-      public append(...args: unknown[]): this {
+      public async append(csq: CharSequence | null, start: int, end: int): Promise<this>;
+      public async append(...args: unknown[]): Promise<this> {
         if (typeof args[0] === "number") {
             this.write(args[0]);
         } else {

@@ -7,7 +7,7 @@ import { RedstoneUpdateInfo } from "./RedstoneUpdateInfo";
 import { IBlockAccess } from "./IBlockAccess";
 import { BlockTorch } from "./BlockTorch";
 import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockRedstoneTorch extends BlockTorch {
 	private torchActive:  boolean = false;

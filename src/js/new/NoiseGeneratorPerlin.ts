@@ -2,7 +2,7 @@
 
 
 import {  java, S } from "../jree/index";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { NoiseGenerator } from "./NoiseGenerator";
 
 export  class NoiseGeneratorPerlin extends NoiseGenerator {

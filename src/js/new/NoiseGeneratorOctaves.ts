@@ -3,7 +3,7 @@
 
 import { NoiseGeneratorPerlin } from "./NoiseGeneratorPerlin";
 import { NoiseGenerator } from "./NoiseGenerator";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class NoiseGeneratorOctaves extends NoiseGenerator {
 	private generatorCollection:  NoiseGeneratorPerlin[];

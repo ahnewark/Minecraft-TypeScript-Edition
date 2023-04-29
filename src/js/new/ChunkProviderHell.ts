@@ -15,8 +15,8 @@ import { IProgressUpdate } from "./IProgressUpdate";
 import { IChunkProvider } from "./IChunkProvider";
 import { Chunk } from "./Chunk";
 import { BlockSand } from "./BlockSand";
-import { Random } from "../java/util/Random";
 import { Block } from "./Block";
+import { Random } from "../jree/java/util/Random";
 
 export  class ChunkProviderHell extends JavaObject implements IChunkProvider {
 	private hellRNG:  Random | undefined;

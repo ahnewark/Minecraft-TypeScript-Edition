@@ -7,7 +7,7 @@ import { ItemStack } from "./ItemStack";
 import { EntityItem } from "./EntityItem";
 import { BlockFlower } from "./BlockFlower";
 import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Item } from "./Item";
 
 export  class BlockCrops extends BlockFlower {

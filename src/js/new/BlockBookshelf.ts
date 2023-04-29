@@ -4,7 +4,7 @@
 import { Material } from "./Material";
 import { Block } from "./Block";
 
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { MaterialRegistry } from "./static/MaterialRegistry";
 
 export  class BlockBookshelf extends Block {

@@ -10,7 +10,7 @@ import { EntityLiving } from "./EntityLiving";
 import { EntityItem } from "./EntityItem";
 import { EntityAnimals } from "./EntityAnimals";
 import { Entity } from "./Entity";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class EntitySheep extends EntityAnimals {

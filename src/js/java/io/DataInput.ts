@@ -15,5 +15,5 @@ export abstract class DataInput {
     public abstract readUnsignedByte(): Promise<int>;
     public abstract readUnsignedShort(): Promise<int>;
     public abstract readUTF(): Promise<string>;
-    public abstract skipBytes(count: int): int;
+    public abstract skipBytes(count: bigint): Promise<bigint>;
 }

@@ -5,8 +5,8 @@ import { Entity } from "./Entity";
 import { BlockBreakable } from "./BlockBreakable";
 import { AxisAlignedBB } from "./AxisAlignedBB";
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { BlockRegistry } from './static/BlockRegistry'
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
+import { Block } from "./Block";
 
 export  class BlockPortal extends BlockBreakable {
 	public constructor(i1: int, i2: int) {

@@ -1,7 +1,7 @@
 
 
 
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { World } from "./World";
 
 export abstract class WorldGenerator {

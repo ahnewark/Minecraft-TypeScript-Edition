@@ -11,8 +11,7 @@ import { AxisAlignedBB } from "./AxisAlignedBB";
 import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
-import { Block } from "./Block";
+import { Random } from "../jree/java/util/Random";
 
 export abstract  class BlockFluids extends Block {
 	protected constructor(i1: int, material2: Material| undefined) {

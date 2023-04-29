@@ -1,6 +1,3 @@
-
-
-
 import { java, int, byte } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
@@ -9,9 +6,8 @@ import { TileEntityChest } from "./TileEntityChest";
 import { Material } from "./Material";
 import { ItemStack } from "./ItemStack";
 import { Item } from "./Item";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
-import { Item } from "./Item";
 
 export  class WorldGenDungeons extends WorldGenerator {
 	public async generate(world1: World| undefined, random2: Random| undefined, i3: int, i4: int, i5: int):  Promise<boolean> {
@@ -87,10 +83,6 @@ export  class WorldGenDungeons extends WorldGenerator {
 						if(i15 === 1) {
 							await world1.setBlockWithNotify(i12, i4, i14, Block.crate.blockID);
 							let  tileEntityChest16: TileEntityChest = await world1.getBlockTileEntity(i12, i4, i14) as TileEntityChest;
-							// console.log({tileEntityChest16, i12, i4, i14})
-							if (!tileEntityChest16) {
-								continue;
-							}
 							let  i17: int = 0;
 
 							while(true) {
@@ -111,9 +103,8 @@ export  class WorldGenDungeons extends WorldGenerator {
 			}
 
 			await world1.setBlockWithNotify(i3, i4, i5, Block.mobSpawner.blockID);
-			console.error('Generating a dungeon, but tile ents are broken currently.')
-			// let  tileEntityMobSpawner19: TileEntityMobSpawner = await world1.getBlockTileEntity(i3, i4, i5) as TileEntityMobSpawner;
-			// tileEntityMobSpawner19.setMobID(this.pickMobSpawner(random2));
+			let  tileEntityMobSpawner19: TileEntityMobSpawner = await world1.getBlockTileEntity(i3, i4, i5) as TileEntityMobSpawner;
+			tileEntityMobSpawner19.setMobID(this.pickMobSpawner(random2));
 			return true;
 		} else {
 			return false;

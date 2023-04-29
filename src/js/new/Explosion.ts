@@ -8,9 +8,7 @@ import { MathHelper } from "./MathHelper";
 import { Entity } from "./Entity";
 import { ChunkPosition } from "./ChunkPosition";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { Random } from "../java/util/Random";
-import { Block } from "./Block";
-
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class Explosion {

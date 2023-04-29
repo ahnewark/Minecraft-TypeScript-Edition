@@ -8,7 +8,6 @@ import { IMobs } from "./IMobs";
 import { EntityPlayer } from "./EntityPlayer";
 import { EntityLiving } from "./EntityLiving";
 import { Chunk } from "./Chunk";
-import { Item } from "./Item";
 
 export  class EntitySlime extends EntityLiving implements IMobs {
 	public field_768_a:  float;

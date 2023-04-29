@@ -51,7 +51,7 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
     }
 
     public async writeByte(v: int): Promise<void> {
-        await this.out.write(v);
+        await this.out.write(v & 0xff);
         this.incCount(1);
     }
 
@@ -70,22 +70,22 @@ export class DataOutputStream extends FilterOutputStream implements DataOutput {
     public async writeInt(v: int): Promise<void> {
         await this.out.write((v >>> 24) & 0xFF);
         await this.out.write((v >>> 16) & 0xFF);
-        await this.out.write((v >>>  8) & 0xFF);
-        await this.out.write((v >>>  0) & 0xFF);
+        await this.out.write((v >>> 8) & 0xFF);
+        await this.out.write((v >>> 0) & 0xFF);
         this.incCount(4);
     }
 
     private writeBuffer : Int8Array = new Int8Array(8);
 
     public async writeLong(v: long): Promise<void> {
-        this.writeBuffer[0] = Number(v >> BigInt(56));
-        this.writeBuffer[1] = Number(v >> BigInt(48));
-        this.writeBuffer[2] = Number(v >> BigInt(40));
-        this.writeBuffer[3] = Number(v >> BigInt(32));
-        this.writeBuffer[4] = Number(v >> BigInt(24));
-        this.writeBuffer[5] = Number(v >> BigInt(16));
-        this.writeBuffer[6] = Number(v >> BigInt(8));
-        this.writeBuffer[7] = Number(v >> BigInt(0));
+        this.writeBuffer[0] = Number((v >> 56n) & 0xffn);
+        this.writeBuffer[1] = Number((v >> 48n) & 0xffn);
+        this.writeBuffer[2] = Number((v >> 40n) & 0xffn);
+        this.writeBuffer[3] = Number((v >> 32n) & 0xffn);
+        this.writeBuffer[4] = Number((v >> 24n) & 0xffn);
+        this.writeBuffer[5] = Number((v >> 16n) & 0xffn);
+        this.writeBuffer[6] = Number((v >> 8n) & 0xffn);
+        this.writeBuffer[7] = Number((v >> 0n) & 0xffn);
         await this.out.write(this.writeBuffer, 0, 8);
         this.incCount(8);
     }

@@ -30,17 +30,17 @@ export class ItemStack {
 
 	public constructor(i1: int, i2: int, i3: int);
     public constructor(...args: unknown[]) {
-		let itemId = 0;
-		let stackSize = 1;
-		let itemDamage = 0;
+		this.itemID = 0;
+		this.stackSize = 1;
+		this.itemDamage = 0;
 
 		switch (args.length) {
 			case 1: {
 				if (args[0] instanceof Block)
-					itemId = args[0].blockID;
+					this.itemID = args[0].blockID;
 
 				if (args[0] instanceof Item)
-					itemId = args[0].shiftedIndex;
+					this.itemID = args[0].shiftedIndex;
 
 				if (args[0] instanceof NBTTagCompound) {
 					this.stackSize = 0;
@@ -54,27 +54,27 @@ export class ItemStack {
 
 			case 2: {
 				if (args[0] instanceof Block)
-					itemId = args[0].blockID;
+					this.itemID = args[0].blockID;
 
 				if (args[0] instanceof Item)
-					itemId = args[0].shiftedIndex;
+					this.itemID = args[0].shiftedIndex;
 
-				stackSize = args[1] as number;
+				this.stackSize = args[1] as number;
 				break;
 			}
 
 			case 3: {
 				if (args[0] instanceof Block)
-					itemId = args[0].blockID;
+					this.itemID = args[0].blockID;
 
 				if (args[0] instanceof Item)
-					itemId = args[0].shiftedIndex;
+					this.itemID = args[0].shiftedIndex;
 				
 				if (typeof args[0] === 'number')
-					itemId = args[0];
+					this.itemID = args[0];
 
-				stackSize = args[1] as number;
-				itemDamage = args[2] as number;
+				this.stackSize = args[1] as number;
+				this.itemDamage = args[2] as number;
 				break;
 			}
 

@@ -96,17 +96,19 @@ export  class ChunkLoader implements IChunkLoader {
 		}
 
 		try {
-			let  file4: File= new File(this.saveDir, new JavaString("tmp_chunk.dat"));
-			let  fileOutputStream5: java.io.FileOutputStream = await FileOutputStream.Construct(file4);
+			// if(file3 && await file3.exists()) {
+			// 	await file3.delete();
+			// }
+
+			let  file4: File= new File(file3.getParentFile(), new JavaString("tmp_chunk.dat"));
+			//let  file4: File= new File(this.saveDir, new JavaString("tmp_chunk.dat"));
+			let  fileOutputStream5: java.io.FileOutputStream = await FileOutputStream.Construct(file3);
 			let  nBTTagCompound6: NBTTagCompound = new  NBTTagCompound();
 			let  nBTTagCompound7: NBTTagCompound = new  NBTTagCompound();
 			nBTTagCompound6.setTag("Level", nBTTagCompound7);
 			await this.storeChunkInCompound(chunk2, world1, nBTTagCompound7);
 			await CompressedStreamTools.writeGzippedCompoundToOutputStream(nBTTagCompound6, fileOutputStream5);
 			await fileOutputStream5.close();
-			if(file3 && await file3.exists()) {
-				await file3.delete();
-			}
 
 			if (file3) {
 				await file4.renameTo(file3);

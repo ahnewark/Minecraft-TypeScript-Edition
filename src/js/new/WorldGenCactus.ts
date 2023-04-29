@@ -1,8 +1,7 @@
 import { java, int } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
-import { EnumSkyBlock } from "./EnumSkyBlock";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 import { Block } from "./Block";
 
 export  class WorldGenCactus extends WorldGenerator {

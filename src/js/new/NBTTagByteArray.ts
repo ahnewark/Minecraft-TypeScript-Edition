@@ -35,7 +35,7 @@ export  class NBTTagByteArray extends NBTBase {
 
 
 	public async writeTagContents(dataOutput1: DataOutput): Promise<void> {
-		console.debug('writing NBT tag', this.getKey(), this.byteArray.length);
+		// console.debug('writing NBT tag', this.getKey(), this.byteArray.length);
 		await dataOutput1.writeInt(this.byteArray.length);
 		await dataOutput1.write(this.byteArray);
 	}

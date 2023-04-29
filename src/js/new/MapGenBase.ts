@@ -4,7 +4,7 @@
 import { java, long } from "../jree/index";
 import { World } from "./World";
 import { IChunkProvider } from "./IChunkProvider";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class MapGenBase {
 	protected field_1306_a:  number = 8;

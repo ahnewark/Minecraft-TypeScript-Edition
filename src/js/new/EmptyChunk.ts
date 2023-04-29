@@ -8,7 +8,7 @@ import { EnumSkyBlock } from "./EnumSkyBlock";
 import { Entity } from "./Entity";
 import { Chunk } from "./Chunk";
 import { AxisAlignedBB } from "./AxisAlignedBB";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class EmptyChunk extends Chunk {
 	public constructor(world1: World| undefined, i2: int, i3: int);

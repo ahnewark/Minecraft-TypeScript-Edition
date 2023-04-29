@@ -4,11 +4,9 @@ import { Item } from "./Item";
 import { Block } from "./Block";
 import { EntityPlayer } from "./EntityPlayer";
 import { Entity } from "./Entity";
-import { Block } from "./Block";
 
 import { MaterialRegistry } from "./static/MaterialRegistry";
-import { Random } from "../java/util/Random";
-import { Item } from "./Item";
+import { Random } from "../jree/java/util/Random";
 
 export  class BlockRedstoneOre extends Block {
 	private field_468_a:  boolean;

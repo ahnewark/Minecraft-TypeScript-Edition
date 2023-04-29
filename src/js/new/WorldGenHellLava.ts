@@ -5,9 +5,7 @@ import { int } from "../jree/index";
 import { WorldGenerator } from "./WorldGenerator";
 import { World } from "./World";
 import { Block } from "./Block";
-
-import { Block } from "./Block";
-import { Random } from "../java/util/Random";
+import { Random } from "../jree/java/util/Random";
 
 export  class WorldGenHellLava extends WorldGenerator {
 	private field_4158_a:  int;

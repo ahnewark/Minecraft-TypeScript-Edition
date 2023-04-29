@@ -10,11 +10,11 @@ import type { IReflection } from "./Object";
 
 export interface Appendable extends IReflection {
     /** Appends the specified character to this Appendable. */
-    append(c: char): this;
+    append(c: char): Promise<this>;
 
     /** Appends the specified character sequence to this Appendable. */
-    append(csq: CharSequence | null): this;
+    append(csq: CharSequence | null): Promise<this>;
 
     /** Appends a subsequence of the specified character sequence to this Appendable. */
-    append(csq: CharSequence | null, start: number, end: number): this;
+    append(csq: CharSequence | null, start: number, end: number): Promise<this>;
 }
