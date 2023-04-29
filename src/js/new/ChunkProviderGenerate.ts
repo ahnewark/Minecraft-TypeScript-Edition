@@ -63,7 +63,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		this.mobSpawnerNoise = new  NoiseGeneratorOctaves(this.rand, 8);
 	}
 
-	public generateTerrain(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined, d5: number[]):  void {
+	public generateTerrain(i1: number, i2: number, blocks: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined, d5: number[]):  void {
 		let  b6: number = 4;
 		let  b7: number = 64;
 		let  i8: number = b6 + 1;
@@ -93,7 +93,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 
 						for(let  i43: number = 0; i43 < 4; ++i43) {
 							let  i44: number = i43 + i11 * 4 << 11 | 0 + i12 * 4 << 7 | i13 * 8 + i32;
-							let  s45: number = 128;
+							let  maxHeight: number = 128;
 							let  d46: number = 0.25;
 							let  d48: number = d35;
 							let  d50: number = (d37 - d35) * d46;
@@ -114,8 +114,8 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 									i55 = Block.stone.blockID;
 								}
 
-								b3[i44] = i55 as number;
-								i44 += s45;
+								blocks[i44] = i55;
+								i44 += maxHeight;
 								d48 += d50;
 							}
 
@@ -134,43 +134,43 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 
 	}
 
-	public replaceBlocksForBiome(i1: number, i2: number, b3: Int8Array, mobSpawnerBase4: MobSpawnerBase[]| undefined):  void {
+	public replaceBlocksForBiome(i1: number, i2: number, blocks: Int8Array, mobSpawnerBase4: MobSpawnerBase[] | undefined):  void {
 		let  b5: number = 64;
 		let  d6: number = 8.0 / 256;
-		this.sandNoise = this.field_909_n.generateNoiseOctaves(this.sandNoise, (i1 * 16) as number, (i2 * 16) as number, 0.0, 16, 16, 1, d6, d6, 1.0);
-		this.gravelNoise = this.field_909_n.generateNoiseOctaves(this.gravelNoise, (i2 * 16) as number, 109.0134, (i1 * 16) as number, 16, 1, 16, d6, 1.0, d6);
-		this.stoneNoise = this.field_908_o.generateNoiseOctaves(this.stoneNoise, (i1 * 16) as number, (i2 * 16) as number, 0.0, 16, 16, 1, d6 * 2.0, d6 * 2.0, d6 * 2.0);
+		this.sandNoise = this.field_909_n.generateNoiseOctaves(this.sandNoise, Math.floor(i1 * 16), Math.floor(i2 * 16), 0.0, 16, 16, 1, d6, d6, 1.0);
+		this.gravelNoise = this.field_909_n.generateNoiseOctaves(this.gravelNoise, Math.floor(i2 * 16), 109.0134, Math.floor(i1 * 16), 16, 1, 16, d6, 1.0, d6);
+		this.stoneNoise = this.field_908_o.generateNoiseOctaves(this.stoneNoise, Math.floor(i1 * 16), Math.floor(i2 * 16), 0.0, 16, 16, 1, d6 * 2.0, d6 * 2.0, d6 * 2.0);
 
-		for(let  i8: number = 0; i8 < 16; ++i8) {
-			for(let  i9: number = 0; i9 < 16; ++i9) {
-				let  mobSpawnerBase10: MobSpawnerBase = mobSpawnerBase4[i8 + i9 * 16];
-				let  z11: boolean = this.sandNoise[i8 + i9 * 16] + this.rand.nextDouble() * 0.2 > 0.0;
-				let  z12: boolean = this.gravelNoise[i8 + i9 * 16] + this.rand.nextDouble() * 0.2 > 3.0;
-				let  i13: number = (this.stoneNoise[i8 + i9 * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25) as number;
+		for(let  blockX: number = 0; blockX < 16; ++blockX) {
+			for(let  blockZ: number = 0; blockZ < 16; ++blockZ) {
+				let  mobSpawnerBase10: MobSpawnerBase = mobSpawnerBase4[blockX + blockZ * 16];
+				let  z11: boolean = this.sandNoise[blockX + blockZ * 16] + this.rand.nextDouble() * 0.2 > 0.0;
+				let  z12: boolean = this.gravelNoise[blockX + blockZ * 16] + this.rand.nextDouble() * 0.2 > 3.0;
+				let  i13: number = Math.floor(this.stoneNoise[blockX + blockZ * 16] / 3.0 + 3.0 + this.rand.nextDouble() * 0.25);
 				let  i14: number = -1;
 				let  b15: number = mobSpawnerBase10.topBlock;
 				let  b16: number = mobSpawnerBase10.fillerBlock;
 
-				for(let  i17: number = 127; i17 >= 0; --i17) {
-					let  i18: number = (i8 * 16 + i9) * 128 + i17;
-					if(i17 <= 0 + this.rand.nextInt(5)) {
-						b3[i18] = Block.bedrock.blockID as number;
+				for(let  blockY: number = 127; blockY >= 0; --blockY) {
+					let  blockIndex: number = (blockX * 16 + blockZ) * 128 + blockY;
+					if(blockY <= 0 + this.rand.nextInt(5)) {
+						blocks[blockIndex] = Block.bedrock.blockID;
 					} else {
-						let  b19: number = b3[i18];
+						let  b19: number = blocks[blockIndex];
 						if(b19 === 0) {
 							i14 = -1;
 						} else if(b19 === Block.stone.blockID) {
 							if(i14 === -1) {
 								if(i13 <= 0) {
 									b15 = 0;
-									b16 = Block.stone.blockID as number;
-								} else if(i17 >= b5 - 4 && i17 <= b5 + 1) {
+									b16 = Block.stone.blockID;
+								} else if(blockY >= b5 - 4 && blockY <= b5 + 1) {
 									b15 = mobSpawnerBase10.topBlock;
 									b16 = mobSpawnerBase10.fillerBlock;
 									
 									if(z12) {
 										b15 = 0;
-										b16 = Block.gravel.blockID as number;
+										b16 = Block.gravel.blockID;
 									}
 
 									if(z11) {
@@ -179,19 +179,19 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 									}
 								}
 
-								if(i17 < b5 && b15 === 0) {
-									b15 = Block.waterMoving.blockID as number;
+								if(blockY < b5 && b15 === 0) {
+									b15 = Block.waterMoving.blockID;
 								}
 
 								i14 = i13;
-								if(i17 >= b5 - 1) {
-									b3[i18] = b15;
+								if(blockY >= b5 - 1) {
+									blocks[blockIndex] = b15;
 								} else {
-									b3[i18] = b16;
+									blocks[blockIndex] = b16;
 								}
 							} else if(i14 > 0) {
 								--i14;
-								b3[i18] = b16;
+								blocks[blockIndex] = b16;
 							}
 						}
 					}
@@ -203,20 +203,20 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 
 	public async provideChunk(i1: number, i2: number):  Promise<Chunk> {
 		this.rand.setSeed(BigInt(i1) * 341873128712n + BigInt(i2) * 132897987541n);
-		let  b3: Int8Array = new Int8Array(32768);
-		let  chunk4: Chunk = new  Chunk(this.worldObj, b3, i1, i2);
+		let  blocks: Int8Array = new Int8Array(32768);
+		let  chunk4: Chunk = new  Chunk(this.worldObj, blocks, i1, i2);
 		this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, i1 * 16, i2 * 16, 16, 16);
 		let  d5: number[] = this.worldObj.getWorldChunkManager().temperature;
-		this.generateTerrain(i1, i2, b3, this.biomesForGeneration, d5);
-		this.replaceBlocksForBiome(i1, i2, b3, this.biomesForGeneration);
-		this.field_902_u.func_867_a(this, this.worldObj, i1, i2, b3);
+		this.generateTerrain(i1, i2, blocks, this.biomesForGeneration, d5);		
+		this.replaceBlocksForBiome(i1, i2, blocks, this.biomesForGeneration);
+		this.field_902_u.func_867_a(this, this.worldObj, i1, i2, blocks);
 		await chunk4.func_1024_c();
 		return chunk4;
 	}
 
-	private func_4061_a(d1: number[], i2: number, i3: number, i4: number, i5: number, i6: number, i7: number):  number[] {
-		if(d1 === undefined) {
-			d1 = new Array<number>(i5 * i6 * i7).fill(0);
+	private func_4061_a(outArray: number[], i2: number, i3: number, i4: number, i5: number, i6: number, i7: number):  number[] {
+		if(outArray === undefined) {
+			outArray = new Array<number>(i5 * i6 * i7).fill(0);
 		}
 
 		let  d8: number = 684.412;
@@ -225,18 +225,18 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		let  d13: number[] = this.worldObj.getWorldChunkManager().humidity;
 		this.field_4182_g = this.field_922_a.func_4109_a(this.field_4182_g, i2, i4, i5, i7, 1.121, 1.121, 0.5);
 		this.field_4181_h = this.field_921_b.func_4109_a(this.field_4181_h, i2, i4, i5, i7, 200.0, 200.0, 0.5);
-		this.field_4185_d = this.field_910_m.generateNoiseOctaves(this.field_4185_d, i2 as number, i3 as number, i4 as number, i5, i6, i7, d8 / 80.0, d10 / 160.0, d8 / 80.0);
-		this.field_4184_e = this.field_912_k.generateNoiseOctaves(this.field_4184_e, i2 as number, i3 as number, i4 as number, i5, i6, i7, d8, d10, d8);
-		this.field_4183_f = this.field_911_l.generateNoiseOctaves(this.field_4183_f, i2 as number, i3 as number, i4 as number, i5, i6, i7, d8, d10, d8);
+		this.field_4185_d = this.field_910_m.generateNoiseOctaves(this.field_4185_d, Math.floor(i2), Math.floor(i3), Math.floor(i4), i5, i6, i7, d8 / 80.0, d10 / 160.0, d8 / 80.0);
+		this.field_4184_e = this.field_912_k.generateNoiseOctaves(this.field_4184_e, Math.floor(i2), Math.floor(i3), Math.floor(i4), i5, i6, i7, d8, d10, d8);
+		this.field_4183_f = this.field_911_l.generateNoiseOctaves(this.field_4183_f, Math.floor(i2), Math.floor(i3), Math.floor(i4), i5, i6, i7, d8, d10, d8);
 		let  i14: number = 0;
 		let  i15: number = 0;
-		let  i16: number = 16 / i5;
+		let  i16: number = Math.floor(16 / i5);
 
 		for(let  i17: number = 0; i17 < i5; ++i17) {
-			let  i18: number = i17 * i16 + i16 / 2;
+			let  i18: number = Math.floor(i17 * i16 + i16 / 2);
 
 			for(let  i19: number = 0; i19 < i7; ++i19) {
-				let  i20: number = i19 * i16 + i16 / 2;
+				let  i20: number = Math.floor(i19 * i16 + i16 / 2);
 				let  d21: number = d12[i18 * 16 + i20];
 				let  d23: number = d13[i18 * 16 + i20] * d21;
 				let  d25: number = 1.0 - d23;
@@ -277,13 +277,13 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 				}
 
 				d27 += 0.5;
-				d29 = d29 * i6 as number / 16.0;
-				let  d31: number = i6 as number / 2.0 + d29 * 4.0;
+				d29 = d29 * Math.floor(i6) / 16.0;
+				let  d31: number = Math.floor(i6) / 2.0 + d29 * 4.0;
 				++i15;
 
 				for(let  i33: number = 0; i33 < i6; ++i33) {
 					let  d34: number = 0.0;
-					let  d36: number = (i33 as number - d31) * 12.0 / d27;
+					let  d36: number = (Math.floor(i33) - d31) * 12.0 / d27;
 					if(d36 < 0.0) {
 						d36 *= 4.0;
 					}
@@ -301,17 +301,17 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 
 					d34 -= d36;
 					if(i33 > i6 - 4) {
-						let  d44: number = ((i33 - (i6 - 4)) as number / 3.0) as number;
+						let  d44: number = Math.floor(Math.floor(i33 - (i6 - 4)) / 3.0);
 						d34 = d34 * (1.0 - d44) + -10.0 * d44;
 					}
 
-					d1[i14] = d34;
+					outArray[i14] = d34;
 					++i14;
 				}
 			}
 		}
 
-		return d1;
+		return outArray;
 	}
 
 	public chunkExists(i1: number, i2: number):  boolean {
@@ -419,7 +419,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 		}
 
 		d11 = 0.5;
-		i13 = ((this.mobSpawnerNoise.func_806_a(i4 as number * d11, i5 as number * d11) / 8.0 + this.rand.nextDouble() * 4.0 + 4.0) / 3.0) as number;
+		i13 = Math.floor((this.mobSpawnerNoise.func_806_a(Math.floor(i4) * d11, Math.floor(i5) * d11) / 8.0 + this.rand.nextDouble() * 4.0 + 4.0) / 3.0);
 		i14 = 0;
 		if(this.rand.nextInt(10) === 0) {
 			++i14;
