@@ -110,7 +110,7 @@ const main = async() => {
 
     await mkdirAsync(`/minecraft/saves/Test2`, { 'recursive': true})
 
-    const world = await World.Construct(new JavaFile(S`/minecraft/saves`), 'Test2');
+    const world = await World.Construct(new JavaFile(S`/minecraft/saves`), 'Test3');
     if (world.isNewWorld) {
         await changeWorld(world, 'Generating level', null);
     } else {
@@ -173,7 +173,6 @@ const getDirectoryEntriesRecursive = async (
 
 const zipWorld = async (path: string): Promise<JSZip> => {
     const root = await openAsync(path, 'r', 0);
-    console.log({root});
     const zip = new JSZip();
     await addFolderToZip('', root, zip);
     return zip;
