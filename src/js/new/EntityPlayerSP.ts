@@ -29,7 +29,7 @@ export  class EntityPlayerSP extends EntityPlayer {
 	public prevTimeInPortal:  float;
 
 	public override get type(): string {
-		return 'PlayerSP';
+		return 'Player';
 	}
 
 	public constructor(/*minecraft1: Minecraft| undefined, */world2: World| undefined, session3: Session| undefined, i4: int) {

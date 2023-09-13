@@ -28,7 +28,7 @@ export default {
     nodeResolve({ preferBuiltins: false, browser: true }),
     nodePollyfills(),
     eslint({}),
-    esbuild({ tsconfig: 'tsconfig.json', sourceMap: true, minify: false, legalComments: 'none' , platform: 'browser'}),
+    esbuild({ tsconfig: 'tsconfig.json', sourceMap: production, minify: false, legalComments: 'none' , platform: 'browser'}),
   ],
   preserveEntrySignatures: false
 }

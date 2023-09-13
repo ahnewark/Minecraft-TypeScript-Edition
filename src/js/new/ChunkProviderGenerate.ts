@@ -458,7 +458,7 @@ export  class ChunkProviderGenerate implements IChunkProvider {
 			i16 = i4 + this.rand.nextInt(16) + 8;
 			i17 = i5 + this.rand.nextInt(16) + 8;
 			let  worldGenerator18: WorldGenerator = mobSpawnerBase6.getRandomWorldGenForTrees(this.rand);
-			worldGenerator18.func_517_a(1.0, 1.0, 1.0);
+			worldGenerator18.init(1.0, 1.0, 1.0);
 			await worldGenerator18.generate(this.worldObj, this.rand, i16, await this.worldObj.getHeightValue(i16, i17), i17);
 		}
 

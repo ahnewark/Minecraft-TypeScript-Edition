@@ -19,7 +19,7 @@ export class Random {
     private static addend = 0xBn;
     private static mask = (1n << 48n) - 1n;
 
-    private static DOUBLE_UNIT = 0x1-53; // 1.0 / (1L << 53)
+    private static DOUBLE_UNIT = 1.1102230246251565E-16;; // 1.0 / (1L << 53)
 
     // IllegalArgumentException messages
     static BadBound = "bound must be positive";
@@ -210,7 +210,14 @@ export class Random {
     }
 
     public nextDouble() {
-        return Number(((BigInt(this.next(26)) << 27n) + BigInt(this.next(27))) * BigInt(Random.DOUBLE_UNIT));
+        // const _next = this.next(26);
+        // console.log(_next);
+
+
+        // return new Long(this.next(26)).shiftLeft(27).add(this.next(27)).toNumber() * Random.DOUBLE_UNIT;
+        return new Long(this.next(26), undefined, false).shiftLeft(27).add(this.next(27)).toNumber() * Random.DOUBLE_UNIT;
+
+        // return Number(((BigInt(this.next(26)) << 27n) + BigInt(this.next(27))) * BigInt(Random.DOUBLE_UNIT));
     }
 
     private nextNextGaussian: bigint;
@@ -228,10 +235,10 @@ export class Random {
                 v2 = 2 * this.nextDouble() - 1; // between -1 and 1
                 s = v1 * v1 + v2 * v2;
             } while (s >= 1 || s == 0);
-            let multiplier = BigInt(Math.sqrt(-2 * Math.log(s)/s));
-            this.nextNextGaussian = BigInt(v2) * multiplier;
+            let multiplier = Math.sqrt(-2 * Math.log(s)/s);
+            this.nextNextGaussian = BigInt((v2 * multiplier) & 0xffffffffffffffff);
             this.haveNextNextGaussian = true;
-            return BigInt(v1) * multiplier;
+            return v1 * multiplier;
         }
     }
 

@@ -13,7 +13,6 @@ import { IntBuffer } from "./IntBuffer";
 import { ReadOnlyBufferException } from "./ReadOnlyBufferException";
 import { IllegalArgumentException } from "../lang/IllegalArgumentException";
 import { ByteOrder } from "./ByteOrder";
-import { FloatBuffer } from "./FloatBuffer";
 
 /**
  * A byte buffer.
@@ -32,26 +31,26 @@ import { FloatBuffer } from "./FloatBuffer";
  * Byte buffers can be created either by allocation, which allocates space for the buffer's content, or by wrapping an
  * existing byte array into a buffer.
  */
-export class ByteBuffer extends BufferImpl<Int8Array> {
+export class FloatBuffer extends BufferImpl<Float32Array> {
     #buffer: DataView;
 
     protected constructor(capacity: number);
-    protected constructor(buffer: Int8Array);
-    protected constructor(buffer: Int8Array, offset: int, length: int);
+    protected constructor(buffer: Float32Array);
+    protected constructor(buffer: Float32Array, offset: int, length: int);
     protected constructor(...args: unknown[]) {
-        let array: Int8Array;
+        let array: Float32Array;
         let offset = 0;
         let length = 0;
 
         if (args.length === 1) {
             if (typeof args[0] === "number") {
-                array = new Int8Array(args[0]);
+                array = new Float32Array(args[0]);
             } else {
-                array = args[0] as Int8Array;
+                array = args[0] as Float32Array;
             }
             length = array.length;
         } else if (args.length === 3) {
-            [array, offset, length] = args as [Int8Array, int, int];
+            [array, offset, length] = args as [Float32Array, int, int];
         } else {
             throw new IllegalArgumentException("Invalid arguments");
         }
@@ -68,8 +67,8 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      *
      * @returns The allocated char buffer.
      */
-    public static allocate(capacity: int): ByteBuffer {
-        return new ByteBuffer(capacity);
+    public static allocate(capacity: int): FloatBuffer {
+        return new FloatBuffer(capacity);
     }
 
     /**
@@ -79,44 +78,23 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      *
      * @returns The allocated byte buffer.
      */
-    public static allocateDirect(capacity: int): ByteBuffer {
-        return new ByteBuffer(capacity);
+    public static allocateDirect(capacity: int): FloatBuffer {
+        return new FloatBuffer(capacity);
     }
 
-    public static wrap(array: Int8Array, offset?: int, length?: int): ByteBuffer {
+    public static wrap(array: Float32Array, offset?: int, length?: int): FloatBuffer {
         if (offset !== undefined && length !== undefined) {
-            return new ByteBuffer(array, offset, offset + length);
+            return new FloatBuffer(array, offset, offset + length);
         }
 
-        return new ByteBuffer(array);
-    }
-
-    /**
-     * Creates a view of this byte buffer as a char buffer.
-     *
-     * @returns A new char buffer.
-     */
-    public asCharBuffer(): CharBuffer {
-        return CharBuffer.wrap(new Uint16Array(this.#buffer.buffer));
+        return new FloatBuffer(array);
     }
 
     /** Creates a view of this byte buffer as a double buffer. */
     // public asDoubleBuffer(): DoubleBuffer;
 
     /** Creates a view of this byte buffer as a float buffer. */
-    public asFloatBuffer(): FloatBuffer {
-        return FloatBuffer.wrap(new Float32Array(this.#buffer.buffer));
-    };
-
-    /**
-     * Creates a view of this byte buffer as an int buffer.
-     *
-     * @returns A new int buffer.
-     */
-    public asIntBuffer(): IntBuffer {
-        return IntBuffer.wrap(new Int32Array(this.#buffer.buffer, this.#buffer.byteOffset,
-            this.#buffer.byteLength));
-    }
+    // public FloatBuffer asFloatBuffer(): FloatBuffer;
 
     /** Creates a view of this byte buffer as a long buffer. */
     // public asLongBuffer(): LongBuffer
@@ -127,7 +105,7 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      * @returns A new byte buffer that shares this buffer's content.
      */
     public override duplicate(): this {
-        const buffer = new ByteBuffer(this.array());
+        const buffer = new FloatBuffer(this.array());
         buffer.readOnly = this.readOnly;
         buffer.currentPosition = this.currentPosition;
         buffer.currentLimit = this.currentLimit;
@@ -137,29 +115,29 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
     }
 
     public get(): byte;
-    public get(dst: Int8Array): this;
-    public get(dst: Int8Array, offset: int, length: int): this;
+    public get(dst: Float32Array): this;
+    public get(dst: Float32Array, offset: int, length: int): this;
     public get(index: int): byte;
-    public get(index: int, dst: Int8Array): this;
-    public get(index: int, dst: Int8Array, offset: int, length: int): this;
-    public get(indexOrDst?: number | Int8Array, offsetOrDst?: number | Int8Array,
+    public get(index: int, dst: Float32Array): this;
+    public get(index: int, dst: Float32Array, offset: int, length: int): this;
+    public get(indexOrDst?: number | Float32Array, offsetOrDst?: number | Float32Array,
         lengthOrOffset?: number, length?: number): this | number {
         if (indexOrDst === undefined) {
             if (this.currentPosition >= this.currentLimit) {
                 throw new BufferUnderflowException();
             }
 
-            return this.#buffer.getUint8(this.currentPosition++);
+            return this.#buffer.getFloat32(this.currentPosition++);
         } else if (typeof indexOrDst === "number") {
             if (indexOrDst < 0 || indexOrDst >= this.currentLimit) {
                 throw new IndexOutOfBoundsException();
             }
 
             if (offsetOrDst === undefined) {
-                return this.#buffer.getUint8(indexOrDst);
+                return this.#buffer.getFloat32(indexOrDst);
             }
 
-            const dst = offsetOrDst as Int8Array;
+            const dst = offsetOrDst as Float32Array;
             if (this.currentLimit - indexOrDst < dst.length) {
                 throw new IndexOutOfBoundsException();
             }
@@ -284,14 +262,14 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
     }
 
     public put(b: number): this;
-    public put(src: Int8Array): this;
-    public put(src: Int8Array, offset: number, length: number): this;
+    public put(src: Float32Array): this;
+    public put(src: Float32Array, offset: number, length: number): this;
     public put(index: number, b: number): this;
-    public put(index: number, src: Int8Array): this;
-    public put(index: number, src: Int8Array, offset: number, length: number): this;
-    public put(index: number, src: ByteBuffer, offset: number, length: number): this;
-    public put(src: ByteBuffer): this;
-    public put(bOrSrcOrIndex: number | Int8Array | ByteBuffer, offsetOrBOrSrc?: Int8Array | ByteBuffer | number,
+    public put(index: number, src: Float32Array): this;
+    public put(index: number, src: Float32Array, offset: number, length: number): this;
+    public put(index: number, src: FloatBuffer, offset: number, length: number): this;
+    public put(src: FloatBuffer): this;
+    public put(bOrSrcOrIndex: number | Float32Array | FloatBuffer, offsetOrBOrSrc?: Float32Array | FloatBuffer | number,
         lengthOrOffset?: number, length?: number): this {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
@@ -303,26 +281,26 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
                     throw new BufferOverflowException();
                 }
 
-                this.#buffer.setUint8(this.currentPosition++, bOrSrcOrIndex);
+                this.#buffer.setFloat32(this.currentPosition++, bOrSrcOrIndex);
             } else if (typeof offsetOrBOrSrc === "number") {
                 if (bOrSrcOrIndex < 0 || bOrSrcOrIndex >= this.currentLimit) {
                     throw new IndexOutOfBoundsException();
                 }
 
-                this.#buffer.setUint8(bOrSrcOrIndex, offsetOrBOrSrc);
+                this.#buffer.setFloat32(bOrSrcOrIndex, offsetOrBOrSrc);
             } else {
                 if (offsetOrBOrSrc === this) {
                     throw new IllegalArgumentException();
                 }
 
-                const source = offsetOrBOrSrc instanceof Int8Array ? offsetOrBOrSrc : offsetOrBOrSrc.array();
+                const source = offsetOrBOrSrc instanceof Float32Array ? offsetOrBOrSrc : offsetOrBOrSrc.array();
                 if (lengthOrOffset !== undefined && length !== undefined) {
                     this.array().set(source.subarray(lengthOrOffset, lengthOrOffset + length), bOrSrcOrIndex);
                 } else {
                     this.array().set(source, bOrSrcOrIndex);
                 }
             }
-        } else if (bOrSrcOrIndex instanceof ByteBuffer) {
+        } else if (bOrSrcOrIndex instanceof FloatBuffer) {
             if (bOrSrcOrIndex === this) {
                 throw new IllegalArgumentException();
             }
@@ -357,10 +335,10 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
     }
 
     /** Relative put method for writing a char value(optional operation). */
-    public putChar(value: char): ByteBuffer;
+    public putChar(value: char): FloatBuffer;
     /** Absolute put method for writing a char value(optional operation). */
-    public putChar(index: number, value: char): ByteBuffer;
-    public putChar(valueOrIndex: number, value?: char): ByteBuffer {
+    public putChar(index: number, value: char): FloatBuffer;
+    public putChar(valueOrIndex: number, value?: char): FloatBuffer {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -390,15 +368,15 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      *
      * @param value
      */
-    public putDouble(value: number): ByteBuffer;
+    public putDouble(value: number): FloatBuffer;
     /**
      * Absolute put method for writing a double value(optional operation).
      *
      * @param index
      * @param value
      */
-    public putDouble(index: number, value: number): ByteBuffer;
-    public putDouble(valueOrIndex: number, value?: number): ByteBuffer {
+    public putDouble(index: number, value: number): FloatBuffer;
+    public putDouble(valueOrIndex: number, value?: number): FloatBuffer {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -428,15 +406,15 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      *
      * @param value
      */
-    public putFloat(value: number): ByteBuffer;
+    public putFloat(value: number): FloatBuffer;
     /**
      * Absolute put method for writing a float value(optional operation).
      *
      * @param index
      * @param value
      */
-    public putFloat(index: number, value: number): ByteBuffer;
-    public putFloat(valueOrIndex: number, value?: number): ByteBuffer {
+    public putFloat(index: number, value: number): FloatBuffer;
+    public putFloat(valueOrIndex: number, value?: number): FloatBuffer {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -466,15 +444,15 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      *
      * @param value
      */
-    public putInt(value: number): ByteBuffer;
+    public putInt(value: number): FloatBuffer;
     /**
      * Absolute put method for writing an int value(optional operation).
      *
      * @param index
      * @param value
      */
-    public putInt(index: number, value: number): ByteBuffer;
-    public putInt(valueOrIndex: number, value?: number): ByteBuffer {
+    public putInt(index: number, value: number): FloatBuffer;
+    public putInt(valueOrIndex: number, value?: number): FloatBuffer {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -504,15 +482,15 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
      *
      * @param value
      */
-    public putLong(value: bigint): ByteBuffer;
+    public putLong(value: bigint): FloatBuffer;
     /**
      * Absolute put method for writing a long value(optional operation).
      *
      * @param index
      * @param value
      */
-    public putLong(index: number, value: bigint): ByteBuffer;
-    public putLong(valueOrIndex: bigint | number, value?: bigint): ByteBuffer {
+    public putLong(index: number, value: bigint): FloatBuffer;
+    public putLong(valueOrIndex: bigint | number, value?: bigint): FloatBuffer {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -538,10 +516,10 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
     }
 
     /** Relative put method for writing a short value(optional operation). */
-    public putShort(value: number): ByteBuffer;
+    public putShort(value: number): FloatBuffer;
     /** Absolute put method for writing a short value(optional operation). */
-    public putShort(index: number, value: number): ByteBuffer;
-    public putShort(valueOrIndex: number, value?: number): ByteBuffer {
+    public putShort(index: number, value: number): FloatBuffer;
+    public putShort(valueOrIndex: number, value?: number): FloatBuffer {
         if (this.isReadOnly()) {
             throw new ReadOnlyBufferException();
         }
@@ -566,7 +544,7 @@ export class ByteBuffer extends BufferImpl<Int8Array> {
         return this;
     }
 
-    public slice(): ByteBuffer {
-        return new ByteBuffer(this.array());
+    public slice(): FloatBuffer {
+        return new FloatBuffer(this.array());
     }
 }

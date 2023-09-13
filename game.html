@@ -1,0 +1,122 @@
+<html lang="en">
+  <head>  
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/minecraft/css/style2.css">
+    <link rel="shortcut icon" href="/minecraft/favicon.png">
+    
+    
+    <title>Minecraft</title>
+    <script type="text/javascript">
+        if (top.location != self.location)
+            top.location = self.location;
+    </script> 
+  </head>
+  <body>
+    <div id="centerpage">
+    
+    <div id="toppanel" style="z-index:3;">
+    
+    <div class="top_center" style="height:48px; width:100%;">
+    <table style="height:48px; width:100%;">
+        <tbody><tr>
+            <td style="width:270px; height: 48px; padding:0px; top:0px;">
+            
+    <div id="prepurchasesplash" style="height: 88px;">        
+            
+             
+    <a border="0"><img src="/minecraft/logo_pps.png" width="270" height="88" border="0"></a>
+            
+            
+     </div>       
+            </td><td>
+            <div id="links">
+    <a href="/" id="menu_" class="menuItem" style="background: none;">Home</a>&nbsp; &nbsp; <a href="https://github.com/craftycodie/js-minecraft" id="menu_about" class="menuItem" style="background: none;">About</a> &nbsp; &nbsp; <a id="menu_community" class="menuItem" style="background: none;">Community</a>&nbsp;&nbsp; <a id="menu_help" class="menuItem" style="background: none;">Help</a>&nbsp; &nbsp;
+        
+        
+            
+            </div>
+            </td>
+    
+            <td>
+            
+            <div id="loginpanel">
+      <a class="loginpanel">Log in</a> | <a class="loginpanel">Register</a>  
+    </div>
+            
+            
+            </td>
+        </tr>
+    </tbody></table>
+    </div>
+    <!-- <a>Gift codes now available</a>  -->
+    </div>
+            
+    <div id="toppanel_bg" style="z-index:1;"></div>
+     
+     
+     <script type="text/javascript">
+     //script for linkbuttons
+     
+     
+     var siteurl = "https://craftycodie.com"; 
+     var menu_items = ["","about","community","help","profile"];
+     var pathnames = ["","about.jsp","community.jsp","help.jsp","skin/"];
+     for(i=0;i<menu_items.length;i++){
+         
+         try{
+         var testurl = siteurl + pathnames[i] ;
+         var menuObj = "menu_" + menu_items[i] ;
+        //alert(testurl + " " + self.location + "  " + menuObj);
+         if(testurl == self.location){ 
+         
+             document.getElementById(menuObj).style.textDecoration = "underline" 
+             }
+          else{ 
+             document.getElementById(menuObj).style.background = "none"; 
+              }
+         }catch(e){}
+             
+         }
+    </script> 
+    
+    
+    
+    
+    
+    
+    
+    <div id="page" style="z-index:4;">
+    
+    <div id="content">
+     
+    
+    
+    
+    <div class="oneColeDiv">
+    <br><br><br>
+    
+    
+    <center><h1>Minecraft Beta</h1></center>
+        <div><br>
+          <div id="canvas-container" id="game"></div>
+    </div>
+    <br>
+    
+    </div>
+     
+     
+     
+     </div>
+    
+    
+    <br>
+    
+    </div> <!-- page end-->
+    
+    
+    </div> <!-- pagecenter end-->
+    <div class="footer" id="footer">Copyright 2009-2010 Mojang AB. <a>Terms and conditions</a>. <a>Credits</a>. <a>Support / FAQ</a>. </div>
+
+    <script type="module" src="dist/index.js"></script>
+  </body>
+</html>

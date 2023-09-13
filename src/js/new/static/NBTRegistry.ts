@@ -38,7 +38,7 @@ export class NBTRegistry {
 		} else {
 			let  nBTBase2: NBTBase = NBTRegistry.createTagOfType(b1);
 			nBTBase2.key = await dataInput0.readUTF();
-			console.debug('read tag', nBTBase2.getKey())
+			// console.debug('read tag', nBTBase2.getKey())
 			await nBTBase2.readTagContents(dataInput0);
 			return nBTBase2;
 		}
@@ -47,7 +47,7 @@ export class NBTRegistry {
 	public static async writeTag(nBTBase0: NBTBase, dataOutput1: DataOutput):  Promise<void> {
 		await dataOutput1.writeByte(nBTBase0.getType());
 		if(nBTBase0.getType() !== 0) {
-			console.debug('write tag ', nBTBase0.getKey());
+			// console.debug('write tag ', nBTBase0.getKey());
 			await dataOutput1.writeUTF(nBTBase0.getKey());
 			await nBTBase0.writeTagContents(dataOutput1);
 		}

@@ -109,8 +109,10 @@ const openAsync = async (path: string, openMode: OpenModes, unk1: number): Promi
 
     (handle as any).path = path;
 
-    if (Array.from(currentHandles.values()).find(potential => potential === path))
-        console.error('Opening a second handle for ' + path + '! This bad!')
+    // if (Array.from(currentHandles.values()).find(potential => potential === path)) {
+    //     console.trace();
+    //     console.error('Opening a second handle for ' + path + '! This bad!')
+    // }
 
     currentHandles.set(handle, path);
 

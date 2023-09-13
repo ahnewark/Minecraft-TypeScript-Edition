@@ -108,7 +108,7 @@ const showText = (text: string) => {
 const main = async() => {
     showText('World Test');
 
-    await mkdirAsync(`/minecraft/saves/Test2`, { 'recursive': true})
+    await mkdirAsync(`/minecraft/saves/Test3`, { 'recursive': true})
 
     const world = await World.Construct(new JavaFile(S`/minecraft/saves`), 'Test3');
     if (world.isNewWorld) {
@@ -204,7 +204,7 @@ const test = async () => {
     // const worldZip = new JSZip();
     showText("Zipping...");
 
-    const testWorldPath = '/minecraft/saves/Test2'
+    const testWorldPath = '/minecraft/saves/Test3'
     const worldZip = await zipWorld(testWorldPath);
 
     // const testWorldFolder = await openAsync(testWorldPath, 'r', 0);

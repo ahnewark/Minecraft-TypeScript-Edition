@@ -102,6 +102,7 @@ export  class NBTTagCompound extends NBTBase {
 	}
 
 	public getLong(string1: string):  long {
+		console.log('getting long' + string1, !this.tagMap.has(string1) ? 0n : (this.tagMap.get(string1) as NBTTagLong).longValue)
 		return !this.tagMap.has(string1) ? 0n : (this.tagMap.get(string1) as NBTTagLong).longValue;
 	}
 

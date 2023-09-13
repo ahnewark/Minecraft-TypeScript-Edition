@@ -1657,12 +1657,11 @@ export  class World implements IBlockAccess {
 			try {
 				let  i1: int = 500;
 
-				const lightPromises = this.field_1051_z.map((metadata, index) => {
-					if (index >= i1) {
-						console.warn(`More than ${i1} lighting updates, ignoring`)
-						return Promise.resolve();
+				if (this.field_1051_z.length > i1) {
+					console.warn(`More than ${i1} lighting updates, ignoring`)
+				}
 
-					}
+				const lightPromises = this.field_1051_z.slice(0, Math.min(i1, this.field_1051_z.length)).map((metadata) => {
 					return metadata.func_4127_a(this);
 				})
 

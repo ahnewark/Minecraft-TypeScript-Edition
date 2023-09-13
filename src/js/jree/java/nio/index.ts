@@ -7,6 +7,7 @@ export * as Buffer from "./Buffer";
 export * from "./CharBuffer";
 export * from "./IntBuffer";
 export * from "./ByteBuffer";
+export * from "./FloatBuffer";
 export * from "./ByteOrder";
 
 export * from "./InvalidMarkException";
