@@ -10,11 +10,11 @@ export type EntityMetadata = {id: number, type: number, value: number};
 
 export default class Entity {
 
-    private minecraft: Minecraft;
-    private world: World;
-    private id: number;
-    private random: Random;
-    private renderer: EntityRenderer;
+    protected minecraft: Minecraft;
+    protected world: World;
+    protected id: number;
+    protected random: Random;
+    protected renderer: EntityRenderer;
 
     protected x: number;
     protected y: number;

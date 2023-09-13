@@ -8,7 +8,29 @@ import InventoryPlayer from "../inventory/inventory/InventoryPlayer.js";
 
 export default class PlayerEntity extends EntityLiving {
 
-    static name = "PlayerEntity";
+    static entityName = "PlayerEntity";
+
+    private inventory: InventoryPlayer;
+    private username: string;
+
+    private jumpMovementFactor: number;
+    private speedInAir: number;
+    private flySpeed: number;
+
+    private flyToggleTimer: number;
+    private sprintToggleTimer: number;
+
+    private sprinting: boolean;
+
+    private prevFovModifier: number;
+    private fovModifier: number;
+    private timeFovChanged: number;
+
+    // For first person bobbing
+    private cameraYaw: number;
+    private cameraPitch: number;
+    private prevCameraYaw: number;
+    private prevCameraPitch: number;
 
     constructor(minecraft, world, id) {
         super(minecraft, world, id);
@@ -44,9 +66,6 @@ export default class PlayerEntity extends EntityLiving {
         this.cameraPitch = 0;
         this.prevCameraYaw = 0;
         this.prevCameraPitch = 0;
-
-        this.width = 0.6;
-        this.height = 1.8;
     }
 
     respawn() {
@@ -163,7 +182,7 @@ export default class PlayerEntity extends EntityLiving {
         }
     }
 
-    travelFlying(forward, vertical, strafe) {
+    travelFlying(forward: number, vertical: number, strafe: number) {
         // Fly move up and down
         if (this.isSneaking()) {
             this.moveStrafing = strafe / 0.3;
@@ -189,7 +208,7 @@ export default class PlayerEntity extends EntityLiving {
         }
     }
 
-    travel(forward, vertical, strafe) {
+    async travel(forward: number, vertical: number, strafe: number) {
         let isSlow = this.onGround && this.isSneaking();
 
         let prevX = this.x;
@@ -213,7 +232,7 @@ export default class PlayerEntity extends EntityLiving {
             let slipperiness = this.getBlockSlipperiness() * 0.91;
 
             // Move
-            this.collision = this.moveCollide(-this.motionX, this.motionY, -this.motionZ);
+            this.collision = await this.moveCollide(-this.motionX, this.motionY, -this.motionZ);
 
             // Gravity
             if (!this.flying) {
@@ -231,7 +250,7 @@ export default class PlayerEntity extends EntityLiving {
             let blockX = MathHelper.floor(this.x);
             let blockY = MathHelper.floor(this.y - 0.2);
             let blockZ = MathHelper.floor(this.z);
-            let typeId = this.world.getBlockAt(blockX, blockY, blockZ);
+            let typeId = await this.world.getBlockAt(blockX, blockY, blockZ);
 
             let distanceX = this.x - prevX;
             let distanceZ = this.z - prevZ;
@@ -330,7 +349,7 @@ export default class PlayerEntity extends EntityLiving {
     }
 
 
-    setFOVModifier(fov) {
+    setFOVModifier(fov: number) {
         this.prevFovModifier = this.fovModifier;
         this.fovModifier = fov;
         this.timeFovChanged = Date.now();
@@ -344,7 +363,7 @@ export default class PlayerEntity extends EntityLiving {
         return timePassed > duration ? this.fovModifier : this.prevFovModifier - progress;
     }
 
-    getPositionEyes(partialTicks) {
+    getPositionEyes(partialTicks: number) {
         if (partialTicks === 1.0) {
             return new Vector3(this.x, this.y + this.getEyeHeight(), this.z);
         } else {
@@ -358,7 +377,7 @@ export default class PlayerEntity extends EntityLiving {
     /**
      * interpolated look vector
      */
-    getLook(partialTicks) {
+    getLook(partialTicks: number) {
         // TODO interpolation
         return this.getVectorForRotation(this.rotationPitch, this.rotationYaw);
     }
@@ -366,7 +385,7 @@ export default class PlayerEntity extends EntityLiving {
     /**
      * Creates a Vec3 using the pitch and yaw of the entities rotation.
      */
-    getVectorForRotation(pitch, yaw) {
+    getVectorForRotation(pitch: number, yaw: number) {
         let z = Math.cos(-yaw * 0.017453292 - Math.PI);
         let x = Math.sin(-yaw * 0.017453292 - Math.PI);
         let xz = -Math.cos(-pitch * 0.017453292);
@@ -374,7 +393,7 @@ export default class PlayerEntity extends EntityLiving {
         return new Vector3(x * xz, y, z * xz);
     }
 
-    rayTrace(blockReachDistance, partialTicks) {
+    rayTrace(blockReachDistance: number, partialTicks: number) {
         let from = this.getPositionEyes(partialTicks);
         let direction = this.getLook(partialTicks);
         let to = from.addVector(direction.x * blockReachDistance, direction.y * blockReachDistance, direction.z * blockReachDistance);

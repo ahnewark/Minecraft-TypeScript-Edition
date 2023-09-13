@@ -3,46 +3,46 @@ import MathHelper from "../../util/MathHelper.js";
 
 export default class EntityLiving extends Entity {
 
-    private jumpTicks: number;
+    protected jumpTicks: number;
 
-    private jumping: boolean;
+    protected jumping: boolean;
 
-    private moveForward: number;
-    private moveStrafing: number;
+    protected moveForward: number;
+    protected moveStrafing: number;
 
-    private swingProgress: number;
-    private prevSwingProgress: number;
-    private swingProgressInt: number;
-    private isSwingInProgress: boolean;
+    protected swingProgress: number;
+    protected prevSwingProgress: number;
+    protected swingProgressInt: number;
+    protected isSwingInProgress: boolean;
 
-    private renderYawOffset: number;
-    private rotationYawHead: number;
+    protected renderYawOffset: number;
+    protected rotationYawHead: number;
 
-    private prevRotationYawHead: number;
-    private prevRenderYawOffset: number;
+    protected prevRotationYawHead: number;
+    protected prevRenderYawOffset: number;
 
-    private limbSwingProgress: number;
-    private limbSwingStrength: number;
-    private prevLimbSwingStrength: number;
+    protected limbSwingProgress: number;
+    protected limbSwingStrength: number;
+    protected prevLimbSwingStrength: number;
 
-    private health: number;
+    protected health: number;
 
-    private rotationPositionIncrements: number
+    protected rotationPositionIncrements: number
 
-    private targetX: number;
-    private targetY: number;
-    private targetZ: number;
+    protected targetX: number;
+    protected targetY: number;
+    protected targetZ: number;
 
-    private targetYaw: number;
-    private targetPitch: number;
+    protected targetYaw: number;
+    protected targetPitch: number;
 
-    private prevRenderArmYaw: number;
-    private prevRenderArmPitch: number;
+    protected prevRenderArmYaw: number;
+    protected prevRenderArmPitch: number;
 
-    private renderArmYaw: number;
-    private renderArmPitch: number;
+    protected renderArmYaw: number;
+    protected renderArmPitch: number;
 
-    private flying: boolean;
+    protected flying: boolean;
 
     constructor(minecraft, world, id) {
         super(minecraft, world, id);
