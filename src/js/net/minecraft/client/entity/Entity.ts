@@ -58,7 +58,7 @@ export default class Entity {
 
     protected collision: boolean;
 
-    constructor(minecraft: Minecraft, world, id) {
+    constructor(minecraft: Minecraft, world: World, id: number) {
         this.minecraft = minecraft;
         this.world = world;
         this.id = id;

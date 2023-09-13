@@ -1,5 +1,7 @@
 import Entity from "./Entity.js";
 import MathHelper from "../../util/MathHelper.js";
+import Minecraft from "../Minecraft.js";
+import World from "../world/World.js";
 
 export default class EntityLiving extends Entity {
 
@@ -44,7 +46,7 @@ export default class EntityLiving extends Entity {
 
     protected flying: boolean;
 
-    constructor(minecraft, world, id) {
+    constructor(minecraft: Minecraft, world: World, id: number) {
         super(minecraft, world, id);
 
         this.jumpTicks = 0;

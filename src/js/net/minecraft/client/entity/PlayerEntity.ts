@@ -5,6 +5,8 @@ import Keyboard from "../../util/Keyboard.js";
 import Vector3 from "../../util/Vector3.js";
 import {BlockRegistry} from "../world/block/BlockRegistry.js";
 import InventoryPlayer from "../inventory/inventory/InventoryPlayer.js";
+import Minecraft from "../Minecraft.js";
+import World from "../world/World.js";
 
 export default class PlayerEntity extends EntityLiving {
 
@@ -32,7 +34,7 @@ export default class PlayerEntity extends EntityLiving {
     private prevCameraYaw: number;
     private prevCameraPitch: number;
 
-    constructor(minecraft, world, id) {
+    constructor(minecraft: Minecraft, world: World, id: number) {
         super(minecraft, world, id);
 
         this.inventory = new InventoryPlayer();

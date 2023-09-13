@@ -5,10 +5,27 @@ import ClientPlayerPositionPacket from "../network/packet/play/client/ClientPlay
 import ClientPlayerPositionRotationPacket from "../network/packet/play/client/ClientPlayerPositionRotationPacket.js";
 import ClientPlayerStatePacket from "../network/packet/play/client/ClientPlayerStatePacket.js";
 import ClientSwingArmPacket from "../network/packet/play/client/ClientSwingArmPacket.js";
+import NetworkPlayHandler from "../network/handler/NetworkPlayHandler.js";
+import Minecraft from "../Minecraft.js";
+import World from "../world/World.js";
 
 export default class PlayerEntityMultiplayer extends PlayerEntity {
 
-    constructor(minecraft, world, networkHandler, id) {
+    private networkHandler: NetworkPlayHandler;
+
+    private positionUpdateTicks: number;
+
+    private lastReportedX: number;
+    private lastReportedY: number;
+    private lastReportedZ: number;
+
+    private lastReportedYaw: number;
+    private lastReportedPitch: number;
+
+    private serverSprintState: boolean;
+    private serverSneakState: boolean;
+
+    constructor(minecraft: Minecraft, world: World, networkHandler: NetworkPlayHandler, id: number) {
         super(minecraft, world, id);
 
         this.networkHandler = networkHandler;
