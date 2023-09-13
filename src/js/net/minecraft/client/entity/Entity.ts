@@ -4,6 +4,7 @@ import Random from "../../util/Random.js";
 import Minecraft from "../Minecraft.js";
 import EntityRenderer from "../render/entity/EntityRenderer.js";
 import World from "../world/World.js";
+import { BlockRegistry } from "../world/block/BlockRegistry.js";
 
 export type EntityMetadata = {id: number, type: number, value: number};
 
@@ -15,48 +16,47 @@ export default class Entity {
     private random: Random;
     private renderer: EntityRenderer;
 
-    private x: number;
-    private y: number;
-    private z: number;
+    protected x: number;
+    protected y: number;
+    protected z: number;
 
-    private width: number;
-    private height: number;
+    protected width: number;
+    protected height: number;
     
-    private motionX: number;
-    private motionY: number;
-    private motionZ: number;
+    protected motionX: number;
+    protected motionY: number;
+    protected motionZ: number;
 
-    private stepHeight: number;
+    protected stepHeight: number;
 
-    private onGround: boolean;
+    protected onGround: boolean;
 
-    private rotationYaw: number;
-    private rotationPitch: number;
+    protected rotationYaw: number;
+    protected rotationPitch: number;
 
-    private prevX: number;
-    private prevY: number;
-    private prevZ: number;
+    protected prevX: number;
+    protected prevY: number;
+    protected prevZ: number;
 
-    private prevRotationYaw: number;
-    private prevRotationPitch: number;
+    protected prevRotationYaw: number;
+    protected prevRotationPitch: number;
     
-    private prevDistanceWalked: number;
-    private distanceWalked: number;
-    private nextStepDistance: number;
+    protected prevDistanceWalked: number;
+    protected distanceWalked: number;
+    protected nextStepDistance: number;
     
-    private ticksExisted: number;
-    private isDead: boolean;
+    protected ticksExisted: number;
+    protected isDead: boolean;
 
-    private serverPositionX: number;
-    private serverPositionY: number;
-    private serverPositionZ: number;
+    protected serverPositionX: number;
+    protected serverPositionY: number;
+    protected serverPositionZ: number;
 
-    private metaData: {[id: number]:EntityMetadata};
+    protected metaData: {[id: number]:EntityMetadata};
 
-    private boundingBox: BoundingBox;
+    protected boundingBox: BoundingBox;
 
-
-
+    protected collision: boolean;
 
     constructor(minecraft: Minecraft, world, id) {
         this.minecraft = minecraft;
@@ -113,6 +113,66 @@ export default class Entity {
         if (this.renderer === null) {
             throw new Error("No entity renderer for entity " + this.constructor.name + " found!");
         }
+    }
+
+    getBlockPosX() {
+        return this.x - (this.x < 0 ? 1 : 0);
+    }
+
+    getBlockPosY() {
+        return this.y - (this.y < 0 ? 1 : 0);
+    }
+
+    getBlockPosZ() {
+        return this.z - (this.z < 0 ? 1 : 0);
+    }
+
+    isInWater() {
+        return this.world.getBlockAt(this.getBlockPosX(), this.getBlockPosY(), this.getBlockPosZ()) === BlockRegistry.WATER.getId();
+    }
+
+    travelFlying(forward: number, vertical: number, strafe: number) {}
+
+    travel(forward: number, vertical: number, strafe: number) {}
+
+    jump() {}
+
+    moveRelative(forward, up, strafe, friction) {
+        let distance = strafe * strafe + up * up + forward * forward;
+
+        if (distance >= 0.0001) {
+            distance = Math.sqrt(distance);
+
+            if (distance < 1.0) {
+                distance = 1.0;
+            }
+
+            distance = friction / distance;
+            strafe = strafe * distance;
+            up = up * distance;
+            forward = forward * distance;
+
+            let yawRadians = MathHelper.toRadians(this.rotationYaw + 180);
+            let sin = Math.sin(yawRadians);
+            let cos = Math.cos(yawRadians);
+
+            this.motionX += strafe * cos - forward * sin;
+            this.motionY += up;
+            this.motionZ += forward * cos + strafe * sin;
+        }
+    }
+
+    async travelInWater(forward, vertical, strafe) {
+        let slipperiness = 0.8;
+        let friction = 0.02;
+
+        this.moveRelative(forward, vertical, strafe, friction);
+        this.collision = await this.moveCollide(-this.motionX, this.motionY, -this.motionZ);
+
+        this.motionX *= slipperiness;
+        this.motionY *= 0.8;
+        this.motionZ *= slipperiness;
+        this.motionY -= 0.02;
     }
 
     setPosition(x: number, y: number, z: number) {

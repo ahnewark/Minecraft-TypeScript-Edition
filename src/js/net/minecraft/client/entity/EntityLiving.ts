@@ -3,6 +3,47 @@ import MathHelper from "../../util/MathHelper.js";
 
 export default class EntityLiving extends Entity {
 
+    private jumpTicks: number;
+
+    private jumping: boolean;
+
+    private moveForward: number;
+    private moveStrafing: number;
+
+    private swingProgress: number;
+    private prevSwingProgress: number;
+    private swingProgressInt: number;
+    private isSwingInProgress: boolean;
+
+    private renderYawOffset: number;
+    private rotationYawHead: number;
+
+    private prevRotationYawHead: number;
+    private prevRenderYawOffset: number;
+
+    private limbSwingProgress: number;
+    private limbSwingStrength: number;
+    private prevLimbSwingStrength: number;
+
+    private health: number;
+
+    private rotationPositionIncrements: number
+
+    private targetX: number;
+    private targetY: number;
+    private targetZ: number;
+
+    private targetYaw: number;
+    private targetPitch: number;
+
+    private prevRenderArmYaw: number;
+    private prevRenderArmPitch: number;
+
+    private renderArmYaw: number;
+    private renderArmPitch: number;
+
+    private flying: boolean;
+
     constructor(minecraft, world, id) {
         super(minecraft, world, id);
 
@@ -121,7 +162,7 @@ export default class EntityLiving extends Entity {
         this.moveEntityWithHeading(this.moveForward, this.moveStrafing);
     }
 
-    moveEntityWithHeading(moveForward, moveStrafing) {
+    moveEntityWithHeading(moveForward: number, moveStrafing: number) {
         if (this.flying) {
             this.travelFlying(moveForward, 0, moveStrafing);
         } else {
@@ -194,7 +235,7 @@ export default class EntityLiving extends Entity {
         }
     }
 
-    setTargetPositionAndRotation(x, y, z, yaw, pitch, increments) {
+    setTargetPositionAndRotation(x: number, y: number, z: number, yaw: number, pitch: number, increments: number) {
         this.targetX = x;
         this.targetY = y;
         this.targetZ = z;
@@ -227,7 +268,7 @@ export default class EntityLiving extends Entity {
         this.swingProgress = this.swingProgressInt / swingAnimationEnd;
     }
 
-    getSwingProgress(partialTicks) {
+    getSwingProgress(partialTicks: number) {
         let swingProgressDiff = this.swingProgress - this.prevSwingProgress;
         if (swingProgressDiff < 0.0) {
             swingProgressDiff++;
@@ -235,7 +276,7 @@ export default class EntityLiving extends Entity {
         return this.prevSwingProgress + swingProgressDiff * partialTicks;
     }
 
-    computeAngleWithBound(value, subtract, limit) {
+    computeAngleWithBound(value: number, subtract: number, limit: number) {
         let wrapped = MathHelper.wrapAngleTo180(value - subtract);
         if (wrapped < -limit) {
             wrapped = -limit;
@@ -246,7 +287,7 @@ export default class EntityLiving extends Entity {
         return value - wrapped;
     }
 
-    setRotationYawHead(yaw) {
+    setRotationYawHead(yaw: number) {
         this.targetYaw = yaw; // TODO should be rotationYawHead
         // this.rotationYawHead = yaw;
     }

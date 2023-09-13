@@ -144,10 +144,6 @@ export default class PlayerEntity extends EntityLiving {
         this.cameraPitch += (speedY - this.cameraPitch) * 0.8;
     }
 
-    isInWater() {
-        return this.world.getBlockAt(this.getBlockPosX(), this.getBlockPosY(), this.getBlockPosZ()) === BlockRegistry.WATER.getId();
-    }
-
     isHeadInWater() {
         let cameraPosition = this.world.minecraft.worldRenderer.camera.position;
         return this.world.getBlockAt(
@@ -191,19 +187,6 @@ export default class PlayerEntity extends EntityLiving {
         if (this.onGround) {
             this.flying = false;
         }
-    }
-
-    travelInWater(forward, vertical, strafe) {
-        let slipperiness = 0.8;
-        let friction = 0.02;
-
-        this.moveRelative(forward, vertical, strafe, friction);
-        this.collision = this.moveCollide(-this.motionX, this.motionY, -this.motionZ);
-
-        this.motionX *= slipperiness;
-        this.motionY *= 0.8;
-        this.motionZ *= slipperiness;
-        this.motionY -= 0.02;
     }
 
     travel(forward, vertical, strafe) {
@@ -276,31 +259,6 @@ export default class PlayerEntity extends EntityLiving {
 
     getAIMoveSpeed() {
         return this.sprinting ? 0.13 : 0.1;
-    }
-
-    moveRelative(forward, up, strafe, friction) {
-        let distance = strafe * strafe + up * up + forward * forward;
-
-        if (distance >= 0.0001) {
-            distance = Math.sqrt(distance);
-
-            if (distance < 1.0) {
-                distance = 1.0;
-            }
-
-            distance = friction / distance;
-            strafe = strafe * distance;
-            up = up * distance;
-            forward = forward * distance;
-
-            let yawRadians = MathHelper.toRadians(this.rotationYaw + 180);
-            let sin = Math.sin(yawRadians);
-            let cos = Math.cos(yawRadians);
-
-            this.motionX += strafe * cos - forward * sin;
-            this.motionY += up;
-            this.motionZ += forward * cos + strafe * sin;
-        }
     }
 
     updateKeyboardInput() {
@@ -384,18 +342,6 @@ export default class PlayerEntity extends EntityLiving {
         let duration = 100;
         let progress = distance / duration * timePassed;
         return timePassed > duration ? this.fovModifier : this.prevFovModifier - progress;
-    }
-
-    getBlockPosX() {
-        return this.x - (this.x < 0 ? 1 : 0);
-    }
-
-    getBlockPosY() {
-        return this.y - (this.y < 0 ? 1 : 0);
-    }
-
-    getBlockPosZ() {
-        return this.z - (this.z < 0 ? 1 : 0);
     }
 
     getPositionEyes(partialTicks) {

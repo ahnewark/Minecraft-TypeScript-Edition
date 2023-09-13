@@ -17,6 +17,20 @@ import BlockCobblestone from "./type/BlockCobblestone.js";
 
 export class BlockRegistry {
 
+    public static STONE: Block;
+    public static GRASS: Block;
+    public static DIRT: Block;
+    public static COBBLE_STONE: Block;
+    public static WOOD: Block;
+    public static BEDROCK: Block;
+    public static GRAVEL: Block;
+    public static LOG: Block;
+    public static LEAVE: Block;
+    public static GLASS: Block;
+    public static WATER: Block;
+    public static SAND: Block;
+    public static TORCH: Block;
+
     static create() {
         // Sounds
         Block.sounds.stone = new Sound("stone", 1.0);
