@@ -1,10 +1,64 @@
 import BoundingBox from "../../util/BoundingBox.js";
 import MathHelper from "../../util/MathHelper.js";
 import Random from "../../util/Random.js";
+import Minecraft from "../Minecraft.js";
+import EntityRenderer from "../render/entity/EntityRenderer.js";
+import World from "../world/World.js";
+
+export type EntityMetadata = {id: number, type: number, value: number};
 
 export default class Entity {
 
-    constructor(minecraft, world, id) {
+    private minecraft: Minecraft;
+    private world: World;
+    private id: number;
+    private random: Random;
+    private renderer: EntityRenderer;
+
+    private x: number;
+    private y: number;
+    private z: number;
+
+    private width: number;
+    private height: number;
+    
+    private motionX: number;
+    private motionY: number;
+    private motionZ: number;
+
+    private stepHeight: number;
+
+    private onGround: boolean;
+
+    private rotationYaw: number;
+    private rotationPitch: number;
+
+    private prevX: number;
+    private prevY: number;
+    private prevZ: number;
+
+    private prevRotationYaw: number;
+    private prevRotationPitch: number;
+    
+    private prevDistanceWalked: number;
+    private distanceWalked: number;
+    private nextStepDistance: number;
+    
+    private ticksExisted: number;
+    private isDead: boolean;
+
+    private serverPositionX: number;
+    private serverPositionY: number;
+    private serverPositionZ: number;
+
+    private metaData: {[id: number]:EntityMetadata};
+
+    private boundingBox: BoundingBox;
+
+
+
+
+    constructor(minecraft: Minecraft, world, id) {
         this.minecraft = minecraft;
         this.world = world;
         this.id = id;
@@ -61,7 +115,7 @@ export default class Entity {
         }
     }
 
-    setPosition(x, y, z) {
+    setPosition(x: number, y: number, z: number) {
         // Update position
         this.x = x;
         this.y = y;
@@ -79,17 +133,17 @@ export default class Entity {
         );
     }
 
-    setRotation(yaw, pitch) {
+    setRotation(yaw: number, pitch: number) {
         this.rotationYaw = yaw % 360;
         this.rotationPitch = pitch % 360;
     }
 
-    setTargetPositionAndRotation(x, y, z, yaw, pitch, increments) {
+    setTargetPositionAndRotation(x: number, y: number, z: number, yaw: number, pitch: number, increments: number) {
         this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
     }
 
-    setPositionAndRotation(x, y, z, yaw, pitch) {
+    setPositionAndRotation(x: number, y: number, z: number, yaw: number, pitch: number) {
         this.prevX = this.x = x;
         this.prevY = this.y = y;
         this.prevZ = this.z = z;
@@ -137,14 +191,14 @@ export default class Entity {
         return this.boundingBox.height() * 0.8;
     }
 
-    moveCollide(targetX, targetY, targetZ) {
+    async moveCollide(targetX: number, targetY: number, targetZ: number) {
         // Target position
         let originalTargetX = targetX;
         let originalTargetY = targetY;
         let originalTargetZ = targetZ;
 
         if (this.onGround && this.isSneaking()) {
-            for (; targetX !== 0.0 && this.world.getCollisionBoxes(this.boundingBox.offset(targetX, -this.stepHeight, 0.0)).length === 0; originalTargetX = targetX) {
+            for (; targetX !== 0.0 && (await this.world.getCollisionBoxes(this.boundingBox.offset(targetX, -this.stepHeight, 0.0))).length === 0; originalTargetX = targetX) {
                 if (targetX < 0.05 && targetX >= -0.05) {
                     targetX = 0.0;
                 } else if (targetX > 0.0) {
@@ -154,7 +208,7 @@ export default class Entity {
                 }
             }
 
-            for (; targetZ !== 0.0 && this.world.getCollisionBoxes(this.boundingBox.offset(0.0, -this.stepHeight, targetZ)).length === 0; originalTargetZ = targetZ) {
+            for (; targetZ !== 0.0 && (await this.world.getCollisionBoxes(this.boundingBox.offset(0.0, -this.stepHeight, targetZ))).length === 0; originalTargetZ = targetZ) {
                 if (targetZ < 0.05 && targetZ >= -0.05) {
                     targetZ = 0.0;
                 } else if (targetZ > 0.0) {
@@ -164,7 +218,7 @@ export default class Entity {
                 }
             }
 
-            for (; targetX !== 0.0 && targetZ !== 0.0 && this.world.getCollisionBoxes(this.boundingBox.offset(targetX, -this.stepHeight, targetZ)).length === 0; originalTargetZ = targetZ) {
+            for (; targetX !== 0.0 && targetZ !== 0.0 && (await this.world.getCollisionBoxes(this.boundingBox.offset(targetX, -this.stepHeight, targetZ))).length === 0; originalTargetZ = targetZ) {
                 if (targetX < 0.05 && targetX >= -0.05) {
                     targetX = 0.0;
                 } else if (targetX > 0.0) {
@@ -242,21 +296,21 @@ export default class Entity {
         return this.getFlag(1);
     }
 
-    setSneaking(sneaking) {
+    setSneaking(sneaking: boolean) {
         this.setFlag(1, sneaking);
     }
 
-    updateMetaData(metaData) {
-        for (const [id, value] of Object.entries(metaData)) {
+    updateMetaData(metaData: Entity['metaData']) {
+        for (const [, value] of Object.entries<EntityMetadata>(metaData)) {
             this.metaData[value.id] = value;
         }
     }
 
-    getFlag(flag) {
+    getFlag(flag: number) {
         return typeof this.metaData[0] !== "undefined" && (this.metaData[0].value & 1 << flag) !== 0;
     }
 
-    setFlag(flag, value) {
+    setFlag(flag: number, value: boolean) {
         if (typeof this.metaData[0] === "undefined") {
             this.metaData[0] = {id: 0, type: 0, value: 0};
         }
